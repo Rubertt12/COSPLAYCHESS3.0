@@ -1,0 +1,46 @@
+{
+  "name": "cosplay-chess",
+  "version": "1.0.2",
+  "description": "A Proxima Geracao de Engines de Batalha para Palcos Geek",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "echo 'Web Build Complete'",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win"
+  },
+  "overrides": {
+    "rimraf": "^5.0.7",
+    "glob": "^10.3.15"
+  },
+  "author": "Rubra Studios",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^42.3.3",
+    "electron-builder": "^26.8.1"
+  },
+  "build": {
+    "appId": "com.rubra.cosplaychess",
+    "productName": "Cosplay Chess",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "img/favicon-Photoroom.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "Cosplay Chess"
+    },
+    "files": [
+      "**/*",
+      "!dist"
+    ]
+  }
+}
