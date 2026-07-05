@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=no">
+    <title>Cosplay Chess - Rubra Studios</title>
+    <link rel="icon" type="image/png" href="img/favicon/favicon-96x96.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- VFX Elements -->
+<div class="ui-vfx-overlay"></div>
+<div class="cyber-grid"></div>
+
+<div id="loader">
+    <div class="loader-content">
+        <img src="img/cosplaychess (1).png" alt="Rubra Studios Logo" class="loader-logo">
+        <div class="loading-bar"><div class="progress"></div></div>
+        <p style="font-size: 11px; letter-spacing: 1px; margin-top: 10px;">CARREGANDO RUBRA STUDIOS...</p>
+    </div>
+</div>
+
+<div id="start-menu" class="overlay show">
+    <div class="start-content">
+        <div class="start-info-col">
+            <img src="img/cosplaychess (1).png" alt="Rubra Studios Logo" class="start-logo">
+            <h1>COSPLAY CHESS</h1>
+            <p>Escolha um tema, valide as regras e inicie a batalha.</p>
+        </div>
+        <div class="start-config-col">
+            <!-- Nova seção para os botões principais -->
+            <div id="main-start-options" class="menu-panel menu-panel-visible">
+                <button class="btn btn-yes" 
+                        onclick="startBattle()" 
+                        onmouseenter="playUISound('hover')"
+                        style="width:100%; margin-bottom: 25px; padding: 22px; font-size: 18px; text-shadow: 0 0 10px rgba(0,0,0,0.5);">
+                        INICIAR BATALHA
+                </button>
+                <button class="btn" 
+                        onclick="openStartMenuSettings()" 
+                        onmouseenter="playUISound('hover')"
+                        style="width:100%; padding: 22px; font-size: 16px;">CONFIGURAÇÕES</button>
+            </div>
+
+            <!-- Conteúdo das configurações, inicialmente oculto -->
+            <div id="start-menu-settings-content" class="menu-panel menu-panel-hidden">
+                <div class="menu-section-title" style="margin-top:0">ESTILO DO TABULEIRO</div>
+                <div class="theme-grid" style="grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px;">
+                    <button class="theme-card selected" data-theme="default" 
+                            onclick="setTheme('default')" onmouseenter="previewTheme('default')" onmouseleave="revertTheme()">
+                        <strong>NEON</strong>
+                        <span>Visual moderno e futurista</span>
+                    </button>
+                    <button class="theme-card" data-theme="forest" 
+                            onclick="setTheme('forest')" onmouseenter="previewTheme('forest')" onmouseleave="revertTheme()">
+                        <strong>FLORESTA</strong>
+                        <span>Verde suave para um clima natural</span>
+                    </button>
+                    <button class="theme-card" data-theme="fire" 
+                            onclick="setTheme('fire')" onmouseenter="previewTheme('fire')" onmouseleave="revertTheme()">
+                        <strong>CHAMA</strong>
+                        <span>Contraste quente e energético</span>
+                    </button>
+                    <button class="theme-card" data-theme="ice" 
+                            onclick="setTheme('ice')" onmouseenter="previewTheme('ice')" onmouseleave="revertTheme()">
+                        <strong>GELADO</strong>
+                        <span>Frio e limpo para partida tática</span>
+                    </button>
+                    <button class="theme-card" data-theme="purple" 
+                            onclick="setTheme('purple')" onmouseenter="previewTheme('purple')" onmouseleave="revertTheme()">
+                        <strong>ROXO</strong>
+                        <span>Mistério e poder místico</span>
+                    </button>
+                    <button class="theme-card" data-theme="pink" 
+                            onclick="setTheme('pink')" onmouseenter="previewTheme('pink')" onmouseleave="revertTheme()">
+                        <strong>ROSA</strong>
+                        <span>Energia e estilo vibrante</span>
+                    </button>
+                </div>
+                <div class="start-config-row" style="justify-content: flex-start; margin-bottom: 10px;">
+                    <label style="font-size:10px; color: var(--accent);">OPONENTE:</label>
+                    <select id="opponent-select" onchange="setMode(this.value)" style="padding:6px; border-radius:4px; background:#0b0b0d; color:white; border:1px solid #222;">
+                        <option value="LOCAL">Local (2 jogadores)</option>
+                        <option value="AI">Máquina (vs AI)</option>
+                    </select>
+                </div>
+                <div class="start-config-row" style="justify-content: flex-start; margin-bottom: 10px;">
+                    <label style="font-size:10px; color: var(--accent);">WALLPAPER:</label>
+                    <input
+                        type="file"
+                        id="wallpaper-file"
+                        accept="image/*,video/mp4,video/webm,video/ogg"
+                        style="padding:6px; border-radius:4px; background:#0b0b0d; color:white; border:1px solid #222;"
+                        onchange="upWallpaper(this)"
+                    >
+
+                    <button
+                        class="btn"
+                        onclick="clearWallpaper()"
+                        style="padding:6px 12px; height:auto; width:auto; font-size:9px; letter-spacing:1px; border-radius:6px;" onmouseenter="playUISound('hover')">
+                        LIMPAR
+                    </button>
+                </div>
+                <div class="wall-preset-grid" style="grid-template-columns: repeat(4, 1fr); gap: 5px;">
+                    <button id="wp1" class="wall-thumb" onclick="setWallpaperPreset('naruto')">NARUTO</button>
+                    <button id="wp2" class="wall-thumb" onclick="setWallpaperPreset('bleach')">BLEACH</button>
+                    <button id="wp3" class="wall-thumb" onclick="setWallpaperPreset('yugioh')">Yugioh</button>
+                    <button id="wp4" class="wall-thumb" onclick="setWallpaperPreset('kuroshitsuji')">KUROSHITSUJI</button>
+                    <button id="wp5" class="wall-thumb" onclick="setWallpaperPreset('cyberpunk')">CYBERPUNK</button>
+                    <button id="wp6" class="wall-thumb" onclick="setWallpaperPreset('sakura')">SAKURA</button>
+                    <button id="wp7" class="wall-thumb" onclick="setWallpaperPreset('night_city')">NIGHT CITY</button>
+                    <button id="wp8" class="wall-thumb" onclick="setWallpaperPreset('arena_sky')">ARENA SKY</button>
+                </div>
+
+                <div class="start-config-row" style="justify-content: flex-start; margin-top: 10px; margin-bottom: 10px;">
+                    <label style="font-size:10px; color: var(--accent);">TELA CHEIA:</label>
+                    <label style="font-size:12px; cursor:pointer; color:white; display:flex; align-items:center; gap:6px;">
+                        <input type="checkbox" id="fullscreen-setting" onchange="toggleFullscreen(this.checked)">
+                        Ativar ao abrir
+                    </label>
+                </div>
+                
+                <div id="ai-options" class="start-config-row" style="display:none; margin-top:10px; justify-content: flex-start;">
+                    <label style="font-size:10px; color: var(--accent);">LADO IA:</label>
+                    <select id="ai-side" onchange="setAISide(this.value)" style="padding:6px; border-radius:4px; background:#0b0b0d; color:white; border:1px solid #222;">
+                        <option value="P">PRETAS</option>
+                        <option value="B">BRANCAS</option>
+                    </select>
+                    <label style="font-size:10px; color: var(--accent); margin-left:15px;">NÍVEL:</label>
+                    <select id="ai-diff" style="padding:6px; border-radius:4px; background:#0b0b0d; color:white; border:1px solid #222;">
+                        <option value="easy">Fácil</option>
+                        <option value="normal" selected>Médio</option>
+                    </select>
+                </div>
+                <button class="btn btn-back" onmouseenter="playUISound('hover')" onclick="closeStartMenuSettings()" style="width:100%; margin-top:20px; font-size:10px;">VOLTAR</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<aside id="sidebar">
+    <div style="padding: 20px; border-bottom: 1px solid #222;">
+        <h2 style="color:var(--accent); letter-spacing: 1px;">Cosplay Chess</h2>
+        <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px">
+            <label style="font-size: 12px; cursor: pointer;"><input type="checkbox" id="edit-mode" onchange="renderBoard()"> MODO EDIÇÃO (UPLOAD/REMOVER)</label>
+            <label style="font-size: 12px; color: var(--accent); font-weight:bold; cursor: pointer;"><input type="checkbox" id="free-move"> MOVIMENTAÇÃO LIVRE</label>
+            <label style="font-size: 12px; cursor: pointer;"><input type="checkbox" id="pin-menu" onchange="togglePinMenu(this.checked)"> FIXAR MENU LATERAL</label>
+        </div>
+    </div>
+    <div class="tabs">
+        <button id="t-white" class="active" onclick="showTab('white')">BRANCAS</button>
+        <button id="t-black" onclick="showTab('black')">PRETAS</button>
+        <button id="t-log" onclick="showTab('log')">LOG</button>
+        <button id="t-sys" onclick="showTab('sys')">SISTEMA</button>
+    </div>
+
+    <div class="scroll-area" id="list-white"></div>
+    <div class="scroll-area" id="list-black" style="display:none"></div>
+    <div class="scroll-area" id="list-log" style="display:none"></div>
+
+    <div class="scroll-area" id="list-sys" style="display:none">
+        <div class="unit-card">
+            <b style="font-size: 11px;">VOLUME MESTRE</b>
+            <input type="range" id="v-master" min="0" max="1" step="0.1" value="1" style="width:100%" oninput="updateMasterVolume()">
+        </div>
+        <div class="unit-card">
+            <b style="color: var(--accent); font-size: 11px;">🎶 ÁUDIO AMBIENTE</b>
+            <div id="ambient-controls" style="margin-top:10px; display: flex; flex-direction: column; gap: 12px;"></div>
+        </div>
+        <div class="unit-card">
+            <b style="color: var(--accent); font-size: 11px;">🔍 ZOOM DO TABULEIRO</b>
+            <input type="range" id="board-zoom" min="0.6" max="1.6" step="0.05" value="1" style="width:100%;" oninput="updateBoardZoom(this.value)">
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:#aaa; margin-top:5px;"><span>0.6x</span><span>1x</span><span>1.6x</span></div>
+        </div>
+        <button class="btn" onclick="rollInitiative()" style="background:#1c1c24; color:var(--accent); margin-bottom: 8px;">🎲 SORTEAR INÍCIO</button>
+
+        <div class="unit-card" style="background: rgba(0,229,255,0.05); border-color: rgba(0,229,255,0.2);">
+            <b style="color: var(--accent); font-size: 10px; letter-spacing: 1px;">💾 GESTÃO DE DADOS</b>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; margin-top:10px;">
+                <button class="btn-play-sm" style="width:100%; font-size:8px;" onclick="exportSquadData()">EXPORTAR</button>
+                <button class="btn-play-sm" style="width:100%; font-size:8px;" onclick="document.getElementById('import-file').click()">IMPORTAR</button>
+                <input type="file" id="import-file" style="display:none" accept=".json" onchange="importSquadData(this)">
+            </div>
+        </div>
+
+        <button class="btn" onclick="undoMove()" style="background:#2a2a35; color:#fff; margin-bottom: 8px;">⟲ DESFAZER JOGADA</button>
+        <button class="btn" onclick="clearBoardPieces()" style="background:#222; color:#fff; margin-bottom: 8px;">🧹 LIMPAR TABULEIRO</button>
+        <button class="btn" onclick="resetGame()" style="background:var(--danger); color:#fff;">⚠️ RESET TOTAL</button>
+    </div>
+
+    <div style="padding: 15px; background: #000; border-top: 1px solid #222;">
+        <button class="btn btn-yes" style="width: 100%; padding: 12px; font-weight: 900;" onclick="startBattle()">ATIVAR BATALHA</button>
+    </div>
+</aside>
+
+<div class="app-container">
+    <div id="dashboard">
+        <div class="brand">
+            <div id="menu-toggle" onclick="toggleMenu()" aria-label="Abrir menu" role="button" tabindex="0">
+                <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <rect x="0" y="1" width="20" height="2" rx="1" fill="currentColor" class="menu-bar" />
+                    <rect x="0" y="6" width="20" height="2" rx="1" fill="currentColor" class="menu-bar" />
+                    <rect x="0" y="11" width="20" height="2" rx="1" fill="currentColor" class="menu-bar" />
+                </svg>
+            </div>
+            <div class="brand-title">COSPLAY CHESS</div>
+        </div>
+
+        <!-- LADO ESQUERDO: CONTROLES DE SOM -->
+        <div class="dashboard-controls-left">
+            <div class="dash-controls">
+                <div class="ctrl-group">
+                    <button class="dash-btn" onclick="document.getElementById('f-amb-dash').click()" title="Subir Áudio">📁</button>
+                    <button class="dash-btn" onclick="playWithFade('Ambiente')" title="Play">▶</button>
+                    <button class="dash-btn" onclick="stopWithFade('Ambiente')" title="Pause">⏸</button>
+                    <button class="dash-btn" onclick="pauseGame()" title="Pausar Partida / Configurações" style="margin-left: 10px; border-color: var(--accent); color: var(--accent); font-size: 8px; width: auto; padding: 0 8px;">⏸ PAUSA</button>
+                </div>
+                <div class="ctrl-group">
+                    <span class="ctrl-label">MASTER</span>
+                    <input type="range" id="v-master-dash" min="0" max="1" step="0.1" value="1" oninput="syncVolumes('master', this.value)">
+                </div>
+            </div>
+            <div class="dash-controls">
+                <div class="ctrl-group">
+                    <span class="ctrl-label">AMB</span>
+                    <input type="range" id="v-ambient-dash" min="0" max="1" step="0.1" value="0.7" oninput="syncVolumes('ambient', this.value)">
+                    <input type="file" id="f-amb-dash" style="display:none" onchange="upAmb('Ambiente', this)">
+                </div>
+            </div>
+        </div>
+
+        <!-- LADO DIREITO: INFORMAÇÕES DA BATALHA -->
+        <div class="dashboard-battle-right">
+            <div id="card-B" class="player-card">
+                <div id="img-B" class="p-img" onclick="document.getElementById('f-av-B').click()" title="Mudar Avatar"></div>
+                <input type="text" id="name-B" value="Jogador 1" class="player-name-input" style="color:#00e5ff">
+                <div id="score-B" class="p-score" style="color:#00e5ff">0</div>
+                <input type="file" id="f-av-B" style="display:none" onchange="upAvatar('B', this)">
+            </div>
+            <div class="vs-text">V S</div>
+            <div id="card-P" class="player-card">
+                <div id="score-P" class="p-score" style="color:var(--danger)">0</div>
+                <input type="text" id="name-P" value="Jogador 2" class="player-name-input" style="color:var(--danger); text-align: right;">
+                <div id="img-P" class="p-img" onclick="document.getElementById('f-av-P').click()" title="Mudar Avatar"></div>
+                <input type="file" id="f-av-P" style="display:none" onchange="upAvatar('P', this)">
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="board-wrapper">
+            <div class="coord-v"><div>8</div><div>7</div><div>6</div><div>5</div><div>4</div><div>3</div><div>2</div><div>1</div></div>
+            <div id="board"></div>
+            <div class="coord-h"><div>A</div><div>B</div><div>C</div><div>D</div><div>E</div><div>F</div><div>G</div><div>H</div></div>
+            <input type="file" id="quick-upload" style="display:none" onchange="handleQuickUpload(this)">
+        </div>
+
+        <div class="graveyard-container">
+            <h4 style="color:var(--accent); font-size:10px; font-weight:900; text-align:center; margin-bottom:12px; letter-spacing: 1px; border-bottom: 1px solid #222; padding-bottom: 6px;">ELIMINADOS</h4>
+            <div id="graveyard"></div>
+        </div>
+    </main>
+</div>
+
+<div id="arena" class="overlay">
+    <div class="arena-content">
+        <div class="arena-fighters" style="display: flex; align-items: center; gap: 40px;">
+            <div class="fighter">
+                <div id="a-img" class="arena-box" style="border-color: var(--accent)"></div>
+                <div class="arena-audio-btns">
+                    <button id="btn-play-L" class="btn" style="background:#004444" onclick="playArenaPiece('left')" title="Tocar som da peça atacante">▶</button>
+                    <button id="btn-pause-L" class="btn" style="background:#440000" onclick="pauseArenaPiece('left')" title="Pausar som da peça atacante">||</button>
+                </div>
+                <div id="sound-status-L" class="arena-sound-label">Som: padrão 🎧</div>
+                <button class="btn btn-yes" onclick="finishDuel('B')" style="margin-top:10px; width: 100%;">VITÓRIA BRANCAS</button>
+            </div>
+            <div style="font-size: 28px;">⚔️</div>
+            <div class="fighter">
+                <div id="d-img" class="arena-box" style="border-color: var(--danger)"></div>
+                <div class="arena-audio-btns">
+                    <button id="btn-play-R" class="btn" style="background:#004444" onclick="playArenaPiece('right')" title="Tocar som da peça defensora">▶</button>
+                    <button id="btn-pause-R" class="btn" style="background:#440000" onclick="pauseArenaPiece('right')" title="Pausar som da peça defensora">||</button>
+                </div>
+                <div id="sound-status-R" class="arena-sound-label">Som: padrão 🎧</div>
+                <button class="btn" onclick="finishDuel('P')" style="background:var(--danger); color:#fff; margin-top:10px; width: 100%;">VITÓRIA PRETAS</button>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="btn" onclick="closeArena()" style="background:#222; width: 120px;">CANCELAR</button>
+        </div>
+    </div>
+</div>
+
+<div id="victory-modal" class="overlay">
+    <div class="victory-content">
+        <div class="trophy-wrap">
+            <div id="victory-crown" class="victory-crown">👑</div>
+            <div id="victory-photo" class="winner-photo-circle"></div>
+        </div>
+        <h1 style="color:var(--gold); letter-spacing: 2px; margin-bottom: 5px; font-size: 1.8rem;">CONGRATULATIONS!</h1>
+        <p id="winner-name" style="font-weight: bold; font-size: 1.2em; color: #fff;"></p>
+        <button class="btn btn-yes" onclick="newGame()" id="victory-newgame" style="width:200px; margin-top:25px; padding: 12px; font-weight: 900;">NOVO JOGO</button>
+    </div>
+</div>
+
+<!-- MODAL DA ROLETA DE INICIATIVA -->
+<div id="initiative-modal" class="overlay">
+    <div class="initiative-content" style="text-align: center;">
+        <h2 style="color:var(--accent); letter-spacing: 5px; margin-bottom: 30px; font-weight: 900;">SORTEANDO INICIATIVA</h2>
+        <div class="wheel-outer">
+            <div id="initiative-wheel" class="wheel"></div>
+            <div class="wheel-pointer">▼</div>
+        </div>
+        <div id="initiative-result" style="margin-top: 30px; font-size: 24px; font-weight: 900; height: 30px; letter-spacing: 2px;"></div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
