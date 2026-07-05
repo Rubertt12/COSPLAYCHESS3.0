@@ -1,0 +1,9 @@
+﻿node_modules/
+dist/
+**/dist/
+dist-installer/
+dist-installer2/
+release/
+*.zip
+.DS_Store
+thumbs.db
