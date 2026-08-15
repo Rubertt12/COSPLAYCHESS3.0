@@ -1,7 +1,7 @@
 {
-  "name": "cosplay-chess",
+  "name": "cosplay-chess-bluetooth-test",
   "version": "1.1.0",
-  "description": "A Proxima Geracao de Engines de Batalha para Palcos Geek",
+  "description": "Cosplay Chess experimental com controle Bluetooth offline",
   "main": "experimental-bootstrap.js",
   "scripts": {
     "start": "electron .",
@@ -25,19 +25,11 @@
     "pkg": "^5.8.1"
   },
   "build": {
-    "appId": "com.rubra.cosplaychess",
-    "productName": "Cosplay Chess",
+    "appId": "com.rubra.cosplaychess.bluetooth-test",
+    "productName": "Cosplay Chess Bluetooth Test",
     "directories": {
       "output": "dist"
     },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "Rubertt12",
-        "repo": "COSPLAYCHESS3.0",
-        "releaseType": "release"
-      }
-    ],
     "win": {
       "target": [
         "nsis",
@@ -45,13 +37,14 @@
       ],
       "icon": "img/favicon/favicon.ico",
       "signAndEditExecutable": false,
-      "forceCodeSigning": false
+      "forceCodeSigning": false,
+      "artifactName": "Cosplay-Chess-Bluetooth-Test-${version}-${arch}.${ext}"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "shortcutName": "Cosplay Chess",
+      "shortcutName": "Cosplay Chess Bluetooth Test",
       "installerIcon": "img/favicon/favicon.ico",
       "uninstallerIcon": "img/favicon/favicon.ico",
       "installerLanguages": ["pt_BR"],
@@ -59,7 +52,7 @@
       "installerSidebar": "build/installerSidebar.bmp",
       "uninstallerSidebar": "build/installerSidebar.bmp",
       "installerHeader": "build/installerHeader.bmp",
-      "uninstallDisplayName": "Cosplay Chess - Fergorverse"
+      "uninstallDisplayName": "Cosplay Chess Bluetooth Test"
     },
     "files": [
       "**/*",
