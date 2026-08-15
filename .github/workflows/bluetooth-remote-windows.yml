@@ -1,0 +1,44 @@
+name: Cosplay Chess Bluetooth Test - Windows
+
+on:
+  push:
+    branches:
+      - experimental/bluetooth-remote
+    paths:
+      - 'COSPLAYCHESS-main/**'
+      - '.github/workflows/bluetooth-remote-windows.yml'
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: COSPLAYCHESS-main
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: COSPLAYCHESS-main/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm install --no-audit --no-fund
+
+      - name: Gerar instalador experimental
+        shell: pwsh
+        run: npm run dist:win -- --publish never
+
+      - name: Upload Windows build
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cosplay-Chess-Bluetooth-Test-Windows
+          path: |
+            COSPLAYCHESS-main/dist/*.exe
+            COSPLAYCHESS-main/dist/*.blockmap
+          if-no-files-found: error
