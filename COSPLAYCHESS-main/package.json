@@ -35,7 +35,7 @@
         "nsis",
         "portable"
       ],
-      "icon": "img/favicon/favicon.ico",
+      "icon": "img/favicon/web-app-manifest-512x512.png",
       "signAndEditExecutable": false,
       "forceCodeSigning": false,
       "artifactName": "Cosplay-Chess-Bluetooth-Test-${version}-${arch}.${ext}"
@@ -45,8 +45,8 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "shortcutName": "Cosplay Chess Bluetooth Test",
-      "installerIcon": "img/favicon/favicon.ico",
-      "uninstallerIcon": "img/favicon/favicon.ico",
+      "installerIcon": "img/favicon/web-app-manifest-512x512.png",
+      "uninstallerIcon": "img/favicon/web-app-manifest-512x512.png",
       "installerLanguages": ["pt_BR"],
       "language": "1046",
       "installerSidebar": "build/installerSidebar.bmp",
