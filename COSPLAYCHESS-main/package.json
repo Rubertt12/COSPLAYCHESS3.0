@@ -2,7 +2,7 @@
   "name": "cosplay-chess",
   "version": "1.1.0",
   "description": "A Proxima Geracao de Engines de Batalha para Palcos Geek",
-  "main": "main.js",
+  "main": "bootstrap.js",
   "scripts": {
     "start": "electron .",
     "build": "echo 'Web Build Complete'",
@@ -43,7 +43,7 @@
         "nsis",
         "portable"
       ],
-      "icon": "img/favicon-Photoroom.png",
+      "icon": "build/installerIcon.ico",
       "signAndEditExecutable": false,
       "forceCodeSigning": false
     },
@@ -51,7 +51,15 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "shortcutName": "Cosplay Chess"
+      "shortcutName": "Cosplay Chess",
+      "installerLanguages": ["pt_BR"],
+      "language": "1046",
+      "installerSidebar": "build/installerSidebar.bmp",
+      "uninstallerSidebar": "build/installerSidebar.bmp",
+      "installerHeader": "build/installerHeader.bmp",
+      "installerIcon": "build/installerIcon.ico",
+      "uninstallerIcon": "build/installerIcon.ico",
+      "uninstallDisplayName": "Cosplay Chess - Fergorverse"
     },
     "files": [
       "**/*",
