@@ -27,15 +27,10 @@
   "build": {
     "appId": "com.rubra.cosplaychess.bluetooth-test",
     "productName": "Cosplay Chess Bluetooth Test",
-    "directories": {
-      "output": "dist"
-    },
+    "directories": { "output": "dist" },
     "win": {
-      "target": [
-        "nsis",
-        "portable"
-      ],
-      "icon": "img/favicon/web-app-manifest-512x512.png",
+      "target": ["nsis", "portable"],
+      "icon": "img/favicon/cosplay-chess-windows.ico",
       "signAndEditExecutable": false,
       "forceCodeSigning": false,
       "artifactName": "Cosplay-Chess-Bluetooth-Test-${version}-${arch}.${ext}"
@@ -45,8 +40,8 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "shortcutName": "Cosplay Chess Bluetooth Test",
-      "installerIcon": "img/favicon/web-app-manifest-512x512.png",
-      "uninstallerIcon": "img/favicon/web-app-manifest-512x512.png",
+      "installerIcon": "img/favicon/cosplay-chess-windows.ico",
+      "uninstallerIcon": "img/favicon/cosplay-chess-windows.ico",
       "installerLanguages": ["pt_BR"],
       "language": "1046",
       "installerSidebar": "build/installerSidebar.bmp",
@@ -54,9 +49,6 @@
       "installerHeader": "build/installerHeader.bmp",
       "uninstallDisplayName": "Cosplay Chess Bluetooth Test"
     },
-    "files": [
-      "**/*",
-      "!dist"
-    ]
+    "files": ["**/*", "!dist"]
   }
 }
