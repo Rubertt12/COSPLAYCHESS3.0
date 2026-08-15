@@ -77,9 +77,184 @@ function injectBranding() {
   const brandLogoSrc = getBrandLogoDataUri();
   if (!brandLogoSrc) return;
 
+  const uiCss = `
+    #start-menu .start-content {
+      width: min(1280px, 94vw) !important;
+      max-width: 1280px !important;
+      height: min(700px, 84vh) !important;
+      min-height: min(620px, 84vh) !important;
+      max-height: 84vh !important;
+      display: grid !important;
+      grid-template-columns: minmax(410px, 40%) minmax(0, 60%) !important;
+    }
+
+    #start-menu .start-info-col {
+      padding: 38px 42px !important;
+      min-width: 0 !important;
+    }
+
+    #start-menu .start-config-col {
+      padding: 32px 38px !important;
+      min-width: 0 !important;
+      overflow-y: auto !important;
+      scrollbar-width: thin;
+    }
+
+    #start-menu .start-logo {
+      width: clamp(285px, 24vw, 350px) !important;
+      max-width: min(350px, 88%) !important;
+      height: auto !important;
+      margin: 0 auto 26px !important;
+    }
+
+    #start-menu .start-info-col h1 {
+      font-size: clamp(2rem, 3.2vw, 3rem) !important;
+      line-height: 1.15 !important;
+    }
+
+    #start-menu .start-info-col p {
+      font-size: clamp(11px, 1vw, 14px) !important;
+      line-height: 1.5 !important;
+    }
+
+    #start-menu .menu-section-title {
+      font-size: 12px !important;
+      margin-bottom: 12px !important;
+    }
+
+    #start-menu .theme-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+      gap: 12px !important;
+      margin-bottom: 20px !important;
+    }
+
+    #start-menu .theme-card {
+      min-height: 90px !important;
+      padding: 14px 10px !important;
+      border-radius: 12px !important;
+    }
+
+    #start-menu .theme-card strong {
+      font-size: 14px !important;
+      line-height: 1.2 !important;
+    }
+
+    #start-menu .theme-card span {
+      font-size: 11px !important;
+      line-height: 1.25 !important;
+      margin-top: 6px !important;
+    }
+
+    #start-menu .start-config-row {
+      gap: 12px !important;
+      margin-bottom: 14px !important;
+      flex-wrap: wrap !important;
+    }
+
+    #start-menu .start-config-row > label {
+      font-size: 11px !important;
+      min-width: 72px !important;
+    }
+
+    #start-menu select,
+    #start-menu input[type='file'] {
+      min-height: 40px !important;
+      padding: 8px 10px !important;
+      font-size: 12px !important;
+      border-radius: 7px !important;
+    }
+
+    #start-menu input[type='file']::file-selector-button {
+      min-height: 30px !important;
+      padding: 6px 10px !important;
+      margin-right: 10px !important;
+      border-radius: 5px !important;
+      cursor: pointer;
+    }
+
+    #start-menu #start-menu-settings-content .btn {
+      min-height: 40px !important;
+      padding: 10px 16px !important;
+      font-size: 11px !important;
+    }
+
+    #start-menu .wall-preset-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+      gap: 9px !important;
+      margin-top: 4px !important;
+    }
+
+    #start-menu .wall-thumb {
+      min-height: 70px !important;
+      font-size: 10px !important;
+      border-radius: 8px !important;
+    }
+
+    #start-menu #main-start-options .btn {
+      min-height: 72px !important;
+      font-size: 17px !important;
+    }
+
+    @media (max-width: 1100px), (max-height: 760px) {
+      #start-menu .start-content {
+        width: min(1080px, 96vw) !important;
+        height: min(650px, 90vh) !important;
+        min-height: 0 !important;
+        max-height: 90vh !important;
+        grid-template-columns: minmax(330px, 40%) minmax(0, 60%) !important;
+      }
+
+      #start-menu .start-info-col,
+      #start-menu .start-config-col {
+        padding: 24px 26px !important;
+      }
+
+      #start-menu .start-logo {
+        width: clamp(230px, 25vw, 300px) !important;
+        margin-bottom: 18px !important;
+      }
+
+      #start-menu .theme-card {
+        min-height: 76px !important;
+      }
+
+      #start-menu .wall-thumb {
+        min-height: 58px !important;
+      }
+    }
+
+    @media (max-width: 820px) {
+      #start-menu .start-content {
+        width: 96vw !important;
+        height: 92vh !important;
+        max-height: 92vh !important;
+        grid-template-columns: 1fr !important;
+        overflow-y: auto !important;
+      }
+
+      #start-menu .start-logo {
+        width: min(300px, 72vw) !important;
+      }
+
+      #start-menu .theme-grid,
+      #start-menu .wall-preset-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+    }
+  `;
+
   const script = `
     (() => {
       const logoSrc = ${JSON.stringify(brandLogoSrc)};
+      const uiCss = ${JSON.stringify(uiCss)};
+
+      let style = document.getElementById('fergorverse-ui-overrides');
+      if (!style) {
+        style = document.createElement('style');
+        style.id = 'fergorverse-ui-overrides';
+        document.head.appendChild(style);
+      }
+      style.textContent = uiCss;
 
       const ensureLogo = (selector, parentSelector, width) => {
         const parent = document.querySelector(parentSelector);
@@ -98,17 +273,17 @@ function injectBranding() {
         img.loading = 'eager';
         img.style.display = 'block';
         img.style.width = width;
-        img.style.maxWidth = width;
+        img.style.maxWidth = '88%';
         img.style.height = 'auto';
         img.style.objectFit = 'contain';
-        img.style.margin = '0 auto 18px';
-        img.style.filter = 'drop-shadow(0 8px 18px rgba(0,0,0,0.45))';
+        img.style.margin = '0 auto 22px';
+        img.style.filter = 'drop-shadow(0 10px 24px rgba(0,0,0,0.5))';
         img.style.visibility = 'visible';
         img.style.opacity = '1';
       };
 
-      ensureLogo('.loader-logo', '.loader-content', '140px');
-      ensureLogo('.start-logo', '.start-info-col', '180px');
+      ensureLogo('.loader-logo', '.loader-content', '210px');
+      ensureLogo('.start-logo', '.start-info-col', 'clamp(285px, 24vw, 350px)');
     })();
   `;
 
