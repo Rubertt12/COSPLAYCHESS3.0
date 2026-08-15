@@ -7,7 +7,7 @@
     "start": "electron .",
     "build": "echo 'Web Build Complete'",
     "dist": "electron-builder",
-    "dist:win": "electron-builder --win"
+    "dist:win": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/prepare-installer-assets.ps1 && electron-builder --win"
   },
   "dependencies": {
     "electron-updater": "^6.8.9"
