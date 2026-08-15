@@ -30,6 +30,17 @@ jobs:
       - name: Instalar dependencias
         run: npm install --no-audit --no-fund
 
+      - name: Gerar icone Windows multiresolucao
+        shell: pwsh
+        run: |
+          python -m pip install --disable-pip-version-check pillow
+          @'
+          from PIL import Image
+          src = Image.open(r"img/favicon/web-app-manifest-512x512.png").convert("RGBA")
+          src.save(r"img/favicon/cosplay-chess-windows.ico", format="ICO", sizes=[(16,16),(24,24),(32,32),(48,48),(64,64),(128,128),(256,256)])
+          '@ | Set-Content -Encoding UTF8 make_icon.py
+          python make_icon.py
+
       - name: Gerar instalador experimental
         shell: pwsh
         run: npm run dist:win -- --publish never
