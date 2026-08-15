@@ -13,10 +13,17 @@ const updaterAPI = {
   }
 };
 
+const musicAPI = {
+  getFolder: () => ipcRenderer.invoke('music:get-folder'),
+  pickFolder: () => ipcRenderer.invoke('music:pick-folder'),
+  listAudio: () => ipcRenderer.invoke('music:list-audio')
+};
+
 contextBridge.exposeInMainWorld('electronAPI', {
   setFullscreen: (value) => ipcRenderer.invoke('set-fullscreen', value),
   isFullscreen: () => ipcRenderer.invoke('is-fullscreen'),
-  updates: updaterAPI
+  updates: updaterAPI,
+  music: musicAPI
 });
 
 function createUpdateCard() {
@@ -116,8 +123,17 @@ function renderUpdateState(state) {
   }
 }
 
+function injectEnhancementsScript() {
+  if (document.querySelector('script[data-cosplay-enhancements]')) return;
+  const script = document.createElement('script');
+  script.src = 'enhancements.js';
+  script.dataset.cosplayEnhancements = 'true';
+  document.body.appendChild(script);
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
   createUpdateCard();
+  injectEnhancementsScript();
 
   ipcRenderer.on('update-status', (_event, state) => {
     renderUpdateState(state);
