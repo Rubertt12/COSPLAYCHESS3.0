@@ -123,17 +123,25 @@ function renderUpdateState(state) {
   }
 }
 
-function injectEnhancementsScript() {
+function injectEnhancementsScripts() {
   if (document.querySelector('script[data-cosplay-enhancements]')) return;
-  const script = document.createElement('script');
-  script.src = 'enhancements.js';
-  script.dataset.cosplayEnhancements = 'true';
-  document.body.appendChild(script);
+
+  const enhancements = document.createElement('script');
+  enhancements.src = 'enhancements.js';
+  enhancements.dataset.cosplayEnhancements = 'true';
+  enhancements.onload = () => {
+    if (document.querySelector('script[data-roster-integration]')) return;
+    const roster = document.createElement('script');
+    roster.src = 'roster-integration.js';
+    roster.dataset.rosterIntegration = 'true';
+    document.body.appendChild(roster);
+  };
+  document.body.appendChild(enhancements);
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
   createUpdateCard();
-  injectEnhancementsScript();
+  injectEnhancementsScripts();
 
   ipcRenderer.on('update-status', (_event, state) => {
     renderUpdateState(state);
