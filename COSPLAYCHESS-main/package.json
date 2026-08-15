@@ -43,7 +43,7 @@
         "nsis",
         "portable"
       ],
-      "icon": "img/favicon/web-app-manifest-512x512.png",
+      "icon": "img/favicon/favicon.ico",
       "signAndEditExecutable": false,
       "forceCodeSigning": false
     },
@@ -52,6 +52,8 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "shortcutName": "Cosplay Chess",
+      "installerIcon": "img/favicon/favicon.ico",
+      "uninstallerIcon": "img/favicon/favicon.ico",
       "installerLanguages": ["pt_BR"],
       "language": "1046",
       "installerSidebar": "build/installerSidebar.bmp",
