@@ -43,7 +43,7 @@
         "nsis",
         "portable"
       ],
-      "icon": "img/favicon/favicon.ico",
+      "icon": "img/favicon/web-app-manifest-512x512.png",
       "signAndEditExecutable": false,
       "forceCodeSigning": false
     },
@@ -57,8 +57,6 @@
       "installerSidebar": "build/installerSidebar.bmp",
       "uninstallerSidebar": "build/installerSidebar.bmp",
       "installerHeader": "build/installerHeader.bmp",
-      "installerIcon": "img/favicon/favicon.ico",
-      "uninstallerIcon": "img/favicon/favicon.ico",
       "uninstallDisplayName": "Cosplay Chess - Fergorverse"
     },
     "files": [
