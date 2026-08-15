@@ -5,9 +5,8 @@ $projectRoot = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Pa
 $buildDir = Join-Path $projectRoot "build"
 New-Item -ItemType Directory -Force -Path $buildDir | Out-Null
 
-# Usa imagens PNG/JPG que já fazem parte do projeto. Isso evita depender de codecs WebP
-# ou de arquivos temporários durante a compilação no GitHub Actions.
-$logoPath = Join-Path $projectRoot "img\favicon\web-app-manifest-192x192.png"
+# Usa a logo Fergorverse transparente e arte anime que já fazem parte do projeto.
+$logoPath = Join-Path $projectRoot "img\fergorverse-logo-installer.png"
 $animePath = Join-Path $projectRoot "img\img\kuroshitsuji.png"
 
 if (-not (Test-Path $logoPath)) { throw "Logo do instalador não encontrada: $logoPath" }
@@ -62,13 +61,13 @@ try {
 
     Draw-VictorianFrame $g 164 314
 
-    # Marca do app no topo, em moldura dourada.
+    # Logo Fergorverse no topo, em moldura dourada.
     $logoBack = [System.Drawing.SolidBrush]::new((CA 225 13 9 18))
     $logoPen = [System.Drawing.Pen]::new((C 213 168 79), 2)
     try {
-        $g.FillEllipse($logoBack, 43, 24, 78, 78)
-        $g.DrawEllipse($logoPen, 43, 24, 78, 78)
-        $g.DrawImage($logoImage, 48, 29, 68, 68)
+        $g.FillEllipse($logoBack, 35, 17, 94, 94)
+        $g.DrawEllipse($logoPen, 35, 17, 94, 94)
+        $g.DrawImage($logoImage, 40, 22, 84, 84)
     } finally { $logoBack.Dispose(); $logoPen.Dispose() }
 
     $ivory = [System.Drawing.SolidBrush]::new((C 244 232 208))
