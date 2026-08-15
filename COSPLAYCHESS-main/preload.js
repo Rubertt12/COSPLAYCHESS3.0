@@ -139,9 +139,237 @@ function injectEnhancementsScripts() {
   document.body.appendChild(enhancements);
 }
 
+function injectPieceHoverLegend() {
+  if (document.querySelector('script[data-piece-hover-legend]')) return;
+
+  const legendScript = document.createElement('script');
+  legendScript.dataset.pieceHoverLegend = 'true';
+  legendScript.textContent = `
+    (() => {
+      if (window.__cosplayPieceHoverLegendInstalled) return;
+      window.__cosplayPieceHoverLegendInstalled = true;
+
+      const PIECE_LABELS = {
+        P: 'PEÃO',
+        T: 'TORRE',
+        C: 'CAVALO',
+        B: 'BISPO',
+        Q: 'RAINHA',
+        K: 'REI'
+      };
+
+      const SIDE_LABELS = {
+        B: 'BRANCAS',
+        P: 'PRETAS'
+      };
+
+      const escapeText = value => String(value || '').trim();
+
+      function getPieceMeta(id) {
+        if (!id || typeof store === 'undefined' || !store?.p) return null;
+        const data = store.p[id] || {};
+        const character = escapeText(data.name);
+        const assigned = !!(data.registrationId || data.participantName || character);
+        if (!assigned || !character) return null;
+
+        const type = PIECE_LABELS[id.charAt(0)] || 'PEÇA';
+        const sideCode = id.endsWith('_B') ? 'B' : 'P';
+        const side = SIDE_LABELS[sideCode];
+        const cosplayer = escapeText(data.participantName);
+
+        return { character, type, side, cosplayer };
+      }
+
+      function ensureLegend() {
+        let legend = document.getElementById('piece-hover-legend');
+        if (legend) return legend;
+
+        const style = document.createElement('style');
+        style.id = 'piece-hover-legend-style';
+        style.textContent = `
+          #piece-hover-legend {
+            position: fixed;
+            z-index: 12000;
+            min-width: 190px;
+            max-width: min(330px, 72vw);
+            padding: 10px 12px;
+            border: 1px solid rgba(227,189,105,.58);
+            border-radius: 10px;
+            background: linear-gradient(145deg, rgba(31,15,25,.98), rgba(7,8,13,.98));
+            box-shadow: 0 14px 36px rgba(0,0,0,.58), inset 0 0 18px rgba(227,189,105,.04);
+            color: #f4ead7;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(5px) scale(.98);
+            transition: opacity .12s ease, transform .12s ease, visibility .12s ease;
+            backdrop-filter: blur(8px);
+          }
+          #piece-hover-legend.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+          }
+          #piece-hover-legend .phl-kicker {
+            color: #d9ab55;
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
+          }
+          #piece-hover-legend .phl-character {
+            color: #fff4dc;
+            font-family: Georgia, serif;
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.2;
+            overflow-wrap: anywhere;
+          }
+          #piece-hover-legend .phl-piece {
+            color: #d9ab55;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: .8px;
+            margin-top: 5px;
+          }
+          #piece-hover-legend .phl-person {
+            color: #97909d;
+            font-size: 9px;
+            margin-top: 5px;
+            line-height: 1.35;
+            overflow-wrap: anywhere;
+          }
+          #board .piece[data-has-character='true'] { cursor: help; }
+        `;
+        document.head.appendChild(style);
+
+        legend = document.createElement('div');
+        legend.id = 'piece-hover-legend';
+        legend.setAttribute('role', 'tooltip');
+        legend.innerHTML = '<div class="phl-kicker">LEGENDA DA PEÇA</div><div class="phl-character"></div><div class="phl-piece"></div><div class="phl-person"></div>';
+        document.body.appendChild(legend);
+        return legend;
+      }
+
+      function decorateBoard() {
+        const board = document.getElementById('board');
+        if (!board || typeof store === 'undefined' || !Array.isArray(store?.board)) return;
+
+        Array.from(board.children).forEach((square, index) => {
+          const id = store.board[index];
+          const piece = square.querySelector('.piece');
+          if (!piece || !id) return;
+
+          piece.dataset.pieceId = id;
+          const meta = getPieceMeta(id);
+          if (meta) {
+            piece.dataset.hasCharacter = 'true';
+            piece.setAttribute('aria-label', meta.character + ', ' + meta.type + ', ' + meta.side.toLowerCase());
+            piece.title = meta.character + ' • ' + meta.type + ' • ' + meta.side;
+          } else {
+            delete piece.dataset.hasCharacter;
+            piece.removeAttribute('aria-label');
+            piece.removeAttribute('title');
+          }
+        });
+      }
+
+      function positionLegend(legend, clientX, clientY) {
+        const gap = 15;
+        const margin = 10;
+        const rect = legend.getBoundingClientRect();
+        let left = clientX + gap;
+        let top = clientY + gap;
+
+        if (left + rect.width > window.innerWidth - margin) left = clientX - rect.width - gap;
+        if (top + rect.height > window.innerHeight - margin) top = clientY - rect.height - gap;
+
+        legend.style.left = Math.max(margin, left) + 'px';
+        legend.style.top = Math.max(margin, top) + 'px';
+      }
+
+      function showLegend(piece, event) {
+        const id = piece?.dataset?.pieceId;
+        const meta = getPieceMeta(id);
+        if (!meta) return;
+
+        const legend = ensureLegend();
+        legend.querySelector('.phl-character').textContent = meta.character;
+        legend.querySelector('.phl-piece').textContent = meta.type + ' • ' + meta.side;
+        const person = legend.querySelector('.phl-person');
+        if (meta.cosplayer && meta.cosplayer.toUpperCase() !== meta.character.toUpperCase()) {
+          person.textContent = 'Cosplayer: ' + meta.cosplayer;
+          person.style.display = 'block';
+        } else {
+          person.textContent = '';
+          person.style.display = 'none';
+        }
+        legend.classList.add('show');
+        positionLegend(legend, event.clientX, event.clientY);
+      }
+
+      function hideLegend() {
+        document.getElementById('piece-hover-legend')?.classList.remove('show');
+      }
+
+      function bindBoard() {
+        const board = document.getElementById('board');
+        if (!board || board.dataset.hoverLegendBound === 'true') return false;
+        board.dataset.hoverLegendBound = 'true';
+
+        board.addEventListener('mouseover', event => {
+          const piece = event.target.closest?.('.piece[data-has-character="true"]');
+          if (!piece || !board.contains(piece)) return;
+          showLegend(piece, event);
+        });
+
+        board.addEventListener('mousemove', event => {
+          const piece = event.target.closest?.('.piece[data-has-character="true"]');
+          const legend = document.getElementById('piece-hover-legend');
+          if (!piece || !legend?.classList.contains('show')) return;
+          positionLegend(legend, event.clientX, event.clientY);
+        });
+
+        board.addEventListener('mouseout', event => {
+          const piece = event.target.closest?.('.piece[data-has-character="true"]');
+          if (!piece) return;
+          if (piece.contains(event.relatedTarget)) return;
+          hideLegend();
+        });
+
+        const observer = new MutationObserver(() => {
+          decorateBoard();
+          hideLegend();
+        });
+        observer.observe(board, { childList: true, subtree: true });
+        decorateBoard();
+        return true;
+      }
+
+      function initLegend() {
+        ensureLegend();
+        if (!bindBoard()) setTimeout(initLegend, 250);
+        else {
+          decorateBoard();
+          setTimeout(decorateBoard, 500);
+          setTimeout(decorateBoard, 1500);
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initLegend, { once: true });
+      } else {
+        initLegend();
+      }
+    })();
+  `;
+  document.body.appendChild(legendScript);
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
   createUpdateCard();
   injectEnhancementsScripts();
+  injectPieceHoverLegend();
 
   ipcRenderer.on('update-status', (_event, state) => {
     renderUpdateState(state);
