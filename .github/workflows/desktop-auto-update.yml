@@ -1,0 +1,60 @@
+name: Cosplay Chess - Build e atualização automática
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "COSPLAYCHESS-main/**"
+      - ".github/workflows/desktop-auto-update.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cosplay-chess-desktop-release
+  cancel-in-progress: false
+
+jobs:
+  build-and-release:
+    name: Gerar instalador e publicar atualização
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        working-directory: COSPLAYCHESS-main
+
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: COSPLAYCHESS-main/package-lock.json
+
+      - name: Instalar dependências
+        run: npm install --no-audit --no-fund
+
+      - name: Gerar versão automática
+        shell: pwsh
+        run: |
+          $version = "1.1.${{ github.run_number }}"
+          npm version $version --no-git-tag-version
+          "APP_VERSION=$version" >> $env:GITHUB_ENV
+          Write-Host "Versão da atualização: $version"
+
+      - name: Compilar e publicar no GitHub Releases
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run dist:win -- --publish always
+
+      - name: Resumo
+        shell: pwsh
+        run: |
+          "### Cosplay Chess $env:APP_VERSION" >> $env:GITHUB_STEP_SUMMARY
+          "Instalador NSIS, versão portátil e metadados de atualização publicados no GitHub Releases." >> $env:GITHUB_STEP_SUMMARY

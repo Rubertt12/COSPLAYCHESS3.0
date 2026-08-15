@@ -1,6 +1,6 @@
 {
   "name": "cosplay-chess",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "A Proxima Geracao de Engines de Batalha para Palcos Geek",
   "main": "main.js",
   "scripts": {
@@ -8,6 +8,9 @@
     "build": "echo 'Web Build Complete'",
     "dist": "electron-builder",
     "dist:win": "electron-builder --win"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.9"
   },
   "overrides": {
     "rimraf": "^5.0.7",
@@ -27,6 +30,14 @@
     "directories": {
       "output": "dist"
     },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Rubertt12",
+        "repo": "COSPLAYCHESS3.0",
+        "releaseType": "release"
+      }
+    ],
     "win": {
       "target": [
         "nsis",
