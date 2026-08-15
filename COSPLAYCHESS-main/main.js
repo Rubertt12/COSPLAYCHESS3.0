@@ -1,5 +1,6 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const path = require('path');
+const fs = require('fs');
 const { autoUpdater } = require('electron-updater');
 
 let mainWindow = null;
@@ -8,6 +9,19 @@ let promptedAvailableVersion = null;
 let promptedDownloadedVersion = null;
 
 const UPDATE_CHECK_INTERVAL_MS = 10 * 60 * 1000;
+const BRAND_LOGO_CHUNKS = Array.from({ length: 3 }, (_, i) =>
+  path.join(__dirname, 'assets', 'fergorverse-logo', `part-${String(i + 1).padStart(2, '0')}.txt`)
+);
+
+function getBrandLogoDataUri() {
+  try {
+    const base64 = BRAND_LOGO_CHUNKS.map((file) => fs.readFileSync(file, 'utf8').trim()).join('');
+    return `data:image/webp;base64,${base64}`;
+  } catch (error) {
+    console.error('Falha ao carregar a logo Fergorverse:', error);
+    return '';
+  }
+}
 
 let updateState = {
   status: 'idle',
@@ -55,6 +69,50 @@ function friendlyUpdateError(error) {
     return 'Ainda não existe uma versão publicada para atualização.';
   }
   return raw;
+}
+
+function injectBranding() {
+  if (!mainWindow || mainWindow.isDestroyed()) return;
+
+  const brandLogoSrc = getBrandLogoDataUri();
+  if (!brandLogoSrc) return;
+
+  const script = `
+    (() => {
+      const logoSrc = ${JSON.stringify(brandLogoSrc)};
+
+      const ensureLogo = (selector, parentSelector, width) => {
+        const parent = document.querySelector(parentSelector);
+        if (!parent) return;
+
+        let img = document.querySelector(selector);
+        if (!img) {
+          img = document.createElement('img');
+          img.className = selector.replace('.', '');
+          parent.prepend(img);
+        }
+
+        img.src = logoSrc;
+        img.alt = 'Fergorverse';
+        img.decoding = 'async';
+        img.loading = 'eager';
+        img.style.display = 'block';
+        img.style.width = width;
+        img.style.maxWidth = width;
+        img.style.height = 'auto';
+        img.style.objectFit = 'contain';
+        img.style.margin = '0 auto 18px';
+        img.style.filter = 'drop-shadow(0 8px 18px rgba(0,0,0,0.45))';
+        img.style.visibility = 'visible';
+        img.style.opacity = '1';
+      };
+
+      ensureLogo('.loader-logo', '.loader-content', '140px');
+      ensureLogo('.start-logo', '.start-info-col', '180px');
+    })();
+  `;
+
+  mainWindow.webContents.executeJavaScript(script).catch(() => {});
 }
 
 async function downloadAvailableUpdate() {
@@ -214,6 +272,12 @@ function createWindow() {
   Menu.setApplicationMenu(null);
   mainWindow.loadFile('index.html');
 
+  mainWindow.webContents.on('did-finish-load', () => {
+    injectBranding();
+    setTimeout(injectBranding, 500);
+    setTimeout(injectBranding, 1500);
+  });
+
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
     publishUpdateState();
@@ -260,4 +324,8 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
   if (updateTimer) clearInterval(updateTimer);
   if (process.platform !== 'darwin') app.quit();
+});
+
+app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
