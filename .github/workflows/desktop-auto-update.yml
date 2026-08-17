@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "COSPLAYCHESS-main/**"
+      - "apps/game/**"
       - ".github/workflows/desktop-auto-update.yml"
   workflow_dispatch:
 
@@ -23,7 +23,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: COSPLAYCHESS-main
+        working-directory: apps/game
 
     steps:
       - name: Baixar código
@@ -34,7 +34,7 @@ jobs:
         with:
           node-version: "22"
           cache: npm
-          cache-dependency-path: COSPLAYCHESS-main/package-lock.json
+          cache-dependency-path: apps/game/package-lock.json
 
       - name: Instalar dependências
         run: npm install --no-audit --no-fund
