@@ -6,6 +6,17 @@ window.COSPLAYCHESS_CONFIG = {
   timezone: 'America/Sao_Paulo'
 };
 
+(() => {
+  const page = location.pathname.split('/').pop() || 'index.html';
+  if (page === 'admin.html' || page === 'cms.html') return;
+  if (document.querySelector('link[data-site-wide]')) return;
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = './site-wide.css';
+  link.dataset.siteWide = 'true';
+  document.head.appendChild(link);
+})();
+
 window.addEventListener('load', () => {
   const page = location.pathname.split('/').pop() || 'index.html';
   const previewMode = new URLSearchParams(location.search).get('cmsPreview') === '1';
