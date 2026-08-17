@@ -13,7 +13,7 @@ let availableEvents = [];
 function status(message,type=''){statusBox.className=`form-status ${type}`;statusBox.textContent=message;}
 
 async function loadEvents(){
-  const {data,error}=await db.from('cosplay_events').select('id,title,start_at,venue,city,registration_open,whatsapp_group_url').eq('published',true).order('start_at');
+  const {data,error}=await db.from('cosplay_events').select('id,title,start_at,venue,city,registration_open').eq('published',true).order('start_at');
   if(error){eventSelect.innerHTML='<option value="">Erro ao carregar eventos</option>';return;}
   availableEvents=(data||[]).filter(e=>e.registration_open);
   eventSelect.innerHTML='<option value="">Selecione um evento</option>'+availableEvents.map(e=>`<option value="${e.id}">${e.title} — ${new Date(e.start_at).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'})}</option>`).join('');
@@ -81,7 +81,7 @@ form.addEventListener('submit',async e=>{
       ({response,result}=await sendRegistration(submittedEventId,participant));
     }
     if(!response.ok)throw new Error(result.error||'Erro ao enviar inscrição.');
-    const selectedEvent=availableEvents.find(ev=>ev.id===submittedEventId)||{id:submittedEventId,title:result.eventTitle||'',whatsapp_group_url:result.whatsappGroupUrl||''};
+    const selectedEvent=availableEvents.find(ev=>ev.id===submittedEventId)||{id:submittedEventId,title:result.eventTitle||''};
     status(result.message||'Inscrição confirmada.','success');
     window.dispatchEvent(new CustomEvent('cosplaychess:registration-success',{detail:{participant,event:selectedEvent,result}}));
     form.reset();syncSecondPieceOptions();preview.style.backgroundImage='';preview.textContent='Prévia da foto';photoDataUrl='';
