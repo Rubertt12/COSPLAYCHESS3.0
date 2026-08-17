@@ -10,69 +10,23 @@
   <link rel="stylesheet" href="./landing.css">
   <link rel="stylesheet" href="./community.css">
   <style>
-    .event-place{
-      display:flex;
-      align-items:flex-start;
-      gap:11px;
-      margin:18px 0 16px;
-      padding:13px 14px;
-      border:1px solid rgba(224,190,119,.34);
-      border-left:3px solid #d4aa5c;
-      border-radius:10px;
-      background:linear-gradient(135deg,rgba(212,170,92,.11),rgba(255,255,255,.025));
-      box-shadow:inset 0 0 22px rgba(212,170,92,.035);
-    }
-    .event-place-icon{
-      flex:0 0 auto;
-      font-size:18px;
-      line-height:1.2;
-      filter:drop-shadow(0 2px 5px rgba(0,0,0,.35));
-    }
-    .event-place-copy{
-      display:grid;
-      gap:4px;
-      min-width:0;
-    }
-    .event-place-copy b{
-      color:#d4aa5c;
-      font-size:8px;
-      letter-spacing:1.5px;
-      font-weight:900;
-    }
-    .event-place-copy strong{
-      color:#f4efe8;
-      font-size:11px;
-      line-height:1.45;
-      font-weight:700;
-      overflow-wrap:anywhere;
-    }
-    @media (max-width: 760px){
-      .topbar{height:auto;min-height:82px;padding:12px 20px;gap:12px;flex-wrap:wrap}
-      .topbar nav{display:none}
-      .top-actions{margin-left:auto;display:flex!important;gap:8px;flex-wrap:nowrap}
-      .top-actions .btn.ghost{display:inline-flex!important;padding:10px 12px;font-size:10px}
-      .top-actions .btn.gold{padding:10px 12px;font-size:10px;white-space:nowrap}
-      .brand img{width:46px;height:46px}
-      .brand span{letter-spacing:2px}
-      .event-place{padding:12px;margin:16px 0 14px}
-      .event-place-copy strong{font-size:10px}
-    }
-    @media (max-width: 430px){
-      .topbar{padding:10px 14px}
-      .brand{gap:8px}
-      .brand img{width:42px;height:42px}
-      .brand b{font-size:10px}
-      .brand em{font-size:9px}
-      .top-actions{width:100%;margin-left:0}
-      .top-actions .btn{flex:1}
-    }
+    .event-place{display:flex;align-items:flex-start;gap:11px;margin:18px 0 16px;padding:13px 14px;border:1px solid rgba(224,190,119,.34);border-left:3px solid #d4aa5c;border-radius:10px;background:linear-gradient(135deg,rgba(212,170,92,.11),rgba(255,255,255,.025));box-shadow:inset 0 0 22px rgba(212,170,92,.035)}
+    .event-place-icon{flex:0 0 auto;font-size:18px;line-height:1.2;filter:drop-shadow(0 2px 5px rgba(0,0,0,.35))}
+    .event-place-copy{display:grid;gap:4px;min-width:0}
+    .event-place-copy b{color:#d4aa5c;font-size:8px;letter-spacing:1.5px;font-weight:900}
+    .event-place-copy strong{color:#f4efe8;font-size:11px;line-height:1.45;font-weight:700;overflow-wrap:anywhere}
+    .instagram-cta{color:#fff!important;border:1px solid rgba(255,255,255,.18)!important;background:linear-gradient(135deg,#833ab4 0%,#fd1d1d 52%,#fcb045 100%)!important;box-shadow:0 10px 30px rgba(193,53,132,.22)}
+    .instagram-cta:hover{transform:translateY(-1px);filter:brightness(1.08)}
+    .footer-instagram{font-weight:800;color:#e8c579!important;white-space:nowrap}
+    @media (max-width:760px){.topbar{height:auto;min-height:82px;padding:12px 20px;gap:12px;flex-wrap:wrap}.topbar nav{display:none}.top-actions{margin-left:auto;display:flex!important;gap:8px;flex-wrap:nowrap}.top-actions .btn.ghost{display:inline-flex!important;padding:10px 12px;font-size:10px}.top-actions .btn.gold{padding:10px 12px;font-size:10px;white-space:nowrap}.brand img{width:46px;height:46px}.brand span{letter-spacing:2px}.event-place{padding:12px;margin:16px 0 14px}.event-place-copy strong{font-size:10px}}
+    @media (max-width:430px){.topbar{padding:10px 14px}.brand{gap:8px}.brand img{width:42px;height:42px}.brand b{font-size:10px}.brand em{font-size:9px}.top-actions{width:100%;margin-left:0}.top-actions .btn{flex:1}}
   </style>
 </head>
 <body>
   <div class="grain"></div>
   <header class="topbar">
     <a class="brand" href="#topo"><img src="./img/fergorverse-logo.webp" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a>
-    <nav><a href="#eventos">Eventos</a><a href="#experiencia">Experiência</a><a href="#galeria">Galeria</a><a href="./universo.html">Universo</a><a href="./ranking.html">Ranking</a></nav>
+    <nav><a href="#eventos">Eventos</a><a href="#experiencia">Experiência</a><a href="#galeria">Galeria</a><a href="./universo.html">Universo</a><a href="./ranking.html">Ranking</a><a href="https://www.instagram.com/fergorverse/" target="_blank" rel="noopener noreferrer">Instagram ↗</a></nav>
     <div class="top-actions"><a class="btn ghost" href="./admin.html">Admin</a><a class="btn gold" href="./cadastro.html">Faça parte do Espetáculo!</a></div>
   </header>
 
@@ -124,7 +78,7 @@
           <a class="universe-link" href="./ranking.html"><span class="icon">♜</span><b>Ranking</b><p>Capturas, partidas, mortes, sobrevivências e vitórias.</p></a>
           <a class="universe-link" href="./conquistas.html"><span class="icon">🏆</span><b>Conquistas</b><p>Troféus e achievements desbloqueados no CosplayChess.</p></a>
         </div>
-        <div class="community-nav"><a class="btn gold big" href="./universo.html">Conheça o universo Fergorverse</a></div>
+        <div class="community-nav"><a class="btn gold big" href="./universo.html">Conheça o universo Fergorverse</a><a class="btn big instagram-cta" href="https://www.instagram.com/fergorverse/" target="_blank" rel="noopener noreferrer" data-fergorverse-instagram>📸 Siga o @fergorverse</a></div>
       </div>
     </section>
 
@@ -134,7 +88,7 @@
     </section>
   </main>
 
-  <footer class="footer shell"><div class="brand mini"><img src="./img/fergorverse-logo.webp" alt=""><span><b>COSPLAY</b><em>CHESS</em></span></div><p>Fergorverse • CosplayChess</p><a href="#topo">Voltar ao topo ↑</a></footer>
+  <footer class="footer shell"><div class="brand mini"><img src="./img/fergorverse-logo.webp" alt=""><span><b>COSPLAY</b><em>CHESS</em></span></div><p>Fergorverse • CosplayChess</p><a class="footer-instagram" href="https://www.instagram.com/fergorverse/" target="_blank" rel="noopener noreferrer" data-fergorverse-instagram>Instagram @fergorverse ↗</a><a href="#topo">Voltar ao topo ↑</a></footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
