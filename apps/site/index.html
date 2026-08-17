@@ -18,6 +18,9 @@
     .instagram-cta{color:#fff!important;border:1px solid rgba(255,255,255,.18)!important;background:linear-gradient(135deg,#833ab4 0%,#fd1d1d 52%,#fcb045 100%)!important;box-shadow:0 10px 30px rgba(193,53,132,.22)}
     .instagram-cta:hover{transform:translateY(-1px);filter:brightness(1.08)}
     .footer-instagram{font-weight:800;color:#e8c579!important;white-space:nowrap}
+    .hero-art>img{animation:fergorverseHeroPulse 2.8s ease-in-out infinite;transform-origin:center center;will-change:transform,filter}
+    @keyframes fergorverseHeroPulse{0%,100%{transform:scale(1);filter:drop-shadow(0 0 0 rgba(212,170,92,0)) brightness(1)}50%{transform:scale(1.045);filter:drop-shadow(0 0 20px rgba(212,170,92,.34)) brightness(1.06)}}
+    @media (prefers-reduced-motion:reduce){.hero-art>img{animation:none}}
     @media (max-width:760px){.topbar{height:auto;min-height:82px;padding:12px 20px;gap:12px;flex-wrap:wrap}.topbar nav{display:none}.top-actions{margin-left:auto;display:flex!important;gap:8px;flex-wrap:nowrap}.top-actions .btn.ghost{display:inline-flex!important;padding:10px 12px;font-size:10px}.top-actions .btn.gold{padding:10px 12px;font-size:10px;white-space:nowrap}.brand img{width:46px;height:46px}.brand span{letter-spacing:2px}.event-place{padding:12px;margin:16px 0 14px}.event-place-copy strong{font-size:10px}}
     @media (max-width:430px){.topbar{padding:10px 14px}.brand{gap:8px}.brand img{width:42px;height:42px}.brand b{font-size:10px}.brand em{font-size:9px}.top-actions{width:100%;margin-left:0}.top-actions .btn{flex:1}}
   </style>
