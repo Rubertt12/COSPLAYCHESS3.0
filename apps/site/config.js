@@ -18,7 +18,7 @@ window.addEventListener('load', () => {
   };
 
   if (page === 'admin.html') {
-    loadScript('./admin-cms.js', () => loadScript('./admin-live-preview.js', () => loadScript('./admin-registration-builder.js')));
+    loadScript('./admin-cms.js', () => loadScript('./admin-live-preview.js', () => loadScript('./admin-registration-builder.js', () => loadScript('./admin-registration-visibility.js'))));
     return;
   }
 
