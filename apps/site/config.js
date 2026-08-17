@@ -8,10 +8,28 @@ window.COSPLAYCHESS_CONFIG = {
 
 window.addEventListener('load', () => {
   const page = location.pathname.split('/').pop() || 'index.html';
-  const script = document.createElement('script');
-  if (page === 'admin.html') script.src = './admin-cms.js';
-  else if (page === 'index.html' || page === '') script.src = './site-cms.js';
-  else return;
-  script.async = false;
-  document.body.appendChild(script);
+  const previewMode = new URLSearchParams(location.search).get('cmsPreview') === '1';
+  const loadScript = (src, onload) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = false;
+    if (onload) script.onload = onload;
+    document.body.appendChild(script);
+  };
+
+  if (page === 'admin.html') {
+    loadScript('./admin-cms.js', () => loadScript('./admin-live-preview.js'));
+    return;
+  }
+
+  if (page === 'index.html' || page === '') {
+    loadScript('./site-cms.js', () => {
+      if (previewMode) loadScript('./site-preview-runtime.js');
+    });
+    return;
+  }
+
+  if (page === 'cadastro.html' && previewMode) {
+    loadScript('./site-preview-runtime.js');
+  }
 });
