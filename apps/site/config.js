@@ -27,6 +27,13 @@ window.addEventListener('load', () => {
     if (onload) script.onload = onload;
     document.body.appendChild(script);
   };
+  const loadStyle = (href) => {
+    if (document.querySelector(`link[href="${href}"]`)) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    document.head.appendChild(link);
+  };
 
   if (page === 'admin.html') {
     loadScript('./admin-cms.js', () => {
@@ -47,10 +54,13 @@ window.addEventListener('load', () => {
   }
 
   if (page === 'index.html' || page === '') {
+    loadStyle('./hero-instagram.css');
     loadScript('./site-cms.js', () => {
-      loadScript('./landing-intro-video.js', () => {
-        loadScript('./landing-intro-external.js', () => {
-          if (previewMode) loadScript('./site-preview-runtime.js');
+      loadScript('./hero-instagram.js', () => {
+        loadScript('./landing-intro-video.js', () => {
+          loadScript('./landing-intro-external.js', () => {
+            if (previewMode) loadScript('./site-preview-runtime.js');
+          });
         });
       });
     });
