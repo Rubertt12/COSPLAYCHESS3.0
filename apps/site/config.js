@@ -10,7 +10,7 @@ window.addEventListener('load', () => {
   const page = location.pathname.split('/').pop() || 'index.html';
   const script = document.createElement('script');
   if (page === 'admin.html') script.src = './admin-cms.js';
-  else if (page === 'index.html' || page === '' || page === 'cadastro.html') script.src = './site-cms.js';
+  else if (page === 'index.html' || page === '') script.src = './site-cms.js';
   else return;
   script.async = false;
   document.body.appendChild(script);
