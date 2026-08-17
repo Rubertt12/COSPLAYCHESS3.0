@@ -61,5 +61,10 @@ window.addEventListener('load', () => {
     loadScript('./registration-dynamic.js', () => {
       if (previewMode) loadScript('./site-preview-runtime.js');
     });
+    return;
+  }
+
+  if (['universo.html','hall-da-fama.html','ranking.html','conquistas.html'].includes(page)) {
+    loadScript('./community-cms-runtime.js');
   }
 });
