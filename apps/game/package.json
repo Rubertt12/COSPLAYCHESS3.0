@@ -1,0 +1,67 @@
+{
+  "name": "cosplay-chess",
+  "version": "1.1.0",
+  "description": "A Proxima Geracao de Engines de Batalha para Palcos Geek",
+  "main": "bootstrap.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "echo 'Web Build Complete'",
+    "dist": "electron-builder",
+    "dist:win": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/prepare-installer-assets.ps1 && electron-builder --win"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.9"
+  },
+  "overrides": {
+    "rimraf": "^5.0.7",
+    "glob": "^10.3.15"
+  },
+  "author": "Rubra Studios",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^42.3.3",
+    "electron-builder": "^26.8.1",
+    "electron-packager": "^17.1.2",
+    "pkg": "^5.8.1"
+  },
+  "build": {
+    "appId": "com.rubra.cosplaychess",
+    "productName": "Cosplay Chess",
+    "directories": {
+      "output": "dist"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Rubertt12",
+        "repo": "COSPLAYCHESS3.0",
+        "releaseType": "release"
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "img/favicon/web-app-manifest-512x512.png",
+      "signAndEditExecutable": false,
+      "forceCodeSigning": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "Cosplay Chess",
+      "installerLanguages": ["pt_BR"],
+      "language": "1046",
+      "installerSidebar": "build/installerSidebar.bmp",
+      "uninstallerSidebar": "build/installerSidebar.bmp",
+      "installerHeader": "build/installerHeader.bmp",
+      "uninstallDisplayName": "Cosplay Chess - Fergorverse"
+    },
+    "files": [
+      "**/*",
+      "!dist"
+    ]
+  }
+}

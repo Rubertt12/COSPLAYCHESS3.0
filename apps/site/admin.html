@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0710">
+  <title>Admin — CosplayChess</title>
+  <link rel="icon" href="./img/favicon-Photoroom.png">
+  <link rel="stylesheet" href="./landing.css">
+  <link rel="stylesheet" href="./admin.css">
+</head>
+<body class="admin-page">
+  <header class="topbar">
+    <a class="brand" href="./index.html">
+      <img src="./img/fergorverse-logo.webp" alt="Fergorverse">
+      <span><b>COSPLAY</b><em>CHESS</em></span>
+    </a>
+    <div class="top-actions">
+      <span id="adminIdentity" class="identity"></span>
+      <button id="logoutBtn" class="btn ghost" hidden>Sair</button>
+      <a class="btn ghost" href="./resultados-admin.html">História & Rankings</a>
+      <a class="btn dark" href="./index.html">Ver site</a>
+    </div>
+  </header>
+
+  <main class="admin-shell shell">
+    <section id="authPanel" class="auth-grid" aria-label="Acesso administrativo">
+      <div class="admin-intro">
+        <span class="kicker">PAINEL DA ORGANIZAÇÃO</span>
+        <h1>Controle os próximos <i>capítulos do espetáculo.</i></h1>
+        <p>Entre para administrar eventos, fotos, inscrições e o elenco que será enviado ao aplicativo do CosplayChess.</p>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-tabs" role="tablist" aria-label="Acesso administrativo">
+          <button class="active" type="button" data-auth-tab="login" role="tab" aria-selected="true">Entrar</button>
+          <button type="button" data-auth-tab="bootstrap" role="tab" aria-selected="false">Cadastrar admin</button>
+        </div>
+
+        <form id="loginForm" class="stack" autocomplete="on">
+          <label>
+            <span>E-mail</span>
+            <input type="email" name="email" required autocomplete="email" value="cosplaychess@outlook.com" placeholder="seuemail@exemplo.com">
+          </label>
+          <label>
+            <span>Senha</span>
+            <span class="password-field"><input type="password" name="password" required autocomplete="current-password" placeholder="Sua senha"><button class="password-toggle" type="button" aria-label="Mostrar senha" title="Mostrar senha">🐵</button></span>
+          </label>
+          <button class="btn gold" type="submit">Entrar no painel</button>
+          <button id="forgotPasswordBtn" class="btn ghost" type="button">Esqueci minha senha</button>
+        </form>
+
+        <form id="bootstrapForm" class="stack" hidden autocomplete="on">
+          <p class="hint">Cadastro disponível apenas para o primeiro administrador da plataforma.</p>
+          <label>
+            <span>Nome</span>
+            <input name="displayName" required autocomplete="name" placeholder="Nome do administrador">
+          </label>
+          <label>
+            <span>E-mail</span>
+            <input type="email" name="email" required autocomplete="email" placeholder="seuemail@exemplo.com">
+          </label>
+          <label>
+            <span>Senha</span>
+            <span class="password-field"><input type="password" name="password" minlength="8" required autocomplete="new-password" placeholder="Mínimo de 8 caracteres"><button class="password-toggle" type="button" aria-label="Mostrar senha" title="Mostrar senha">🐵</button></span>
+          </label>
+          <label>
+            <span>Código de primeiro acesso</span>
+            <input name="bootstrapCode" required autocomplete="off" placeholder="Código de ativação">
+          </label>
+          <button class="btn gold" type="submit">Criar administrador</button>
+        </form>
+
+        <form id="recoveryForm" class="stack" hidden autocomplete="on">
+          <p class="hint">Link de recuperação validado. Defina uma nova senha para o painel administrativo.</p>
+          <label>
+            <span>Nova senha</span>
+            <span class="password-field"><input type="password" name="password" minlength="8" required autocomplete="new-password" placeholder="Nova senha"><button class="password-toggle" type="button" aria-label="Mostrar senha" title="Mostrar senha">🐵</button></span>
+          </label>
+          <label>
+            <span>Confirmar nova senha</span>
+            <span class="password-field"><input type="password" name="confirmPassword" minlength="8" required autocomplete="new-password" placeholder="Repita a nova senha"><button class="password-toggle" type="button" aria-label="Mostrar senha" title="Mostrar senha">🐵</button></span>
+          </label>
+          <button class="btn gold" type="submit">Salvar nova senha</button>
+        </form>
+
+        <div id="authStatus" class="form-status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="dashboardPanel" hidden aria-label="Painel administrativo">
+      <div class="admin-heading">
+        <div>
+          <span class="kicker">CENTRAL DE COMANDO</span>
+          <h1>Eventos & <i>elenco</i></h1>
+        </div>
+        <button id="newEventBtn" class="btn gold">+ Novo evento</button>
+      </div>
+
+      <div class="admin-stats">
+        <article><span>Eventos</span><b id="statEvents">0</b></article>
+        <article><span>Inscritos</span><b id="statRegistrations">0</b></article>
+        <article><span>Confirmados</span><b id="statConfirmed">0</b></article>
+        <article><span>Fotos</span><b id="statPhotos">0</b></article>
+      </div>
+
+      <div class="admin-grid">
+        <section class="panel-card">
+          <div class="panel-title">
+            <div><span class="kicker">AGENDA</span><h2>Eventos</h2></div>
+          </div>
+          <div id="adminEvents" class="admin-events"></div>
+        </section>
+
+        <section class="panel-card">
+          <div class="panel-title">
+            <div><span class="kicker">ELENCO</span><h2>Inscritos</h2></div>
+            <div class="panel-actions">
+              <select id="registrationEventFilter"><option value="">Todos os eventos</option></select>
+              <button id="exportRosterBtn" class="btn gold">Exportar para o app</button>
+            </div>
+          </div>
+          <div id="registrationsList" class="registration-list"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div id="eventModal" class="modal" hidden>
+    <div class="modal-card">
+      <button class="modal-close" data-close-modal>×</button>
+      <span class="kicker">EVENTO</span>
+      <h2 id="eventModalTitle">Novo evento</h2>
+      <form id="eventForm" class="signup-form">
+        <input type="hidden" name="id">
+        <div class="two">
+          <label><span>Título *</span><input name="title" required></label>
+          <label><span>Slug *</span><input name="slug" required placeholder="anime-extreme-2026"></label>
+        </div>
+        <label class="wide"><span>Descrição</span><textarea name="description" rows="4"></textarea></label>
+        <div class="two">
+          <label><span>Local</span><input name="venue"></label>
+          <label><span>Cidade</span><input name="city"></label>
+        </div>
+        <div class="two">
+          <label><span>Data/hora *</span><input type="datetime-local" name="startAt" required></label>
+          <label><span>Limite de participantes</span><input type="number" name="maxParticipants" min="1"></label>
+        </div>
+        <div class="two toggle-row">
+          <label><input type="checkbox" name="published"><span>Publicado no site</span></label>
+          <label><input type="checkbox" name="registrationOpen" checked><span>Inscrições abertas</span></label>
+        </div>
+        <label class="photo-field wide">
+          <span>Capa do evento</span>
+          <input id="eventCoverInput" type="file" accept="image/jpeg,image/png,image/webp">
+          <small>Opcional. Ao salvar, a imagem será enviada para a galeria do evento.</small>
+        </label>
+        <button class="btn gold big wide" type="submit">Salvar evento</button>
+        <div id="eventFormStatus" class="form-status"></div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script src="./admin.js"></script>
+  <script src="./admin-emergency-reset.js"></script>
+  <script src="./admin-gallery.js"></script>
+  <script>
+    document.querySelectorAll('.password-toggle').forEach(button => {
+      button.addEventListener('click', () => {
+        const input = button.parentElement.querySelector('input');
+        const showing = input.type === 'text';
+        input.type = showing ? 'password' : 'text';
+        button.textContent = showing ? '🐵' : '🙈';
+        button.setAttribute('aria-label', showing ? 'Mostrar senha' : 'Ocultar senha');
+        button.setAttribute('title', showing ? 'Mostrar senha' : 'Ocultar senha');
+      });
+    });
+  </script>
+</body>
+</html>

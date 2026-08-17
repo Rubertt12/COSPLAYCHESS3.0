@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0710">
+  <title>História & Rankings — CosplayChess</title>
+  <link rel="icon" href="./img/favicon-Photoroom.png">
+  <link rel="stylesheet" href="./landing.css">
+  <link rel="stylesheet" href="./admin.css">
+  <link rel="stylesheet" href="./community.css">
+  <link rel="stylesheet" href="./resultados-admin.css">
+</head>
+<body class="admin-page">
+  <header class="topbar">
+    <a class="brand" href="./admin.html"><img src="./img/fergorverse-logo.webp" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a>
+    <div class="top-actions"><a class="btn ghost" href="./admin.html">← Painel principal</a><a class="btn dark" href="./ranking.html">Ver ranking público</a></div>
+  </header>
+
+  <main class="admin-shell shell">
+    <section id="historyLoading" class="empty-card">Validando acesso administrativo...</section>
+    <section id="historyPanel" hidden>
+      <div class="admin-heading">
+        <div><span class="kicker">HISTÓRIA DO COSPLAYCHESS</span><h1>Resultados, ranking & <i>troféus</i></h1></div>
+      </div>
+
+      <div class="admin-community-grid">
+        <section class="panel-card">
+          <div class="panel-title"><div><span class="kicker">PARTIDA OFICIAL</span><h2>Registrar resultado</h2></div></div>
+          <form id="matchForm" class="admin-match-form">
+            <input type="hidden" name="id">
+            <div class="two">
+              <label><span>Evento *</span><select id="matchEvent" name="eventId" required><option value="">Selecione...</option></select></label>
+              <label><span>Nome da partida</span><input name="matchLabel" placeholder="Final, Partida 01..."></label>
+            </div>
+            <div class="two">
+              <label><span>Data/hora *</span><input type="datetime-local" name="playedAt" required></label>
+              <label><span>Publicado</span><select name="published"><option value="true">Sim</option><option value="false">Não</option></select></label>
+            </div>
+            <div class="two">
+              <label><span>Personagem vencedor *</span><input name="winnerCharacter" required></label>
+              <label><span>Cosplayer vencedor *</span><input name="winnerCosplayer" required></label>
+            </div>
+            <div class="two">
+              <label><span>Personagem adversário</span><input name="opponentCharacter"></label>
+              <label><span>Cosplayer adversário</span><input name="opponentCosplayer"></label>
+            </div>
+            <label><span>Observação</span><textarea name="notes" rows="3" placeholder="Resumo, lance decisivo, curiosidade..."></textarea></label>
+            <div>
+              <span class="kicker">ESTATÍSTICAS DAS PEÇAS</span>
+              <p class="hint">Ao escolher o evento, os inscritos aparecem abaixo. Informe as capturas; marque quem morreu e quem fez parte do lado vencedor. Quem não morreu será contado como sobrevivente.</p>
+              <div id="participantStats" class="participant-stats"><div class="empty-card">Selecione um evento.</div></div>
+            </div>
+            <button class="btn gold big" type="submit">Salvar partida e atualizar ranking</button>
+            <div id="matchStatus" class="form-status"></div>
+          </form>
+        </section>
+
+        <section class="panel-card">
+          <div class="panel-title"><div><span class="kicker">HALL DA FAMA</span><h2>Partidas registradas</h2></div></div>
+          <div id="adminMatches" class="community-admin-list"><div class="empty-card">Carregando...</div></div>
+        </section>
+      </div>
+
+      <div class="admin-community-grid">
+        <section class="panel-card">
+          <div class="panel-title"><div><span class="kicker">UNIVERSO FERGORVERSE</span><h2>Equipe & bios</h2></div><button id="addTeamMemberBtn" class="btn ghost" type="button">+ Pessoa</button></div>
+          <div id="teamEditor" class="team-editor"><div class="empty-card">Carregando...</div></div>
+        </section>
+
+        <section class="panel-card">
+          <div class="panel-title"><div><span class="kicker">CONQUISTAS</span><h2>Conceder troféu</h2></div></div>
+          <form id="awardForm" class="community-admin-form">
+            <label><span>Conquista *</span><select id="awardAchievement" name="achievementId" required><option value="">Selecione...</option></select></label>
+            <div class="two"><label><span>Cosplayer *</span><input name="cosplayerName" required></label><label><span>Personagem</span><input name="characterName"></label></div>
+            <label><span>Evento</span><select id="awardEvent" name="eventId"><option value="">Conquista geral</option></select></label>
+            <label><span>Observação</span><textarea name="note" rows="2"></textarea></label>
+            <button class="btn gold" type="submit">Conceder troféu</button>
+            <div id="awardStatus" class="form-status"></div>
+          </form>
+          <div id="adminAwards" class="community-admin-list" style="margin-top:18px"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script src="./resultados-admin.js"></script>
+</body>
+</html>

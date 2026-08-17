@@ -1,0 +1,1 @@
+Wallpaper presets are embedded SVG data URIs in script.js. This folder reserved for local wallpaper images if you want to add files and reference them via setWallpaperPreset('img/wallpapers/yourfile.png').
