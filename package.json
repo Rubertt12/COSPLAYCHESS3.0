@@ -1,0 +1,10 @@
+{
+  "name": "cosplaychess-monorepo",
+  "private": true,
+  "version": "3.0.0",
+  "scripts": {
+    "game:start": "npm --prefix apps/game start",
+    "game:build": "npm --prefix apps/game run build",
+    "game:dist": "npm --prefix apps/game run dist"
+  }
+}

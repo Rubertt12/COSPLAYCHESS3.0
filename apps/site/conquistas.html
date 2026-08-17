@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0710">
+  <meta name="description" content="Conquistas e troféus do CosplayChess no estilo Steam e PlayStation.">
+  <title>Conquistas — CosplayChess</title>
+  <link rel="icon" href="./img/favicon-Photoroom.png">
+  <link rel="stylesheet" href="./landing.css">
+  <link rel="stylesheet" href="./community.css">
+</head>
+<body class="community-page">
+  <div class="grain"></div>
+  <header class="topbar">
+    <a class="brand" href="./index.html"><img src="./img/fergorverse-logo.webp" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a>
+    <nav><a href="./universo.html">Universo</a><a href="./hall-da-fama.html">Hall da Fama</a><a href="./ranking.html">Ranking</a><a href="./cadastro.html">Inscrição</a></nav>
+    <div class="top-actions"><a class="btn ghost" href="./index.html">Início</a><a class="btn gold" href="./cadastro.html">Faça parte do Espetáculo!</a></div>
+  </header>
+
+  <main>
+    <section class="community-hero shell">
+      <div>
+        <span class="kicker">TROFÉUS • FEITOS • MEMÓRIA</span>
+        <h1>Conquistas do <i>CosplayChess.</i></h1>
+        <p>Um sistema de achievements inspirado em jogos: participar, capturar, sobreviver, vencer e alcançar marcos especiais desbloqueia troféus que ficam registrados na história do cosplayer.</p>
+        <div class="community-nav"><a class="btn gold big" href="./ranking.html">Abrir ranking</a><a class="btn dark big" href="./universo.html">Universo Fergorverse</a></div>
+      </div>
+      <div class="community-mark"><img src="./img/favicon-Photoroom.png" alt="Conquistas CosplayChess"></div>
+    </section>
+
+    <section class="community-section shell">
+      <div class="section-head"><div><span class="kicker">COLEÇÃO DE TROFÉUS</span><h2 class="community-title">Desbloqueie sua <i>história.</i></h2></div></div>
+      <div id="achievementsGrid" class="achievements-grid"><div class="empty-card">Carregando conquistas...</div></div>
+    </section>
+
+    <section class="community-section shell">
+      <div class="section-head"><div><span class="kicker">DESBLOQUEIOS RECENTES</span><h2 class="community-title">Quem ganhou <i>troféu.</i></h2></div></div>
+      <div id="awardsFeed" class="awards-feed"><div class="empty-card">Carregando troféus...</div></div>
+    </section>
+  </main>
+
+  <footer class="footer shell"><div class="brand mini"><img src="./img/fergorverse-logo.webp" alt=""><span><b>COSPLAY</b><em>CHESS</em></span></div><p>Fergorverse • CosplayChess</p><a href="./index.html">Voltar ao início ↑</a></footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script src="./community.js"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b0710">
+  <title>Inscrição — CosplayChess</title><link rel="icon" href="./img/favicon-Photoroom.png"><link rel="stylesheet" href="./landing.css">
+</head>
+<body class="register-page">
+  <header class="topbar"><a class="brand" href="./index.html"><img src="./img/fergorverse-logo.webp" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a><div class="top-actions"><a class="btn ghost" href="./index.html">Voltar</a></div></header>
+  <main class="register-shell shell">
+    <aside class="register-aside"><img src="./img/fergorverse-logo.webp" alt="CosplayChess"><span class="kicker">FICHA DO PERSONAGEM</span><h1>Seu nome entra na lista.<br><i>Seu personagem entra no tabuleiro.</i></h1><p>Escolha o evento, envie uma foto do personagem e preencha seus dados. Data e horário são definidos pela organização do evento e aparecem na confirmação da inscrição.</p><div class="steps"><span>01 EVENTO</span><span>02 PERSONAGEM</span><span>03 PEÇA</span><span>04 CONTATO</span><span>05 CONFIRMAÇÃO</span></div></aside>
+    <section class="form-card">
+      <div class="section-head compact"><div><span class="kicker">INSCRIÇÃO</span><h2>Entrar no <i>tabuleiro</i></h2></div></div>
+      <form id="signupForm" class="signup-form">
+        <label class="wide"><span>Evento *</span><select name="eventId" id="eventSelect" required><option value="">Carregando eventos...</option></select></label>
+        <div class="two"><label><span>Nome completo *</span><input name="fullName" required autocomplete="name"></label><label><span>Nick</span><input name="nick"></label></div>
+        <div class="two"><label><span>E-mail *</span><input type="email" name="email" required autocomplete="email"></label><label><span>WhatsApp *</span><input name="whatsapp" required autocomplete="tel"></label></div>
+        <div class="two"><label><span>Cidade</span><input name="city"></label><label><span>Idade</span><input name="age" type="number" min="8" max="120"></label></div>
+        <div class="divider">PERSONAGEM</div>
+        <label class="wide"><span>Personagem / cosplay *</span><input name="characterName" required placeholder="Ex.: Ciel Phantomhive"></label>
+        <label class="photo-field wide"><span>Foto do personagem *</span><input id="characterPhoto" type="file" accept="image/jpeg,image/png,image/webp" required><small>JPG, PNG ou WEBP. A imagem será otimizada antes do envio.</small><div id="photoPreview" class="photo-preview">Prévia da foto</div></label>
+        <div class="divider">PEÇA NO TABULEIRO</div>
+        <div class="two">
+          <label><span>Qual peça você quer ser? *</span><select name="piecePreference" id="piecePreference" required><option value="">Selecione sua peça</option><option>Rei</option><option>Rainha</option><option>Torre</option><option>Bispo</option><option>Cavalo</option><option>Peão</option><option>Sem preferência</option></select></label>
+          <label><span>Segunda preferência</span><select name="secondPiecePreference" id="secondPiecePreference"><option>Sem segunda preferência</option><option>Rei</option><option>Rainha</option><option>Torre</option><option>Bispo</option><option>Cavalo</option><option>Peão</option><option>Sem preferência</option></select></label>
+        </div>
+        <div class="two"><label><span>Nível no xadrez</span><select name="chessLevel"><option>Iniciante</option><option>Intermediário</option><option>Avançado</option><option>Competitivo</option></select></label><label><span>Participação</span><select name="participationType"><option>Cosplayer</option><option>Jogador e cosplayer</option><option>Jogador</option></select></label></div>
+        <label class="wide"><span>Lado preferido</span><select name="sidePreference"><option>Sem preferência</option><option>Brancas</option><option>Pretas</option></select></label>
+        <label class="wide"><span>Observações</span><textarea name="notes" rows="4" placeholder="Restrições, necessidades específicas ou observações sobre o cosplay..."></textarea></label>
+        <label class="consent wide"><input type="checkbox" required><span>Autorizo o uso desses dados pela organização para operação do evento e contato sobre minha inscrição.</span></label>
+        <button class="btn gold big wide" id="submitButton" type="submit">Confirmar inscrição</button>
+        <div id="formStatus" class="form-status"></div>
+      </form>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script src="./cadastro.js"></script>
+</body>
+</html>

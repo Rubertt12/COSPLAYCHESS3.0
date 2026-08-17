@@ -1,0 +1,353 @@
+/* Admin UI — autenticação isolada do dashboard */
+[hidden] { display: none !important; }
+
+body.admin-page {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(104, 31, 58, .22), transparent 34%),
+    radial-gradient(circle at 84% 12%, rgba(207, 164, 83, .09), transparent 26%),
+    linear-gradient(180deg, #09070c 0%, #08070b 100%);
+}
+
+.admin-page .topbar {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+}
+
+.admin-page .admin-shell {
+  width: min(1360px, calc(100% - 48px));
+  padding-top: 34px;
+  padding-bottom: 70px;
+}
+
+/* LOGIN / PRIMEIRO ACESSO */
+.admin-page #authPanel.auth-grid {
+  min-height: calc(100vh - 150px);
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(390px, 520px);
+  gap: clamp(40px, 7vw, 100px);
+  align-items: center;
+}
+
+.admin-page #authPanel[hidden] { display: none !important; }
+
+.admin-page .admin-intro {
+  max-width: 700px;
+  padding: clamp(18px, 3vw, 36px) 0;
+}
+
+.admin-page .admin-intro::before {
+  content: "♜";
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(224, 190, 119, .32);
+  border-radius: 18px;
+  color: var(--gold2);
+  font-size: 28px;
+  background: linear-gradient(145deg, rgba(93, 32, 55, .45), rgba(15, 12, 19, .9));
+  box-shadow: 0 18px 45px rgba(0,0,0,.28);
+}
+
+.admin-page .admin-intro h1 {
+  max-width: 680px;
+  font-size: clamp(48px, 5vw, 78px);
+  margin-bottom: 24px;
+}
+
+.admin-page .admin-intro p {
+  max-width: 600px;
+  font-size: 16px;
+}
+
+.admin-page .auth-card {
+  position: relative;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(224, 190, 119, .20);
+  border-radius: 26px;
+  background:
+    linear-gradient(180deg, rgba(53, 18, 35, .22), transparent 140px),
+    rgba(15, 13, 19, .97);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, .46);
+}
+
+.admin-page .auth-card::before {
+  content: "ACESSO DA ORGANIZAÇÃO";
+  display: block;
+  padding: 24px 28px 12px;
+  color: var(--gold);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 2.2px;
+}
+
+.admin-page .auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 0 28px 24px;
+  padding: 5px;
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 13px;
+  background: rgba(0,0,0,.22);
+}
+
+.admin-page .auth-tabs button {
+  min-height: 46px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #8d8591;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .8px;
+  transition: .2s ease;
+}
+
+.admin-page .auth-tabs button.active {
+  color: #20140c;
+  border: 0;
+  background: linear-gradient(135deg, #bd8c40, #e2bd73);
+  box-shadow: 0 8px 25px rgba(202, 153, 74, .18);
+}
+
+.admin-page .auth-card .stack {
+  display: grid;
+  gap: 16px;
+  padding: 0 28px 28px;
+}
+
+.admin-page .auth-card .stack[hidden] { display: none !important; }
+
+.admin-page .auth-card .stack label {
+  gap: 8px;
+}
+
+.admin-page .auth-card .stack input {
+  min-height: 48px;
+  padding: 12px 14px;
+  font-size: 13px;
+  border-radius: 11px;
+  background: rgba(6, 6, 9, .86);
+  border-color: rgba(255,255,255,.10);
+}
+
+.admin-page .password-field {
+  position: relative;
+  display: block;
+}
+
+.admin-page .password-field input {
+  width: 100%;
+  padding-right: 48px !important;
+}
+
+.admin-page .password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #c9b795;
+  cursor: pointer;
+  font-size: 17px;
+  line-height: 1;
+  opacity: .78;
+  transition: .18s ease;
+}
+
+.admin-page .password-toggle:hover,
+.admin-page .password-toggle:focus-visible {
+  opacity: 1;
+  background: rgba(224, 190, 119, .08);
+  outline: none;
+}
+
+.admin-page .auth-card .stack .btn {
+  min-height: 50px;
+  margin-top: 4px;
+  border-radius: 11px;
+  font-size: 11px;
+}
+
+.admin-page .auth-card .hint {
+  margin: 0 0 2px;
+  padding: 12px 13px;
+  border: 1px solid rgba(224, 190, 119, .14);
+  border-radius: 10px;
+  background: rgba(212, 170, 92, .045);
+  color: #aaa0ad;
+}
+
+.admin-page #authStatus {
+  margin: 0 28px 24px;
+  padding: 0;
+  min-height: 18px;
+}
+
+/* DASHBOARD: nunca aparece junto do login */
+.admin-page #dashboardPanel[hidden] { display: none !important; }
+.admin-page #dashboardPanel:not([hidden]) { display: block; }
+
+.admin-page #dashboardPanel {
+  animation: adminFade .25s ease both;
+}
+
+@keyframes adminFade {
+  from { opacity: 0; transform: translateY(7px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.admin-page .admin-heading {
+  gap: 20px;
+  padding: 20px 0 4px;
+}
+
+.admin-page .admin-heading h1 {
+  font-size: clamp(42px, 4.5vw, 66px);
+}
+
+.admin-page .admin-stats {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 28px 0 18px;
+}
+
+.admin-page .admin-stats article {
+  min-height: 112px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(31, 22, 31, .98), rgba(12, 11, 16, .98));
+}
+
+.admin-page .admin-grid {
+  display: grid;
+  grid-template-columns: minmax(360px, .82fr) minmax(560px, 1.18fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.admin-page .panel-card {
+  min-width: 0;
+  padding: 24px;
+  border-radius: 18px;
+}
+
+.admin-page .panel-title {
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.admin-page .panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.admin-page .panel-actions select {
+  min-width: 190px;
+  min-height: 38px;
+}
+
+.admin-page .admin-events,
+.admin-page .registration-list {
+  max-height: 66vh;
+  padding-right: 4px;
+}
+
+.admin-page .registration-row {
+  grid-template-columns: 58px minmax(0, 1fr) 120px;
+  min-width: 0;
+  padding: 12px;
+}
+
+.admin-page .registration-main {
+  min-width: 0;
+}
+
+.admin-page .registration-main b,
+.admin-page .registration-main span,
+.admin-page .registration-main small {
+  overflow-wrap: anywhere;
+}
+
+/* MODAL */
+.admin-page .modal[hidden] { display: none !important; }
+.admin-page .modal-card { width: min(760px, 95vw); }
+
+@media (max-width: 1080px) {
+  .admin-page #authPanel.auth-grid {
+    grid-template-columns: 1fr minmax(360px, 470px);
+    gap: 36px;
+  }
+  .admin-page .admin-grid {
+    grid-template-columns: 1fr;
+  }
+  .admin-page .admin-events,
+  .admin-page .registration-list { max-height: none; }
+}
+
+@media (max-width: 820px) {
+  .admin-page .topbar {
+    height: auto;
+    min-height: 74px;
+    padding: 10px 16px;
+    flex-wrap: wrap;
+  }
+  .admin-page .brand img { width: 44px; height: 44px; }
+  .admin-page .top-actions { margin-left: auto; }
+  .admin-page .admin-shell { width: min(100% - 24px, 700px); padding-top: 20px; }
+  .admin-page #authPanel.auth-grid {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+  .admin-page .admin-intro { padding: 20px 4px 6px; text-align: center; }
+  .admin-page .admin-intro::before { margin: 0 auto 18px; }
+  .admin-page .admin-intro h1 { font-size: clamp(38px, 11vw, 58px); }
+  .admin-page .admin-intro p { margin-left: auto; margin-right: auto; font-size: 14px; }
+  .admin-page .auth-card { border-radius: 20px; }
+  .admin-page .admin-heading { align-items: stretch; flex-direction: column; }
+  .admin-page .admin-heading .btn { width: 100%; }
+  .admin-page .admin-stats { grid-template-columns: 1fr 1fr; }
+  .admin-page .panel-title { flex-direction: column; }
+  .admin-page .panel-actions { width: 100%; justify-content: stretch; }
+  .admin-page .panel-actions select,
+  .admin-page .panel-actions .btn { flex: 1 1 100%; width: 100%; }
+  .admin-page .admin-event { grid-template-columns: 86px minmax(0,1fr); }
+  .admin-page .registration-row { grid-template-columns: 50px minmax(0,1fr); }
+  .admin-page .registration-row > select { grid-column: 1 / -1; }
+}
+
+@media (max-width: 520px) {
+  .admin-page .top-actions .identity { display: none; }
+  .admin-page .top-actions .btn { padding: 9px 10px; font-size: 9px; }
+  .admin-page .admin-intro h1 { font-size: 38px; }
+  .admin-page .auth-card::before { padding-left: 20px; padding-right: 20px; }
+  .admin-page .auth-tabs { margin-left: 20px; margin-right: 20px; }
+  .admin-page .auth-card .stack { padding-left: 20px; padding-right: 20px; }
+  .admin-page #authStatus { margin-left: 20px; margin-right: 20px; }
+  .admin-page .admin-stats { gap: 8px; }
+  .admin-page .admin-stats article { min-height: 92px; padding: 14px; }
+  .admin-page .panel-card { padding: 16px; }
+  .admin-page .admin-event { grid-template-columns: 1fr; }
+  .admin-page .admin-event-cover { min-height: 150px; }
+}

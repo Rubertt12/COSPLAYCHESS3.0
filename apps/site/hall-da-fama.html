@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0710">
+  <meta name="description" content="Hall da Fama do CosplayChess com vencedores, personagens e eventos.">
+  <title>Hall da Fama — CosplayChess</title>
+  <link rel="icon" href="./img/favicon-Photoroom.png">
+  <link rel="stylesheet" href="./landing.css">
+  <link rel="stylesheet" href="./community.css">
+</head>
+<body class="community-page">
+  <div class="grain"></div>
+  <header class="topbar">
+    <a class="brand" href="./index.html"><img src="./img/fergorverse-logo.webp" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a>
+    <nav><a href="./universo.html">Universo</a><a href="./ranking.html">Ranking</a><a href="./conquistas.html">Conquistas</a><a href="./cadastro.html">Inscrição</a></nav>
+    <div class="top-actions"><a class="btn ghost" href="./index.html">Início</a><a class="btn gold" href="./cadastro.html">Faça parte do Espetáculo!</a></div>
+  </header>
+
+  <main>
+    <section class="community-hero shell">
+      <div>
+        <span class="kicker">VENCEDORES • EVENTOS • HISTÓRIA</span>
+        <h1>Hall da <i>Fama.</i></h1>
+        <p>Os personagens que escreveram seus nomes nas partidas do CosplayChess. Cada quadro registra o evento, o personagem vencedor, o cosplayer e quem estava do outro lado do confronto.</p>
+        <div class="community-nav"><a class="btn gold big" href="./ranking.html">Abrir ranking</a><a class="btn dark big" href="./universo.html">Universo Fergorverse</a></div>
+      </div>
+      <div class="community-mark"><img src="./img/favicon-Photoroom.png" alt="CosplayChess Hall da Fama"></div>
+    </section>
+
+    <section class="community-section shell">
+      <div class="section-head"><div><span class="kicker">CAPÍTULOS QUE JÁ FORAM JOGADOS</span><h2 class="community-title">Campeões do <i>tabuleiro.</i></h2></div></div>
+      <div id="championsGrid" class="champions-grid"><div class="empty-card">Carregando resultados...</div></div>
+    </section>
+  </main>
+
+  <footer class="footer shell"><div class="brand mini"><img src="./img/fergorverse-logo.webp" alt=""><span><b>COSPLAY</b><em>CHESS</em></span></div><p>Fergorverse • CosplayChess</p><a href="./index.html">Voltar ao início ↑</a></footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script src="./community.js"></script>
+</body>
+</html>

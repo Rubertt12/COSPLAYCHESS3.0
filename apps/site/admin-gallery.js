@@ -1,0 +1,215 @@
+(() => {
+  const style = document.createElement('style');
+  style.textContent = `
+    .admin-gallery-panel{margin-top:18px;padding:24px;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:rgba(16,14,20,.92);box-shadow:0 25px 70px rgba(0,0,0,.25)}
+    .admin-gallery-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:18px}
+    .admin-gallery-head h2{font-family:Georgia,serif;margin:4px 0 6px;font-size:30px}
+    .admin-gallery-head p{margin:0;color:#8e8792;font-size:11px;line-height:1.55}
+    .admin-gallery-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+    .admin-gallery-tools select{min-width:220px;min-height:40px;background:#0b0a0f;color:#eee;border:1px solid #2c2732;border-radius:9px;padding:10px 12px}
+    .admin-gallery-status{min-height:18px;margin:6px 0 14px;color:#9a929e;font-size:10px}
+    .admin-gallery-status.success{color:#98d9a5}.admin-gallery-status.error{color:#e87d7d}
+    .admin-gallery-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .admin-gallery-item{overflow:hidden;border:1px solid rgba(255,255,255,.07);border-radius:14px;background:#0c0b10}
+    .admin-gallery-photo{aspect-ratio:4/3;background:#211620 center/cover no-repeat;position:relative}
+    .admin-gallery-cover{position:absolute;left:9px;top:9px;padding:5px 7px;border-radius:999px;background:rgba(8,7,11,.86);border:1px solid rgba(224,190,119,.35);font-size:7px;font-weight:900;letter-spacing:1px;color:#f0d18c}
+    .admin-gallery-body{padding:11px}.admin-gallery-caption{min-height:30px;color:#c4bdc7;font-size:10px;line-height:1.45;overflow-wrap:anywhere}
+    .admin-gallery-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+    .admin-gallery-empty{grid-column:1/-1;padding:34px 20px;text-align:center;border:1px dashed rgba(224,190,119,.2);border-radius:12px;color:#7e7682;font-size:11px}
+    @media(max-width:1050px){.admin-gallery-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    @media(max-width:760px){.admin-gallery-head{flex-direction:column}.admin-gallery-tools{width:100%;justify-content:stretch}.admin-gallery-tools select,.admin-gallery-tools .btn{width:100%;flex:1 1 100%}.admin-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:480px){.admin-gallery-panel{padding:16px}.admin-gallery-grid{grid-template-columns:1fr}}
+  `;
+  document.head.appendChild(style);
+
+  const dashboard = document.getElementById('dashboardPanel');
+  if (!dashboard) return;
+
+  const panel = document.createElement('section');
+  panel.className = 'admin-gallery-panel';
+  panel.id = 'eventGalleryPanel';
+  panel.innerHTML = `
+    <div class="admin-gallery-head">
+      <div>
+        <span class="kicker">MIDIA DO EVENTO</span>
+        <h2>Galeria do evento</h2>
+        <p>Envie varias fotos de uma vez, altere legendas, defina a capa e remova imagens sem sair do painel.</p>
+      </div>
+      <div class="admin-gallery-tools">
+        <select id="galleryEventFilter" aria-label="Selecionar evento"><option value="">Selecione um evento</option></select>
+        <button id="galleryUploadBtn" class="btn gold" type="button">+ Adicionar fotos</button>
+        <input id="galleryUploadInput" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden>
+      </div>
+    </div>
+    <div id="galleryStatus" class="admin-gallery-status" aria-live="polite"></div>
+    <div id="eventGalleryGrid" class="admin-gallery-grid"><div class="admin-gallery-empty">Selecione um evento para administrar a galeria.</div></div>
+  `;
+  dashboard.appendChild(panel);
+
+  const eventFilter = panel.querySelector('#galleryEventFilter');
+  const uploadBtn = panel.querySelector('#galleryUploadBtn');
+  const uploadInput = panel.querySelector('#galleryUploadInput');
+  const statusBox = panel.querySelector('#galleryStatus');
+  const grid = panel.querySelector('#eventGalleryGrid');
+  let galleryEvents = [];
+  let galleryPhotos = [];
+
+  const html = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const setStatus = (text='', type='') => { statusBox.className = `admin-gallery-status ${type}`; statusBox.textContent = text; };
+
+  async function queryEvents() {
+    const selected = eventFilter.value;
+    const { data, error } = await db.from('cosplay_events').select('id,title,cover_url,start_at').order('start_at', { ascending: false });
+    if (error) { setStatus(error.message, 'error'); return; }
+    galleryEvents = data || [];
+    eventFilter.innerHTML = '<option value="">Selecione um evento</option>' + galleryEvents.map(e => `<option value="${e.id}">${html(e.title)}</option>`).join('');
+    if (selected && galleryEvents.some(e => e.id === selected)) eventFilter.value = selected;
+    else if (galleryEvents.length === 1) eventFilter.value = galleryEvents[0].id;
+    if (eventFilter.value) await loadGallery();
+  }
+
+  async function loadGallery() {
+    const eventId = eventFilter.value;
+    if (!eventId) {
+      galleryPhotos = [];
+      grid.innerHTML = '<div class="admin-gallery-empty">Selecione um evento para administrar a galeria.</div>';
+      return;
+    }
+    setStatus('Carregando galeria...');
+    const { data, error } = await db.from('cosplay_event_photos').select('id,event_id,photo_url,caption,sort_order,created_at').eq('event_id', eventId).order('sort_order', { ascending: true }).order('created_at', { ascending: false });
+    if (error) { setStatus(error.message, 'error'); return; }
+    galleryPhotos = data || [];
+    renderGallery();
+    setStatus(`${galleryPhotos.length} foto${galleryPhotos.length === 1 ? '' : 's'} neste evento.`, 'success');
+  }
+
+  function renderGallery() {
+    const event = galleryEvents.find(e => e.id === eventFilter.value);
+    if (!galleryPhotos.length) {
+      grid.innerHTML = '<div class="admin-gallery-empty">Ainda nao ha fotos neste evento. Use “Adicionar fotos” para montar a galeria.</div>';
+      return;
+    }
+    grid.innerHTML = galleryPhotos.map(p => {
+      const isCover = !!event?.cover_url && event.cover_url === p.photo_url;
+      return `<article class="admin-gallery-item">
+        <div class="admin-gallery-photo" style="background-image:url('${html(p.photo_url)}')">${isCover ? '<span class="admin-gallery-cover">CAPA</span>' : ''}</div>
+        <div class="admin-gallery-body">
+          <div class="admin-gallery-caption">${html(p.caption || 'Sem legenda')}</div>
+          <div class="admin-gallery-actions">
+            <button class="mini-btn" type="button" data-gallery-action="caption" data-id="${p.id}">Legenda</button>
+            ${isCover ? '' : `<button class="mini-btn" type="button" data-gallery-action="cover" data-id="${p.id}">Definir capa</button>`}
+            <button class="mini-btn danger" type="button" data-gallery-action="delete" data-id="${p.id}">Excluir</button>
+          </div>
+        </div>
+      </article>`;
+    }).join('');
+  }
+
+  async function uploadFile(file, eventId) {
+    const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+    const path = `${eventId}/gallery-${crypto.randomUUID()}.${ext}`;
+    const { error } = await db.storage.from('cosplaychess-event-media').upload(path, file, { contentType: file.type, upsert: false });
+    if (error) throw error;
+    return db.storage.from('cosplaychess-event-media').getPublicUrl(path).data.publicUrl;
+  }
+
+  uploadBtn.addEventListener('click', () => {
+    if (!eventFilter.value) return setStatus('Selecione um evento antes de adicionar fotos.', 'error');
+    uploadInput.click();
+  });
+
+  uploadInput.addEventListener('change', async () => {
+    const files = [...uploadInput.files];
+    uploadInput.value = '';
+    const eventId = eventFilter.value;
+    if (!eventId || !files.length) return;
+    uploadBtn.disabled = true;
+    try {
+      let done = 0;
+      for (const file of files) {
+        setStatus(`Enviando foto ${done + 1} de ${files.length}...`);
+        const url = await uploadFile(file, eventId);
+        const { error } = await db.from('cosplay_event_photos').insert({ event_id: eventId, photo_url: url, caption: '' });
+        if (error) throw error;
+        done++;
+      }
+      setStatus(`${done} foto${done === 1 ? '' : 's'} enviada${done === 1 ? '' : 's'} com sucesso.`, 'success');
+      await loadGallery();
+      if (typeof loadEvents === 'function') await loadEvents();
+      if (typeof renderStats === 'function') renderStats();
+    } catch (err) {
+      setStatus(err.message || String(err), 'error');
+    } finally {
+      uploadBtn.disabled = false;
+    }
+  });
+
+  eventFilter.addEventListener('change', loadGallery);
+
+  grid.addEventListener('click', async e => {
+    const btn = e.target.closest('[data-gallery-action]');
+    if (!btn) return;
+    const photo = galleryPhotos.find(p => p.id === btn.dataset.id);
+    if (!photo) return;
+    const action = btn.dataset.galleryAction;
+    btn.disabled = true;
+    try {
+      if (action === 'caption') {
+        const value = prompt('Legenda da foto:', photo.caption || '');
+        if (value === null) return;
+        const { error } = await db.from('cosplay_event_photos').update({ caption: value.trim() }).eq('id', photo.id);
+        if (error) throw error;
+      }
+      if (action === 'cover') {
+        const { error } = await db.from('cosplay_events').update({ cover_url: photo.photo_url, updated_at: new Date().toISOString() }).eq('id', photo.event_id);
+        if (error) throw error;
+        const event = galleryEvents.find(ev => ev.id === photo.event_id);
+        if (event) event.cover_url = photo.photo_url;
+      }
+      if (action === 'delete') {
+        if (!confirm('Excluir esta foto da galeria?')) return;
+        const event = galleryEvents.find(ev => ev.id === photo.event_id);
+        if (event?.cover_url === photo.photo_url) {
+          const { error: coverError } = await db.from('cosplay_events').update({ cover_url: null, updated_at: new Date().toISOString() }).eq('id', photo.event_id);
+          if (coverError) throw coverError;
+          event.cover_url = null;
+        }
+        const marker = '/storage/v1/object/public/cosplaychess-event-media/';
+        const pos = photo.photo_url.indexOf(marker);
+        if (pos >= 0) {
+          const path = decodeURIComponent(photo.photo_url.slice(pos + marker.length).split('?')[0]);
+          await db.storage.from('cosplaychess-event-media').remove([path]);
+        }
+        const { error } = await db.from('cosplay_event_photos').delete().eq('id', photo.id);
+        if (error) throw error;
+      }
+      await loadGallery();
+      if (typeof loadEvents === 'function') await loadEvents();
+      if (typeof renderStats === 'function') renderStats();
+    } catch (err) {
+      setStatus(err.message || String(err), 'error');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  // O botao "+ Foto" existente nos cards passa a abrir esta galeria no evento certo.
+  window.addGalleryPhoto = eventId => {
+    eventFilter.value = eventId;
+    loadGallery().then(() => {
+      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      uploadInput.click();
+    });
+  };
+
+  const eventsRoot = document.getElementById('adminEvents');
+  if (eventsRoot) {
+    const observer = new MutationObserver(() => queryEvents());
+    observer.observe(eventsRoot, { childList: true, subtree: false });
+  }
+
+  db.auth.onAuthStateChange((_event, session) => {
+    if (session) setTimeout(queryEvents, 80);
+  });
+  db.auth.getSession().then(({ data }) => { if (data.session) queryEvents(); });
+})();
