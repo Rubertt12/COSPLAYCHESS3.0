@@ -18,7 +18,7 @@ window.addEventListener('load', () => {
   };
 
   if (page === 'admin.html') {
-    loadScript('./admin-cms.js', () => loadScript('./admin-live-preview.js'));
+    loadScript('./admin-cms.js', () => loadScript('./admin-live-preview.js', () => loadScript('./admin-registration-builder.js')));
     return;
   }
 
@@ -29,7 +29,9 @@ window.addEventListener('load', () => {
     return;
   }
 
-  if (page === 'cadastro.html' && previewMode) {
-    loadScript('./site-preview-runtime.js');
+  if (page === 'cadastro.html') {
+    loadScript('./registration-dynamic.js', () => {
+      if (previewMode) loadScript('./site-preview-runtime.js');
+    });
   }
 });
