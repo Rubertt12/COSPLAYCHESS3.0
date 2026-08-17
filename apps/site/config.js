@@ -47,7 +47,9 @@ window.addEventListener('load', () => {
 
   if (page === 'index.html' || page === '') {
     loadScript('./site-cms.js', () => {
-      if (previewMode) loadScript('./site-preview-runtime.js');
+      loadScript('./landing-intro-video.js', () => {
+        if (previewMode) loadScript('./site-preview-runtime.js');
+      });
     });
     return;
   }
