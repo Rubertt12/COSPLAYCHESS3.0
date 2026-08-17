@@ -1,108 +1,25 @@
 (() => {
-  const params = new URLSearchParams(location.search);
-  if (params.get('cmsPreview') !== '1') return;
-
-  const q = (s) => document.querySelector(s);
-  const qa = (s) => [...document.querySelectorAll(s)];
-  const esc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const setText = (s, v) => { const el=q(s); if(el && v !== undefined) el.textContent=v; };
-  const setTitle = (s, main, accent, br=true) => { const el=q(s); if(!el) return; el.innerHTML=`${esc(main||'')}${br?'<br>':' '}<i>${esc(accent||'')}</i>`; };
-  const setLink = (s, text, href) => { const el=q(s); if(!el) return; if(text!==undefined) el.textContent=text; if(href) el.href=href; };
-  const setVisible = (s, visible) => { const el=q(s); if(el && typeof visible==='boolean') el.hidden=!visible; };
-
-  function applyBrand(c){
-    if(c.faviconUrl){ const icon=q('link[rel="icon"]'); if(icon) icon.href=c.faviconUrl; }
-    if(c.brandImageUrl) qa('.brand img').forEach(img=>img.src=c.brandImageUrl);
-  }
-
-  function applyLanding(c){
-    if(!c) return;
-    applyBrand(c);
-    setText('.hero-copy .kicker',c.heroKicker);
-    setTitle('.hero-copy h1',c.heroTitleMain,c.heroTitleAccent,true);
-    setText('.hero-copy > p',c.heroDescription);
-    setLink('.hero-actions a:nth-child(1)',c.heroPrimaryText,c.heroPrimaryUrl);
-    setLink('.hero-actions a:nth-child(2)',c.heroSecondaryText,c.heroSecondaryUrl);
-    if(c.heroImageUrl){ const img=q('.hero-art > img'); if(img) img.src=c.heroImageUrl; }
-    setText('#eventos .section-head .kicker',c.eventsKicker);
-    setTitle('#eventos .section-head h2',c.eventsTitleMain,c.eventsTitleAccent,false);
-    setText('#experiencia .experience-grid > div:first-child .kicker',c.experienceKicker);
-    setTitle('#experiencia .experience-grid > div:first-child h2',c.experienceTitleMain,c.experienceTitleAccent,false);
-    setText('#experiencia .experience-grid > div:first-child > p',c.experienceDescription);
-    const cards=qa('#experiencia .feature-grid article');
-    [[c.feature1Title,c.feature1Text],[c.feature2Title,c.feature2Text],[c.feature3Title,c.feature3Text],[c.feature4Title,c.feature4Text]].forEach((x,i)=>{
-      if(!cards[i]) return;
-      const h=cards[i].querySelector('h3'), p=cards[i].querySelector('p');
-      if(h && x[0]!==undefined) h.textContent=x[0];
-      if(p && x[1]!==undefined) p.textContent=x[1];
-    });
-    setText('#galeria .section-head .kicker',c.galleryKicker);
-    setTitle('#galeria .section-head h2',c.galleryTitleMain,c.galleryTitleAccent,false);
-    setText('#universo .universe-intro .kicker',c.universeKicker);
-    setTitle('#universo .universe-intro h2',c.universeTitleMain,c.universeTitleAccent,false);
-    setText('#universo .universe-intro > p',c.universeDescription);
-    setText('#universo .community-nav .btn.gold',c.universeCtaText);
-    if(c.instagramUrl) qa('[data-fergorverse-instagram],a[href*="instagram.com/fergorverse"]').forEach(a=>a.href=c.instagramUrl);
-    if(c.instagramText){ const b=q('#universo [data-fergorverse-instagram]'); if(b) b.textContent=`📸 ${c.instagramText}`; }
-    setText('.final-cta .kicker',c.finalKicker);
-    setTitle('.final-cta h2',c.finalTitleMain,c.finalTitleAccent,true);
-    setText('.final-cta .btn.gold',c.finalCtaText);
-    setText('.footer > p',c.footerText);
-    setVisible('#eventos',c.showEvents);
-    setVisible('#experiencia',c.showExperience);
-    setVisible('#galeria',c.showGallery);
-    setVisible('#universo',c.showUniverse);
-    setVisible('.final-cta',c.showFinalCta);
-  }
-
-  function applyRegistration(c){
-    if(!c) return;
-    if(c.pageTitle) document.title=c.pageTitle;
-    setText('.register-aside .kicker',c.asideKicker);
-    setTitle('.register-aside h1',c.asideTitleMain,c.asideTitleAccent,true);
-    setText('.register-aside > p',c.asideDescription);
-    setText('.form-card .section-head .kicker',c.formKicker);
-    setTitle('.form-card .section-head h2',c.formTitleMain,c.formTitleAccent,false);
-    const m=q('[data-registration-music]');
-    if(m && typeof c.showMusicFields==='boolean') m.hidden=!c.showMusicFields;
-    setText('[data-music-name-label]',c.musicNameLabel);
-    setText('[data-music-url-label]',c.musicUrlLabel);
-    setText('[data-music-url-help]',c.musicUrlHelp);
-  }
-
-  const fieldTarget = {
-    heroKicker:'.hero',heroTitleMain:'.hero',heroTitleAccent:'.hero',heroDescription:'.hero',heroPrimaryText:'.hero',heroPrimaryUrl:'.hero',heroSecondaryText:'.hero',heroSecondaryUrl:'.hero',heroImageUrl:'.hero',brandImageUrl:'.topbar',faviconUrl:'.topbar',
-    eventsKicker:'#eventos',eventsTitleMain:'#eventos',eventsTitleAccent:'#eventos',
-    experienceKicker:'#experiencia',experienceTitleMain:'#experiencia',experienceTitleAccent:'#experiencia',experienceDescription:'#experiencia',feature1Title:'#experiencia',feature1Text:'#experiencia',feature2Title:'#experiencia',feature2Text:'#experiencia',feature3Title:'#experiencia',feature3Text:'#experiencia',feature4Title:'#experiencia',feature4Text:'#experiencia',
-    galleryKicker:'#galeria',galleryTitleMain:'#galeria',galleryTitleAccent:'#galeria',
-    universeKicker:'#universo',universeTitleMain:'#universo',universeTitleAccent:'#universo',universeDescription:'#universo',universeCtaText:'#universo',instagramUrl:'#universo',instagramText:'#universo',
-    finalKicker:'.final-cta',finalTitleMain:'.final-cta',finalTitleAccent:'.final-cta',finalCtaText:'.final-cta',footerText:'.footer',
-    asideKicker:'.register-aside',asideTitleMain:'.register-aside',asideTitleAccent:'.register-aside',asideDescription:'.register-aside',formKicker:'.form-card',formTitleMain:'.form-card',formTitleAccent:'.form-card',musicNameLabel:'[data-registration-music]',musicUrlLabel:'[data-registration-music]',musicUrlHelp:'[data-registration-music]',showMusicFields:'[data-registration-music]'
-  };
-
-  const style=document.createElement('style');
-  style.textContent='.cms-preview-highlight{outline:2px solid #d4aa5c!important;outline-offset:6px!important;box-shadow:0 0 0 8px rgba(212,170,92,.12)!important;transition:outline-color .2s,box-shadow .2s}';
-  document.head.appendChild(style);
-  let highlighted=null, highlightTimer=null;
-  function focusField(name){
-    const selector=fieldTarget[name]; if(!selector) return;
-    const el=q(selector); if(!el) return;
-    if(highlighted) highlighted.classList.remove('cms-preview-highlight');
-    highlighted=el; el.classList.add('cms-preview-highlight');
-    el.scrollIntoView({behavior:'smooth',block:'center'});
-    clearTimeout(highlightTimer);
-    highlightTimer=setTimeout(()=>{el.classList.remove('cms-preview-highlight');if(highlighted===el)highlighted=null;},1300);
-  }
-
-  window.addEventListener('message',(event)=>{
-    if(event.origin!==location.origin) return;
-    const data=event.data||{};
-    if(data.type!=='cosplaychess-cms-preview') return;
-    if(data.page==='registration') applyRegistration(data.content||{}); else applyLanding(data.content||{});
-    if(data.focus) focusField(data.focus);
-  });
-
+  const params=new URLSearchParams(location.search);if(params.get('cmsPreview')!=='1')return;
+  const q=s=>document.querySelector(s),qa=s=>[...document.querySelectorAll(s)];
+  const esc=(v='')=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const setText=(s,v)=>{const el=q(s);if(el&&v!==undefined)el.textContent=v};
+  const setTitle=(s,main,accent,br=true)=>{const el=q(s);if(!el)return;el.innerHTML=`${esc(main||'')}${br?'<br>':' '}<i>${esc(accent||'')}</i>`};
+  const setLink=(s,text,href)=>{const el=q(s);if(!el)return;if(text!==undefined)el.textContent=text;if(href)el.href=href};
+  const setVisible=(s,visible)=>{const el=q(s);if(el&&typeof visible==='boolean')el.hidden=!visible};
+  function applyBrand(c){if(c.faviconUrl){const icon=q('link[rel="icon"]');if(icon)icon.href=c.faviconUrl}if(c.brandImageUrl)qa('.brand img').forEach(img=>img.src=c.brandImageUrl)}
+  function applyLanding(c){if(!c)return;applyBrand(c);setText('.hero-copy .kicker',c.heroKicker);setTitle('.hero-copy h1',c.heroTitleMain,c.heroTitleAccent,true);setText('.hero-copy > p',c.heroDescription);setLink('.hero-actions a:nth-child(1)',c.heroPrimaryText,c.heroPrimaryUrl);setLink('.hero-actions a:nth-child(2)',c.heroSecondaryText,c.heroSecondaryUrl);if(c.heroImageUrl){const img=q('.hero-art > img');if(img)img.src=c.heroImageUrl}setText('#eventos .section-head .kicker',c.eventsKicker);setTitle('#eventos .section-head h2',c.eventsTitleMain,c.eventsTitleAccent,false);setText('#experiencia .experience-grid > div:first-child .kicker',c.experienceKicker);setTitle('#experiencia .experience-grid > div:first-child h2',c.experienceTitleMain,c.experienceTitleAccent,false);setText('#experiencia .experience-grid > div:first-child > p',c.experienceDescription);const cards=qa('#experiencia .feature-grid article');[[c.feature1Title,c.feature1Text],[c.feature2Title,c.feature2Text],[c.feature3Title,c.feature3Text],[c.feature4Title,c.feature4Text]].forEach((x,i)=>{if(!cards[i])return;const h=cards[i].querySelector('h3'),p=cards[i].querySelector('p');if(h&&x[0]!==undefined)h.textContent=x[0];if(p&&x[1]!==undefined)p.textContent=x[1]});setText('#galeria .section-head .kicker',c.galleryKicker);setTitle('#galeria .section-head h2',c.galleryTitleMain,c.galleryTitleAccent,false);setText('#universo .universe-intro .kicker',c.universeKicker);setTitle('#universo .universe-intro h2',c.universeTitleMain,c.universeTitleAccent,false);setText('#universo .universe-intro > p',c.universeDescription);setText('#universo .community-nav .btn.gold',c.universeCtaText);if(c.instagramUrl)qa('[data-fergorverse-instagram],a[href*="instagram.com/fergorverse"]').forEach(a=>a.href=c.instagramUrl);if(c.instagramText){const b=q('#universo [data-fergorverse-instagram]');if(b)b.textContent=`📸 ${c.instagramText}`}setText('.final-cta .kicker',c.finalKicker);setTitle('.final-cta h2',c.finalTitleMain,c.finalTitleAccent,true);setText('.final-cta .btn.gold',c.finalCtaText);setText('.footer > p',c.footerText);setVisible('#eventos',c.showEvents);setVisible('#experiencia',c.showExperience);setVisible('#galeria',c.showGallery);setVisible('#universo',c.showUniverse);setVisible('.final-cta',c.showFinalCta)}
+  const builtinSelectors={nick:'[name="nick"]',city:'[name="city"]',age:'[name="age"]',secondPiecePreference:'[name="secondPiecePreference"]',chessLevel:'[name="chessLevel"]',participationType:'[name="participationType"]',sidePreference:'[name="sidePreference"]',notes:'[name="notes"]'};
+  function fieldHtml(f){const name=esc(f.name||f.id||'campo'),req=f.required?' required':'',ph=f.placeholder?` placeholder="${esc(f.placeholder)}"`:'';const label=`<span>${esc(f.label||'Campo')}${f.required?' *':''}</span>`;if(f.type==='textarea')return`<label class="wide">${label}<textarea data-dynamic-field name="dynamic_${name}" rows="3"${ph}${req}></textarea></label>`;if(f.type==='select')return`<label>${label}<select data-dynamic-field name="dynamic_${name}"${req}><option value="">Selecione</option>${(f.options||[]).map(o=>`<option>${esc(o)}</option>`).join('')}</select></label>`;if(f.type==='checkbox')return`<label class="consent wide"><input data-dynamic-field name="dynamic_${name}" type="checkbox" value="Sim"${req}><span>${esc(f.label||'Campo')}</span></label>`;return`<label>${label}<input data-dynamic-field name="dynamic_${name}" type="${['text','number','url','email','tel'].includes(f.type)?f.type:'text'}"${ph}${req}></label>`}
+  function applyRegistrationStructure(c){const hidden=new Set(Array.isArray(c.hiddenBuiltinFields)?c.hiddenBuiltinFields:[]);Object.entries(builtinSelectors).forEach(([key,sel])=>{const el=q(sel),label=el?.closest('label');if(label)label.hidden=hidden.has(key)});const music=q('[data-registration-music]');if(music){const hiddenMusic=hidden.has('music')||c.showMusicFields===false;music.hidden=hiddenMusic}const old=q('#dynamicFieldsWrap');if(old)old.remove();const active=(Array.isArray(c.dynamicFields)?c.dynamicFields:[]).filter(f=>f&&f.enabled!==false);if(active.length){const notes=q('textarea[name="notes"]')?.closest('label');const submit=q('#submitButton')?.closest('button')||q('#submitButton');const anchor=notes||submit;if(anchor){const wrap=document.createElement('div');wrap.id='dynamicFieldsWrap';wrap.className='dynamic-fields-wrap';wrap.innerHTML=`<div class="divider">INFORMAÇÕES EXTRAS</div><div class="two">${active.map(fieldHtml).join('')}</div>`;anchor.before(wrap)}}}
+  function applyRegistration(c){if(!c)return;if(c.pageTitle)document.title=c.pageTitle;setText('.register-aside .kicker',c.asideKicker);setTitle('.register-aside h1',c.asideTitleMain,c.asideTitleAccent,true);setText('.register-aside > p',c.asideDescription);setText('.form-card .section-head .kicker',c.formKicker);setTitle('.form-card .section-head h2',c.formTitleMain,c.formTitleAccent,false);setText('[data-music-name-label]',c.musicNameLabel);setText('[data-music-url-label]',c.musicUrlLabel);setText('[data-music-url-help]',c.musicUrlHelp);applyRegistrationStructure(c)}
+  const fieldTarget={heroKicker:'.hero',heroTitleMain:'.hero',heroTitleAccent:'.hero',heroDescription:'.hero',heroPrimaryText:'.hero',heroPrimaryUrl:'.hero',heroSecondaryText:'.hero',heroSecondaryUrl:'.hero',heroImageUrl:'.hero',brandImageUrl:'.topbar',faviconUrl:'.topbar',eventsKicker:'#eventos',eventsTitleMain:'#eventos',eventsTitleAccent:'#eventos',experienceKicker:'#experiencia',experienceTitleMain:'#experiencia',experienceTitleAccent:'#experiencia',experienceDescription:'#experiencia',feature1Title:'#experiencia',feature1Text:'#experiencia',feature2Title:'#experiencia',feature2Text:'#experiencia',feature3Title:'#experiencia',feature3Text:'#experiencia',feature4Title:'#experiencia',feature4Text:'#experiencia',galleryKicker:'#galeria',galleryTitleMain:'#galeria',galleryTitleAccent:'#galeria',universeKicker:'#universo',universeTitleMain:'#universo',universeTitleAccent:'#universo',universeDescription:'#universo',universeCtaText:'#universo',instagramUrl:'#universo',instagramText:'#universo',finalKicker:'.final-cta',finalTitleMain:'.final-cta',finalTitleAccent:'.final-cta',finalCtaText:'.final-cta',footerText:'.footer',asideKicker:'.register-aside',asideTitleMain:'.register-aside',asideTitleAccent:'.register-aside',asideDescription:'.register-aside',formKicker:'.form-card',formTitleMain:'.form-card',formTitleAccent:'.form-card',musicNameLabel:'[data-registration-music]',musicUrlLabel:'[data-registration-music]',musicUrlHelp:'[data-registration-music]',showMusicFields:'[data-registration-music]'};
+  const clickMap=[['.hero-copy .kicker','heroKicker'],['.hero-copy h1','heroTitleMain'],['.hero-copy > p','heroDescription'],['.hero-actions a:nth-child(1)','heroPrimaryText'],['.hero-actions a:nth-child(2)','heroSecondaryText'],['.hero-art > img','heroImageUrl'],['#eventos .section-head .kicker','eventsKicker'],['#eventos .section-head h2','eventsTitleMain'],['#experiencia .experience-grid > div:first-child .kicker','experienceKicker'],['#experiencia .experience-grid > div:first-child h2','experienceTitleMain'],['#experiencia .experience-grid > div:first-child > p','experienceDescription'],['#experiencia .feature-grid article:nth-child(1) h3','feature1Title'],['#experiencia .feature-grid article:nth-child(1) p','feature1Text'],['#experiencia .feature-grid article:nth-child(2) h3','feature2Title'],['#experiencia .feature-grid article:nth-child(2) p','feature2Text'],['#experiencia .feature-grid article:nth-child(3) h3','feature3Title'],['#experiencia .feature-grid article:nth-child(3) p','feature3Text'],['#experiencia .feature-grid article:nth-child(4) h3','feature4Title'],['#experiencia .feature-grid article:nth-child(4) p','feature4Text'],['#galeria .section-head .kicker','galleryKicker'],['#galeria .section-head h2','galleryTitleMain'],['#universo .universe-intro .kicker','universeKicker'],['#universo .universe-intro h2','universeTitleMain'],['#universo .universe-intro > p','universeDescription'],['#universo .community-nav .btn.gold','universeCtaText'],['#universo [data-fergorverse-instagram]','instagramText'],['.final-cta .kicker','finalKicker'],['.final-cta h2','finalTitleMain'],['.final-cta .btn.gold','finalCtaText'],['.footer > p','footerText'],['.register-aside .kicker','asideKicker'],['.register-aside h1','asideTitleMain'],['.register-aside > p','asideDescription'],['.form-card .section-head .kicker','formKicker'],['.form-card .section-head h2','formTitleMain'],['[data-music-name-label]','musicNameLabel'],['[data-music-url-label]','musicUrlLabel'],['[data-music-url-help]','musicUrlHelp']];
+  const inlineFields=new Set(['heroKicker','heroDescription','heroPrimaryText','heroSecondaryText','eventsKicker','experienceKicker','experienceDescription','feature1Title','feature1Text','feature2Title','feature2Text','feature3Title','feature3Text','feature4Title','feature4Text','galleryKicker','universeKicker','universeDescription','universeCtaText','instagramText','finalKicker','finalCtaText','footerText','asideKicker','asideDescription','formKicker','musicNameLabel','musicUrlLabel','musicUrlHelp']);
+  const style=document.createElement('style');style.textContent='.cms-preview-highlight{outline:2px solid #d4aa5c!important;outline-offset:6px!important;box-shadow:0 0 0 8px rgba(212,170,92,.12)!important}.cms-preview-editable{cursor:pointer!important}.cms-preview-editing{outline:2px dashed #f0d18c!important;outline-offset:4px!important;background:rgba(212,170,92,.08)!important;cursor:text!important}';document.head.appendChild(style);
+  let highlighted=null,highlightTimer=null;
+  function focusField(name){const selector=fieldTarget[name];if(!selector)return;const el=q(selector);if(!el)return;if(highlighted)highlighted.classList.remove('cms-preview-highlight');highlighted=el;el.classList.add('cms-preview-highlight');el.scrollIntoView({behavior:'smooth',block:'center'});clearTimeout(highlightTimer);highlightTimer=setTimeout(()=>{el.classList.remove('cms-preview-highlight');if(highlighted===el)highlighted=null},1300)}
+  function wireDirectEditing(){clickMap.forEach(([selector,field])=>{qa(selector).forEach(el=>{if(el.dataset.cmsWired==='1')return;el.dataset.cmsWired='1';el.classList.add('cms-preview-editable');el.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();parent.postMessage({type:'cosplaychess-cms-select',page,field},location.origin);focusField(field)});if(inlineFields.has(field)){el.addEventListener('dblclick',e=>{e.preventDefault();e.stopPropagation();el.contentEditable='true';el.classList.add('cms-preview-editing');el.focus();const range=document.createRange();range.selectNodeContents(el);const sel=getSelection();sel.removeAllRanges();sel.addRange(range)});el.addEventListener('input',()=>{if(el.contentEditable==='true')parent.postMessage({type:'cosplaychess-cms-inline-change',page,field,value:el.textContent},location.origin)});el.addEventListener('blur',()=>{el.contentEditable='false';el.classList.remove('cms-preview-editing')})}})})}
+  window.addEventListener('message',event=>{if(event.origin!==location.origin)return;const data=event.data||{};if(data.type!=='cosplaychess-cms-preview')return;if(data.page==='registration')applyRegistration(data.content||{});else applyLanding(data.content||{});wireDirectEditing();if(data.focus)focusField(data.focus)});
   const page=document.getElementById('signupForm')?'registration':'landing';
-  const ready=()=>parent.postMessage({type:'cosplaychess-cms-preview-ready',page},location.origin);
-  ready(); setTimeout(ready,650); setTimeout(ready,1500);
+  const ready=()=>{wireDirectEditing();parent.postMessage({type:'cosplaychess-cms-preview-ready',page},location.origin)};ready();setTimeout(ready,650);setTimeout(ready,1500);new MutationObserver(()=>wireDirectEditing()).observe(document.body,{childList:true,subtree:true});
 })();
