@@ -2,11 +2,12 @@
 const art=document.querySelector('.hero-art');if(!art)return;
 const sourceLogo=art.querySelector(':scope > img');if(!sourceLogo)return;
 if(art.dataset.heroSocialReady==='1')return;art.dataset.heroSocialReady='1';art.classList.add('hero-social-ready');
-const coinWrap=document.createElement('div');coinWrap.className='hero-coin-wrap';coinWrap.setAttribute('tabindex','0');coinWrap.setAttribute('role','button');coinWrap.setAttribute('aria-label','Mostrar Instagram do Fergorverse');
+sourceLogo.style.cursor='pointer';sourceLogo.setAttribute('tabindex','0');sourceLogo.setAttribute('role','button');sourceLogo.setAttribute('aria-label','Mostrar Instagram do Fergorverse');
+const coinWrap=document.createElement('div');coinWrap.className='hero-coin-wrap';coinWrap.setAttribute('aria-hidden','true');
 const coin=document.createElement('div');coin.className='hero-coin';
 const front=document.createElement('div');front.className='hero-coin-face hero-coin-front';
 const back=document.createElement('div');back.className='hero-coin-face hero-coin-back';
-const frontImg=sourceLogo.cloneNode();const backImg=sourceLogo.cloneNode();frontImg.removeAttribute('id');backImg.removeAttribute('id');front.appendChild(frontImg);back.appendChild(backImg);coin.append(front,back);coinWrap.appendChild(coin);art.appendChild(coinWrap);
+const frontImg=sourceLogo.cloneNode();const backImg=sourceLogo.cloneNode();frontImg.removeAttribute('id');backImg.removeAttribute('id');frontImg.removeAttribute('tabindex');backImg.removeAttribute('tabindex');frontImg.removeAttribute('role');backImg.removeAttribute('role');front.appendChild(frontImg);back.appendChild(backImg);coin.append(front,back);coinWrap.appendChild(coin);art.appendChild(coinWrap);
 const syncCoinImages=()=>{frontImg.src=sourceLogo.src;backImg.src=sourceLogo.src};
 new MutationObserver(syncCoinImages).observe(sourceLogo,{attributes:true,attributeFilter:['src']});
 const link='https://www.instagram.com/fergorverse/';
@@ -20,8 +21,8 @@ function settlePieces(){rain.replaceChildren();const count=14;for(let i=0;i<coun
 function open(){if(active)return;active=true;clearTimeout(sequenceTimer);clearTimeout(cleanupTimer);clearTimeout(pieceTimer);art.classList.add('hero-social-active');art.classList.remove('hero-social-card-ready');rain.replaceChildren();sequenceTimer=setTimeout(()=>{if(!active)return;art.classList.add('hero-social-card-ready');pieceTimer=setTimeout(()=>{if(active)settlePieces()},360)},1050)}
 function close(){if(!active)return;active=false;clearTimeout(sequenceTimer);clearTimeout(pieceTimer);clearTimeout(touchTimer);art.classList.remove('hero-social-active','hero-social-card-ready');cleanupTimer=setTimeout(()=>{if(!active)rain.replaceChildren()},560)}
 art.addEventListener('mouseenter',open);art.addEventListener('mouseleave',e=>{if(!art.contains(e.relatedTarget))close()});
-coinWrap.addEventListener('focus',open);coinWrap.addEventListener('blur',()=>setTimeout(()=>{if(!art.contains(document.activeElement))close()},0));
-coinWrap.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();active?close():open()}});
-coinWrap.addEventListener('click',e=>{if(matchMedia('(hover:none)').matches){e.preventDefault();active?close():open();clearTimeout(touchTimer);if(!active)return;touchTimer=setTimeout(close,9000)}});
+sourceLogo.addEventListener('focus',open);sourceLogo.addEventListener('blur',()=>setTimeout(()=>{if(!art.contains(document.activeElement))close()},0));
+sourceLogo.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();active?close():open()}});
+sourceLogo.addEventListener('click',e=>{if(matchMedia('(hover:none)').matches){e.preventDefault();active?close():open();clearTimeout(touchTimer);if(!active)return;touchTimer=setTimeout(close,9000)}});
 document.addEventListener('click',e=>{if(matchMedia('(hover:none)').matches&&active&&!art.contains(e.target))close()});
 })();
