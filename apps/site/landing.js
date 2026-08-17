@@ -28,4 +28,33 @@ async function loadGallery(){
   grid.innerHTML=data.map(photo=>`<figure class="gallery-item"><img src="${esc(photo.photo_url)}" alt="${esc(photo.caption||eventNames.get(photo.event_id)||'CosplayChess')}"><figcaption><b>${esc(eventNames.get(photo.event_id)||'CosplayChess')}</b><span>${esc(photo.caption||'Registro do espetáculo')}</span></figcaption></figure>`).join('');
 }
 
-loadEvents(); loadGallery();
+function addInstagramLinks(){
+  const instagramUrl='https://www.instagram.com/fergorverse/';
+
+  const communityNav=document.querySelector('.community-nav');
+  if(communityNav && !communityNav.querySelector('[data-fergorverse-instagram]')){
+    const link=document.createElement('a');
+    link.className='btn dark big';
+    link.href=instagramUrl;
+    link.target='_blank';
+    link.rel='noopener noreferrer';
+    link.dataset.fergorverseInstagram='true';
+    link.textContent='📸 Siga o @fergorverse';
+    communityNav.appendChild(link);
+  }
+
+  const footer=document.querySelector('.footer');
+  if(footer && !footer.querySelector('[data-fergorverse-instagram]')){
+    const link=document.createElement('a');
+    link.href=instagramUrl;
+    link.target='_blank';
+    link.rel='noopener noreferrer';
+    link.dataset.fergorverseInstagram='true';
+    link.textContent='Instagram @fergorverse ↗';
+    footer.insertBefore(link, footer.lastElementChild);
+  }
+}
+
+loadEvents();
+loadGallery();
+addInstagramLinks();
