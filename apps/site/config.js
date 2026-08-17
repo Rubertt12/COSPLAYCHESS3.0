@@ -29,7 +29,19 @@ window.addEventListener('load', () => {
   };
 
   if (page === 'admin.html') {
-    loadScript('./admin-cms.js', () => loadScript('./admin-live-preview.js', () => loadScript('./admin-registration-builder.js', () => loadScript('./admin-registration-visibility.js'))));
+    loadScript('./admin-cms.js', () => {
+      const stack = document.getElementById('cmsStack');
+      if (stack) stack.hidden = true;
+      const actions = document.querySelector('.top-actions');
+      if (actions && !actions.querySelector('[data-cms-visual-link]')) {
+        const link = document.createElement('a');
+        link.className = 'btn gold';
+        link.href = './cms.html';
+        link.textContent = 'CMS Visual';
+        link.dataset.cmsVisualLink = 'true';
+        actions.insertBefore(link, actions.querySelector('.btn.dark'));
+      }
+    });
     return;
   }
 
