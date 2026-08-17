@@ -41,6 +41,7 @@ window.addEventListener('load', () => {
         link.dataset.cmsVisualLink = 'true';
         actions.insertBefore(link, actions.querySelector('.btn.dark'));
       }
+      loadScript('./admin-privacy.js', () => loadScript('./admin-private-groups.js'));
     });
     return;
   }
