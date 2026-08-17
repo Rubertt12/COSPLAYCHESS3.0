@@ -1,0 +1,1 @@
+Trigger Vercel redeploy for corrected hero interaction: normal logo first, golden 3D coin only during interaction.
