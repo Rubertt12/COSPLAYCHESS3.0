@@ -1,0 +1,1 @@
+Trigger Vercel redeploy for Yatta sound and readability improvements.
