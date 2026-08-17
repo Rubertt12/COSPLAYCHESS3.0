@@ -55,11 +55,14 @@ window.addEventListener('load', () => {
 
   if (page === 'index.html' || page === '') {
     loadStyle('./hero-instagram.css');
+    loadStyle('./readability.css');
     loadScript('./site-cms.js', () => {
-      loadScript('./hero-instagram.js', () => {
-        loadScript('./landing-intro-video.js', () => {
-          loadScript('./landing-intro-external.js', () => {
-            if (previewMode) loadScript('./site-preview-runtime.js');
+      loadScript('./entry-yatta.js', () => {
+        loadScript('./hero-instagram.js', () => {
+          loadScript('./landing-intro-video.js', () => {
+            loadScript('./landing-intro-external.js', () => {
+              if (previewMode) loadScript('./site-preview-runtime.js');
+            });
           });
         });
       });

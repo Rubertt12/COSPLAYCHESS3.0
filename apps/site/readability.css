@@ -1,0 +1,18 @@
+/* Readability pass for the public landing page */
+#experiencia .experience-grid>div>p{font-size:18px;line-height:1.72;color:#b7aeba}
+.feature-grid article b{font-size:12px;letter-spacing:.4px}
+.feature-grid h3{font-size:25px;line-height:1.18}
+.feature-grid p{font-size:14px;line-height:1.68;color:#a9a1ad}
+.kicker{font-size:12px;line-height:1.35}
+.hero-meta span{font-size:10px;line-height:1.35}
+.event-body small{font-size:10px}
+.event-body p{font-size:14px;line-height:1.65}
+.gallery-item figcaption{font-size:13px}
+.gallery-item span{font-size:10px;line-height:1.4}
+.universe-intro>p,.universe-link p{font-size:14px;line-height:1.65}
+.text-link{font-size:12px}
+.footer{font-size:11px}
+.hero-actions .yatta-playing{animation:yattaPress .58s cubic-bezier(.2,.75,.25,1);box-shadow:0 0 0 3px rgba(240,209,140,.12),0 0 28px rgba(212,170,92,.28)}
+@keyframes yattaPress{0%{transform:scale(1)}35%{transform:scale(.94)}68%{transform:scale(1.06)}100%{transform:scale(1)}}
+@media(max-width:760px){#experiencia .experience-grid>div>p{font-size:16px}.feature-grid h3{font-size:22px}.feature-grid p{font-size:14px}.kicker{font-size:11px}.event-body p,.universe-intro>p,.universe-link p{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.hero-actions .yatta-playing{animation:none}}
