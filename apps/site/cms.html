@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#09070c">
+  <title>CMS Visual — Fergorverse</title>
+  <link rel="icon" type="image/png" href="./img/logofergoverse.png">
+  <link rel="stylesheet" href="./cms-visual.css">
+</head>
+<body>
+  <div id="cmsGate" class="cms-gate" hidden>
+    <div class="cms-gate-card">
+      <img src="./img/logofergoverse.png" alt="Fergorverse">
+      <span class="eyebrow">CMS VISUAL</span>
+      <h1>Acesso administrativo necessário</h1>
+      <p>Entre pelo painel administrativo e depois volte ao editor visual.</p>
+      <a class="cms-btn primary" href="./admin.html">Ir para o Admin</a>
+    </div>
+  </div>
+
+  <main id="cmsApp" class="cms-app" hidden>
+    <aside class="cms-sidebar">
+      <header class="cms-sidebar-head">
+        <a class="cms-brand" href="./index.html" target="_blank" rel="noopener">
+          <img src="./img/logofergoverse.png" alt="Fergorverse">
+          <span><b>CMS VISUAL</b><small>FERGORVERSE</small></span>
+        </a>
+        <div class="cms-head-actions">
+          <a class="cms-icon-btn" href="./admin.html" title="Voltar ao Admin">←</a>
+          <button id="cmsLogout" class="cms-icon-btn" type="button" title="Sair">⏻</button>
+        </div>
+      </header>
+
+      <div class="cms-page-tabs" role="tablist">
+        <button class="active" type="button" data-page="landing">Landing</button>
+        <button type="button" data-page="registration">Inscrição</button>
+      </div>
+
+      <div class="cms-toolbar">
+        <input id="cmsSearch" type="search" placeholder="Buscar campo..." autocomplete="off">
+        <div class="cms-save-row">
+          <button id="cmsDiscard" class="cms-btn ghost" type="button">Descartar</button>
+          <button id="cmsSave" class="cms-btn primary" type="button">Salvar / Publicar</button>
+        </div>
+        <div id="cmsStatus" class="cms-status"><span></span><b>Carregando...</b></div>
+      </div>
+
+      <div id="cmsEditor" class="cms-editor"></div>
+    </aside>
+
+    <section class="cms-preview-pane">
+      <header class="cms-preview-head">
+        <div>
+          <span class="eyebrow">PRÉVIA AO VIVO</span>
+          <strong id="cmsPreviewTitle">Landing page</strong>
+          <small>Clique em um elemento para selecioná-lo. Duplo clique em textos simples para editar direto na página.</small>
+        </div>
+        <div class="cms-device-tabs">
+          <button class="active" type="button" data-device="desktop">Desktop</button>
+          <button type="button" data-device="tablet">Tablet</button>
+          <button type="button" data-device="mobile">Mobile</button>
+        </div>
+      </header>
+      <div id="cmsStage" class="cms-stage desktop">
+        <iframe id="cmsFrame" title="Prévia ao vivo do site"></iframe>
+      </div>
+      <footer class="cms-preview-foot">
+        <span>Alterações da prévia não são públicas até clicar em <b>Salvar / Publicar</b>.</span>
+        <a id="cmsOpenReal" href="./index.html" target="_blank" rel="noopener">Abrir site publicado ↗</a>
+      </footer>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script src="./cms-visual.js"></script>
+</body>
+</html>
