@@ -1,0 +1,1 @@
+.cms-page-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}.cms-page-tabs button{min-width:0;padding:8px 5px;font-size:8px;line-height:1.15}.cms-page-tabs button[data-page="hall"]{font-size:7px}@media(max-width:480px){.cms-page-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.cms-page-tabs button{font-size:9px}}
