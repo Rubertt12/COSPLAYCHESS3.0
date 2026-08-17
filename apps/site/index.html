@@ -10,6 +10,42 @@
   <link rel="stylesheet" href="./landing.css">
   <link rel="stylesheet" href="./community.css">
   <style>
+    .event-place{
+      display:flex;
+      align-items:flex-start;
+      gap:11px;
+      margin:18px 0 16px;
+      padding:13px 14px;
+      border:1px solid rgba(224,190,119,.34);
+      border-left:3px solid #d4aa5c;
+      border-radius:10px;
+      background:linear-gradient(135deg,rgba(212,170,92,.11),rgba(255,255,255,.025));
+      box-shadow:inset 0 0 22px rgba(212,170,92,.035);
+    }
+    .event-place-icon{
+      flex:0 0 auto;
+      font-size:18px;
+      line-height:1.2;
+      filter:drop-shadow(0 2px 5px rgba(0,0,0,.35));
+    }
+    .event-place-copy{
+      display:grid;
+      gap:4px;
+      min-width:0;
+    }
+    .event-place-copy b{
+      color:#d4aa5c;
+      font-size:8px;
+      letter-spacing:1.5px;
+      font-weight:900;
+    }
+    .event-place-copy strong{
+      color:#f4efe8;
+      font-size:11px;
+      line-height:1.45;
+      font-weight:700;
+      overflow-wrap:anywhere;
+    }
     @media (max-width: 760px){
       .topbar{height:auto;min-height:82px;padding:12px 20px;gap:12px;flex-wrap:wrap}
       .topbar nav{display:none}
@@ -18,6 +54,8 @@
       .top-actions .btn.gold{padding:10px 12px;font-size:10px;white-space:nowrap}
       .brand img{width:46px;height:46px}
       .brand span{letter-spacing:2px}
+      .event-place{padding:12px;margin:16px 0 14px}
+      .event-place-copy strong{font-size:10px}
     }
     @media (max-width: 430px){
       .topbar{padding:10px 14px}
