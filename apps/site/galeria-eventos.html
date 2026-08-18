@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0710">
+  <meta name="description" content="Galeria de eventos anteriores do Fergorverse CosplayChess.">
+  <title>Eventos anteriores — Fergorverse CosplayChess</title>
+  <link rel="icon" type="image/png" href="./img/logofergoverse.png">
+  <link rel="stylesheet" href="./landing.css">
+  <link rel="stylesheet" href="./community.css">
+  <style>
+    .archive-hero{padding-top:72px;padding-bottom:34px}.archive-hero h1{max-width:900px;margin:10px 0 14px;font-size:clamp(42px,7vw,84px);line-height:.93}.archive-hero p{max-width:720px;color:#aaa0ab;line-height:1.7}.archive-toolbar{display:flex;justify-content:space-between;gap:14px;align-items:center;margin:12px 0 26px;flex-wrap:wrap}.archive-count{font-size:10px;color:#a89eaa;letter-spacing:.7px}.archive-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.archive-card{display:grid;grid-template-rows:220px 1fr;overflow:hidden;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:#100c14;text-decoration:none;color:inherit;transition:.2s ease}.archive-card:hover{transform:translateY(-3px);border-color:rgba(212,170,92,.45)}.archive-cover{position:relative;background:#211620 center/cover no-repeat}.archive-cover:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(8,6,10,.8),transparent 60%)}.archive-badge{position:absolute;z-index:1;left:14px;bottom:14px;padding:7px 9px;border:1px solid rgba(224,190,119,.35);border-radius:999px;background:rgba(9,7,11,.82);color:#f0d18c;font-size:8px;font-weight:900;letter-spacing:1px}.archive-body{display:grid;gap:9px;padding:18px}.archive-body small{color:#d4aa5c;font-size:9px;font-weight:800;letter-spacing:.5px}.archive-body h2{margin:0;font-size:25px}.archive-body p{margin:0;color:#aaa0ab;font-size:11px;line-height:1.55}.archive-body .place{color:#d0c6d1}.album-head{display:grid;gap:12px;margin-bottom:24px}.album-head h1{margin:0;font-size:clamp(38px,6vw,72px)}.album-meta{display:flex;gap:9px;flex-wrap:wrap;color:#b9afbb;font-size:10px}.album-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.album-photo{appearance:none;border:0;padding:0;border-radius:14px;overflow:hidden;background:#130f16;cursor:zoom-in;text-align:left;color:inherit}.album-photo img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;transition:.2s ease}.album-photo:hover img{transform:scale(1.025)}.album-photo span{display:block;padding:10px 11px;color:#bfb5c0;font-size:9px;line-height:1.45}.empty-archive{grid-column:1/-1;padding:44px 20px;border:1px dashed rgba(212,170,92,.28);border-radius:16px;text-align:center;color:#9e949f}.lightbox{position:fixed;z-index:9999;inset:0;display:grid;place-items:center;padding:24px;background:rgba(0,0,0,.92)}.lightbox[hidden]{display:none}.lightbox-card{position:relative;max-width:min(1100px,96vw);max-height:92vh}.lightbox img{display:block;max-width:100%;max-height:82vh;border-radius:14px}.lightbox-caption{margin-top:9px;text-align:center;color:#d6ccd7;font-size:10px}.lightbox-close{position:absolute;right:-8px;top:-42px;border:1px solid rgba(255,255,255,.25);border-radius:999px;background:#151018;color:#fff;width:34px;height:34px;font-size:20px;cursor:pointer}.footer{margin-top:70px}.topbar .brand img,.footer .brand img{object-fit:contain}
+    @media(max-width:1000px){.archive-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.album-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    @media(max-width:760px){.topbar{height:auto;min-height:74px;padding:10px 16px;gap:10px;flex-wrap:wrap}.topbar nav{display:none}.archive-hero{padding-top:42px}.archive-grid{grid-template-columns:1fr}.archive-card{grid-template-rows:200px 1fr}.album-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.top-actions{display:flex!important;margin-left:auto}.top-actions .btn{padding:9px 11px;font-size:9px}}
+    @media(max-width:460px){.album-grid{grid-template-columns:1fr}.archive-hero h1{font-size:44px}.album-head h1{font-size:38px}}
+  </style>
+</head>
+<body>
+  <div class="grain"></div>
+  <header class="topbar">
+    <a class="brand" href="./index.html"><img src="./img/logofergoverse.png" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a>
+    <nav><a href="./index.html#eventos">Próximos eventos</a><a href="./galeria-eventos.html">Eventos anteriores</a><a href="./universo.html">Universo</a><a href="./ranking.html">Ranking</a></nav>
+    <div class="top-actions"><a class="btn ghost" href="./index.html">Início</a><a class="btn gold" href="./cadastro.html">Faça parte do Espetáculo!</a></div>
+  </header>
+
+  <main class="shell">
+    <section class="archive-hero" id="archiveIntro">
+      <span class="kicker">MEMÓRIAS DO FERGORVERSE</span>
+      <h1>Eventos <i>anteriores.</i></h1>
+      <p>Cada partida deixa uma história. Reviva os eventos do CosplayChess, abra o álbum de cada edição e veja os registros publicados pela organização.</p>
+    </section>
+
+    <section id="archiveView">
+      <div class="archive-toolbar"><span id="archiveCount" class="archive-count">Carregando eventos...</span><a class="text-link" href="./index.html#eventos">Ver próximos eventos →</a></div>
+      <div id="archiveGrid" class="archive-grid"><div class="empty-archive">Carregando eventos anteriores...</div></div>
+    </section>
+
+    <section id="albumView" hidden>
+      <div class="album-head"><a class="text-link" href="./galeria-eventos.html">← Todos os eventos anteriores</a><span class="kicker">ÁLBUM DO EVENTO</span><h1 id="albumTitle">Evento</h1><div id="albumMeta" class="album-meta"></div><p id="albumDescription"></p></div>
+      <div id="albumGrid" class="album-grid"></div>
+    </section>
+  </main>
+
+  <div id="lightbox" class="lightbox" hidden aria-modal="true" role="dialog">
+    <div class="lightbox-card"><button id="lightboxClose" class="lightbox-close" type="button" aria-label="Fechar">×</button><img id="lightboxImage" alt=""><div id="lightboxCaption" class="lightbox-caption"></div></div>
+  </div>
+
+  <footer class="footer shell"><div class="brand mini"><img src="./img/logofergoverse.png" alt=""><span><b>COSPLAY</b><em>CHESS</em></span></div><p>Fergorverse • CosplayChess</p><a href="https://www.instagram.com/fergorverse/" target="_blank" rel="noopener noreferrer">Instagram @fergorverse ↗</a><a href="./index.html">Voltar ao início ↑</a></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script>
+    (()=>{
+      const cfg=window.COSPLAYCHESS_CONFIG;
+      const db=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseKey);
+      const esc=(v='')=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      const dateFmt=new Intl.DateTimeFormat('pt-BR',{dateStyle:'long',timeZone:cfg.timezone});
+      const archiveView=document.getElementById('archiveView');
+      const albumView=document.getElementById('albumView');
+      const archiveGrid=document.getElementById('archiveGrid');
+      const archiveCount=document.getElementById('archiveCount');
+      const albumGrid=document.getElementById('albumGrid');
+      const eventParam=new URLSearchParams(location.search).get('event');
+      const lightbox=document.getElementById('lightbox');
+      const lightboxImage=document.getElementById('lightboxImage');
+      const lightboxCaption=document.getElementById('lightboxCaption');
+      const closeLightbox=()=>{lightbox.hidden=true;lightboxImage.removeAttribute('src');document.body.style.overflow=''};
+      document.getElementById('lightboxClose').onclick=closeLightbox;
+      lightbox.addEventListener('click',e=>{if(e.target===lightbox)closeLightbox()});
+      document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!lightbox.hidden)closeLightbox()});
+
+      async function load(){
+        const now=new Date().toISOString();
+        const {data:events,error:eventError}=await db.from('cosplay_events').select('id,title,description,venue,city,start_at,cover_url').eq('published',true).lt('start_at',now).order('start_at',{ascending:false});
+        if(eventError){archiveGrid.innerHTML='<div class="empty-archive">Não foi possível carregar os eventos agora.</div>';archiveCount.textContent='';return;}
+        if(!events?.length){archiveGrid.innerHTML='<div class="empty-archive">Ainda não há eventos anteriores publicados.</div>';archiveCount.textContent='0 eventos';return;}
+        const ids=events.map(e=>e.id);
+        const {data:photos,error:photoError}=await db.from('cosplay_event_photos').select('id,event_id,photo_url,caption,sort_order,created_at').in('event_id',ids).order('sort_order',{ascending:true}).order('created_at',{ascending:false});
+        const list=photoError?[]:(photos||[]);
+        const byEvent=new Map();
+        list.forEach(p=>{const key=String(p.event_id);if(!byEvent.has(key))byEvent.set(key,[]);byEvent.get(key).push(p)});
+        if(eventParam){
+          const event=events.find(e=>String(e.id)===String(eventParam));
+          if(event){renderAlbum(event,byEvent.get(String(event.id))||[]);return;}
+        }
+        renderArchive(events,byEvent);
+      }
+
+      function renderArchive(events,byEvent){
+        archiveView.hidden=false;albumView.hidden=true;
+        archiveCount.textContent=`${events.length} evento${events.length===1?'':'s'} anterior${events.length===1?'':'es'}`;
+        archiveGrid.innerHTML=events.map(event=>{
+          const photos=byEvent.get(String(event.id))||[];
+          const cover=event.cover_url||photos[0]?.photo_url||'';
+          const place=[event.venue,event.city].filter(Boolean).join(' • ')||'Local não informado';
+          return `<a class="archive-card" href="./galeria-eventos.html?event=${encodeURIComponent(event.id)}"><div class="archive-cover" style="${cover?`background-image:url('${esc(cover)}')`:''}"><span class="archive-badge">📸 ${photos.length} foto${photos.length===1?'':'s'}</span></div><div class="archive-body"><small>${dateFmt.format(new Date(event.start_at))}</small><h2>${esc(event.title)}</h2><p class="place">📍 ${esc(place)}</p><p>${esc(event.description||'Reviva os registros deste capítulo do CosplayChess.')}</p><span class="text-link">${photos.length?'Ver álbum →':'Ver evento →'}</span></div></a>`;
+        }).join('');
+      }
+
+      function renderAlbum(event,photos){
+        archiveView.hidden=true;albumView.hidden=false;document.getElementById('archiveIntro').hidden=true;
+        document.title=`${event.title} — Galeria Fergorverse`;
+        document.getElementById('albumTitle').textContent=event.title;
+        document.getElementById('albumDescription').textContent=event.description||'Registros do espetáculo.';
+        const place=[event.venue,event.city].filter(Boolean).join(' • ')||'Local não informado';
+        document.getElementById('albumMeta').innerHTML=`<span>📅 ${esc(dateFmt.format(new Date(event.start_at)))}</span><span>📍 ${esc(place)}</span><span>📸 ${photos.length} foto${photos.length===1?'':'s'}</span>`;
+        if(!photos.length){albumGrid.innerHTML='<div class="empty-archive">As fotos deste evento ainda não foram publicadas.</div>';return;}
+        albumGrid.innerHTML=photos.map(photo=>`<button class="album-photo" type="button" data-photo-id="${photo.id}"><img loading="lazy" src="${esc(photo.photo_url)}" alt="${esc(photo.caption||event.title)}"><span>${esc(photo.caption||'Registro do espetáculo')}</span></button>`).join('');
+        albumGrid.querySelectorAll('[data-photo-id]').forEach(button=>button.onclick=()=>{
+          const photo=photos.find(p=>String(p.id)===String(button.dataset.photoId));if(!photo)return;
+          lightboxImage.src=photo.photo_url;lightboxImage.alt=photo.caption||event.title;lightboxCaption.textContent=photo.caption||event.title;lightbox.hidden=false;document.body.style.overflow='hidden';
+        });
+      }
+      load();
+    })();
+  </script>
+</body>
+</html>
