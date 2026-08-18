@@ -177,4 +177,12 @@
     event.stopImmediatePropagation();
     importFile(input);
   }, true);
+
+  // Carrega a experiência aprimorada de escalação e áudio tanto no Electron quanto no navegador.
+  if (!document.querySelector('script[data-participant-experience]')) {
+    const experienceScript = document.createElement('script');
+    experienceScript.src = 'participant-experience.js';
+    experienceScript.dataset.participantExperience = 'true';
+    document.body.appendChild(experienceScript);
+  }
 })();
