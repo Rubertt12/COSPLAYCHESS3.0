@@ -122,6 +122,7 @@ ipcMain.handle('music:list-audio', () => {
 
 function installJsonSettingsUi(window) {
   if (!window || window.isDestroyed()) return;
+  const rosterEditorUrl = pathToFileURL(path.join(__dirname, 'roster-editor.js')).href;
 
   window.webContents.on('did-finish-load', () => {
     const code = `(() => {
@@ -138,7 +139,7 @@ function installJsonSettingsUi(window) {
         dataCard.style.borderRadius = '8px';
 
         const title = dataCard.querySelector('b');
-        if (title) title.textContent = '💾 DADOS DA PARTIDA (JSON)';
+        if (title) title.textContent = '💾 LISTA DE PARTICIPANTES (JSON)';
 
         const buttons = Array.from(dataCard.querySelectorAll('button'));
         const exportBtn = buttons.find(btn => /EXPORTAR/i.test(btn.textContent || ''));
@@ -149,7 +150,7 @@ function installJsonSettingsUi(window) {
         if (!dataCard.querySelector('.json-settings-help')) {
           const help = document.createElement('div');
           help.className = 'json-settings-help';
-          help.textContent = 'Importe nomes e informações antes da partida. As imagens das peças podem ser ajustadas depois, durante o jogo.';
+          help.textContent = 'Importe a lista de participantes. Depois, no jogo, ative Edição e clique em uma peça para escolher a pessoa e aplicar nome/foto.';
           help.style.cssText = 'font-size:9px;color:#aaa;line-height:1.45;margin:8px 0 10px;';
           const grid = dataCard.querySelector('div[style*="grid-template-columns"]');
           if (grid) dataCard.insertBefore(help, grid);
@@ -167,7 +168,14 @@ function installJsonSettingsUi(window) {
       const editLabel = editMode && editMode.closest('label');
       if (editLabel) {
         const input = editMode.outerHTML;
-        editLabel.innerHTML = input + ' IMAGENS DAS PEÇAS (UPLOAD/REMOVER)';
+        editLabel.innerHTML = input + ' MODO EDIÇÃO (ESCALAR PARTICIPANTES)';
+      }
+
+      if (!document.querySelector('script[data-roster-editor]')) {
+        const rosterScript = document.createElement('script');
+        rosterScript.src = ${JSON.stringify(rosterEditorUrl)};
+        rosterScript.dataset.rosterEditor = 'true';
+        document.body.appendChild(rosterScript);
       }
     })();`;
 
