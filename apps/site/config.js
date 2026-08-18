@@ -26,9 +26,6 @@ window.COSPLAYCHESS_CONFIG = {
   sdk.createClient = function(url, key, options) {
     const sameProject = String(url || '') === String(cfg.supabaseUrl || '');
     const sameKey = String(key || '') === String(cfg.supabaseKey || '');
-
-    // Todos os scripts do CosplayChess compartilham a mesma sessão Auth.
-    // Clientes para outro projeto/chave continuam sendo criados normalmente.
     if (sameProject && sameKey) return sharedClient;
     return originalCreateClient(url, key, options);
   };
@@ -97,7 +94,10 @@ window.COSPLAYCHESS_CONFIG = {
           link.dataset.cmsVisualLink = 'true';
           actions.insertBefore(link, actions.querySelector('.btn.dark'));
         }
-        loadScript('./admin-privacy.js', () => loadScript('./admin-private-groups.js'));
+        loadScript('./admin-privacy.js', () => {
+          loadScript('./admin-private-groups.js');
+          loadScript('./admin-game-link.js');
+        });
       });
       return;
     }
