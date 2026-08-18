@@ -9,7 +9,7 @@
   function ensureSection(){
     if(section)return section;
     section=document.createElement('section');section.className='section shell partners-section';section.id='parcerias';
-    section.innerHTML=`<div class="partners-head"><div><span class="kicker" data-partner-field="kicker"></span><h2><span data-partner-field="titleMain"></span> <i data-partner-field="titleAccent"></i></h2></div><p data-partner-field="description"></p></div><div id="partnersGrid" class="partners-grid"><div class="partners-empty">Carregando parceiros...</div></div><div class="partners-cta"><p data-partner-field="ctaText"></p><a class="btn gold" data-partner-field="ctaButtonText" data-partner-link href="#"></a></div>`;
+    section.innerHTML=`<div class="partners-head"><div><span class="kicker" data-partner-field="kicker"></span><h2><span data-partner-field="titleMain"></span> <i data-partner-field="titleAccent"></i></h2></div><p data-partner-field="description"></p></div><div class="partners-marquee" aria-label="Parceiros e apoiadores"><div id="partnersGrid" class="partners-grid"><div class="partners-empty">Carregando parceiros...</div></div></div><div class="partners-cta"><p data-partner-field="ctaText"></p><a class="btn gold" data-partner-field="ctaButtonText" data-partner-link href="#"></a></div>`;
     const finalCta=document.querySelector('.final-cta');const main=document.querySelector('main');
     if(finalCta)finalCta.before(section);else main?.append(section);
     if(previewMode)bindPreviewTargets();
@@ -22,6 +22,7 @@
     const a=section.querySelector('[data-partner-link]');if(a)a.href=current.ctaUrl||defaults.ctaUrl;
     section.hidden=current.showSection===false;
   }
+  function card(p,clone=false){const body=`${p.logo_url?`<div class="partner-logo"><img src="${esc(p.logo_url)}" alt="${clone?'':`Logo ${esc(p.name)}`}"></div>`:`<div class="partner-logo">${esc(initials(p.name))}</div>`}<div class="partner-info"><small>${esc(p.category||'Parceiro')}</small><h3>${esc(p.name)}</h3>${p.description?`<p>${esc(p.description)}</p>`:''}</div><span class="partner-arrow" aria-hidden="true">↗</span>`;return p.website_url?`<a class="partner-card" href="${esc(p.website_url)}" target="_blank" rel="noopener noreferrer" ${clone?'aria-hidden="true" tabindex="-1"':''}>${body}</a>`:`<article class="partner-card" ${clone?'aria-hidden="true"':''}>${body}</article>`}
   async function load(){
     const [{data:content},{data:partners,error}]=await Promise.all([
       db.from('cosplay_site_content').select('content').eq('key','partners').eq('published',true).maybeSingle(),
@@ -30,7 +31,8 @@
     apply(content?.content||{});
     const grid=document.getElementById('partnersGrid');if(!grid)return;
     if(error||!partners?.length){grid.innerHTML='<div class="partners-empty">Novas parcerias serão apresentadas aqui em breve.</div>';return;}
-    grid.innerHTML=partners.map(p=>`<article class="partner-card">${p.logo_url?`<div class="partner-logo"><img src="${esc(p.logo_url)}" alt="Logo ${esc(p.name)}"></div>`:`<div class="partner-logo">${esc(initials(p.name))}</div>`}<small>${esc(p.category||'Parceiro')}</small><h3>${esc(p.name)}</h3>${p.description?`<p>${esc(p.description)}</p>`:''}${p.website_url?`<a href="${esc(p.website_url)}" target="_blank" rel="noopener noreferrer">Conhecer parceiro ↗</a>`:''}</article>`).join('');
+    const repeat=Math.max(1,Math.ceil(5/partners.length));const set=Array.from({length:repeat},()=>partners).flat();
+    grid.innerHTML=`<div class="partners-track-group">${set.map(p=>card(p)).join('')}</div><div class="partners-track-group" aria-hidden="true">${set.map(p=>card(p,true)).join('')}</div>`;
   }
   function bindPreviewTargets(){
     section.querySelectorAll('[data-partner-field]').forEach(el=>{el.dataset.cmsField=el.dataset.partnerField;el.style.cursor='pointer'});
