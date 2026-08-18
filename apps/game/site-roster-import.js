@@ -132,13 +132,17 @@
     store.g.rosterFormat = isOfficialSiteExport(data) ? 'cosplaychess-participants' : 'legacy';
     store.g.rosterExportVersion = data?.version || null;
     store.g.rosterEvent = data?.event && typeof data.event === 'object' ? { ...data.event } : null;
+    // Novo JSON invalida o resumo da montagem anterior até o operador acionar novamente.
+    delete store.g.autoLineupSummary;
+    delete store.g.autoLineupLastRun;
 
     try { save(); } catch (_) {}
     try { renderBoard(); } catch (_) {}
     try { renderConfigLists(); } catch (_) {}
+    try { window.refreshCosplayAutoLineup?.(); } catch (_) {}
 
     const eventName = store.g.rosterEvent?.name ? ` do evento ${store.g.rosterEvent.name}` : '';
-    notify(`${people.length} participante(s)${eventName} carregado(s) do JSON do site. Agora ative Edição e clique em uma peça para escalar.`);
+    notify(`${people.length} participante(s)${eventName} carregado(s) do JSON do site. Agora você pode clicar em “Acionar JSON” para montar o tabuleiro automaticamente.`);
   }
 
   function importFile(input) {
@@ -178,11 +182,25 @@
     importFile(input);
   }, true);
 
-  // Carrega a experiência aprimorada de escalação e áudio tanto no Electron quanto no navegador.
-  if (!document.querySelector('script[data-participant-experience]')) {
+  const loadAutomaticLineup = () => {
+    if (document.querySelector('script[data-auto-lineup-settings]')) return;
+    const lineupScript = document.createElement('script');
+    lineupScript.src = 'auto-lineup-settings.js';
+    lineupScript.dataset.autoLineupSettings = 'true';
+    document.body.appendChild(lineupScript);
+  };
+
+  // Carrega a experiência aprimorada de escalação/áudio e, em seguida, automação/layout das configurações.
+  const existingExperience = document.querySelector('script[data-participant-experience]');
+  if (!existingExperience) {
     const experienceScript = document.createElement('script');
     experienceScript.src = 'participant-experience.js';
     experienceScript.dataset.participantExperience = 'true';
+    experienceScript.onload = loadAutomaticLineup;
     document.body.appendChild(experienceScript);
+  } else if (window.__cosplayParticipantExperienceLoaded) {
+    loadAutomaticLineup();
+  } else {
+    existingExperience.addEventListener('load', loadAutomaticLineup, { once: true });
   }
 })();
