@@ -24,9 +24,33 @@
         <div><span class="kicker">HISTÓRIA DO COSPLAYCHESS</span><h1>Resultados, ranking & <i>troféus</i></h1></div>
       </div>
 
+      <section class="panel-card result-import-card">
+        <div class="panel-title result-import-title">
+          <div><span class="kicker">FLUXO RECOMENDADO</span><h2>Importar resultado do jogo</h2><p>Ao terminar a batalha, exporte o resultado pelo CosplayChess e envie o JSON aqui. O site identifica Player 1/Player 2, elenco, capturas e sobreviventes antes de atualizar a história.</p></div>
+          <span class="result-import-badge">JSON OFICIAL</span>
+        </div>
+
+        <div class="result-import-drop">
+          <div class="result-import-icon">🏆</div>
+          <div><b>CosplayChess_Resultado_*.json</b><span>O arquivo precisa ter sido gerado pelo botão “Exportar resultado para o site” após o fim da partida.</span></div>
+          <button id="chooseResultImportBtn" class="btn gold" type="button">SELECIONAR RESULTADO</button>
+          <input id="resultImportInput" type="file" accept="application/json,.json" hidden>
+        </div>
+
+        <div id="resultImportPreview" class="result-import-preview" hidden></div>
+
+        <div class="result-import-footer">
+          <label class="result-publish-toggle"><input id="resultImportPublished" type="checkbox" checked><span>Publicar imediatamente no Ranking, Hall da Fama e Conquistas</span></label>
+          <button id="confirmResultImportBtn" class="btn gold big" type="button" disabled>CONFIRMAR E ATUALIZAR O SITE</button>
+        </div>
+        <div id="resultImportStatus" class="form-status">Selecione um arquivo de resultado para começar.</div>
+      </section>
+
+      <div class="manual-result-divider"><span>OU REGISTRE / CORRIJA MANUALMENTE</span></div>
+
       <div class="admin-community-grid">
         <section class="panel-card">
-          <div class="panel-title"><div><span class="kicker">PARTIDA OFICIAL</span><h2>Registrar resultado</h2></div></div>
+          <div class="panel-title"><div><span class="kicker">PARTIDA OFICIAL · MANUAL</span><h2>Registrar resultado</h2></div></div>
           <form id="matchForm" class="admin-match-form">
             <input type="hidden" name="id">
             <div class="two">
@@ -87,5 +111,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
   <script src="./resultados-admin.js"></script>
+  <script src="./result-import.js"></script>
 </body>
 </html>
