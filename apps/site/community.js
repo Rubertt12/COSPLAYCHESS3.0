@@ -8,6 +8,44 @@
   const empty=(text)=>`<div class="empty-card">${esc(text)}</div>`;
   const photo=(url,name,cls='member-photo')=>url?`<div class="${cls}" style="background-image:url('${esc(url)}')"></div>`:`<div class="${cls} member-initials">${esc(initials(name))}</div>`;
 
+  const iconSvg={
+    hall:`<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 18h24v7c0 9-5.7 15.2-12 18-6.3-2.8-12-9-12-18v-7Z"/><path d="M15 18 19 8l5 7 5-7 4 10"/><path d="M19 28h10M17 34h14"/></svg>`,
+    ranking:`<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M13 39h22M17 33h14M19 28h10M16 15h16l-3 13H19l-3-13Z"/><path d="M19 15V9h4v6M25 15V9h4v6M16 9h4M28 9h4"/></svg>`,
+    achievements:`<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M16 9h16v7c0 7-3.7 12-8 14-4.3-2-8-7-8-14V9Z"/><path d="M16 12H9v5c0 5 3 8 8 8M32 12h7v5c0 5-3 8-8 8M24 30v7M18 42h12M20 37h8"/></svg>`
+  };
+
+  function installCommunityDecor(){
+    if(document.getElementById('communityDecorStyles'))return;
+    const style=document.createElement('style');
+    style.id='communityDecorStyles';
+    style.textContent=`
+      .home-universe-card .universe-link .icon{width:42px;height:42px;display:grid;place-items:center;color:var(--gold2);border:1px solid rgba(224,190,119,.24);border-radius:12px;background:linear-gradient(145deg,rgba(92,28,54,.3),rgba(11,10,15,.94));box-shadow:0 10px 26px rgba(0,0,0,.24)}
+      .home-universe-card .universe-link .icon svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+      .duelist.winner{position:relative}
+      .duelist.winner .duelist-photo{position:relative;overflow:visible}
+      .duelist.winner .champion-helmet{position:absolute;z-index:6;left:50%;top:-34px;transform:translateX(-50%);width:82px;height:54px;pointer-events:none;filter:drop-shadow(0 7px 10px rgba(0,0,0,.65)) drop-shadow(0 0 10px rgba(224,190,119,.22))}
+      .duelist.winner .champion-helmet svg{width:100%;height:100%;overflow:visible}
+      .duelist.winner .champion-helmet .helmet-fill{fill:url(#championHelmetGold);stroke:#f0cf83;stroke-width:1.35}
+      .duelist.winner .champion-helmet .helmet-dark{fill:#5b3918;stroke:#d6a453;stroke-width:1.1}
+      .duelist.winner .champion-helmet .helmet-line{fill:none;stroke:#fff0b3;stroke-width:1.25;stroke-linecap:round;opacity:.78}
+      .duelist.winner .champion-helmet:after{content:"CAMPEÃO";position:absolute;left:50%;top:-10px;transform:translateX(-50%);padding:3px 7px;border:1px solid rgba(238,199,116,.48);border-radius:999px;background:#120d10;color:#efcd80;font-size:6px;font-weight:900;letter-spacing:1.25px;white-space:nowrap}
+      @media(max-width:700px){.duelist.winner .champion-helmet{top:-31px;width:74px;height:50px}}
+    `;
+    document.head.appendChild(style);
+
+    document.querySelectorAll('.home-universe-card .universe-link').forEach(link=>{
+      const icon=link.querySelector('.icon');if(!icon)return;
+      const href=link.getAttribute('href')||'';
+      if(href.includes('hall-da-fama'))icon.innerHTML=iconSvg.hall;
+      else if(href.includes('ranking'))icon.innerHTML=iconSvg.ranking;
+      else if(href.includes('conquistas'))icon.innerHTML=iconSvg.achievements;
+    });
+  }
+
+  function championHelmet(){
+    return `<span class="champion-helmet" aria-hidden="true"><svg viewBox="0 0 100 66"><defs><linearGradient id="championHelmetGold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0a8"/><stop offset=".28" stop-color="#d9a84f"/><stop offset=".64" stop-color="#8c551d"/><stop offset="1" stop-color="#edc873"/></linearGradient></defs><path class="helmet-fill" d="M17 42c1-17 10-29 25-34l8-5 8 5c15 5 24 17 25 34l-10 8H27l-10-8Z"/><path class="helmet-dark" d="M27 50h46l-7 10H34l-7-10Z"/><path class="helmet-dark" d="M46 8h8v34h-8z"/><path class="helmet-line" d="M25 38c5-11 12-18 21-21M75 38c-5-11-12-18-21-21M30 45h40"/><path class="helmet-fill" d="m19 29-9 7 8 7M81 29l9 7-8 7"/></svg></span>`;
+  }
+
   async function loadTeam(){
     const roots=[...document.querySelectorAll('[data-team-grid]')];
     if(!roots.length)return;
@@ -23,7 +61,8 @@
     if(!root)return;
     const {data,error}=await db.from('cosplay_matches').select('*,cosplay_events(title,start_at,venue,city)').eq('published',true).order('played_at',{ascending:false});
     if(error||!data?.length){root.innerHTML=empty('Nenhum resultado oficial publicado ainda. Quando a primeira partida entrar para a história, ela aparece aqui.');return;}
-    root.innerHTML=data.map(m=>`<article class="champion-card"><div class="champion-top"><div><small>${esc(m.cosplay_events?.title||'CosplayChess')}</small><div>${esc(m.match_label||'Partida')}</div></div><span>${fmtDate(m.played_at)}</span></div><div class="duel"><div class="duelist winner">${photo(m.winner_photo_url,m.winner_character,'duelist-photo')}<em>Vencedor</em><b>${esc(m.winner_character)}</b><span>${esc(m.winner_cosplayer)}</span></div><div class="versus">VS</div><div class="duelist">${photo(m.opponent_photo_url,m.opponent_character||m.opponent_cosplayer,'duelist-photo')}<em>Contra</em><b>${esc(m.opponent_character||'Adversário')}</b><span>${esc(m.opponent_cosplayer||'')}</span></div></div>${m.notes?`<div class="champion-notes">${esc(m.notes)}</div>`:''}</article>`).join('');
+    root.innerHTML=data.map(m=>`<article class="champion-card"><div class="champion-top"><div><small>${esc(m.cosplay_events?.title||'CosplayChess')}</small><div>${esc(m.match_label||'Partida')}</div></div><span>${fmtDate(m.played_at)}</span></div><div class="duel"><div class="duelist winner"><div class="champion-photo-wrap">${photo(m.winner_photo_url,m.winner_character,'duelist-photo')}${m.winner_photo_url?championHelmet():''}</div><em>Vencedor</em><b>${esc(m.winner_character)}</b><span>${esc(m.winner_cosplayer)}</span></div><div class="versus">VS</div><div class="duelist">${photo(m.opponent_photo_url,m.opponent_character||m.opponent_cosplayer,'duelist-photo')}<em>Contra</em><b>${esc(m.opponent_character||'Adversário')}</b><span>${esc(m.opponent_cosplayer||'')}</span></div></div>${m.notes?`<div class="champion-notes">${esc(m.notes)}</div>`:''}</article>`).join('');
+    root.querySelectorAll('.champion-photo-wrap').forEach(w=>{w.style.position='relative';w.style.width='fit-content';w.style.margin='0 auto 12px';const p=w.querySelector('.duelist-photo');if(p)p.style.margin='0';});
   }
 
   let rankingRows=[];
@@ -76,5 +115,5 @@
     if(feed)feed.innerHTML=wErr||!awards?.length?empty('Ainda não há troféus desbloqueados. A história está só começando.'):awards.slice(0,18).map(a=>`<article class="award-item"><b>${esc(a.cosplay_achievements?.icon||'🏆')} ${esc(a.cosplay_achievements?.title||'Conquista')}</b><span>${esc(a.cosplayer_name)}${a.character_name?` • ${esc(a.character_name)}`:''}</span><small>${esc(a.cosplay_events?.title||'CosplayChess')} • ${fmtDate(a.awarded_at)}</small></article>`).join('');
   }
 
-  loadTeam();loadChampions();loadRanking();loadAchievements();
+  installCommunityDecor();loadTeam();loadChampions();loadRanking();loadAchievements();
 })();
