@@ -21,9 +21,30 @@
     .footer-instagram{font-weight:800;color:#e8c579!important;white-space:nowrap}
     .hero-art>img{animation:fergorverseHeroPulse 2.8s ease-in-out infinite;transform-origin:center center;will-change:transform,filter}
     @keyframes fergorverseHeroPulse{0%,100%{transform:scale(1);filter:drop-shadow(0 0 0 rgba(212,170,92,0)) brightness(1)}50%{transform:scale(1.045);filter:drop-shadow(0 0 20px rgba(212,170,92,.34)) brightness(1.06)}}
+    .mobile-menu-toggle,.mobile-menu-panel{display:none}
+    .mobile-menu-toggle{width:44px;height:44px;padding:0;border:1px solid rgba(224,190,119,.34);border-radius:12px;background:rgba(15,10,17,.92);color:#f1d38b;cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px;box-shadow:0 10px 28px rgba(0,0,0,.28)}
+    .mobile-menu-toggle span{display:block;width:20px;height:2px;border-radius:99px;background:currentColor;transition:transform .22s ease,opacity .22s ease}
+    .mobile-menu-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .mobile-menu-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+    .mobile-menu-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .mobile-menu-panel{position:absolute;z-index:1000;top:calc(100% + 8px);left:14px;right:14px;padding:10px;border:1px solid rgba(224,190,119,.28);border-radius:16px;background:linear-gradient(155deg,rgba(24,16,27,.985),rgba(8,7,11,.99));box-shadow:0 24px 70px rgba(0,0,0,.58),inset 0 0 0 1px rgba(255,255,255,.025);backdrop-filter:blur(18px)}
+    .mobile-menu-panel a{display:flex;align-items:center;min-height:45px;padding:10px 12px;border-radius:10px;color:#eee4d9;text-decoration:none;font-size:12px;font-weight:800;letter-spacing:.35px}
+    .mobile-menu-panel a:hover,.mobile-menu-panel a:focus-visible{background:rgba(212,170,92,.1);color:#f2d58e;outline:none}
+    .mobile-menu-panel .mobile-menu-divider{height:1px;margin:7px 4px;background:rgba(255,255,255,.08)}
+    .mobile-menu-panel .btn{justify-content:center;margin-top:7px}
+    .mobile-menu-panel .mobile-instagram{gap:8px}
+    .mobile-menu-panel .mobile-instagram svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    body.mobile-menu-open{overflow:hidden}
     @media (prefers-reduced-motion:reduce){.hero-art>img{animation:none}}
-    @media (max-width:760px){.topbar{height:auto;min-height:82px;padding:12px 20px;gap:12px;flex-wrap:wrap}.topbar nav{display:none}.top-actions{margin-left:auto;display:flex!important;gap:8px;flex-wrap:nowrap}.top-actions .btn.ghost{display:inline-flex!important;padding:10px 12px;font-size:10px}.top-actions .btn.gold{padding:10px 12px;font-size:10px;white-space:nowrap}.brand img{width:46px;height:46px}.brand span{letter-spacing:2px}.event-place{padding:12px;margin:16px 0 14px}.event-place-copy strong{font-size:10px}}
-    @media (max-width:430px){.topbar{padding:10px 14px}.brand{gap:8px}.brand img{width:42px;height:42px}.brand b{font-size:10px}.brand em{font-size:9px}.top-actions{width:100%;margin-left:0}.top-actions .btn{flex:1}}
+    @media (max-width:760px){
+      .topbar{height:auto;min-height:72px;padding:10px 14px;gap:10px;flex-wrap:nowrap;position:relative;z-index:1200}
+      .topbar>nav,.topbar>.top-actions{display:none!important}
+      .mobile-menu-toggle{display:flex;margin-left:auto;flex:0 0 auto}
+      .mobile-menu-panel[data-open="true"]{display:block}
+      .brand{min-width:0;gap:8px}.brand img{width:46px;height:46px}.brand span{letter-spacing:2px}.brand b{font-size:10px}.brand em{font-size:9px}
+      .event-place{padding:12px;margin:16px 0 14px}.event-place-copy strong{font-size:10px}
+    }
+    @media (max-width:430px){.topbar{padding:9px 12px}.brand img{width:42px;height:42px}.mobile-menu-toggle{width:42px;height:42px}.mobile-menu-panel{left:10px;right:10px}}
   </style>
 </head>
 <body>
@@ -32,6 +53,18 @@
     <a class="brand" href="#topo"><img src="./img/logofergoverse.png" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a>
     <nav><a href="#eventos">Eventos</a><a href="#experiencia">Experiência</a><a href="./galeria-eventos.html">Galeria</a><a href="./universo.html">Universo</a><a href="./ranking.html">Ranking</a><a href="https://www.instagram.com/fergorverse/" target="_blank" rel="noopener noreferrer">Instagram ↗</a></nav>
     <div class="top-actions"><a class="btn ghost" href="./admin.html">Admin</a><a class="btn gold" href="./cadastro.html">Faça parte do Espetáculo!</a></div>
+    <button class="mobile-menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
+    <div class="mobile-menu-panel" id="mobileMenu" data-open="false">
+      <a href="#eventos">Eventos</a>
+      <a href="#experiencia">Experiência</a>
+      <a href="./galeria-eventos.html">Galeria</a>
+      <a href="./universo.html">Universo</a>
+      <a href="./ranking.html">Ranking</a>
+      <a class="mobile-instagram" href="https://www.instagram.com/fergorverse/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg>Instagram @fergorverse</a>
+      <div class="mobile-menu-divider"></div>
+      <a href="./admin.html">Admin</a>
+      <a class="btn gold" href="./cadastro.html">Faça parte do Espetáculo!</a>
+    </div>
   </header>
 
   <main id="topo">
@@ -98,6 +131,24 @@
   <script src="./config.js"></script>
   <script src="./landing.js"></script>
   <script src="./community.js"></script>
+  <script>
+    (()=>{
+      const toggle=document.querySelector('.mobile-menu-toggle');
+      const menu=document.getElementById('mobileMenu');
+      if(!toggle||!menu)return;
+      const setOpen=open=>{
+        toggle.setAttribute('aria-expanded',String(open));
+        toggle.setAttribute('aria-label',open?'Fechar menu':'Abrir menu');
+        menu.dataset.open=String(open);
+        document.body.classList.toggle('mobile-menu-open',open);
+      };
+      toggle.addEventListener('click',e=>{e.stopPropagation();setOpen(toggle.getAttribute('aria-expanded')!=='true')});
+      menu.addEventListener('click',e=>{if(e.target.closest('a'))setOpen(false)});
+      document.addEventListener('click',e=>{if(toggle.getAttribute('aria-expanded')==='true'&&!menu.contains(e.target)&&!toggle.contains(e.target))setOpen(false)});
+      document.addEventListener('keydown',e=>{if(e.key==='Escape')setOpen(false)});
+      window.addEventListener('resize',()=>{if(window.innerWidth>760)setOpen(false)});
+    })();
+  </script>
 </body>
 </html>
 <!-- redeploy: 2026-08-17T11:42:00-03:00 -->
