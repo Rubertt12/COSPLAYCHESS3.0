@@ -41,12 +41,12 @@ if (fs.existsSync(gameIndex)) {
                 <div class="unit-card" id="json-data-settings" style="margin-top:14px; background:rgba(0,229,255,0.06); border:1px solid rgba(0,229,255,0.28); padding:12px; border-radius:8px;">
                     <b style="display:block; color:var(--accent); font-size:10px; letter-spacing:1px; margin-bottom:6px;">💾 LISTA DE PARTICIPANTES (JSON)</b>
                     <div class="json-settings-help" style="font-size:9px; color:#aaa; line-height:1.45; margin-bottom:10px;">
-                        Importe o JSON com a lista de participantes. Depois, no jogo, ative Edição e clique em uma peça para escolher a pessoa e aplicar nome/foto.
+                        O JSON carrega somente a lista de participantes. Depois, ative Edição e clique em uma peça para escolher quem ficará nela.
                     </div>
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
                         <button class="btn-play-sm" style="width:100%; font-size:9px; padding:10px 6px;" onclick="document.getElementById('import-file').click()">IMPORTAR JSON</button>
                         <button class="btn-play-sm" style="width:100%; font-size:9px; padding:10px 6px;" onclick="exportSquadData()">EXPORTAR JSON</button>
-                        <input type="file" id="import-file" style="display:none" accept="application/json,.json" onchange="importSquadData(this)">
+                        <input type="file" id="import-file" style="display:none" accept="application/json,.json">
                     </div>
                 </div>
 `;
@@ -67,7 +67,12 @@ if (fs.existsSync(gameIndex)) {
   if (!html.includes('src="roster-editor.js"')) {
     html = html.replace(
       '<script src="script.js"></script>',
-      '<script src="script.js"></script>\n<script src="roster-editor.js"></script>'
+      '<script src="script.js"></script>\n<script src="roster-editor.js"></script>\n<script src="roster-guard.js"></script>'
+    );
+  } else if (!html.includes('src="roster-guard.js"')) {
+    html = html.replace(
+      '<script src="roster-editor.js"></script>',
+      '<script src="roster-editor.js"></script>\n<script src="roster-guard.js"></script>'
     );
   }
 
