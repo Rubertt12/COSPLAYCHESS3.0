@@ -131,7 +131,10 @@
     reader.readAsText(file);
   }
 
-  // Intercepta o input ANTES do onchange legado importSquadData(this).
+  // Sobrescreve a função antiga por completo. Qualquer chamada direta agora importa SOMENTE o elenco.
+  window.importSquadData = importAsRoster;
+
+  // Intercepta o input ANTES de qualquer onchange legado que ainda exista no HTML antigo.
   document.addEventListener('change', event => {
     const input = event.target;
     if (!(input instanceof HTMLInputElement) || input.id !== 'import-file' || input.type !== 'file') return;
