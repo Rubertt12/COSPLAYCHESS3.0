@@ -24,7 +24,14 @@
     const cards=qa('#experiencia .feature-grid article');[[c.feature1Title,c.feature1Text],[c.feature2Title,c.feature2Text],[c.feature3Title,c.feature3Text],[c.feature4Title,c.feature4Text]].forEach((x,i)=>{if(!cards[i])return;const h=cards[i].querySelector('h3'),p=cards[i].querySelector('p');if(h&&x[0]!==undefined)h.textContent=x[0];if(p&&x[1]!==undefined)p.textContent=x[1]});
     setText('#galeria .section-head .kicker',c.galleryKicker);setHtmlTitle('#galeria .section-head h2',c.galleryTitleMain,c.galleryTitleAccent,false);
     setText('#universo .universe-intro .kicker',c.universeKicker);setHtmlTitle('#universo .universe-intro h2',c.universeTitleMain,c.universeTitleAccent,false);setText('#universo .universe-intro > p',c.universeDescription);setText('#universo .community-nav .btn.gold',c.universeCtaText);
-    if(c.instagramUrl)qa('[data-fergorverse-instagram],a[href*="instagram.com/fergorverse"]').forEach(a=>a.href=c.instagramUrl);if(c.instagramText){const b=q('#universo [data-fergorverse-instagram]');if(b)b.textContent=`📸 ${c.instagramText}`}
+    if(c.instagramUrl)qa('[data-fergorverse-instagram],a[href*="instagram.com/fergorverse"]').forEach(a=>a.href=c.instagramUrl);
+    if(c.instagramText){
+      qa('[data-fergorverse-instagram]').forEach(button=>{
+        const label=button.querySelector('span');
+        if(label) label.textContent=c.instagramText;
+        else if(!button.querySelector('svg')) button.textContent=c.instagramText;
+      });
+    }
     setText('.final-cta .kicker',c.finalKicker);setHtmlTitle('.final-cta h2',c.finalTitleMain,c.finalTitleAccent,true);setText('.final-cta .btn.gold',c.finalCtaText);setText('.footer > p',c.footerText);
     setVisible('#eventos',c.showEvents);setVisible('#experiencia',c.showExperience);setVisible('#galeria',c.showGallery);setVisible('#universo',c.showUniverse);setVisible('.final-cta',c.showFinalCta);
   }
