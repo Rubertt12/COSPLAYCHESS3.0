@@ -66,18 +66,31 @@ if (fs.existsSync(gameIndex)) {
   fs.writeFileSync(gameIndex, html);
 }
 
-// Inject the web-game CTA into the landing page at build time.
+// Add the browser-game action to the desktop and mobile navigation.
 if (fs.existsSync(landingFile)) {
   let landing = fs.readFileSync(landingFile, 'utf8');
-  const marker = '<div class="hero-actions"><a class="btn gold big" href="#eventos">Ver próximos eventos</a><a class="btn dark big" href="./cadastro.html">Entrar no tabuleiro</a></div>';
-  const replacement = '<div class="hero-actions"><a class="btn gold big" href="#eventos">Ver próximos eventos</a><a class="btn dark big" href="./cadastro.html">Entrar no tabuleiro</a><a class="btn dark big" href="./jogo/" aria-label="Jogar CosplayChess no navegador">🎮 Jogar no navegador</a></div>';
 
-  if (landing.includes(marker)) {
-    landing = landing.replace(marker, replacement);
-    fs.writeFileSync(landingFile, landing);
-  } else {
-    console.warn('Landing CTA marker not found; game was published but CTA was not injected.');
+  // Normalize any previous build-time hero CTA so the game action lives only in the navbar.
+  landing = landing.replace(
+    '<div class="hero-actions"><a class="btn gold big" href="#eventos">Ver próximos eventos</a><a class="btn dark big" href="./cadastro.html">Entrar no tabuleiro</a><a class="btn dark big" href="./jogo/" aria-label="Jogar CosplayChess no navegador">🎮 Jogar no navegador</a></div>',
+    '<div class="hero-actions"><a class="btn gold big" href="#eventos">Ver próximos eventos</a><a class="btn dark big" href="./cadastro.html">Entrar no tabuleiro</a></div>'
+  );
+
+  const desktopMarker = '<div class="top-actions"><a class="btn ghost" href="./admin.html">Admin</a><a class="btn gold" href="./cadastro.html">Faça parte do Espetáculo!</a></div>';
+  const desktopReplacement = '<div class="top-actions"><a class="btn ghost" href="./jogo/" aria-label="Jogar CosplayChess no navegador">Jogar no navegador</a><a class="btn ghost" href="./admin.html">Admin</a><a class="btn gold" href="./cadastro.html">Faça parte do Espetáculo!</a></div>';
+
+  if (landing.includes(desktopMarker) && !landing.includes('href="./jogo/" aria-label="Jogar CosplayChess no navegador">Jogar no navegador</a>')) {
+    landing = landing.replace(desktopMarker, desktopReplacement);
   }
+
+  const mobileMarker = '<div class="mobile-menu-divider"></div>\n      <a href="./admin.html">Admin</a>';
+  const mobileReplacement = '<div class="mobile-menu-divider"></div>\n      <a href="./jogo/" aria-label="Jogar CosplayChess no navegador">Jogar no navegador</a>\n      <a href="./admin.html">Admin</a>';
+
+  if (landing.includes(mobileMarker) && !landing.includes('<a href="./jogo/" aria-label="Jogar CosplayChess no navegador">Jogar no navegador</a>')) {
+    landing = landing.replace(mobileMarker, mobileReplacement);
+  }
+
+  fs.writeFileSync(landingFile, landing);
 }
 
 console.log(`CosplayChess web prepared at ${webGameDir}`);
