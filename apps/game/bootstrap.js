@@ -123,6 +123,7 @@ ipcMain.handle('music:list-audio', () => {
 function installJsonSettingsUi(window) {
   if (!window || window.isDestroyed()) return;
   const rosterEditorUrl = pathToFileURL(path.join(__dirname, 'roster-editor.js')).href;
+  const rosterGuardUrl = pathToFileURL(path.join(__dirname, 'roster-guard.js')).href;
 
   window.webContents.on('did-finish-load', () => {
     const code = `(() => {
@@ -130,7 +131,7 @@ function installJsonSettingsUi(window) {
       if (!settings) return;
 
       const cards = Array.from(document.querySelectorAll('.unit-card'));
-      const dataCard = cards.find(card => /GESTÃO DE DADOS|DADOS DA PARTIDA/i.test(card.textContent || ''));
+      const dataCard = cards.find(card => /GESTÃO DE DADOS|DADOS DA PARTIDA|LISTA DE PARTICIPANTES/i.test(card.textContent || ''));
       if (dataCard) {
         dataCard.id = 'json-data-settings';
         dataCard.style.marginTop = '14px';
@@ -150,7 +151,7 @@ function installJsonSettingsUi(window) {
         if (!dataCard.querySelector('.json-settings-help')) {
           const help = document.createElement('div');
           help.className = 'json-settings-help';
-          help.textContent = 'Importe a lista de participantes. Depois, no jogo, ative Edição e clique em uma peça para escolher a pessoa e aplicar nome/foto.';
+          help.textContent = 'O JSON carrega somente a lista de participantes. Depois, ative Edição e clique em uma peça para escolher quem ficará nela.';
           help.style.cssText = 'font-size:9px;color:#aaa;line-height:1.45;margin:8px 0 10px;';
           const grid = dataCard.querySelector('div[style*="grid-template-columns"]');
           if (grid) dataCard.insertBefore(help, grid);
@@ -171,11 +172,25 @@ function installJsonSettingsUi(window) {
         editLabel.innerHTML = input + ' MODO EDIÇÃO (ESCALAR PARTICIPANTES)';
       }
 
-      if (!document.querySelector('script[data-roster-editor]')) {
+      const loadGuard = () => {
+        if (document.querySelector('script[data-roster-guard]')) return;
+        const guardScript = document.createElement('script');
+        guardScript.src = ${JSON.stringify(rosterGuardUrl)};
+        guardScript.dataset.rosterGuard = 'true';
+        document.body.appendChild(guardScript);
+      };
+
+      const existingRoster = document.querySelector('script[data-roster-editor]');
+      if (!existingRoster) {
         const rosterScript = document.createElement('script');
         rosterScript.src = ${JSON.stringify(rosterEditorUrl)};
         rosterScript.dataset.rosterEditor = 'true';
+        rosterScript.onload = loadGuard;
         document.body.appendChild(rosterScript);
+      } else if (window.__cosplayRosterEditorLoaded) {
+        loadGuard();
+      } else {
+        existingRoster.addEventListener('load', loadGuard, { once: true });
       }
     })();`;
 
