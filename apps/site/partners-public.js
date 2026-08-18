@@ -5,6 +5,14 @@
   const previewMode=new URLSearchParams(location.search).get('cmsPreview')==='1';
   let section=null,current={};
   const defaults={kicker:'PARCERIAS',titleMain:'Quem fortalece o',titleAccent:'tabuleiro.',description:'Parceiros, apoiadores e marcas que ajudam o CosplayChess a crescer, alcançar novos eventos e criar experiências cada vez maiores.',ctaText:'Quer apoiar o CosplayChess?',ctaButtonText:'Falar com a equipe',ctaUrl:'https://www.instagram.com/fergorverse/',showSection:true};
+  function hideHomeTeam(){
+    if(document.getElementById('home-team-visibility'))return;
+    const style=document.createElement('style');
+    style.id='home-team-visibility';
+    style.textContent='#universo>.universe-intro,#universo>.team-grid[data-team-grid]{display:none!important}';
+    document.head.appendChild(style);
+  }
+  hideHomeTeam();
   function initials(name=''){return name.trim().split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'CC'}
   function ensureSection(){
     if(section)return section;
