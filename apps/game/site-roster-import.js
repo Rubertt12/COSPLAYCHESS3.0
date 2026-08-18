@@ -1,0 +1,178 @@
+(() => {
+  if (window.__cosplaySiteRosterImportLoaded) return;
+  window.__cosplaySiteRosterImportLoaded = true;
+
+  const legacyListKeys = [
+    'participants', 'roster', 'participantes', 'participante', 'inscritos', 'inscricoes', 'inscrições',
+    'registrations', 'cadastros', 'pessoas', 'players', 'entries', 'records', 'rows', 'data'
+  ];
+
+  function text(value) {
+    if (value === 0) return '0';
+    return typeof value === 'string' ? value.trim() : '';
+  }
+
+  function first(source, keys) {
+    if (!source || typeof source !== 'object') return '';
+    for (const key of keys) {
+      const value = source[key];
+      if (typeof value === 'number' && Number.isFinite(value)) return String(value);
+      if (typeof value === 'string' && value.trim()) return value.trim();
+      if (value && typeof value === 'object') {
+        const nested = value.url || value.src || value.href || value.value || value.dataUrl;
+        if (typeof nested === 'string' && nested.trim()) return nested.trim();
+      }
+    }
+    return '';
+  }
+
+  function isOfficialSiteExport(data) {
+    return Boolean(
+      data &&
+      typeof data === 'object' &&
+      data.type === 'cosplaychess-participants' &&
+      Array.isArray(data.participants)
+    );
+  }
+
+  function normalizeParticipant(raw, index) {
+    if (!raw || typeof raw !== 'object') return null;
+
+    const name = first(raw, [
+      'nome', 'name', 'fullName', 'full_name', 'nomeCompleto', 'nome_completo',
+      'participante', 'cosplayer', 'nomeSocial', 'nome_social'
+    ]);
+    if (!name) return null;
+
+    const id = first(raw, ['id', 'uuid', 'registration_id', 'email']) || `${name.toLowerCase().replace(/\s+/g, '-')}-${index + 1}`;
+    const musicObject = raw.music && typeof raw.music === 'object' ? raw.music : {};
+    const musicName = text(raw.musicName) || text(musicObject.name) || first(raw, ['music_name', 'theme_music_name']);
+    const musicUrl = text(raw.musicUrl) || text(musicObject.url) || first(raw, ['music_url', 'theme_music_url']);
+    const musicFileUrl = text(raw.musicFileUrl) || text(musicObject.fileUrl) || first(raw, ['music_file_url', 'theme_music_file_url']);
+
+    return {
+      id: String(id),
+      name,
+      nick: first(raw, ['nick', 'apelido']),
+      photo: first(raw, [
+        'photoDataUrl', 'photo_data_url', 'foto', 'photo', 'imagem', 'image', 'avatar', 'img',
+        'fotoUrl', 'foto_url', 'photoUrl', 'photo_url', 'imageUrl', 'image_url',
+        'profileImage', 'profile_image'
+      ]),
+      character: first(raw, ['cosplay', 'personagem', 'character', 'fantasia', 'personagemCosplay', 'personagem_cosplay']),
+      preferredPiece: first(raw, [
+        'peca', 'peça', 'piece', 'pecaDesejada', 'peçaDesejada', 'peca_desejada',
+        'preferredPiece', 'preferred_piece', 'papel', 'role'
+      ]),
+      secondPreferredPiece: first(raw, [
+        'segundaPeca', 'segundaPeça', 'secondPiece', 'secondPreferredPiece', 'second_piece_preference',
+        'segunda_peca', 'segunda_peça'
+      ]),
+      team: first(raw, ['lado', 'side', 'time', 'equipe', 'team']),
+      email: first(raw, ['email', 'e-mail']),
+      phone: first(raw, ['whatsapp', 'telefone', 'phone', 'celular']),
+      city: first(raw, ['cidade', 'city']),
+      participation: first(raw, ['participacao', 'participação', 'participation', 'participationType', 'participation_type']),
+      music: {
+        name: musicName,
+        url: musicUrl,
+        fileUrl: musicFileUrl
+      },
+      musicName,
+      musicUrl,
+      musicFileUrl
+    };
+  }
+
+  function rowsFrom(data) {
+    if (isOfficialSiteExport(data)) return data.participants;
+    if (Array.isArray(data)) return data;
+    if (!data || typeof data !== 'object') return [];
+    if (data.g && Array.isArray(data.g.roster)) return data.g.roster;
+    const key = legacyListKeys.find(candidate => Array.isArray(data[candidate]));
+    return key ? data[key] : [];
+  }
+
+  function normalizeRoster(data) {
+    const seen = new Set();
+    return rowsFrom(data)
+      .map(normalizeParticipant)
+      .filter(Boolean)
+      .map((person, index) => {
+        let id = person.id;
+        if (seen.has(id)) id = `${id}-${index + 1}`;
+        seen.add(id);
+        return { ...person, id };
+      });
+  }
+
+  function notify(message, error = false) {
+    const old = document.getElementById('site-roster-import-toast');
+    if (old) old.remove();
+    const el = document.createElement('div');
+    el.id = 'site-roster-import-toast';
+    el.textContent = message;
+    el.style.cssText = `position:fixed;right:20px;bottom:20px;z-index:14000;padding:12px 16px;border-radius:8px;color:#fff;font-size:12px;background:${error ? '#3a0d17' : '#082c31'};border:1px solid ${error ? '#ff0055' : '#00e5ff'};box-shadow:0 12px 30px rgba(0,0,0,.55);max-width:460px;`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 4800);
+  }
+
+  function applyRoster(data, fileName = 'CosplayChess_elenco.json') {
+    const people = normalizeRoster(data);
+    if (!people.length) throw new Error('O JSON não possui participantes válidos.');
+
+    if (!window.store || typeof window.store !== 'object') throw new Error('O jogo ainda não terminou de carregar.');
+    if (!store.g) store.g = {};
+
+    store.g.roster = people;
+    store.g.rosterImportedAt = new Date().toISOString();
+    store.g.rosterSourceFile = fileName;
+    store.g.rosterFormat = isOfficialSiteExport(data) ? 'cosplaychess-participants' : 'legacy';
+    store.g.rosterExportVersion = data?.version || null;
+    store.g.rosterEvent = data?.event && typeof data.event === 'object' ? { ...data.event } : null;
+
+    try { save(); } catch (_) {}
+    try { renderBoard(); } catch (_) {}
+    try { renderConfigLists(); } catch (_) {}
+
+    const eventName = store.g.rosterEvent?.name ? ` do evento ${store.g.rosterEvent.name}` : '';
+    notify(`${people.length} participante(s)${eventName} carregado(s) do JSON do site. Agora ative Edição e clique em uma peça para escalar.`);
+  }
+
+  function importFile(input) {
+    const file = input?.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = event => {
+      try {
+        const data = JSON.parse(event.target.result);
+        applyRoster(data, file.name || 'CosplayChess_elenco.json');
+      } catch (error) {
+        console.error('Falha ao importar JSON do site:', error);
+        notify(error.message || 'Não foi possível importar o JSON.', true);
+      } finally {
+        input.value = '';
+      }
+    };
+    reader.onerror = () => {
+      notify('Não foi possível ler o arquivo JSON.', true);
+      input.value = '';
+    };
+    reader.readAsText(file);
+  }
+
+  window.importSquadData = importFile;
+  window.importCosplayChessSiteRoster = importFile;
+
+  // Captura no window antes do listener legado do roster-guard (que fica no document).
+  // Assim o JSON oficial exportado pelo site sempre usa este leitor.
+  window.addEventListener('change', event => {
+    const input = event.target;
+    if (!(input instanceof HTMLInputElement) || input.id !== 'import-file' || input.type !== 'file') return;
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    importFile(input);
+  }, true);
+})();
