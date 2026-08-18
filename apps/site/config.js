@@ -6,6 +6,41 @@ window.COSPLAYCHESS_CONFIG = {
   timezone: 'America/Sao_Paulo'
 };
 
+/*
+ * Um único cliente Supabase por contexto de navegador.
+ * Vários scripts do site usam createClient(); devolver a mesma instância evita
+ * múltiplos GoTrueClient disputando a mesma sessão/localStorage.
+ */
+(() => {
+  const cfg = window.COSPLAYCHESS_CONFIG;
+  const sdk = window.supabase;
+  if (!cfg || !sdk || typeof sdk.createClient !== 'function') return;
+  if (sdk.__cosplayChessSingletonInstalled) return;
+
+  const originalCreateClient = sdk.createClient.bind(sdk);
+  const sharedClient = originalCreateClient(cfg.supabaseUrl, cfg.supabaseKey);
+
+  window.COSPLAYCHESS_DB = sharedClient;
+  window.getCosplayChessDb = () => sharedClient;
+
+  sdk.createClient = function(url, key, options) {
+    const sameProject = String(url || '') === String(cfg.supabaseUrl || '');
+    const sameKey = String(key || '') === String(cfg.supabaseKey || '');
+
+    // Todos os scripts do CosplayChess compartilham a mesma sessão Auth.
+    // Clientes para outro projeto/chave continuam sendo criados normalmente.
+    if (sameProject && sameKey) return sharedClient;
+    return originalCreateClient(url, key, options);
+  };
+
+  Object.defineProperty(sdk, '__cosplayChessSingletonInstalled', {
+    value: true,
+    configurable: false,
+    enumerable: false,
+    writable: false
+  });
+})();
+
 (() => {
   const page = location.pathname.split('/').pop() || 'index.html';
   if (page === 'admin.html' || page === 'cms.html') return;
