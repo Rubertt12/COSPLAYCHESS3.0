@@ -13,6 +13,14 @@
 .text-link{font-size:12px}
 .footer{font-size:11px}
 .hero-actions .yatta-playing{animation:yattaPress .58s cubic-bezier(.2,.75,.25,1);box-shadow:0 0 0 3px rgba(240,209,140,.12),0 0 28px rgba(212,170,92,.28)}
+.instagram-cta{display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;gap:12px!important;min-width:238px;padding:10px 13px!important;border:1px solid rgba(255,255,255,.14)!important;border-radius:14px!important;color:#fff!important;text-decoration:none!important;background:linear-gradient(115deg,#5b2aa8 0%,#a52f86 38%,#dc3c62 68%,#ed8b35 100%)!important;box-shadow:0 10px 30px rgba(113,34,116,.25),inset 0 1px rgba(255,255,255,.16)!important;transition:transform .2s ease,filter .2s ease,box-shadow .2s ease!important}
+.instagram-cta:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 14px 34px rgba(177,48,111,.32),inset 0 1px rgba(255,255,255,.2)!important}
+.instagram-button-icon{width:36px;height:36px;flex:0 0 36px;display:grid;place-items:center;border-radius:11px;background:rgba(255,255,255,.14);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)}
+.instagram-button-icon svg{width:21px;height:21px;display:block}
+.instagram-button-copy{display:flex;flex:1;min-width:0;flex-direction:column;align-items:flex-start;line-height:1.1}
+.instagram-button-copy small{font-size:7px;font-weight:800;letter-spacing:1.15px;color:rgba(255,255,255,.72)}
+.instagram-button-copy strong{margin-top:4px;font-size:11px;font-weight:900;letter-spacing:.15px;color:#fff}
+.instagram-button-arrow{font-size:17px;line-height:1;color:rgba(255,255,255,.85);transition:transform .2s ease}.instagram-cta:hover .instagram-button-arrow{transform:translate(2px,-2px)}
 @keyframes yattaPress{0%{transform:scale(1)}35%{transform:scale(.94)}68%{transform:scale(1.06)}100%{transform:scale(1)}}
-@media(max-width:760px){#experiencia .experience-grid>div>p{font-size:16px}.feature-grid h3{font-size:22px}.feature-grid p{font-size:14px}.kicker{font-size:11px}.event-body p,.universe-intro>p,.universe-link p{font-size:13px}}
+@media(max-width:760px){#experiencia .experience-grid>div>p{font-size:16px}.feature-grid h3{font-size:22px}.feature-grid p{font-size:14px}.kicker{font-size:11px}.event-body p,.universe-intro>p,.universe-link p{font-size:13px}.instagram-cta{width:100%;min-width:0}}
 @media(prefers-reduced-motion:reduce){.hero-actions .yatta-playing{animation:none}}
