@@ -132,9 +132,10 @@
     store.g.rosterFormat = isOfficialSiteExport(data) ? 'cosplaychess-participants' : 'legacy';
     store.g.rosterExportVersion = data?.version || null;
     store.g.rosterEvent = data?.event && typeof data.event === 'object' ? { ...data.event } : null;
-    // Novo JSON invalida o resumo da montagem anterior até o operador acionar novamente.
+    // Novo JSON invalida a montagem e o resultado da partida anterior.
     delete store.g.autoLineupSummary;
     delete store.g.autoLineupLastRun;
+    delete store.g.matchRuntime;
 
     try { save(); } catch (_) {}
     try { renderBoard(); } catch (_) {}
@@ -182,15 +183,30 @@
     importFile(input);
   }, true);
 
+  const loadGameResultExport = () => {
+    const existing = document.querySelector('script[data-game-result-export]');
+    if (existing) return;
+    const resultScript = document.createElement('script');
+    resultScript.src = 'game-result-export.js';
+    resultScript.dataset.gameResultExport = 'true';
+    document.body.appendChild(resultScript);
+  };
+
   const loadAutomaticLineup = () => {
-    if (document.querySelector('script[data-auto-lineup-settings]')) return;
+    const existing = document.querySelector('script[data-auto-lineup-settings]');
+    if (existing) {
+      if (window.__cosplayAutoLineupSettingsLoaded) loadGameResultExport();
+      else existing.addEventListener('load', loadGameResultExport, { once: true });
+      return;
+    }
     const lineupScript = document.createElement('script');
     lineupScript.src = 'auto-lineup-settings.js';
     lineupScript.dataset.autoLineupSettings = 'true';
+    lineupScript.onload = loadGameResultExport;
     document.body.appendChild(lineupScript);
   };
 
-  // Carrega a experiência aprimorada de escalação/áudio e, em seguida, automação/layout das configurações.
+  // Carrega escalação/áudio -> automação/layout -> exportador oficial de resultado.
   const existingExperience = document.querySelector('script[data-participant-experience]');
   if (!existingExperience) {
     const experienceScript = document.createElement('script');
