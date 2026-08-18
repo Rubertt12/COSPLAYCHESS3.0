@@ -1,0 +1,1 @@
+Retry production deploy for inline team photo upload controls on resultados-admin.html without changing existing admin content.
