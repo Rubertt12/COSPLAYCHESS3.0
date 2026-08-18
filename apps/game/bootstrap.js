@@ -141,7 +141,7 @@ function installJsonSettingsUi(window) {
         dataCard.style.borderRadius = '8px';
 
         const title = dataCard.querySelector('b');
-        if (title) title.textContent = '💾 LISTA DE PARTICIPANTES (JSON DO SITE)';
+        if (title) title.textContent = '💾 ELENCO DO EVENTO (JSON DO SITE)';
 
         const buttons = Array.from(dataCard.querySelectorAll('button'));
         const exportBtn = buttons.find(btn => /EXPORTAR/i.test(btn.textContent || ''));
@@ -149,15 +149,16 @@ function installJsonSettingsUi(window) {
         if (exportBtn) exportBtn.textContent = 'EXPORTAR JSON';
         if (importBtn) importBtn.textContent = 'IMPORTAR JSON DO SITE';
 
-        if (!dataCard.querySelector('.json-settings-help')) {
-          const help = document.createElement('div');
+        let help = dataCard.querySelector('.json-settings-help');
+        if (!help) {
+          help = document.createElement('div');
           help.className = 'json-settings-help';
-          help.textContent = 'Importe aqui o arquivo gerado pelo botão “Exportar para o app” no painel do site. O elenco, fotos, preferências e dados do evento serão carregados; depois, ative Edição e clique em uma peça para escalar.';
-          help.style.cssText = 'font-size:9px;color:#aaa;line-height:1.45;margin:8px 0 10px;';
           const grid = dataCard.querySelector('div[style*="grid-template-columns"]');
           if (grid) dataCard.insertBefore(help, grid);
           else dataCard.appendChild(help);
         }
+        help.textContent = 'Importe o arquivo gerado por “Exportar para o app” no site. Depois use “Acionar JSON” para o sistema distribuir o elenco automaticamente; o Modo Edição fica disponível para ajustes manuais.';
+        help.style.cssText = 'font-size:9px;color:#aaa;line-height:1.45;margin:8px 0 10px;';
 
         const backButton = Array.from(settings.querySelectorAll('button')).find(btn => /VOLTAR/i.test(btn.textContent || ''));
         if (dataCard.parentElement !== settings) {
@@ -170,7 +171,7 @@ function installJsonSettingsUi(window) {
       const editLabel = editMode && editMode.closest('label');
       if (editLabel) {
         const input = editMode.outerHTML;
-        editLabel.innerHTML = input + ' MODO EDIÇÃO (ESCALAR PARTICIPANTES)';
+        editLabel.innerHTML = input + ' MODO EDIÇÃO (REVISAR ESCALAÇÃO)';
       }
 
       const loadSiteRosterImport = () => {
