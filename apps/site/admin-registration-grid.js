@@ -61,6 +61,20 @@
     setTimeout(()=>document.getElementById('contactUnlockPassword')?.focus(),30);
   };
 
+  window.deleteRegistration=async(id,name='este inscrito')=>{
+    const label=name||'este inscrito';
+    if(!confirm(`Excluir definitivamente ${label}?\n\nEssa ação não pode ser desfeita.`))return;
+    try{
+      const {error}=await db.from('cosplay_registrations').delete().eq('id',id);
+      if(error)throw error;
+      registrations=registrations.filter(r=>r.id!==id);
+      const totalPages=Math.max(1,Math.ceil(registrations.length/PAGE_SIZE));
+      currentPage=Math.min(currentPage,totalPages);
+      if(typeof renderStats==='function')renderStats();
+      window.renderRegistrations();
+    }catch(err){alert(`Não foi possível excluir o inscrito: ${err.message||err}`);}
+  };
+
   function renderPagination(root,totalPages,totalItems){
     if(totalPages<=1){
       root.insertAdjacentHTML('beforeend',`<div class="registration-pagination single"><span>${totalItems} inscrito${totalItems===1?'':'s'}</span></div>`);
@@ -128,6 +142,7 @@
               <option value="cancelled" ${r.status==='cancelled'?'selected':''}>Cancelado</option>
             </select>
           </label>
+          <button type="button" class="mini-btn danger registration-delete-btn" onclick="deleteRegistration('${safe(r.id)}','${safe((r.full_name||r.character_name||'este inscrito').replace(/'/g,"&#39;"))}')">Excluir inscrito</button>
         </div>
       </article>`).join('')}</div>`;
     renderPagination(root,totalPages,rows.length);
