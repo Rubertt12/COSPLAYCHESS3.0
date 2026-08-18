@@ -3,67 +3,46 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#09090c">
-  <meta name="description" content="Conquistas e troféus do CosplayChess.">
+  <meta name="theme-color" content="#0b0710">
+  <meta name="description" content="Conquistas e troféus do CosplayChess no estilo Steam e PlayStation.">
   <title>Conquistas — CosplayChess</title>
   <link rel="icon" href="./img/favicon-Photoroom.png">
   <link rel="stylesheet" href="./landing.css">
   <link rel="stylesheet" href="./community.css">
-  <style>
-    body.achievements-page{background:radial-gradient(circle at 48% 16%,rgba(116,77,26,.08),transparent 30%),radial-gradient(circle at 8% 12%,rgba(92,28,54,.08),transparent 26%),#09090c;color:#f4efe8}
-    .achievements-page .topbar{background:rgba(8,8,11,.94);border-bottom:1px solid rgba(255,255,255,.08);backdrop-filter:blur(18px)}
-    .achievements-main{padding:54px 0 70px}
-    .achievements-heading{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;margin-bottom:24px}
-    .achievements-heading .kicker{font-size:11px;letter-spacing:2px;color:#e5b556}
-    .achievements-heading h1{font-family:Georgia,'Times New Roman',serif;font-size:clamp(50px,5vw,76px);font-weight:500;line-height:1;margin:12px 0;color:#f4efe8}
-    .achievements-heading h1 i{font-weight:400;color:#efc56f}
-    .achievements-heading p{margin:0;color:#b9b2bc;font-size:16px;line-height:1.6}
-    .achievement-summary{min-width:245px;display:flex;align-items:center;gap:14px;padding:19px 22px;border:1px solid rgba(255,255,255,.1);border-radius:11px;background:linear-gradient(145deg,rgba(28,27,32,.92),rgba(17,17,21,.94));box-shadow:0 18px 50px rgba(0,0,0,.28)}
-    .achievement-summary-icon{width:46px;height:46px;display:grid;place-items:center;border:1px solid rgba(224,174,77,.28);border-radius:10px;color:#e7b552;font-size:26px}
-    .achievement-summary strong,.achievement-summary span{display:block}.achievement-summary strong{font-size:16px;font-weight:500}.achievement-summary span{font-size:13px;color:#96909a;margin-top:5px}
-    .achievements-page .achievements-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-    .achievements-page .achievement-card{position:relative;min-height:316px;padding:14px 22px 18px;border:1px solid rgba(255,255,255,.13);border-radius:12px;background:linear-gradient(165deg,rgba(24,24,29,.98),rgba(13,13,17,.98));overflow:hidden;text-align:center;box-shadow:0 22px 54px rgba(0,0,0,.22);transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
-    .achievements-page .achievement-card:hover{transform:translateY(-3px);border-color:rgba(222,178,92,.42);box-shadow:0 28px 70px rgba(0,0,0,.35)}
-    .achievements-page .achievement-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 28%,rgba(222,177,91,.07),transparent 35%),linear-gradient(180deg,rgba(255,255,255,.018),transparent 45%);pointer-events:none}
-    .achievements-page .achievement-card:after{content:"";position:absolute;width:180px;height:180px;border:1px solid rgba(216,171,83,.08);border-radius:50%;top:22px;left:50%;transform:translateX(-50%);pointer-events:none}
-    .achievements-page .award-count{top:13px;right:14px!important;color:#d4ced8!important;font-size:12px!important;z-index:4}
-    .achievements-page .achievement-icon{position:relative;z-index:2;width:170px;height:170px;margin:4px auto -5px;color:transparent!important;font-size:0!important;background-position:center;background-repeat:no-repeat;background-size:contain;filter:drop-shadow(0 15px 16px rgba(0,0,0,.55))}
-    .achievements-page .achievement-tier{position:relative;z-index:3;margin:0 auto 7px!important;display:inline-flex!important;padding:5px 16px!important;border:1px solid rgba(226,177,79,.46)!important;background:rgba(12,12,15,.9);border-radius:999px!important;color:#efc05c!important;font-size:10px!important;letter-spacing:2px!important;font-weight:800}
-    .achievements-page .achievement-card h3{position:relative;z-index:2;font-family:Georgia,'Times New Roman',serif;font-size:25px!important;line-height:1.08;margin:5px 0 7px!important;color:#f3eee7}
-    .achievements-page .achievement-card p{position:relative;z-index:2;font-size:13px!important;line-height:1.48!important;color:#c2bbc4!important;margin:0 auto!important;max-width:290px}
-    .achievements-page .achievement-card small{position:relative;z-index:2;font-size:12px!important;line-height:1.45!important;color:#d9aa4d!important;margin-top:12px!important;min-height:34px}
-    .achievements-page .achievement-card:nth-child(1) .achievement-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'%3E%3Cdefs%3E%3ClinearGradient id='b' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23ffd6a0'/%3E%3Cstop offset='.35' stop-color='%23a95722'/%3E%3Cstop offset='.72' stop-color='%23532116'/%3E%3Cstop offset='1' stop-color='%23e99a50'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg stroke='%23f0b06b' stroke-width='3'%3E%3Ccircle cx='110' cy='48' r='24' fill='url(%23b)'/%3E%3Cpath d='M88 75h44l-9 54H97z' fill='url(%23b)'/%3E%3Cpath d='M79 133h62v16H79zM67 151h86v18H67zM54 172h112v20H54z' fill='%23301914'/%3E%3C/g%3E%3C/svg%3E")}
-    .achievements-page .achievement-card:nth-child(2) .achievement-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23f5f1ea'/%3E%3Cstop offset='.45' stop-color='%238b8b92'/%3E%3Cstop offset='1' stop-color='%23373640'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M52 48l22-14 49 72-14 12zM168 48l-22-14-49 72 14 12z' fill='url(%23m)' stroke='%23e5e0da' stroke-width='3'/%3E%3Cpath d='M62 117l23 19-13 17-24-17zM158 117l-23 19 13 17 24-17z' fill='%235e3f82' stroke='%23a183c9' stroke-width='3'/%3E%3Cpath d='M47 165h126v22H47zM68 146h84v18H68z' fill='%231c1b20' stroke='%237f6e56' stroke-width='2'/%3E%3C/svg%3E")}
-    .achievements-page .achievement-card:nth-child(3) .achievement-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'%3E%3Cdefs%3E%3CradialGradient id='r'%3E%3Cstop stop-color='%23f8efe8'/%3E%3Cstop offset='.35' stop-color='%23d74437'/%3E%3Cstop offset='.65' stop-color='%23f1e5d8'/%3E%3Cstop offset='1' stop-color='%2355201b'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='108' cy='91' r='62' fill='url(%23r)' stroke='%23938a81' stroke-width='6'/%3E%3Ccircle cx='108' cy='91' r='38' fill='none' stroke='%23eee2d4' stroke-width='12'/%3E%3Ccircle cx='108' cy='91' r='14' fill='%23691b18'/%3E%3Cpath d='M162 31l-50 61M154 34l20-1-5 19' stroke='%232d9bc0' stroke-width='8' stroke-linecap='round'/%3E%3Cpath d='M70 150h76v16H70zM56 168h104v20H56z' fill='%23211e1d' stroke='%238c795b' stroke-width='2'/%3E%3C/svg%3E")}
-    .achievements-page .achievement-card:nth-child(4) .achievement-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'%3E%3Cdefs%3E%3ClinearGradient id='bl' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%236cc8ff'/%3E%3Cstop offset='.5' stop-color='%23295fae'/%3E%3Cstop offset='1' stop-color='%23112c5b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M110 28l58 20v45c0 39-20 64-58 82-38-18-58-43-58-82V48z' fill='url(%23bl)' stroke='%23bcc8dc' stroke-width='5'/%3E%3Cpath d='M110 48v105M76 69c28 4 40 24 34 55M144 69c-28 4-40 24-34 55' fill='none' stroke='%23d8e4f5' stroke-width='5' opacity='.75'/%3E%3Cpath d='M69 165h82v16H69zM56 183h108v17H56z' fill='%231d2028' stroke='%237c7f86' stroke-width='2'/%3E%3C/svg%3E")}
-    .achievements-page .achievement-card:nth-child(5) .achievement-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23fff1c1'/%3E%3Cstop offset='.42' stop-color='%23c98b38'/%3E%3Cstop offset='1' stop-color='%23462612'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M68 47h25v22h34V47h25v22h14v101H54V69h14z' fill='url(%23g)' stroke='%23e9bc62' stroke-width='4'/%3E%3Cpath d='M84 108h52v62H84z' fill='%23332217' opacity='.55'/%3E%3Cpath d='M54 170h112v18H54zM42 189h136v16H42z' fill='%231a1715' stroke='%238b693c' stroke-width='2'/%3E%3Cpath d='M154 60h38v68h-38z' fill='%23342118' stroke='%23c3974c' stroke-width='3'/%3E%3C/svg%3E")}
-    .achievements-page .achievement-card:nth-child(6) .achievement-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'%3E%3Cdefs%3E%3ClinearGradient id='cg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23fff3a6'/%3E%3Cstop offset='.36' stop-color='%23f0ae25'/%3E%3Cstop offset='.76' stop-color='%23824d0c'/%3E%3Cstop offset='1' stop-color='%23f6c443'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M53 85l18-42 34 37 20-55 21 55 34-37 17 42-15 58H68z' fill='url(%23cg)' stroke='%23ffe083' stroke-width='4'/%3E%3Ccircle cx='91' cy='106' r='8' fill='%23a61f1f'/%3E%3Ccircle cx='130' cy='106' r='8' fill='%23561a94'/%3E%3Cpath d='M65 145h90v17H65zM48 164h124v24H48z' fill='%23301b10' stroke='%23946327' stroke-width='3'/%3E%3C/svg%3E")}
-    .achievements-page .achievement-card:nth-child(7) .achievement-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'%3E%3Cdefs%3E%3ClinearGradient id='d' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23e9fbff'/%3E%3Cstop offset='.32' stop-color='%235ddcff'/%3E%3Cstop offset='.68' stop-color='%231b76c7'/%3E%3Cstop offset='1' stop-color='%230c2d6c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M110 35l49 35-49 70-49-70z' fill='url(%23d)' stroke='%23a8ecff' stroke-width='4'/%3E%3Cpath d='M61 70h98M86 50l24 90 25-90M61 70l49 70 49-70' fill='none' stroke='%23d7f7ff' stroke-width='2' opacity='.75'/%3E%3Cpath d='M74 144h72v18H74zM56 164h108v22H56z' fill='%23171b22' stroke='%2368838f' stroke-width='3'/%3E%3C/svg%3E")}
-    .achievements-page .achievement-card:nth-child(8) .achievement-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'%3E%3Cdefs%3E%3ClinearGradient id='bk' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23ffd36a'/%3E%3Cstop offset='.34' stop-color='%238a5a19'/%3E%3Cstop offset='.75' stop-color='%23361f0c'/%3E%3Cstop offset='1' stop-color='%23d39431'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M57 38h96l18 18v119l-18 17H57l-15-17V55z' fill='url(%23bk)' stroke='%23e3b75a' stroke-width='4'/%3E%3Cpath d='M65 51h77v126H65z' fill='%23221912' opacity='.75' stroke='%23bc862c' stroke-width='2'/%3E%3Cpath d='M110 72c12 0 20 9 20 19 0 13-12 18-20 32-8-14-20-19-20-32 0-10 8-19 20-19zm0 51v28M93 139h34' fill='none' stroke='%23efc25f' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E")}
-    .trajectory{margin-top:18px;display:grid;grid-template-columns:1fr 1.2fr;gap:28px;align-items:center;padding:23px 28px;border:1px solid rgba(255,255,255,.11);border-radius:12px;background:linear-gradient(145deg,rgba(25,25,29,.94),rgba(13,13,16,.97));position:relative;overflow:hidden}
-    .trajectory:after{content:"♞  ♚  ♞";position:absolute;left:38%;bottom:-26px;font-family:Georgia,serif;font-size:92px;color:rgba(255,255,255,.035);letter-spacing:-14px}
-    .trajectory h2{font-size:16px;letter-spacing:.8px;text-transform:uppercase;color:#e7b655;margin:0 0 8px}.trajectory p{font-size:13px;color:#918a95;margin:0;line-height:1.6}
-    .trajectory #awardsFeed{margin:0;display:block;position:relative;z-index:2}.trajectory .empty-card{padding:0;border:0;text-align:left;background:none;color:#c7c0c8;font-size:14px}.trajectory .award-item{margin-bottom:8px}
-    @media(max-width:1100px){.achievements-page .achievements-grid{grid-template-columns:repeat(2,1fr)}.achievements-heading{grid-template-columns:1fr}.achievement-summary{width:max-content}}
-    @media(max-width:680px){.achievements-main{padding-top:34px}.achievements-heading h1{font-size:48px}.achievements-heading p{font-size:14px}.achievement-summary{width:100%;min-width:0}.achievements-page .achievements-grid{grid-template-columns:1fr}.achievements-page .achievement-card{min-height:0}.trajectory{grid-template-columns:1fr;padding:20px}.trajectory:after{display:none}.achievements-page .achievement-icon{width:155px;height:155px}.achievements-page .achievement-card h3{font-size:24px!important}}
-  </style>
 </head>
-<body class="community-page achievements-page">
+<body class="community-page">
   <div class="grain"></div>
   <header class="topbar">
     <a class="brand" href="./index.html"><img src="./img/fergorverse-logo.webp" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a>
     <nav><a href="./universo.html">Universo</a><a href="./hall-da-fama.html">Hall da Fama</a><a href="./ranking.html">Ranking</a><a href="./cadastro.html">Inscrição</a></nav>
-    <div class="top-actions"><a class="btn ghost" href="./index.html">Início</a><a class="btn gold" href="./jogo/">Jogar no navegador</a></div>
+    <div class="top-actions"><a class="btn ghost" href="./index.html">Início</a><a class="btn gold" href="./cadastro.html">Faça parte do Espetáculo!</a></div>
   </header>
-  <main class="achievements-main shell">
-    <div class="achievements-heading">
-      <div><span class="kicker">COLEÇÃO DE TROFÉUS</span><h1>Desbloqueie sua <i>história.</i></h1><p>Cada conquista representa um capítulo da sua jornada no tabuleiro de CosplayChess.</p></div>
-      <aside class="achievement-summary"><div class="achievement-summary-icon">♜</div><div><strong>8 conquistas disponíveis</strong><span>Bronze • Silver • Gold • Platinum</span></div></aside>
-    </div>
-    <div id="achievementsGrid" class="achievements-grid"><div class="empty-card">Carregando conquistas...</div></div>
-    <section class="trajectory"><div><h2>Sua trajetória</h2><p>Acompanhe os troféus conquistados e os capítulos que já entraram para a sua história no CosplayChess.</p></div><div id="awardsFeed" class="awards-feed"><div class="empty-card">Carregando troféus...</div></div></section>
+
+  <main>
+    <section class="community-hero shell">
+      <div>
+        <span class="kicker">TROFÉUS • FEITOS • MEMÓRIA</span>
+        <h1>Conquistas do <i>CosplayChess.</i></h1>
+        <p>Um sistema de achievements inspirado em jogos: participar, capturar, sobreviver, vencer e alcançar marcos especiais desbloqueia troféus que ficam registrados na história do cosplayer.</p>
+        <div class="community-nav"><a class="btn gold big" href="./ranking.html">Abrir ranking</a><a class="btn dark big" href="./universo.html">Universo Fergorverse</a></div>
+      </div>
+      <div class="community-mark"><img src="./img/favicon-Photoroom.png" alt="Conquistas CosplayChess"></div>
+    </section>
+
+    <section class="community-section shell">
+      <div class="section-head"><div><span class="kicker">COLEÇÃO DE TROFÉUS</span><h2 class="community-title">Desbloqueie sua <i>história.</i></h2></div></div>
+      <div id="achievementsGrid" class="achievements-grid"><div class="empty-card">Carregando conquistas...</div></div>
+    </section>
+
+    <section class="community-section shell">
+      <div class="section-head"><div><span class="kicker">DESBLOQUEIOS RECENTES</span><h2 class="community-title">Quem ganhou <i>troféu.</i></h2></div></div>
+      <div id="awardsFeed" class="awards-feed"><div class="empty-card">Carregando troféus...</div></div>
+    </section>
   </main>
+
   <footer class="footer shell"><div class="brand mini"><img src="./img/fergorverse-logo.webp" alt=""><span><b>COSPLAY</b><em>CHESS</em></span></div><p>Fergorverse • CosplayChess</p><a href="./index.html">Voltar ao início ↑</a></footer>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script src="./community.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script src="./community.js"></script>
 </body>
 </html>
