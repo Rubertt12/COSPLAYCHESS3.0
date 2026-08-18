@@ -1,0 +1,1 @@
+Trigger deploy for editable hero stats in visual CMS.
