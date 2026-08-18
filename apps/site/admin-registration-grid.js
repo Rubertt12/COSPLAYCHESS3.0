@@ -10,6 +10,30 @@
   const contactsUnlocked=()=>Date.now()<contactsUnlockedUntil;
   const hiddenContact=(type)=>type==='email'?'••••••••@••••••.•••':'(••) •••••-••••';
 
+  function musicData(row={}){
+    return {
+      name:row.music_name||row.musicName||'',
+      url:row.music_url||row.musicUrl||row.music_file_url||row.musicFileUrl||''
+    };
+  }
+
+  function isAudioUrl(url=''){
+    return /\.(mp3|wav|ogg|m4a|aac)(?:[?#].*)?$/i.test(String(url));
+  }
+
+  function renderMusic(row){
+    const music=musicData(row);
+    if(!music.name&&!music.url)return '';
+    const title=safe(music.name||'Música do personagem');
+    const url=safe(music.url);
+    return `<div class="registration-music">
+      <div class="registration-music-head"><span aria-hidden="true">♫</span><div><small>Música do personagem</small><b>${title}</b></div></div>
+      ${music.url?(isAudioUrl(music.url)
+        ?`<audio class="registration-music-player" controls preload="none" src="${url}">Seu navegador não suporta áudio.</audio>`
+        :`<a class="registration-music-link" href="${url}" target="_blank" rel="noopener noreferrer">Abrir música ↗</a>`):''}
+    </div>`;
+  }
+
   function pageButton(page,label=String(page),extra=''){
     return `<button type="button" class="registration-page-btn ${extra}" data-registration-page="${page}">${label}</button>`;
   }
@@ -134,6 +158,7 @@
           <div><span>Peça</span><b>${safe(r.piece_preference||'Sem preferência')}</b></div>
           <div class="registration-detail-wide"><span>2ª preferência</span><b>${safe(r.second_piece_preference||'Sem segunda preferência')}</b></div>
         </div>
+        ${renderMusic(r)}
         <div class="registration-card-footer">
           <label><span>Status</span>
             <select onchange="updateRegistrationStatus('${safe(r.id)}',this.value)">
