@@ -124,6 +124,7 @@ function installJsonSettingsUi(window) {
   if (!window || window.isDestroyed()) return;
   const rosterEditorUrl = pathToFileURL(path.join(__dirname, 'roster-editor.js')).href;
   const rosterGuardUrl = pathToFileURL(path.join(__dirname, 'roster-guard.js')).href;
+  const siteRosterImportUrl = pathToFileURL(path.join(__dirname, 'site-roster-import.js')).href;
 
   window.webContents.on('did-finish-load', () => {
     const code = `(() => {
@@ -140,18 +141,18 @@ function installJsonSettingsUi(window) {
         dataCard.style.borderRadius = '8px';
 
         const title = dataCard.querySelector('b');
-        if (title) title.textContent = '💾 LISTA DE PARTICIPANTES (JSON)';
+        if (title) title.textContent = '💾 LISTA DE PARTICIPANTES (JSON DO SITE)';
 
         const buttons = Array.from(dataCard.querySelectorAll('button'));
         const exportBtn = buttons.find(btn => /EXPORTAR/i.test(btn.textContent || ''));
         const importBtn = buttons.find(btn => /IMPORTAR/i.test(btn.textContent || ''));
         if (exportBtn) exportBtn.textContent = 'EXPORTAR JSON';
-        if (importBtn) importBtn.textContent = 'IMPORTAR JSON';
+        if (importBtn) importBtn.textContent = 'IMPORTAR JSON DO SITE';
 
         if (!dataCard.querySelector('.json-settings-help')) {
           const help = document.createElement('div');
           help.className = 'json-settings-help';
-          help.textContent = 'O JSON carrega somente a lista de participantes. Depois, ative Edição e clique em uma peça para escolher quem ficará nela.';
+          help.textContent = 'Importe aqui o arquivo gerado pelo botão “Exportar para o app” no painel do site. O elenco, fotos, preferências e dados do evento serão carregados; depois, ative Edição e clique em uma peça para escalar.';
           help.style.cssText = 'font-size:9px;color:#aaa;line-height:1.45;margin:8px 0 10px;';
           const grid = dataCard.querySelector('div[style*="grid-template-columns"]');
           if (grid) dataCard.insertBefore(help, grid);
@@ -172,11 +173,25 @@ function installJsonSettingsUi(window) {
         editLabel.innerHTML = input + ' MODO EDIÇÃO (ESCALAR PARTICIPANTES)';
       }
 
+      const loadSiteRosterImport = () => {
+        if (document.querySelector('script[data-site-roster-import]')) return;
+        const siteScript = document.createElement('script');
+        siteScript.src = ${JSON.stringify(siteRosterImportUrl)};
+        siteScript.dataset.siteRosterImport = 'true';
+        document.body.appendChild(siteScript);
+      };
+
       const loadGuard = () => {
-        if (document.querySelector('script[data-roster-guard]')) return;
+        const existingGuard = document.querySelector('script[data-roster-guard]');
+        if (existingGuard) {
+          if (window.__cosplayRosterGuardLoaded) loadSiteRosterImport();
+          else existingGuard.addEventListener('load', loadSiteRosterImport, { once: true });
+          return;
+        }
         const guardScript = document.createElement('script');
         guardScript.src = ${JSON.stringify(rosterGuardUrl)};
         guardScript.dataset.rosterGuard = 'true';
+        guardScript.onload = loadSiteRosterImport;
         document.body.appendChild(guardScript);
       };
 
