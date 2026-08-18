@@ -3,36 +3,37 @@
   window.__cosplayGameResultExportLoaded = true;
 
   const PIECE_LABELS = { P: 'Peão', T: 'Torre', C: 'Cavalo', B: 'Bispo', Q: 'Rainha', K: 'Rei' };
+  const nowIso = () => new Date().toISOString();
+  const runtime = () => store?.g?.matchRuntime || null;
+  const playerNumber = side => side === 'B' ? 1 : 2;
+  const sideLabel = side => side === 'B' ? 'Brancas' : side === 'P' ? 'Pretas' : 'Empate';
 
-  function nowIso() { return new Date().toISOString(); }
-  function runtime() { return store?.g?.matchRuntime || null; }
   function playerName(side) {
     return document.getElementById(`name-${side}`)?.value?.trim() || (side === 'B' ? 'Jogador 1' : 'Jogador 2');
   }
-  function playerNumber(side) { return side === 'B' ? 1 : 2; }
-  function sideLabel(side) { return side === 'B' ? 'Brancas' : side === 'P' ? 'Pretas' : 'Empate'; }
+
+  function persist() { try { save(); } catch (_) {} }
+
   function newMatchId() {
     const eventId = String(store?.g?.rosterEvent?.id || 'local').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 40) || 'local';
     const random = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
     return `cc-${eventId}-${random}`;
   }
+
   function managedPieceIds() {
     return Object.keys(store?.p || {}).filter(id => store.p[id]?.participantId && /_[BP]$/.test(id));
   }
+
   function createPieceStats() {
-    const stats = {};
-    managedPieceIds().forEach(id => { stats[id] = { moves: 0, captures: 0 }; });
-    return stats;
+    return Object.fromEntries(managedPieceIds().map(id => [id, { moves: 0, captures: 0 }]));
   }
-  function persist() { try { save(); } catch (_) {} }
 
   function startRuntime(force = false) {
     if (!store.g) store.g = {};
     const current = runtime();
     const lineupAt = Date.parse(store.g.autoLineupLastRun || '') || 0;
     const startedAt = Date.parse(current?.startedAt || '') || 0;
-    const lineupIsNewer = lineupAt > startedAt;
-    if (!force && current?.status === 'active' && !lineupIsNewer) return current;
+    if (!force && current?.status === 'active' && lineupAt <= startedAt) return current;
 
     store.g.matchRuntime = {
       matchId: newMatchId(),
@@ -80,10 +81,7 @@
     rt.finishedAt = rt.finishedAt || nowIso();
     rt.status = 'finished';
     persist();
-    setTimeout(() => {
-      installVictoryExportButton();
-      refreshResultButton();
-    }, 60);
+    setTimeout(() => { installVictoryExportButton(); refreshResultButton(); }, 60);
   }
 
   function buildParticipants(winner) {
@@ -154,6 +152,16 @@
     return String(value || 'evento').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 70) || 'evento';
   }
 
+  function notify(message, error = false) {
+    document.getElementById('match-result-toast')?.remove();
+    const toast = document.createElement('div');
+    toast.id = 'match-result-toast';
+    toast.textContent = message;
+    toast.style.cssText = `position:fixed;right:20px;bottom:20px;z-index:22000;max-width:450px;padding:13px 16px;border-radius:11px;background:${error ? '#351018' : '#071f23'};border:1px solid ${error ? '#ff4f77' : 'var(--accent,#00e5ff)'};color:#fff;font-size:11px;line-height:1.45;box-shadow:0 18px 46px rgba(0,0,0,.62);`;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 4800);
+  }
+
   function exportResult() {
     try {
       const payload = buildResultPayload();
@@ -170,16 +178,6 @@
     } catch (error) {
       notify(error.message || 'Não foi possível exportar o resultado.', true);
     }
-  }
-
-  function notify(message, error = false) {
-    document.getElementById('match-result-toast')?.remove();
-    const toast = document.createElement('div');
-    toast.id = 'match-result-toast';
-    toast.textContent = message;
-    toast.style.cssText = `position:fixed;right:20px;bottom:20px;z-index:22000;max-width:450px;padding:13px 16px;border-radius:11px;background:${error ? '#351018' : '#071f23'};border:1px solid ${error ? '#ff4f77' : 'var(--accent,#00e5ff)'};color:#fff;font-size:11px;line-height:1.45;box-shadow:0 18px 46px rgba(0,0,0,.62);`;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 4800);
   }
 
   function installVictoryExportButton() {
@@ -208,8 +206,7 @@
       <div id="match-result-export-status" style="font-size:9px;color:#aaa;line-height:1.45;margin:7px 0 9px;">Aguardando uma partida oficial.</div>
       <button type="button" class="btn-play-sm" data-export-match-result style="width:100%;font-size:8px;padding:10px 6px;">EXPORTAR RESULTADO</button>`;
     const resetButton = [...root.querySelectorAll('button')].find(btn => /RESET TOTAL/i.test(btn.textContent || ''));
-    if (resetButton) root.insertBefore(card, resetButton);
-    else root.appendChild(card);
+    if (resetButton) root.insertBefore(card, resetButton); else root.appendChild(card);
     card.querySelector('[data-export-match-result]').addEventListener('click', exportResult);
     refreshResultButton();
   }
@@ -247,9 +244,10 @@
       const originalExecuteMove = executeMove;
       executeMove = function(from, to, ...rest) {
         const mover = store?.board?.[from] || null;
+        const wasActive = runtime()?.status === 'active';
         const graveBefore = Array.isArray(store?.graveyard) ? store.graveyard.length : 0;
         const result = originalExecuteMove.call(this, from, to, ...rest);
-        if (runtime()?.status === 'active' && mover) {
+        if (wasActive && mover) {
           const graveAfter = Array.isArray(store?.graveyard) ? store.graveyard.length : graveBefore;
           recordMove(mover, graveAfter > graveBefore);
         }
@@ -263,9 +261,10 @@
         const attacker = store?.board?.[pending?.f] || null;
         const defender = store?.board?.[pending?.t] || null;
         const attackerSide = attacker?.endsWith('_B') ? 'B' : 'P';
-        const defenderWon = attacker && defender && v !== attackerSide;
+        const defenderWon = !!(attacker && defender && v !== attackerSide);
+        const wasActive = runtime()?.status === 'active';
         const result = originalFinishDuel.call(this, v, ...rest);
-        if (runtime()?.status === 'active' && defenderWon) recordCapture(defender);
+        if (wasActive && defenderWon) recordCapture(defender);
         return result;
       };
     }
