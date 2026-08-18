@@ -37,7 +37,6 @@ window.addEventListener('load', () => {
 
   if (page === 'admin.html') {
     loadScript('./admin-cms.js', () => {
-      loadScript('./admin-team-media.js');
       const stack = document.getElementById('cmsStack');
       if (stack) stack.hidden = true;
       const actions = document.querySelector('.top-actions');
