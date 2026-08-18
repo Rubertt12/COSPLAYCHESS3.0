@@ -1,0 +1,7 @@
+.universe-page .universe-hero{grid-template-columns:1fr 1fr;gap:42px}
+.universe-page .universe-hero-mark{min-height:430px}
+.universe-page .universe-hero-mark:before{width:390px;height:390px}
+.universe-page .universe-hero-mark:after{width:300px;height:300px}
+.universe-page .universe-hero-mark img{width:min(92%,430px);max-width:430px;transform:scale(1.06);filter:drop-shadow(0 24px 48px rgba(0,0,0,.72))}
+@media(max-width:980px){.universe-page .universe-hero{grid-template-columns:1fr}.universe-page .universe-hero-mark{min-height:360px}.universe-page .universe-hero-mark img{width:min(86%,370px);max-width:370px}.universe-page .universe-hero-mark:before{width:320px;height:320px}.universe-page .universe-hero-mark:after{width:245px;height:245px}}
+@media(max-width:700px){.universe-page .universe-hero-mark{min-height:300px}.universe-page .universe-hero-mark img{width:min(88%,310px);max-width:310px}.universe-page .universe-hero-mark:before{width:270px;height:270px}.universe-page .universe-hero-mark:after{width:205px;height:205px}}
