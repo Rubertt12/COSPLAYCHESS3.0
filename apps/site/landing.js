@@ -4,17 +4,89 @@ const db = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
 const dateFmt = new Intl.DateTimeFormat('pt-BR', { dateStyle:'long', timeStyle:'short', timeZone: cfg.timezone });
 const esc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
+const MAP_CACHE_KEY='cosplaychess_event_geocodes_v1';
+let leafletPromise=null;
+function injectMapStyles(){
+  if(document.getElementById('eventMapStyles'))return;
+  const style=document.createElement('style');
+  style.id='eventMapStyles';
+  style.textContent=`
+    .event-map-wrap{margin:0 0 16px;border:1px solid rgba(224,190,119,.24);border-radius:12px;overflow:hidden;background:#0d0b10}
+    .event-map{height:190px;background:radial-gradient(circle at 50% 45%,rgba(212,170,92,.09),transparent 60%),#0d0b10}
+    .event-map-loading{height:190px;display:grid;place-items:center;padding:20px;text-align:center;color:#a99ba8;font-size:10px;letter-spacing:.3px}
+    .event-map-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 11px;background:rgba(12,9,14,.96);border-top:1px solid rgba(255,255,255,.06)}
+    .event-map-actions small{color:#8f838f;font-size:8px;line-height:1.35}
+    .event-map-actions a{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:#e8c579;font-size:9px;font-weight:900;white-space:nowrap}
+    .event-map-actions a:hover{color:#fff}
+    .leaflet-container{font-family:Inter,Segoe UI,Arial,sans-serif;background:#17131a}
+    .leaflet-control-attribution{font-size:7px!important;background:rgba(255,255,255,.86)!important}
+    @media(max-width:760px){.event-map{height:170px}.event-map-loading{height:170px}.event-map-actions{align-items:flex-start;flex-direction:column}}
+  `;
+  document.head.appendChild(style);
+}
+function loadLeaflet(){
+  if(window.L)return Promise.resolve(window.L);
+  if(leafletPromise)return leafletPromise;
+  leafletPromise=new Promise((resolve,reject)=>{
+    if(!document.querySelector('link[data-leaflet-css]')){
+      const link=document.createElement('link');link.rel='stylesheet';link.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';link.crossOrigin='';link.dataset.leafletCss='1';document.head.appendChild(link);
+    }
+    const existing=document.querySelector('script[data-leaflet-js]');
+    if(existing){existing.addEventListener('load',()=>resolve(window.L),{once:true});existing.addEventListener('error',reject,{once:true});return;}
+    const script=document.createElement('script');script.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';script.crossOrigin='';script.dataset.leafletJs='1';script.onload=()=>resolve(window.L);script.onerror=reject;document.head.appendChild(script);
+  });
+  return leafletPromise;
+}
+function getGeoCache(){try{return JSON.parse(localStorage.getItem(MAP_CACHE_KEY)||'{}')}catch{return{}}}
+function saveGeoCache(cache){try{localStorage.setItem(MAP_CACHE_KEY,JSON.stringify(cache))}catch{}}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+async function geocodeEvent(event,index){
+  const query=[event.venue,event.city,'Brasil'].filter(Boolean).join(', ');
+  if(!query.trim())return null;
+  const cache=getGeoCache();
+  if(cache[query])return cache[query];
+  if(index>0)await sleep(index*1100);
+  try{
+    const url=`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=br&q=${encodeURIComponent(query)}`;
+    const response=await fetch(url,{headers:{'Accept':'application/json','Accept-Language':'pt-BR'}});
+    if(!response.ok)return null;
+    const rows=await response.json();
+    if(!rows?.length)return null;
+    const point={lat:Number(rows[0].lat),lon:Number(rows[0].lon),label:rows[0].display_name||query};
+    cache[query]=point;saveGeoCache(cache);return point;
+  }catch{return null;}
+}
+async function mountEventMap(event,index){
+  const holder=document.querySelector(`[data-event-map="${CSS.escape(String(event.id))}"]`);
+  if(!holder)return;
+  const loading=holder.querySelector('.event-map-loading');
+  const point=await geocodeEvent(event,index);
+  if(!point){if(loading)loading.textContent='Mapa indisponível para este endereço. Confira o local informado no evento.';return;}
+  try{
+    const L=await loadLeaflet();
+    holder.innerHTML=`<div class="event-map" aria-label="Mapa de ${esc(event.title)}"></div><div class="event-map-actions"><small>Mapa © OpenStreetMap contributors</small><a href="https://www.openstreetmap.org/?mlat=${point.lat}&mlon=${point.lon}#map=17/${point.lat}/${point.lon}" target="_blank" rel="noopener noreferrer">📍 Abrir mapa ↗</a></div>`;
+    const mapEl=holder.querySelector('.event-map');
+    const map=L.map(mapEl,{scrollWheelZoom:false,zoomControl:true,attributionControl:true}).setView([point.lat,point.lon],16);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
+    L.marker([point.lat,point.lon]).addTo(map).bindPopup(`<b>${esc(event.title)}</b><br>${esc([event.venue,event.city].filter(Boolean).join(' • '))}`).openPopup();
+    setTimeout(()=>map.invalidateSize(),120);
+  }catch{if(loading)loading.textContent='Não foi possível carregar o mapa agora.';}
+}
+
 async function loadEvents(){
   const grid = document.getElementById('eventsGrid');
   const { data, error } = await db.from('cosplay_events').select('*').eq('published', true).gte('start_at', new Date(Date.now()-86400000).toISOString()).order('start_at');
   if(error){ grid.innerHTML='<div class="empty-card">Não foi possível carregar os eventos agora.</div>'; return; }
   if(!data?.length){ grid.innerHTML='<div class="empty-card">Nenhum evento publicado ainda. O próximo capítulo está sendo preparado.</div>'; return; }
+  injectMapStyles();
   grid.innerHTML=data.map(event=>`<article class="event-card">
     <div class="event-cover" style="${event.cover_url ? `background-image:url('${esc(event.cover_url)}')` : ''}"><span>${event.registration_open?'INSCRIÇÕES ABERTAS':'EM BREVE'}</span></div>
     <div class="event-body"><small>${dateFmt.format(new Date(event.start_at))}</small><h3>${esc(event.title)}</h3><p>${esc(event.description||'')}</p>
     <div class="event-place"><span class="event-place-icon" aria-hidden="true">📍</span><span class="event-place-copy"><b>LOCAL DO EVENTO</b><strong>${esc([event.venue,event.city].filter(Boolean).join(' • ')||'Local a definir')}</strong></span></div>
+    ${event.venue||event.city?`<div class="event-map-wrap" data-event-map="${esc(event.id)}"><div class="event-map-loading">Localizando o evento no mapa...</div></div>`:''}
     <a class="btn ${event.registration_open?'gold':'dark'}" href="./cadastro.html?event=${event.id}">${event.registration_open?'Inscrever-se':'Ver evento'}</a></div>
   </article>`).join('');
+  data.forEach((event,index)=>{if(event.venue||event.city)mountEventMap(event,index)});
 }
 
 async function loadGallery(){
