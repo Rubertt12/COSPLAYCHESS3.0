@@ -2,8 +2,9 @@
   if (window.__cosplayRosterGuardLoaded) return;
   window.__cosplayRosterGuardLoaded = true;
 
+  const OFFICIAL_TYPE = 'cosplaychess-participants';
   const listKeys = [
-    'roster', 'participantes', 'participante', 'inscritos', 'inscricoes', 'inscrições',
+    'participants', 'roster', 'participantes', 'participante', 'inscritos', 'inscricoes', 'inscrições',
     'registrations', 'cadastros', 'pessoas', 'players', 'entries', 'records', 'rows', 'data'
   ];
 
@@ -24,39 +25,76 @@
 
   function normalizePerson(raw, index, fallbackId = '') {
     if (!raw || typeof raw !== 'object') return null;
+
     const name = valueOf(raw, [
       'nome', 'name', 'nomeCompleto', 'nome_completo', 'fullName', 'full_name',
       'participante', 'cosplayer', 'nomeSocial', 'nome_social'
     ]);
     if (!name) return null;
 
+    const nick = valueOf(raw, ['nick', 'nickname', 'apelido']);
     const photo = valueOf(raw, [
-      'foto', 'photo', 'imagem', 'image', 'avatar', 'img', 'fotoUrl', 'foto_url',
-      'photoUrl', 'photo_url', 'imageUrl', 'image_url', 'profileImage', 'profile_image'
+      'photoDataUrl', 'photo_data_url', 'foto', 'photo', 'imagem', 'image', 'avatar', 'img',
+      'fotoUrl', 'foto_url', 'photoUrl', 'photo_url', 'imageUrl', 'image_url',
+      'profileImage', 'profile_image'
     ]);
     const character = valueOf(raw, [
-      'personagem', 'character', 'cosplay', 'fantasia', 'personagemCosplay', 'personagem_cosplay'
+      'cosplay', 'personagem', 'character', 'fantasia', 'characterName', 'character_name',
+      'personagemCosplay', 'personagem_cosplay'
     ]);
     const preferredPiece = valueOf(raw, [
-      'peca', 'peça', 'piece', 'pecaDesejada', 'peçaDesejada', 'peca_desejada',
-      'preferredPiece', 'preferred_piece', 'papel', 'role'
+      'peca', 'peça', 'piece', 'piecePreference', 'piece_preference', 'pecaDesejada',
+      'peçaDesejada', 'peca_desejada', 'preferredPiece', 'preferred_piece', 'papel', 'role'
     ]) || fallbackId;
-    const team = valueOf(raw, ['time', 'equipe', 'team', 'lado', 'side']);
+    const secondPreferredPiece = valueOf(raw, [
+      'segundaPeca', 'segunda_peca', 'segundaPeça', 'secondPiecePreference',
+      'second_piece_preference', 'secondPreferredPiece', 'second_preferred_piece'
+    ]);
+    const side = valueOf(raw, [
+      'lado', 'side', 'sidePreference', 'side_preference', 'time', 'equipe', 'team'
+    ]);
+    const city = valueOf(raw, ['cidade', 'city']);
+    const participation = valueOf(raw, [
+      'participacao', 'participação', 'participation', 'participationType', 'participation_type'
+    ]);
     const email = valueOf(raw, ['email', 'e-mail']);
     const instagram = valueOf(raw, ['instagram', 'insta', '@']);
-    const phone = valueOf(raw, ['telefone', 'phone', 'whatsapp', 'celular']);
-    const sourceId = valueOf(raw, ['id', 'uuid', 'codigo', 'código', 'matricula', 'matrícula', 'registration_id']);
+    const phone = valueOf(raw, ['whatsapp', 'telefone', 'phone', 'celular']);
+    const musicName = valueOf(raw, ['musicName', 'music_name']) || valueOf(raw.music, ['name']);
+    const musicUrl = valueOf(raw, ['musicUrl', 'music_url']) || valueOf(raw.music, ['url']);
+    const musicFileUrl = valueOf(raw, ['musicFileUrl', 'music_file_url']) || valueOf(raw.music, ['fileUrl', 'file_url']);
+    const sourceId = valueOf(raw, [
+      'id', 'uuid', 'codigo', 'código', 'matricula', 'matrícula', 'registration_id'
+    ]);
     const id = sourceId || email || fallbackId || `${name.toLowerCase().replace(/\s+/g, '-')}-${index + 1}`;
 
     return {
-      id: String(id), name, photo, character, preferredPiece, team, email, instagram, phone
+      id: String(id),
+      name,
+      nick,
+      photo,
+      character,
+      preferredPiece,
+      secondPreferredPiece,
+      team: side,
+      side,
+      email,
+      instagram,
+      phone,
+      city,
+      participation,
+      musicName,
+      musicUrl,
+      musicFileUrl
     };
   }
 
   function extractRoster(data) {
     let rows = [];
 
-    if (Array.isArray(data)) {
+    if (data && typeof data === 'object' && data.type === OFFICIAL_TYPE && Array.isArray(data.participants)) {
+      rows = data.participants.map((item, index) => ({ item, index, fallbackId: '' }));
+    } else if (Array.isArray(data)) {
       rows = data.map((item, index) => ({ item, index, fallbackId: '' }));
     } else if (data && typeof data === 'object') {
       if (data.g && Array.isArray(data.g.roster)) {
@@ -66,8 +104,6 @@
         if (listKey) {
           rows = data[listKey].map((item, index) => ({ item, index, fallbackId: '' }));
         } else if (data.p && typeof data.p === 'object' && !Array.isArray(data.p)) {
-          // JSON antigo do jogo: transforma os dados das peças em ELENCO.
-          // Nunca copia data.p para store.p aqui.
           rows = Object.entries(data.p).map(([pieceId, item], index) => ({ item, index, fallbackId: pieceId }));
         }
       }
@@ -91,9 +127,9 @@
     const el = document.createElement('div');
     el.id = 'roster-guard-toast';
     el.textContent = message;
-    el.style.cssText = `position:fixed;right:20px;bottom:20px;z-index:12000;padding:12px 16px;border-radius:8px;color:#fff;font-size:12px;background:${error ? '#3a0d17' : '#082c31'};border:1px solid ${error ? '#ff0055' : '#00e5ff'};box-shadow:0 12px 30px rgba(0,0,0,.55);max-width:420px;`;
+    el.style.cssText = `position:fixed;right:20px;bottom:20px;z-index:12000;padding:12px 16px;border-radius:8px;color:#fff;font-size:12px;background:${error ? '#3a0d17' : '#082c31'};border:1px solid ${error ? '#ff0055' : '#00e5ff'};box-shadow:0 12px 30px rgba(0,0,0,.55);max-width:440px;`;
     document.body.appendChild(el);
-    setTimeout(() => el.remove(), 4200);
+    setTimeout(() => el.remove(), 4600);
   }
 
   function importAsRoster(input) {
@@ -104,7 +140,9 @@
     reader.onload = event => {
       try {
         const data = JSON.parse(event.target.result);
+        const isOfficial = data?.type === OFFICIAL_TYPE && Array.isArray(data?.participants);
         const people = extractRoster(data);
+
         if (!people.length) {
           notify('O JSON foi lido, mas não encontrei participantes com nome.', true);
           input.value = '';
@@ -115,12 +153,19 @@
         store.g.roster = people;
         store.g.rosterImportedAt = new Date().toISOString();
         store.g.rosterSourceFile = file.name || 'participantes.json';
+        store.g.rosterSourceType = data?.type || '';
+        store.g.rosterSourceVersion = data?.version ?? null;
+        store.g.rosterEvent = data?.event && typeof data.event === 'object' ? { ...data.event } : null;
+        store.g.rosterExportedAt = data?.exportedAt || '';
 
-        // Importante: NÃO altera store.p e NÃO preenche peças automaticamente.
+        // A importação carrega SOMENTE o elenco. Nenhuma peça é preenchida automaticamente.
         try { save(); } catch (_) {}
         try { renderBoard(); } catch (_) {}
         try { renderConfigLists(); } catch (_) {}
-        notify(`${people.length} participante(s) carregado(s). Ative Edição e clique numa peça para escalar.`);
+
+        const eventName = store.g.rosterEvent?.name ? ` de ${store.g.rosterEvent.name}` : '';
+        const source = isOfficial ? ' do site' : '';
+        notify(`${people.length} participante(s)${eventName} carregado(s)${source}. Ative Edição e clique numa peça para escalar.`);
         input.value = '';
       } catch (error) {
         console.error('Falha ao importar elenco:', error);
@@ -131,10 +176,10 @@
     reader.readAsText(file);
   }
 
-  // Sobrescreve a função antiga por completo. Qualquer chamada direta agora importa SOMENTE o elenco.
+  // Qualquer chamada antiga de importSquadData passa pelo leitor de elenco do site.
   window.importSquadData = importAsRoster;
 
-  // Intercepta o input ANTES de qualquer onchange legado que ainda exista no HTML antigo.
+  // Intercepta o input antes de handlers legados.
   document.addEventListener('change', event => {
     const input = event.target;
     if (!(input instanceof HTMLInputElement) || input.id !== 'import-file' || input.type !== 'file') return;
@@ -144,7 +189,7 @@
     importAsRoster(input);
   }, true);
 
-  // Intercepta o clique da peça ANTES do triggerQuickUpload antigo.
+  // Em modo edição, clicar numa peça abre o seletor de participantes.
   document.addEventListener('click', event => {
     const editMode = document.getElementById('edit-mode');
     if (!editMode?.checked) return;
@@ -168,7 +213,6 @@
     }
   }, true);
 
-  // Remove o onchange inline para deixar claro no DOM que o fluxo antigo está desligado.
   function disarmLegacyInput() {
     const input = document.getElementById('import-file');
     if (input) input.removeAttribute('onchange');
