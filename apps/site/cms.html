@@ -4,10 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#09070c">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>CMS Visual — Fergorverse</title>
   <link rel="icon" type="image/png" href="./img/logofergoverse.png">
-  <link rel="stylesheet" href="./cms-visual.css">
-  <link rel="stylesheet" href="./cms-pages.css">
+  <link rel="stylesheet" href="./cms-visual.css?v=20260818-1201">
+  <link rel="stylesheet" href="./cms-pages.css?v=20260818-1201">
 </head>
 <body>
   <div id="cmsGate" class="cms-gate" hidden>
@@ -79,11 +82,24 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./config.js"></script>
-  <script src="./cms-visual.js"></script>
-  <script src="./cms-pages.js"></script>
-  <script src="./cms-about.js"></script>
-  <script src="./cms-media.js"></script>
-  <script src="./cms-external-video.js"></script>
+  <script src="./config.js?v=20260818-1201"></script>
+  <script>
+    (()=>{
+      const tabs=document.querySelector('.cms-page-tabs');
+      if(tabs && !tabs.querySelector('[data-page="about"]')){
+        const about=document.createElement('button');
+        about.type='button';
+        about.dataset.page='about';
+        about.textContent='Sobre';
+        const universe=tabs.querySelector('[data-page="universe"]');
+        tabs.insertBefore(about,universe||null);
+      }
+    })();
+  </script>
+  <script src="./cms-visual.js?v=20260818-1201"></script>
+  <script src="./cms-pages.js?v=20260818-1201"></script>
+  <script src="./cms-about.js?v=20260818-1201"></script>
+  <script src="./cms-media.js?v=20260818-1201"></script>
+  <script src="./cms-external-video.js?v=20260818-1201"></script>
 </body>
 </html>
