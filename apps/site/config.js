@@ -64,9 +64,11 @@ window.addEventListener('load', () => {
     loadScript('./site-cms.js', () => {
       loadScript('./entry-yatta.js', () => {
         loadScript('./hero-instagram.js', () => {
-          loadScript('./landing-intro-video.js', () => {
-            loadScript('./landing-intro-external.js', () => {
-              if (previewMode) loadScript('./site-preview-runtime.js');
+          loadScript('./instagram-button-icon.js', () => {
+            loadScript('./landing-intro-video.js', () => {
+              loadScript('./landing-intro-external.js', () => {
+                if (previewMode) loadScript('./site-preview-runtime.js');
+              });
             });
           });
         });
