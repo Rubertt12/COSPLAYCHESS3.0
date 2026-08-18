@@ -1,0 +1,19 @@
+.admin-page .admin-grid{
+  grid-template-columns:1fr!important;
+  gap:20px;
+}
+
+.admin-page .admin-grid>.panel-card{
+  width:100%;
+}
+
+/* Agenda primeiro, elenco logo abaixo */
+.admin-page .admin-events{
+  max-height:none;
+}
+
+@media (min-width:821px){
+  .admin-page .admin-grid>.panel-card:first-child{
+    padding-bottom:28px;
+  }
+}
