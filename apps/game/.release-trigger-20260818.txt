@@ -1,0 +1,1 @@
+Força a geração de uma nova release do Cosplay Chess após restaurar o workflow de auto-update e mover a gestão de JSON para Configurações.
