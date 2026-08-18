@@ -54,6 +54,11 @@ window.addEventListener('load', () => {
     return;
   }
 
+  if (page === 'resultados-admin.html') {
+    loadScript('./resultados-team-media.js');
+    return;
+  }
+
   if (page === 'index.html' || page === '') {
     loadStyle('./hero-instagram.css');
     loadStyle('./readability.css');
