@@ -43,11 +43,18 @@ window.COSPLAYCHESS_CONFIG = {
     booted = true;
     const page = location.pathname.split('/').pop() || 'index.html';
     const previewMode = new URLSearchParams(location.search).get('cmsPreview') === '1';
+    const sameAsset = (candidate, wanted) => {
+      try {
+        return new URL(candidate, location.href).pathname === new URL(wanted, location.href).pathname;
+      } catch {
+        return candidate === wanted;
+      }
+    };
     const loadScript = (src, onload) => {
-      const existing = [...document.scripts].find(s => s.getAttribute('src') === src);
+      const existing = [...document.scripts].find(s => sameAsset(s.getAttribute('src') || '', src));
       if (existing) {
         if (onload) {
-          if (existing.dataset.loaded === '1') onload();
+          if (existing.dataset.loaded === '1' || !existing.hasAttribute('src')) onload();
           else existing.addEventListener('load', onload, { once:true });
         }
         return existing;
@@ -60,7 +67,8 @@ window.COSPLAYCHESS_CONFIG = {
       return script;
     };
     const loadStyle = (href) => {
-      if (document.querySelector(`link[href="${href}"]`)) return;
+      const existing = [...document.querySelectorAll('link[rel="stylesheet"]')].find(l => sameAsset(l.getAttribute('href') || '', href));
+      if (existing) return;
       const link = document.createElement('link');
       link.rel = 'stylesheet';
       link.href = href;
@@ -104,15 +112,14 @@ window.COSPLAYCHESS_CONFIG = {
       loadStyle('./hero-instagram.css');
       loadStyle('./readability.css');
       loadStyle('./partners.css');
-      loadScript('./site-cms.js', () => {
-        loadScript('./entry-yatta.js', () => {
-          loadScript('./hero-instagram.js', () => {
-            loadScript('./instagram-button-icon.js', () => {
-              loadScript('./partners-public.js');
-              loadScript('./landing-intro-video.js', () => {
-                loadScript('./landing-intro-external.js', () => {
-                  if (previewMode) loadScript('./site-preview-runtime.js');
-                });
+      /* site-cms.js já é carregado explicitamente pelo index.html. */
+      loadScript('./entry-yatta.js', () => {
+        loadScript('./hero-instagram.js', () => {
+          loadScript('./instagram-button-icon.js', () => {
+            loadScript('./partners-public.js');
+            loadScript('./landing-intro-video.js', () => {
+              loadScript('./landing-intro-external.js', () => {
+                if (previewMode) loadScript('./site-preview-runtime.js');
               });
             });
           });
@@ -122,20 +129,16 @@ window.COSPLAYCHESS_CONFIG = {
     }
 
     if (page === 'cadastro.html') {
+      /* site-cms.js já é carregado explicitamente pelo cadastro.html. */
       loadScript('./registration-dynamic.js', () => {
         if (previewMode) loadScript('./site-preview-runtime.js');
       });
       return;
     }
 
-    if (page === 'sobre.html') {
-      loadScript('./sobre-cms-runtime.js');
-      return;
-    }
-
-    if (['universo.html','hall-da-fama.html','ranking.html','conquistas.html'].includes(page)) {
-      loadScript('./community-cms-runtime.js');
-    }
+    /* Estas páginas já incluem seus runtimes no próprio HTML. Não carregar novamente aqui. */
+    if (page === 'sobre.html') return;
+    if (['universo.html','hall-da-fama.html','ranking.html','conquistas.html'].includes(page)) return;
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once:true });
