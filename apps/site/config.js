@@ -6,36 +6,23 @@ window.COSPLAYCHESS_CONFIG = {
   timezone: 'America/Sao_Paulo'
 };
 
-/*
- * Um único cliente Supabase por contexto de navegador.
- * Vários scripts do site usam createClient(); devolver a mesma instância evita
- * múltiplos GoTrueClient disputando a mesma sessão/localStorage.
- */
+/* Um único cliente Supabase por contexto de navegador. */
 (() => {
   const cfg = window.COSPLAYCHESS_CONFIG;
   const sdk = window.supabase;
   if (!cfg || !sdk || typeof sdk.createClient !== 'function') return;
   if (sdk.__cosplayChessSingletonInstalled) return;
-
   const originalCreateClient = sdk.createClient.bind(sdk);
   const sharedClient = originalCreateClient(cfg.supabaseUrl, cfg.supabaseKey);
-
   window.COSPLAYCHESS_DB = sharedClient;
   window.getCosplayChessDb = () => sharedClient;
-
   sdk.createClient = function(url, key, options) {
     const sameProject = String(url || '') === String(cfg.supabaseUrl || '');
     const sameKey = String(key || '') === String(cfg.supabaseKey || '');
     if (sameProject && sameKey) return sharedClient;
     return originalCreateClient(url, key, options);
   };
-
-  Object.defineProperty(sdk, '__cosplayChessSingletonInstalled', {
-    value: true,
-    configurable: false,
-    enumerable: false,
-    writable: false
-  });
+  Object.defineProperty(sdk, '__cosplayChessSingletonInstalled', { value:true, configurable:false, enumerable:false, writable:false });
 })();
 
 (() => {
@@ -54,7 +41,6 @@ window.COSPLAYCHESS_CONFIG = {
   const boot = () => {
     if (booted) return;
     booted = true;
-
     const page = location.pathname.split('/').pop() || 'index.html';
     const previewMode = new URLSearchParams(location.search).get('cmsPreview') === '1';
     const loadScript = (src, onload) => {
@@ -81,7 +67,13 @@ window.COSPLAYCHESS_CONFIG = {
       document.head.appendChild(link);
     };
 
+    if (page === 'cms.html') {
+      loadScript('./cms-partners.js');
+      return;
+    }
+
     if (page === 'admin.html') {
+      loadStyle('./admin-partners.css');
       loadScript('./admin-cms.js', () => {
         const stack = document.getElementById('cmsStack');
         if (stack) stack.hidden = true;
@@ -97,6 +89,7 @@ window.COSPLAYCHESS_CONFIG = {
         loadScript('./admin-privacy.js', () => {
           loadScript('./admin-private-groups.js');
           loadScript('./admin-game-link.js');
+          loadScript('./admin-partners.js');
         });
       });
       return;
@@ -110,10 +103,12 @@ window.COSPLAYCHESS_CONFIG = {
     if (page === 'index.html' || page === '') {
       loadStyle('./hero-instagram.css');
       loadStyle('./readability.css');
+      loadStyle('./partners.css');
       loadScript('./site-cms.js', () => {
         loadScript('./entry-yatta.js', () => {
           loadScript('./hero-instagram.js', () => {
             loadScript('./instagram-button-icon.js', () => {
+              loadScript('./partners-public.js');
               loadScript('./landing-intro-video.js', () => {
                 loadScript('./landing-intro-external.js', () => {
                   if (previewMode) loadScript('./site-preview-runtime.js');
