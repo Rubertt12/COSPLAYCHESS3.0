@@ -132,7 +132,6 @@
     store.g.rosterFormat = isOfficialSiteExport(data) ? 'cosplaychess-participants' : 'legacy';
     store.g.rosterExportVersion = data?.version || null;
     store.g.rosterEvent = data?.event && typeof data.event === 'object' ? { ...data.event } : null;
-    // Novo JSON invalida a montagem e o resultado da partida anterior.
     delete store.g.autoLineupSummary;
     delete store.g.autoLineupLastRun;
     delete store.g.matchRuntime;
@@ -172,8 +171,6 @@
   window.importSquadData = importFile;
   window.importCosplayChessSiteRoster = importFile;
 
-  // Captura no window antes do listener legado do roster-guard (que fica no document).
-  // Assim o JSON oficial exportado pelo site sempre usa este leitor.
   window.addEventListener('change', event => {
     const input = event.target;
     if (!(input instanceof HTMLInputElement) || input.id !== 'import-file' || input.type !== 'file') return;
@@ -184,29 +181,42 @@
   }, true);
 
   const loadGameResultExport = () => {
-    const existing = document.querySelector('script[data-game-result-export]');
-    if (existing) return;
+    if (document.querySelector('script[data-game-result-export]')) return;
     const resultScript = document.createElement('script');
     resultScript.src = 'game-result-export.js';
     resultScript.dataset.gameResultExport = 'true';
     document.body.appendChild(resultScript);
   };
 
+  const loadSettingsLayout = () => {
+    const existing = document.querySelector('script[data-settings-layout-fix]');
+    if (existing) {
+      if (window.__cosplaySettingsLayoutFixLoaded) loadGameResultExport();
+      else existing.addEventListener('load', loadGameResultExport, { once: true });
+      return;
+    }
+    const layoutScript = document.createElement('script');
+    layoutScript.src = 'settings-layout-fix.js';
+    layoutScript.dataset.settingsLayoutFix = 'true';
+    layoutScript.onload = loadGameResultExport;
+    document.body.appendChild(layoutScript);
+  };
+
   const loadAutomaticLineup = () => {
     const existing = document.querySelector('script[data-auto-lineup-settings]');
     if (existing) {
-      if (window.__cosplayAutoLineupSettingsLoaded) loadGameResultExport();
-      else existing.addEventListener('load', loadGameResultExport, { once: true });
+      if (window.__cosplayAutoLineupSettingsLoaded) loadSettingsLayout();
+      else existing.addEventListener('load', loadSettingsLayout, { once: true });
       return;
     }
     const lineupScript = document.createElement('script');
     lineupScript.src = 'auto-lineup-settings.js';
     lineupScript.dataset.autoLineupSettings = 'true';
-    lineupScript.onload = loadGameResultExport;
+    lineupScript.onload = loadSettingsLayout;
     document.body.appendChild(lineupScript);
   };
 
-  // Carrega escalação/áudio -> automação/layout -> exportador oficial de resultado.
+  // escalação/áudio -> automação -> layout amplo -> exportador de resultado.
   const existingExperience = document.querySelector('script[data-participant-experience]');
   if (!existingExperience) {
     const experienceScript = document.createElement('script');
