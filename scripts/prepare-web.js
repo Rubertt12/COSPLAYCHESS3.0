@@ -39,9 +39,9 @@ if (fs.existsSync(gameIndex)) {
 
   const dataManagementSettings = `
                 <div class="unit-card" id="json-data-settings" style="margin-top:14px; background:rgba(0,229,255,0.06); border:1px solid rgba(0,229,255,0.28); padding:12px; border-radius:8px;">
-                    <b style="display:block; color:var(--accent); font-size:10px; letter-spacing:1px; margin-bottom:6px;">💾 LISTA DE PARTICIPANTES (JSON DO SITE)</b>
+                    <b style="display:block; color:var(--accent); font-size:10px; letter-spacing:1px; margin-bottom:6px;">💾 ELENCO DO EVENTO (JSON DO SITE)</b>
                     <div class="json-settings-help" style="font-size:9px; color:#aaa; line-height:1.45; margin-bottom:10px;">
-                        Importe o arquivo gerado em “Exportar para o app” no painel do site. O elenco, fotos, preferências e dados do evento serão carregados; depois, ative Edição e clique em uma peça para escalar.
+                        Importe o arquivo gerado em “Exportar para o app” no painel do site. Depois use “Acionar JSON” para distribuir o elenco automaticamente; o Modo Edição continua disponível para ajustes manuais.
                     </div>
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
                         <button class="btn-play-sm" style="width:100%; font-size:9px; padding:10px 6px;" onclick="document.getElementById('import-file').click()">IMPORTAR JSON DO SITE</button>
@@ -61,7 +61,7 @@ if (fs.existsSync(gameIndex)) {
 
   html = html.replace(
     'MODO EDIÇÃO (UPLOAD/REMOVER)',
-    'MODO EDIÇÃO (ESCALAR PARTICIPANTES)'
+    'MODO EDIÇÃO (REVISAR ESCALAÇÃO)'
   );
 
   if (!html.includes('src="roster-editor.js"')) {
