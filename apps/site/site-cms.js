@@ -1,4 +1,7 @@
 (() => {
+  if (window.__COSPLAYCHESS_SITE_CMS_BOOTED__) return;
+  window.__COSPLAYCHESS_SITE_CMS_BOOTED__ = true;
+
   const config = window.COSPLAYCHESS_CONFIG;
   if (!config) return;
 
@@ -10,24 +13,27 @@
   const setLink = (s, text, href) => { const el=q(s); if(!el) return; if(text!==undefined && text!==null) el.textContent=text; if(href) el.href=href; };
   const setVisible = (s, visible) => { const el=q(s); if(el && typeof visible==='boolean') el.hidden=!visible; };
 
+  function getDb(){
+    if (typeof window.getCosplayChessDb === 'function') return window.getCosplayChessDb();
+    if (window.COSPLAYCHESS_DB) return window.COSPLAYCHESS_DB;
+    if (window.supabase?.createClient) return window.supabase.createClient(config.supabaseUrl, config.supabaseKey);
+    return null;
+  }
+
   async function getPublishedContent(key){
-    const endpoint=`${config.supabaseUrl}/rest/v1/cosplay_site_content?key=eq.${encodeURIComponent(key)}&published=eq.true&select=content&limit=1&_=${Date.now()}`;
     try{
-      const response=await fetch(endpoint,{
-        method:'GET',
-        cache:'no-store',
-        headers:{
-          apikey:config.supabaseKey,
-          Authorization:`Bearer ${config.supabaseKey}`,
-          Accept:'application/json',
-          'Cache-Control':'no-cache'
-        }
-      });
-      if(!response.ok) throw new Error(`CMS HTTP ${response.status}`);
-      const rows=await response.json();
-      return rows?.[0]?.content || null;
+      const db=getDb();
+      if(!db) throw new Error('Cliente Supabase indisponível');
+      const {data,error}=await db
+        .from('cosplay_site_content')
+        .select('content,updated_at')
+        .eq('key',key)
+        .eq('published',true)
+        .maybeSingle();
+      if(error) throw error;
+      return data?.content || null;
     }catch(error){
-      console.warn('[CosplayChess CMS] Falha ao carregar conteúdo publicado:',error);
+      console.error('[CosplayChess CMS] Falha ao carregar conteúdo publicado:',error);
       return null;
     }
   }
@@ -119,15 +125,19 @@
     const registration=Boolean(document.getElementById('signupForm'));
     const key=registration?'registration':'landing';
     const content=await getPublishedContent(key);
-    if(!content)return;
+    if(!content){
+      document.documentElement.dataset.cmsPublished='false';
+      return;
+    }
     const apply=()=>registration?applyRegistration(content):applyLanding(content);
     apply();
     requestAnimationFrame(apply);
     setTimeout(apply,250);
     setTimeout(apply,1000);
     window.__COSPLAYCHESS_PUBLISHED_CMS__={key,content,apply};
+    window.dispatchEvent(new CustomEvent('cosplaychess:cms-applied',{detail:{key}}));
   }
 
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>init().catch(()=>{}),{once:true});
-  else init().catch(()=>{});
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>init().catch(console.error),{once:true});
+  else init().catch(console.error);
 })();
