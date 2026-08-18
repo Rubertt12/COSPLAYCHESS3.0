@@ -1,7 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "node scripts/prepare-web.js",
-  "outputDirectory": "apps/site",
-  "cleanUrls": true,
-  "trailingSlash": true
+  "outputDirectory": "apps/site"
 }
