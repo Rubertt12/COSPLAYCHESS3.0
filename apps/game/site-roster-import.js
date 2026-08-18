@@ -121,7 +121,9 @@
     const people = normalizeRoster(data);
     if (!people.length) throw new Error('O JSON não possui participantes válidos.');
 
-    if (!window.store || typeof window.store !== 'object') throw new Error('O jogo ainda não terminou de carregar.');
+    if (typeof store === 'undefined' || !store || typeof store !== 'object') {
+      throw new Error('O jogo ainda não terminou de carregar.');
+    }
     if (!store.g) store.g = {};
 
     store.g.roster = people;
