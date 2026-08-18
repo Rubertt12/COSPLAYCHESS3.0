@@ -2,7 +2,7 @@
   const config = window.COSPLAYCHESS_CONFIG;
   if (!config || !window.supabase) return;
   const cmsDb = typeof db !== 'undefined' ? db : window.supabase.createClient(config.supabaseUrl, config.supabaseKey);
-  const esc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
+  const esc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const q = (s) => document.querySelector(s);
   const qa = (s) => [...document.querySelectorAll(s)];
   const setText = (s, value) => { const el=q(s); if(el && value !== undefined) el.textContent=value; };
