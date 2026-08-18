@@ -1,0 +1,1 @@
+Trigger Vercel deploy for team bio photo uploads from Drive, gallery or files.
