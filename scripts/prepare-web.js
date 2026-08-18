@@ -39,9 +39,9 @@ if (fs.existsSync(gameIndex)) {
 
   const dataManagementSettings = `
                 <div class="unit-card" id="json-data-settings" style="margin-top:14px; background:rgba(0,229,255,0.06); border:1px solid rgba(0,229,255,0.28); padding:12px; border-radius:8px;">
-                    <b style="display:block; color:var(--accent); font-size:10px; letter-spacing:1px; margin-bottom:6px;">💾 DADOS DA PARTIDA (JSON)</b>
-                    <div style="font-size:9px; color:#aaa; line-height:1.45; margin-bottom:10px;">
-                        Importe o JSON com nomes e informações antes de iniciar. As imagens das peças podem ser ajustadas durante a partida pelo modo de edição.
+                    <b style="display:block; color:var(--accent); font-size:10px; letter-spacing:1px; margin-bottom:6px;">💾 LISTA DE PARTICIPANTES (JSON)</b>
+                    <div class="json-settings-help" style="font-size:9px; color:#aaa; line-height:1.45; margin-bottom:10px;">
+                        Importe o JSON com a lista de participantes. Depois, no jogo, ative Edição e clique em uma peça para escolher a pessoa e aplicar nome/foto.
                     </div>
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
                         <button class="btn-play-sm" style="width:100%; font-size:9px; padding:10px 6px;" onclick="document.getElementById('import-file').click()">IMPORTAR JSON</button>
@@ -51,8 +51,6 @@ if (fs.existsSync(gameIndex)) {
                 </div>
 `;
 
-  // Na versão web, a importação/exportação de JSON pertence às configurações,
-  // e não à aba Sistema usada durante a operação da partida.
   html = html.replace(dataManagementPattern, '\n');
   if (!html.includes('id="json-data-settings"')) {
     html = html.replace(
@@ -63,8 +61,15 @@ if (fs.existsSync(gameIndex)) {
 
   html = html.replace(
     'MODO EDIÇÃO (UPLOAD/REMOVER)',
-    'IMAGENS DAS PEÇAS (UPLOAD/REMOVER)'
+    'MODO EDIÇÃO (ESCALAR PARTICIPANTES)'
   );
+
+  if (!html.includes('src="roster-editor.js"')) {
+    html = html.replace(
+      '<script src="script.js"></script>',
+      '<script src="script.js"></script>\n<script src="roster-editor.js"></script>'
+    );
+  }
 
   const gate = `
     <style id="adminGameGateStyle">body{visibility:hidden}</style>
