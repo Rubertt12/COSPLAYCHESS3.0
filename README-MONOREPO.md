@@ -9,5 +9,6 @@ Durante a migração, a estrutura antiga `COSPLAYCHESS-main/` permanece no repos
 
 ## Deploy
 
-- Site: configurar a Root Directory da Vercel como `apps/site`.
-- Game: executar/buildar a partir de `apps/game`.
+- Vercel: o `vercel.json` da raiz executa `node scripts/prepare-web.js` e publica `apps/site`.
+- Navegador: o script de preparação copia/integra a versão web do jogo no site antes do deploy.
+- Desktop: executar/buildar o Electron a partir de `apps/game`.
