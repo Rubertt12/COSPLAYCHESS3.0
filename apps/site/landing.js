@@ -2,7 +2,7 @@ const cfg = window.COSPLAYCHESS_CONFIG;
 const db = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
 
 const dateFmt = new Intl.DateTimeFormat('pt-BR', { dateStyle:'long', timeStyle:'short', timeZone: cfg.timezone });
-const esc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const esc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
 
 const MAP_CACHE_KEY='cosplaychess_event_geocodes_v1';
 let leafletPromise=null;
@@ -127,6 +127,27 @@ function addInstagramLinks(){
   }
 }
 
+function addAboutNavigation(){
+  const desktopNav=document.querySelector('.topbar > nav');
+  if(desktopNav && !desktopNav.querySelector('a[href="./sobre.html"]')){
+    const link=document.createElement('a');
+    link.href='./sobre.html';
+    link.textContent='Sobre';
+    const instagram=desktopNav.querySelector('a[href*="instagram.com"]');
+    desktopNav.insertBefore(link,instagram||null);
+  }
+
+  const mobileMenu=document.getElementById('mobileMenu');
+  if(mobileMenu && !mobileMenu.querySelector('a[href="./sobre.html"]')){
+    const link=document.createElement('a');
+    link.href='./sobre.html';
+    link.textContent='Sobre';
+    const instagram=mobileMenu.querySelector('a[href*="instagram.com"]');
+    mobileMenu.insertBefore(link,instagram||mobileMenu.querySelector('.mobile-menu-divider')||null);
+  }
+}
+
 loadEvents();
 loadGallery();
 addInstagramLinks();
+addAboutNavigation();
