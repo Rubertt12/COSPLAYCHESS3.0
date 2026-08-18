@@ -1,0 +1,1 @@
+Força novo deploy de produção para sincronizar o CMS publicado do CosplayChess em 2026-08-18 17:05 BRT.
