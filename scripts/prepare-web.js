@@ -6,6 +6,7 @@ const gameDir = path.join(root, 'apps', 'game');
 const siteDir = path.join(root, 'apps', 'site');
 const webGameDir = path.join(siteDir, 'jogo');
 const landingFile = path.join(siteDir, 'index.html');
+const assetVersion = String(process.env.VERCEL_GIT_COMMIT_SHA || Date.now()).slice(0, 12);
 
 const excludedNames = new Set([
   'node_modules','dist','dist-installer','build','.git','.github','.gitattributes','.gitignore','package.json','package-lock.json','bootstrap.js','main.js','preload.js','installer.iss','installer.json','vercel.json','README.md'
@@ -61,7 +62,8 @@ if (fs.existsSync(landingFile)) {
   landing = landing.replace(/<a class="btn ghost" href="\.\/jogo\/" aria-label="Jogar CosplayChess no navegador">Jogar no navegador<\/a>/g, '');
   landing = landing.replace(/\n\s*<a href="\.\/jogo\/" aria-label="Jogar CosplayChess no navegador">Jogar no navegador<\/a>/g, '');
   landing = landing.replace(/<a class="btn dark big" href="\.\/jogo\/" aria-label="Jogar CosplayChess no navegador">(?:🎮\s*)?Jogar no navegador<\/a>/g, '');
+  landing = landing.replace(/\.\/site-cms\.js(?:\?v=[^"']*)?/g, `./site-cms.js?v=${assetVersion}`);
   fs.writeFileSync(landingFile, landing);
 }
 
-console.log(`CosplayChess web prepared at ${webGameDir}`);
+console.log(`CosplayChess web prepared at ${webGameDir} (asset ${assetVersion})`);
