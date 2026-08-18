@@ -21,12 +21,17 @@
     const id=match?.[1];
     return id&&typeof registrations!=='undefined'?registrations.find(r=>String(r.id)===String(id)):null;
   };
+  const setTextIfChanged=(el,text)=>{
+    if(el&&el.textContent!==text)el.textContent=text;
+  };
+
   function protectRows(){
     root.querySelectorAll('.registration-row').forEach(row=>{
       const r=getRegistrationFromRow(row);if(!r)return;
       const main=row.querySelector('.registration-main');
       const contact=main?.querySelector('small');
       if(!main||!contact)return;
+
       if(!row.dataset.privacyReady){
         row.dataset.privacyReady='1';
         contact.classList.add('registration-contact-private');
@@ -39,14 +44,18 @@
           const show=btn.dataset.revealed!=='1';
           btn.dataset.revealed=show?'1':'0';
           btn.textContent=show?'Ocultar contato':'Ver contato';
-          contact.textContent=show
+          const text=show
             ? `${r.email||''} • ${r.whatsapp||''} • ${r.side_preference||''}`
             : `${maskEmail(r.email)} • ${maskPhone(r.whatsapp)} • ${r.side_preference||''}`;
+          setTextIfChanged(contact,text);
         };
         main.appendChild(btn);
       }
+
       const reveal=row.querySelector('.privacy-reveal-btn');
-      if(reveal?.dataset.revealed!=='1')contact.textContent=`${maskEmail(r.email)} • ${maskPhone(r.whatsapp)} • ${r.side_preference||''}`;
+      if(reveal?.dataset.revealed!=='1'){
+        setTextIfChanged(contact,`${maskEmail(r.email)} • ${maskPhone(r.whatsapp)} • ${r.side_preference||''}`);
+      }
     });
   }
 
@@ -54,7 +63,15 @@
   style.textContent='.registration-contact-private{letter-spacing:.15px}.privacy-reveal-btn{margin-top:6px;width:max-content;font-size:8px;padding:5px 8px}';
   document.head.appendChild(style);
 
-  new MutationObserver(protectRows).observe(root,{childList:true,subtree:true});
+  let privacyFrame=0;
+  const scheduleProtectRows=()=>{
+    if(privacyFrame)return;
+    privacyFrame=requestAnimationFrame(()=>{
+      privacyFrame=0;
+      protectRows();
+    });
+  };
+  new MutationObserver(scheduleProtectRows).observe(root,{childList:true,subtree:true});
   protectRows();
 
   exportBtn.onclick=async()=>{
