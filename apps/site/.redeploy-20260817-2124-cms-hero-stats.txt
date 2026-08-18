@@ -1,0 +1,1 @@
+Trigger Vercel redeploy for editable hero stats in visual CMS.
