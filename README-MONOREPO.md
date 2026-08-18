@@ -12,3 +12,5 @@ Durante a migração, a estrutura antiga `COSPLAYCHESS-main/` permanece no repos
 - Vercel: o `vercel.json` da raiz executa `node scripts/prepare-web.js` e publica `apps/site`.
 - Navegador: o script de preparação copia/integra a versão web do jogo no site antes do deploy.
 - Desktop: executar/buildar o Electron a partir de `apps/game`.
+
+<!-- redeploy 2026-08-18 -->
