@@ -28,22 +28,22 @@
         <div class="auto-results-icon">☁</div>
         <div class="auto-results-copy">
           <span class="kicker">SINCRONIZAÇÃO AUTOMÁTICA</span>
-          <h2>O jogo publica o resultado sozinho</h2>
-          <p>Depois que o elenco oficial do evento é carregado no CosplayChess, você não precisa registrar a partida nesta tela. Ao definir o vencedor, o aplicativo envia automaticamente vencedor, Player 1/2, peças, participantes, capturas, eliminações, sobreviventes, movimentos e estatísticas para o site.</p>
-          <div class="auto-results-flow"><span>JOGO TERMINA</span><b>→</b><span>SUPABASE</span><b>→</b><span>HALL DA FAMA</span><b>→</b><span>RANKING</span><b>→</b><span>CONQUISTAS</span></div>
+          <h2>O jogo envia o resultado; você controla o card</h2>
+          <p>Os cards públicos só existem depois que um resultado oficial chega ao site. Cada partida recebida pode ser ativada ou desativada pelo administrador. Ao excluir os dados da partida/JSON, o card e os dados derivados daquela partida deixam de aparecer.</p>
+          <div class="auto-results-flow"><span>JOGO TERMINA</span><b>→</b><span>RESULTADO/JSON</span><b>→</b><span>ADMIN</span><b>→</b><span>CARD PÚBLICO</span></div>
         </div>
-        <div class="auto-results-state"><strong>ATIVO</strong><span>Fluxo principal</span></div>
+        <div class="auto-results-state"><strong>CONTROLADO</strong><span>Pelo administrador</span></div>
       </section>
 
       <div class="admin-community-grid results-overview-grid">
         <section class="panel-card">
-          <div class="panel-title"><div><span class="kicker">HALL DA FAMA</span><h2>Partidas recebidas</h2><p class="hint">Resultados enviados pelo aplicativo aparecem aqui automaticamente. Os controles servem apenas para correção administrativa.</p></div></div>
+          <div class="panel-title"><div><span class="kicker">HALL DA FAMA</span><h2>Partidas recebidas</h2><p class="hint">Use CARD ATIVO / CARD DESATIVADO para controlar a exibição pública. Partidas sem JSON oficial não podem gerar card público.</p></div></div>
           <div id="resultSyncSummary" class="result-sync-summary"><span>Carregando histórico...</span></div>
           <div id="adminMatches" class="community-admin-list"><div class="empty-card">Carregando...</div></div>
         </section>
 
         <section class="panel-card">
-          <div class="panel-title"><div><span class="kicker">CONQUISTAS</span><h2>Desbloqueios automáticos</h2><p class="hint">Primeiro Movimento, Primeira Captura, Caçador, Sobrevivente, Veterano, Campeão e Imortal são calculados pelo histórico recebido do jogo.</p></div></div>
+          <div class="panel-title"><div><span class="kicker">CONQUISTAS</span><h2>Desbloqueios automáticos</h2><p class="hint">Primeiro Movimento, Primeira Captura, Caçador, Sobrevivente, Veterano, Campeão e Imortal são calculados pelo histórico oficial publicado.</p></div></div>
           <div id="adminAwards" class="community-admin-list"><div class="empty-card">Carregando...</div></div>
         </section>
       </div>
@@ -75,18 +75,18 @@
             </div>
             <div id="resultImportPreview" class="result-import-preview" hidden></div>
             <div class="result-import-footer">
-              <label class="result-publish-toggle"><input id="resultImportPublished" type="checkbox" checked><span>Publicar imediatamente após recuperar</span></label>
+              <label class="result-publish-toggle"><input id="resultImportPublished" type="checkbox"><span>Ativar o card público após recuperar</span></label>
               <button id="confirmResultImportBtn" class="btn gold big" type="button" disabled>RECUPERAR PARTIDA</button>
             </div>
             <div id="resultImportStatus" class="form-status">Nenhum backup selecionado.</div>
           </section>
 
           <section class="panel-card manual-match-card">
-            <div class="panel-title"><div><span class="kicker">CORREÇÃO ADMINISTRATIVA</span><h2>Editar / registrar manualmente</h2><p class="hint">Não faz parte do fluxo normal. Use apenas para corrigir dados ou reconstruir uma partida excepcionalmente.</p></div></div>
+            <div class="panel-title"><div><span class="kicker">CORREÇÃO ADMINISTRATIVA</span><h2>Editar / registrar manualmente</h2><p class="hint">Não faz parte do fluxo normal. Partidas sem JSON oficial ficam sem card público.</p></div></div>
             <form id="matchForm" class="admin-match-form">
               <input type="hidden" name="id">
               <div class="two"><label><span>Evento *</span><select id="matchEvent" name="eventId" required><option value="">Selecione...</option></select></label><label><span>Nome da partida</span><input name="matchLabel" placeholder="Final, Partida 01..."></label></div>
-              <div class="two"><label><span>Data/hora *</span><input type="datetime-local" name="playedAt" required></label><label><span>Publicado</span><select name="published"><option value="true">Sim</option><option value="false">Não</option></select></label></div>
+              <div class="two"><label><span>Data/hora *</span><input type="datetime-local" name="playedAt" required></label><label><span>Publicado</span><select name="published"><option value="false">Não</option><option value="true">Sim</option></select></label></div>
               <div class="two"><label><span>Vencedor *</span><input name="winnerCharacter" placeholder="PLAYER 1 / PLAYER 2" required></label><label><span>Nome do Player vencedor *</span><input name="winnerCosplayer" required></label></div>
               <div class="two"><label><span>Adversário</span><input name="opponentCharacter" placeholder="PLAYER 1 / PLAYER 2"></label><label><span>Nome do Player adversário</span><input name="opponentCosplayer"></label></div>
               <label><span>Observação</span><textarea name="notes" rows="3" placeholder="Motivo da correção..."></textarea></label>
@@ -107,5 +107,6 @@
   <script src="./resultados-admin.js"></script>
   <script src="./result-import.js"></script>
   <script src="./resultados-auto-mode.js"></script>
+  <script src="./result-card-controls.js"></script>
 </body>
 </html>
