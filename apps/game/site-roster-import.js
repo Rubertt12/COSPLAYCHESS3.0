@@ -116,6 +116,7 @@
       version: Number(raw.version) || 1,
       mode: text(raw.mode) || 'automatic',
       endpoint,
+      apiKey: text(raw.apiKey),
       token,
       expiresAt: text(raw.expiresAt) || null
     };
