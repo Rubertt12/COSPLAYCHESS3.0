@@ -180,11 +180,26 @@
     importFile(input);
   }, true);
 
+  const loadGameUxPolish = () => {
+    const existing = document.querySelector('script[data-game-ux-polish]');
+    if (existing) return;
+    const uxScript = document.createElement('script');
+    uxScript.src = 'game-ux-polish.js';
+    uxScript.dataset.gameUxPolish = 'true';
+    document.body.appendChild(uxScript);
+  };
+
   const loadGameResultExport = () => {
-    if (document.querySelector('script[data-game-result-export]')) return;
+    const existing = document.querySelector('script[data-game-result-export]');
+    if (existing) {
+      if (window.__cosplayGameResultExportLoaded) loadGameUxPolish();
+      else existing.addEventListener('load', loadGameUxPolish, { once: true });
+      return;
+    }
     const resultScript = document.createElement('script');
     resultScript.src = 'game-result-export.js';
     resultScript.dataset.gameResultExport = 'true';
+    resultScript.onload = loadGameUxPolish;
     document.body.appendChild(resultScript);
   };
 
@@ -216,7 +231,7 @@
     document.body.appendChild(lineupScript);
   };
 
-  // escalação/áudio -> automação -> layout amplo -> exportador de resultado.
+  // escalação/áudio -> automação -> layout amplo -> exportador de resultado -> UX de duelo/jogadas.
   const existingExperience = document.querySelector('script[data-participant-experience]');
   if (!existingExperience) {
     const experienceScript = document.createElement('script');
