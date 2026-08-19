@@ -17,15 +17,15 @@
       .community-nav [data-fergorverse-instagram]{
         width:auto!important;
         height:58px!important;
-        min-width:230px!important;
+        min-width:250px!important;
         max-width:100%!important;
         flex:0 0 auto!important;
-        padding:0 24px!important;
+        padding:0 24px 0 16px!important;
         border-radius:16px!important;
         display:inline-flex!important;
         align-items:center!important;
-        justify-content:center!important;
-        gap:12px!important;
+        justify-content:flex-start!important;
+        gap:14px!important;
         line-height:1!important;
         overflow:hidden!important;
         position:relative!important;
@@ -45,20 +45,21 @@
       .community-nav [data-fergorverse-instagram] .instagram-cms-icon{
         display:inline-grid!important;
         place-items:center!important;
-        width:26px!important;
-        height:26px!important;
-        min-width:26px!important;
-        flex:0 0 26px!important;
+        width:32px!important;
+        height:32px!important;
+        min-width:32px!important;
+        flex:0 0 32px!important;
         color:#fff!important;
         position:relative!important;
         z-index:2!important;
         line-height:0!important;
+        margin-left:0!important;
       }
       .community-nav [data-fergorverse-instagram] .instagram-cms-icon svg{
         display:block!important;
-        width:26px!important;
-        height:26px!important;
-        min-width:26px!important;
+        width:32px!important;
+        height:32px!important;
+        min-width:32px!important;
         max-width:none!important;
         overflow:visible!important;
         opacity:1!important;
@@ -87,7 +88,8 @@
         line-height:1.15!important;
         color:#fff!important;
         white-space:nowrap!important;
-        flex:0 0 auto!important;
+        flex:1 1 auto!important;
+        text-align:left!important;
         text-shadow:none!important;
       }
       .community-nav [data-fergorverse-instagram]:hover{
@@ -100,12 +102,12 @@
           width:100%!important;
           min-width:0!important;
           height:54px!important;
-          padding:0 18px!important;
-          gap:10px!important;
+          padding:0 18px 0 14px!important;
+          gap:12px!important;
         }
         .community-nav [data-fergorverse-instagram] .instagram-cms-icon,
         .community-nav [data-fergorverse-instagram] .instagram-cms-icon svg{
-          width:23px!important;height:23px!important;min-width:23px!important;flex-basis:23px!important
+          width:29px!important;height:29px!important;min-width:29px!important;flex-basis:29px!important
         }
         .community-nav [data-fergorverse-instagram] .instagram-cms-label{font-size:12px!important}
       }
