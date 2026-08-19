@@ -47,6 +47,18 @@
     if(typeof base!=='function'||base.__freeWrapped)return false;
     const wrapped=function(buttons){base(buttons);render(buttons);};wrapped.__freeWrapped=true;window.COSPLAYCHESS_RENDER_BUTTONS=wrapped;return true;
   };
+  async function loadPublished(){
+    if(preview)return;
+    try{
+      const cfg=window.COSPLAYCHESS_CONFIG;
+      const db=window.COSPLAYCHESS_DB||window.getCosplayChessDb?.()||window.supabase?.createClient?.(cfg?.supabaseUrl,cfg?.supabaseKey);
+      if(!db)return;
+      const {data,error}=await db.from('cosplay_site_content').select('content').eq('key','landing').eq('published',true).maybeSingle();
+      if(error)throw error;
+      if(Array.isArray(data?.content?.buttons))render(data.content.buttons);
+    }catch(e){console.warn('[CMS free buttons]',e);}
+  }
   let tries=0;const timer=setInterval(()=>{tries++;if(hook()||tries>50)clearInterval(timer);},50);hook();
   window.COSPLAYCHESS_RENDER_FREE_BUTTONS=render;
+  loadPublished();
 })();
