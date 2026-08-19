@@ -7,12 +7,23 @@
   const runtime = () => store?.g?.matchRuntime || null;
   const playerNumber = side => side === 'B' ? 1 : 2;
   const sideLabel = side => side === 'B' ? 'Brancas' : side === 'P' ? 'Pretas' : 'Empate';
+  const coord = index => {
+    const i = Number(index);
+    if (!Number.isInteger(i) || i < 0 || i > 63) return '?';
+    return String.fromCharCode(65 + (i % 8)) + (8 - Math.floor(i / 8));
+  };
+  const boardCoord = index => ({ row: Math.floor(Number(index) / 8), col: Number(index) % 8 });
 
   function playerName(side) {
     return document.getElementById(`name-${side}`)?.value?.trim() || (side === 'B' ? 'Jogador 1' : 'Jogador 2');
   }
 
   function persist() { try { save(); } catch (_) {} }
+  function resultSyncConfig() {
+    const sync = store?.g?.resultSync;
+    if (!sync || typeof sync !== 'object' || !sync.endpoint || !sync.token) return null;
+    return sync;
+  }
 
   function newMatchId() {
     const eventId = String(store?.g?.rosterEvent?.id || 'local').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 40) || 'local';
@@ -26,6 +37,68 @@
 
   function createPieceStats() {
     return Object.fromEntries(managedPieceIds().map(id => [id, { moves: 0, captures: 0 }]));
+  }
+
+  function pieceInfo(id) {
+    if (!id) return null;
+    const piece = store?.p?.[id] || {};
+    const participant = piece.participant || {};
+    const side = id.endsWith('_B') ? 'B' : 'P';
+    return {
+      id,
+      registrationId: piece.participantId || participant.id || null,
+      character: participant.character || piece.name || PIECE_LABELS[id.charAt(0)] || id,
+      cosplayer: participant.name || piece.participantRealName || '',
+      piece: PIECE_LABELS[id.charAt(0)] || id.charAt(0),
+      pieceType: PIECE_LABELS[id.charAt(0)] || id.charAt(0),
+      side,
+      sideLabel: sideLabel(side),
+      player: playerNumber(side),
+      playerNumber: playerNumber(side)
+    };
+  }
+
+  function describeMove(from, to) {
+    const moverId = store?.board?.[from] || null;
+    const targetId = store?.board?.[to] || null;
+    if (!moverId) return null;
+    const info = pieceInfo(moverId);
+    const src = boardCoord(from);
+    const dst = boardCoord(to);
+    const dr = dst.row - src.row;
+    const dc = dst.col - src.col;
+    const type = moverId.charAt(0);
+    const isCapture = !!targetId;
+    const isEnPassant = type === 'P' && !targetId && Number(store?.g?.enPassant) === Number(to) && Math.abs(dc) === 1;
+    const reachesPromotion = type === 'P' && (dst.row === 0 || dst.row === 7);
+    let label = `MOVIMENTO DE ${(PIECE_LABELS[type] || 'PEÇA').toUpperCase()}`;
+
+    if (type === 'K' && Math.abs(dc) === 2) label = dc > 0 ? 'ROQUE PEQUENO' : 'ROQUE GRANDE';
+    else if (isEnPassant) label = 'EN PASSANT';
+    else if (reachesPromotion) label = isCapture ? 'CAPTURA COM PROMOÇÃO' : 'PROMOÇÃO DE PEÃO';
+    else if (type === 'P' && isCapture) label = 'CAPTURA DIAGONAL DE PEÃO';
+    else if (type === 'P' && Math.abs(dr) === 2) label = 'AVANÇO DUPLO DE PEÃO';
+    else if (type === 'P') label = 'AVANÇO DE PEÃO';
+    else if (isCapture) label = `CAPTURA DE ${(PIECE_LABELS[type] || 'PEÇA').toUpperCase()}`;
+    else if (type === 'C') label = 'SALTO DE CAVALO';
+    else if (type === 'B') label = 'MOVIMENTO DIAGONAL DO BISPO';
+    else if (type === 'T') label = 'MOVIMENTO DE TORRE';
+    else if (type === 'Q') label = 'MOVIMENTO DA RAINHA';
+    else if (type === 'K') label = 'MOVIMENTO DO REI';
+
+    const capture = isCapture || isEnPassant;
+    return {
+      ...info,
+      from,
+      to,
+      origin: coord(from),
+      destination: coord(to),
+      label,
+      capture,
+      notation: `${coord(from)} ${capture ? '×' : '→'} ${coord(to)}`,
+      target: pieceInfo(targetId),
+      recordedAt: nowIso()
+    };
   }
 
   function startRuntime(force = false) {
@@ -43,7 +116,9 @@
       finishedAt: null,
       status: 'active',
       winner: null,
-      pieceStats: createPieceStats()
+      pieceStats: createPieceStats(),
+      moveHistory: [],
+      sync: { status: 'idle', attempts: 0, syncedAt: null, remoteMatchId: null, error: null }
     };
     persist();
     refreshResultButton();
@@ -58,18 +133,40 @@
     return rt.pieceStats[pieceId];
   }
 
-  function recordMove(pieceId, captured = false) {
+  function pushMoveHistory(meta) {
+    const rt = runtime();
+    if (!rt || !meta) return;
+    if (!Array.isArray(rt.moveHistory)) rt.moveHistory = [];
+    rt.moveHistory.push({ ...meta, moveNumber: rt.moveHistory.length + 1 });
+  }
+
+  function recordMove(pieceId, captured = false, moveMeta = null) {
     const stat = pieceStat(pieceId);
     if (!stat) return;
     stat.moves = (Number(stat.moves) || 0) + 1;
     if (captured) stat.captures = (Number(stat.captures) || 0) + 1;
+    if (moveMeta) pushMoveHistory({ ...moveMeta, capture: !!(captured || moveMeta.capture) });
     persist();
   }
 
-  function recordCapture(pieceId) {
-    const stat = pieceStat(pieceId);
+  function recordDuelDefense(defenderId, attackerId, attackerFrom, defenderAt) {
+    const stat = pieceStat(defenderId);
     if (!stat) return;
     stat.captures = (Number(stat.captures) || 0) + 1;
+    const defender = pieceInfo(defenderId);
+    const attacker = pieceInfo(attackerId);
+    pushMoveHistory({
+      ...defender,
+      from: defenderAt,
+      to: attackerFrom,
+      origin: coord(defenderAt),
+      destination: coord(attackerFrom),
+      label: 'DEFESA BEM-SUCEDIDA',
+      capture: true,
+      notation: `${coord(defenderAt)} defendeu o ataque de ${coord(attackerFrom)}`,
+      target: attacker,
+      recordedAt: nowIso()
+    });
     persist();
   }
 
@@ -82,6 +179,10 @@
     rt.status = 'finished';
     persist();
     setTimeout(() => { installVictoryExportButton(); refreshResultButton(); }, 60);
+    if (resultSyncConfig()) {
+      clearTimeout(markWinner.syncTimer);
+      markWinner.syncTimer = setTimeout(() => syncResult(false), 450);
+    }
   }
 
   function buildParticipants(winner) {
@@ -123,7 +224,7 @@
 
     return {
       type: 'cosplaychess-result',
-      version: 1,
+      version: 2,
       matchId: rt.matchId || newMatchId(),
       exportedAt: nowIso(),
       event: store.g.rosterEvent ? { ...store.g.rosterEvent } : { id: rt.eventId || null, name: rt.eventName || '' },
@@ -141,6 +242,7 @@
         ? { player: null, side: 'DRAW', sideName: 'Empate', name: 'Empate' }
         : { player: playerNumber(winner), side: winner, sideName: sideLabel(winner), name: winner === 'B' ? p1 : p2 },
       participants: buildParticipants(winner),
+      moves: Array.isArray(rt.moveHistory) ? rt.moveHistory.map(move => ({ ...move })) : [],
       totals: {
         player1Captures: Number(store.g.killsB) || 0,
         player2Captures: Number(store.g.killsP) || 0
@@ -157,9 +259,9 @@
     const toast = document.createElement('div');
     toast.id = 'match-result-toast';
     toast.textContent = message;
-    toast.style.cssText = `position:fixed;right:20px;bottom:20px;z-index:22000;max-width:450px;padding:13px 16px;border-radius:11px;background:${error ? '#351018' : '#071f23'};border:1px solid ${error ? '#ff4f77' : 'var(--accent,#00e5ff)'};color:#fff;font-size:11px;line-height:1.45;box-shadow:0 18px 46px rgba(0,0,0,.62);`;
+    toast.style.cssText = `position:fixed;right:20px;bottom:20px;z-index:22000;max-width:480px;padding:13px 16px;border-radius:11px;background:${error ? '#351018' : '#071f23'};border:1px solid ${error ? '#ff4f77' : 'var(--accent,#00e5ff)'};color:#fff;font-size:11px;line-height:1.45;box-shadow:0 18px 46px rgba(0,0,0,.62);`;
     document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 4800);
+    setTimeout(() => toast.remove(), 5600);
   }
 
   function exportResult() {
@@ -174,24 +276,102 @@
       a.click();
       a.remove();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
-      notify('Resultado oficial exportado. Importe este JSON em História & Rankings no site.');
+      notify('JSON de backup do resultado salvo. A sincronização automática é o fluxo principal.');
     } catch (error) {
-      notify(error.message || 'Não foi possível exportar o resultado.', true);
+      notify(error.message || 'Não foi possível exportar o backup do resultado.', true);
+    }
+  }
+
+  async function syncResult(manual = true) {
+    const rt = runtime();
+    const cfg = resultSyncConfig();
+    if (!rt?.winner) {
+      if (manual) notify('A partida ainda não terminou.', true);
+      return null;
+    }
+    if (!cfg) {
+      if (manual) notify('Este elenco não possui sincronização automática. Exporte um JSON de elenco novo pelo painel do site.', true);
+      return null;
+    }
+    if (rt.sync?.status === 'sending') return null;
+    if (rt.sync?.status === 'sent' && !manual) return rt.sync;
+
+    if (!rt.sync) rt.sync = { status: 'idle', attempts: 0 };
+    rt.sync.status = 'sending';
+    rt.sync.attempts = (Number(rt.sync.attempts) || 0) + 1;
+    rt.sync.error = null;
+    persist();
+    refreshResultButton();
+
+    try {
+      const payload = buildResultPayload();
+      const headers = {
+        'Content-Type': 'application/json',
+        'x-cosplay-result-token': cfg.token
+      };
+      if (cfg.apiKey) headers.apikey = cfg.apiKey;
+      const response = await fetch(cfg.endpoint, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data?.ok) throw new Error(data?.error || `Falha HTTP ${response.status}`);
+
+      rt.sync.status = 'sent';
+      rt.sync.syncedAt = nowIso();
+      rt.sync.remoteMatchId = data.matchId || null;
+      rt.sync.duplicate = !!data.duplicate;
+      rt.sync.error = null;
+      persist();
+      refreshResultButton();
+      notify(data.duplicate
+        ? 'Resultado já estava sincronizado no site. Nenhuma duplicação foi criada.'
+        : 'Resultado sincronizado automaticamente. Ranking, Hall da Fama e conquistas atualizados.');
+      return data;
+    } catch (error) {
+      rt.sync.status = 'error';
+      rt.sync.error = error?.message || String(error);
+      rt.sync.failedAt = nowIso();
+      persist();
+      refreshResultButton();
+      notify(`Falha ao enviar resultado automaticamente: ${rt.sync.error}. O resultado ficou salvo no jogo e pode ser reenviado.`, true);
+      return null;
     }
   }
 
   function installVictoryExportButton() {
     const modal = document.getElementById('victory-modal');
-    if (!modal || modal.querySelector('[data-export-match-result]')) return;
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.dataset.exportMatchResult = 'true';
-    button.className = 'btn btn-yes';
-    button.textContent = '🏆 EXPORTAR RESULTADO PARA O SITE';
-    button.style.cssText = 'width:min(430px,90%);margin:14px auto 0;display:block;padding:13px 16px;font-size:11px;letter-spacing:1px;';
-    button.addEventListener('click', exportResult);
+    if (!modal) return;
     const content = modal.querySelector('.victory-content') || modal.firstElementChild || modal;
-    content.appendChild(button);
+
+    if (!modal.querySelector('#victory-result-sync-status')) {
+      const status = document.createElement('div');
+      status.id = 'victory-result-sync-status';
+      status.style.cssText = 'width:min(430px,90%);margin:14px auto 0;padding:10px 12px;border:1px solid rgba(0,229,255,.18);border-radius:9px;background:rgba(0,229,255,.05);color:#bbb;font-size:10px;line-height:1.45;';
+      content.appendChild(status);
+    }
+
+    if (!modal.querySelector('[data-sync-match-result]')) {
+      const syncButton = document.createElement('button');
+      syncButton.type = 'button';
+      syncButton.dataset.syncMatchResult = 'true';
+      syncButton.className = 'btn btn-yes';
+      syncButton.style.cssText = 'width:min(430px,90%);margin:9px auto 0;display:block;padding:13px 16px;font-size:11px;letter-spacing:1px;';
+      syncButton.addEventListener('click', () => syncResult(true));
+      content.appendChild(syncButton);
+    }
+
+    if (!modal.querySelector('[data-export-match-result]')) {
+      const backupButton = document.createElement('button');
+      backupButton.type = 'button';
+      backupButton.dataset.exportMatchResult = 'true';
+      backupButton.className = 'btn';
+      backupButton.textContent = '💾 BAIXAR JSON DE BACKUP';
+      backupButton.style.cssText = 'width:min(430px,90%);margin:7px auto 0;display:block;padding:10px 13px;font-size:9px;letter-spacing:1px;background:#18181e;color:#aaa;';
+      backupButton.addEventListener('click', exportResult);
+      content.appendChild(backupButton);
+    }
   }
 
   function installSystemResultCard() {
@@ -202,29 +382,59 @@
     card.className = 'unit-card';
     card.style.cssText = 'background:rgba(224,190,119,.06);border-color:rgba(224,190,119,.24);';
     card.innerHTML = `
-      <b style="color:#e0be77;font-size:10px;letter-spacing:1px;">🏆 RESULTADO DO EVENTO</b>
+      <b style="color:#e0be77;font-size:10px;letter-spacing:1px;">☁ RESULTADO & SITE</b>
       <div id="match-result-export-status" style="font-size:9px;color:#aaa;line-height:1.45;margin:7px 0 9px;">Aguardando uma partida oficial.</div>
-      <button type="button" class="btn-play-sm" data-export-match-result style="width:100%;font-size:8px;padding:10px 6px;">EXPORTAR RESULTADO</button>`;
+      <button type="button" class="btn-play-sm" data-sync-match-result style="width:100%;font-size:8px;padding:10px 6px;margin-bottom:6px;">SINCRONIZAR RESULTADO</button>
+      <button type="button" class="btn-play-sm" data-export-match-result style="width:100%;font-size:8px;padding:9px 6px;background:#17171d;color:#999;">JSON DE BACKUP</button>`;
     const resetButton = [...root.querySelectorAll('button')].find(btn => /RESET TOTAL/i.test(btn.textContent || ''));
     if (resetButton) root.insertBefore(card, resetButton); else root.appendChild(card);
+    card.querySelector('[data-sync-match-result]').addEventListener('click', () => syncResult(true));
     card.querySelector('[data-export-match-result]').addEventListener('click', exportResult);
     refreshResultButton();
   }
 
   function refreshResultButton() {
     const status = document.getElementById('match-result-export-status');
-    const buttons = document.querySelectorAll('[data-export-match-result]');
+    const victoryStatus = document.getElementById('victory-result-sync-status');
+    const syncButtons = document.querySelectorAll('[data-sync-match-result]');
+    const backupButtons = document.querySelectorAll('[data-export-match-result]');
     const rt = runtime();
-    if (status) {
-      status.textContent = rt?.winner
-        ? `Resultado pronto: ${rt.winner === 'DRAW' ? 'empate' : `${playerName(rt.winner)} · Player ${playerNumber(rt.winner)}`}.`
-        : rt?.status === 'active'
-          ? 'Partida em andamento. O resultado será liberado ao definir o vencedor.'
-          : 'Aguardando uma partida oficial.';
+    const cfg = resultSyncConfig();
+    const sync = rt?.sync || {};
+
+    let statusText = 'Aguardando uma partida oficial.';
+    if (rt?.status === 'active') statusText = cfg
+      ? 'Partida em andamento. Ao terminar, o resultado será enviado automaticamente para o site.'
+      : 'Partida em andamento. Sincronização automática indisponível neste elenco.';
+    if (rt?.winner) {
+      const winnerText = rt.winner === 'DRAW' ? 'Empate' : `${playerName(rt.winner)} · Player ${playerNumber(rt.winner)}`;
+      if (!cfg) statusText = `Resultado pronto: ${winnerText}. Exporte um elenco novo pelo site para ativar o envio automático.`;
+      else if (sync.status === 'sending') statusText = `Resultado: ${winnerText}. Enviando para o site...`;
+      else if (sync.status === 'sent') statusText = `✓ SINCRONIZADO COM O SITE · ${winnerText}${sync.duplicate ? ' · já existia' : ''}`;
+      else if (sync.status === 'error') statusText = `⚠ Resultado salvo, mas o envio falhou: ${sync.error || 'erro de conexão'}. Use “Tentar novamente”.`;
+      else statusText = `Resultado pronto: ${winnerText}. Sincronização automática preparada.`;
     }
-    buttons.forEach(btn => {
+
+    if (status) status.textContent = statusText;
+    if (victoryStatus) victoryStatus.textContent = statusText;
+
+    syncButtons.forEach(btn => {
+      const disabled = !rt?.winner || !cfg || sync.status === 'sending' || sync.status === 'sent';
+      btn.disabled = disabled;
+      btn.style.opacity = disabled ? '.55' : '1';
+      btn.style.cursor = disabled ? 'not-allowed' : 'pointer';
+      btn.textContent = sync.status === 'sending'
+        ? 'ENVIANDO PARA O SITE...'
+        : sync.status === 'sent'
+          ? '✓ RESULTADO SINCRONIZADO'
+          : sync.status === 'error'
+            ? '↻ TENTAR NOVAMENTE'
+            : '☁ SINCRONIZAR RESULTADO';
+    });
+
+    backupButtons.forEach(btn => {
       btn.disabled = !rt?.winner;
-      btn.style.opacity = rt?.winner ? '1' : '.5';
+      btn.style.opacity = rt?.winner ? '1' : '.45';
       btn.style.cursor = rt?.winner ? 'pointer' : 'not-allowed';
     });
   }
@@ -244,12 +454,13 @@
       const originalExecuteMove = executeMove;
       executeMove = function(from, to, ...rest) {
         const mover = store?.board?.[from] || null;
+        const moveMeta = describeMove(from, to);
         const wasActive = runtime()?.status === 'active';
         const graveBefore = Array.isArray(store?.graveyard) ? store.graveyard.length : 0;
         const result = originalExecuteMove.call(this, from, to, ...rest);
         if (wasActive && mover) {
           const graveAfter = Array.isArray(store?.graveyard) ? store.graveyard.length : graveBefore;
-          recordMove(mover, graveAfter > graveBefore);
+          recordMove(mover, graveAfter > graveBefore, moveMeta);
         }
         return result;
       };
@@ -258,13 +469,15 @@
     if (typeof finishDuel === 'function') {
       const originalFinishDuel = finishDuel;
       finishDuel = function(v, ...rest) {
-        const attacker = store?.board?.[pending?.f] || null;
-        const defender = store?.board?.[pending?.t] || null;
+        const attackerFrom = pending?.f;
+        const defenderAt = pending?.t;
+        const attacker = store?.board?.[attackerFrom] || null;
+        const defender = store?.board?.[defenderAt] || null;
         const attackerSide = attacker?.endsWith('_B') ? 'B' : 'P';
         const defenderWon = !!(attacker && defender && v !== attackerSide);
         const wasActive = runtime()?.status === 'active';
         const result = originalFinishDuel.call(this, v, ...rest);
-        if (wasActive && defenderWon) recordCapture(defender);
+        if (wasActive && defenderWon) recordDuelDefense(defender, attacker, attackerFrom, defenderAt);
         return result;
       };
     }
@@ -296,6 +509,8 @@
   window.exportCosplayChessResult = exportResult;
   window.buildCosplayChessResult = buildResultPayload;
   window.startCosplayMatchRuntime = startRuntime;
+  window.syncCosplayChessResult = syncResult;
+  window.refreshCosplayResultSync = refreshResultButton;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => { installSystemResultCard(); installVictoryExportButton(); refreshResultButton(); }, { once: true });
