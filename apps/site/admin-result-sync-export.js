@@ -90,6 +90,7 @@
               version: 1,
               mode: 'automatic',
               endpoint: sync.endpoint,
+              apiKey: cfg.supabaseKey,
               token: sync.token,
               expiresAt: sync.expiresAt
             }
