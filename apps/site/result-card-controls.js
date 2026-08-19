@@ -15,7 +15,7 @@
   }
 
   async function fetchMatches(){
-    const {data,error}=await db.from('cosplay_matches').select('id,published,source_result_id,ingest_source').order('played_at',{ascending:false});
+    const {data,error}=await db.from('cosplay_matches').select('id,published,collectible_enabled,source_result_id,ingest_source').order('played_at',{ascending:false});
     if(error)throw error;
     matchMap=new Map((data||[]).map(m=>[m.id,m]));
   }
@@ -25,12 +25,13 @@
   }
 
   function makeButton(match){
+    const enabled=!!match.collectible_enabled;
     const button=document.createElement('button');
     button.type='button';
-    button.className=`mini-btn ${match.published?'':'ghost'}`;
+    button.className=`mini-btn ${enabled?'':'ghost'}`;
     button.dataset.toggleResultCard=match.id;
-    button.textContent=match.published?'CARD ATIVO':'CARD DESATIVADO';
-    button.title=match.published?'Ocultar este card das páginas públicas':'Publicar este card nas páginas públicas';
+    button.textContent=enabled?'CARD ATIVO':'CARD DESATIVADO';
+    button.title=enabled?'Ocultar o card colecionável do campeão':'Ativar o card colecionável do campeão';
     return button;
   }
 
@@ -47,7 +48,7 @@
         const badge=document.createElement('span');
         badge.className='mini-btn ghost';
         badge.textContent='SEM JSON · CARD BLOQUEADO';
-        badge.title='Cards oficiais só podem ser ativados quando a partida veio de um JSON/resultado oficial.';
+        badge.title='O card colecionável só pode ser ativado quando a partida possui resultado/JSON oficial.';
         badge.setAttribute('aria-disabled','true');
         actions.insertBefore(badge,actions.querySelector('[data-delete-match]')||null);
       }
@@ -112,20 +113,19 @@
   async function toggleCard(id,button){
     const match=matchMap.get(id);
     if(!match||!sourceIsJson(match))return;
-    const next=!match.published;
+    const next=!match.collectible_enabled;
     button.disabled=true;
     button.textContent=next?'ATIVANDO...':'DESATIVANDO...';
     try{
-      const {error}=await db.from('cosplay_matches').update({published:next,updated_at:new Date().toISOString()}).eq('id',id);
+      const {error}=await db.from('cosplay_matches').update({collectible_enabled:next,updated_at:new Date().toISOString()}).eq('id',id);
       if(error)throw error;
-      match.published=next;
-      await rebuildAutomaticAchievements();
+      match.collectible_enabled=next;
       button.className=`mini-btn ${next?'':'ghost'}`;
       button.textContent=next?'CARD ATIVO':'CARD DESATIVADO';
-      button.title=next?'Ocultar este card das páginas públicas':'Publicar este card nas páginas públicas';
+      button.title=next?'Ocultar o card colecionável do campeão':'Ativar o card colecionável do campeão';
     }catch(error){
       alert(error.message||'Não foi possível alterar o card.');
-      button.textContent=match.published?'CARD ATIVO':'CARD DESATIVADO';
+      button.textContent=match.collectible_enabled?'CARD ATIVO':'CARD DESATIVADO';
     }finally{
       button.disabled=false;
     }
@@ -134,7 +134,7 @@
   async function deleteMatchAndDerived(id){
     const match=matchMap.get(id);
     if(!match)return;
-    if(!confirm('Excluir os dados deste resultado/JSON do site?\n\nO card, o ranking e os dados derivados desta partida deixarão de aparecer.'))return;
+    if(!confirm('Excluir os dados deste resultado/JSON do site?\n\nO card, o ranking, movimentos e dados derivados desta partida deixarão de aparecer.'))return;
     const {error}=await db.from('cosplay_matches').delete().eq('id',id);
     if(error)throw error;
     matchMap.delete(id);
