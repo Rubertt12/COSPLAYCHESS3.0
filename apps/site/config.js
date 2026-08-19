@@ -75,6 +75,9 @@ window.COSPLAYCHESS_CONFIG = {
       document.head.appendChild(link);
     };
 
+    const globalCmsPages = ['index.html', '', 'cadastro.html', 'galeria-eventos.html', 'sobre.html', 'universo.html', 'hall-da-fama.html', 'ranking.html', 'conquistas.html'];
+    if (globalCmsPages.includes(page)) loadScript('./site-global-cms.js?v=20260819-global1');
+
     const collectiblePages = ['index.html', '', 'sobre.html', 'universo.html', 'hall-da-fama.html', 'ranking.html', 'conquistas.html'];
     if (collectiblePages.includes(page) && !previewMode) {
       loadStyle('./champion-collectible.css');
