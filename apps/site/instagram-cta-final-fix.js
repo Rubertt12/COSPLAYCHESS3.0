@@ -15,31 +15,33 @@
     style.textContent=`
       .community-nav [data-fergorverse-instagram]{
         width:auto!important;
-        height:52px!important;
-        min-width:52px!important;
-        max-width:none!important;
+        height:58px!important;
+        min-width:230px!important;
+        max-width:100%!important;
         flex:0 0 auto!important;
-        padding:0 18px!important;
+        padding:0 24px!important;
         border-radius:16px!important;
         display:inline-flex!important;
         align-items:center!important;
         justify-content:center!important;
-        gap:10px!important;
+        gap:12px!important;
         line-height:1!important;
-        overflow:hidden!important;
-        font-size:11px!important;
+        overflow:visible!important;
+        font-size:13px!important;
         font-weight:900!important;
-        letter-spacing:.2px!important;
+        letter-spacing:.25px!important;
         white-space:nowrap!important;
         color:#fff!important;
+        box-sizing:border-box!important;
       }
       .community-nav [data-fergorverse-instagram] > svg{display:none!important}
       .community-nav [data-fergorverse-instagram] .instagram-glyph-cms{
         display:block!important;
         position:relative!important;
-        width:23px!important;
-        height:23px!important;
-        min-width:23px!important;
+        width:25px!important;
+        height:25px!important;
+        min-width:25px!important;
+        flex:0 0 25px!important;
         box-sizing:border-box!important;
         border:2.2px solid #fff!important;
         border-radius:7px!important;
@@ -53,8 +55,8 @@
         position:absolute!important;
         left:50%!important;
         top:50%!important;
-        width:7px!important;
-        height:7px!important;
+        width:8px!important;
+        height:8px!important;
         box-sizing:border-box!important;
         border:2px solid #fff!important;
         border-radius:50%!important;
@@ -75,16 +77,23 @@
         display:inline-block!important;
         position:relative!important;
         z-index:2!important;
-        font-size:11px!important;
+        font-size:13px!important;
         font-weight:900!important;
-        line-height:1.1!important;
+        line-height:1.15!important;
         color:#fff!important;
         white-space:nowrap!important;
+        flex:0 0 auto!important;
       }
-      @media(max-width:430px){
-        .community-nav [data-fergorverse-instagram]{height:48px!important;padding:0 14px!important;gap:8px!important}
-        .community-nav [data-fergorverse-instagram] .instagram-glyph-cms{width:21px!important;height:21px!important;min-width:21px!important}
-        .community-nav [data-fergorverse-instagram] .instagram-cms-label{font-size:10px!important}
+      @media(max-width:520px){
+        .community-nav [data-fergorverse-instagram]{
+          width:100%!important;
+          min-width:0!important;
+          height:54px!important;
+          padding:0 18px!important;
+          gap:10px!important;
+        }
+        .community-nav [data-fergorverse-instagram] .instagram-glyph-cms{width:23px!important;height:23px!important;min-width:23px!important;flex-basis:23px!important}
+        .community-nav [data-fergorverse-instagram] .instagram-cms-label{font-size:12px!important}
       }
     `;
     document.head.appendChild(style);
