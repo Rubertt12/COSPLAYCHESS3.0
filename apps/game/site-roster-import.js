@@ -106,6 +106,21 @@
       });
   }
 
+  function normalizeResultSync(data) {
+    const raw = data?.integration?.resultSync;
+    if (!raw || typeof raw !== 'object') return null;
+    const endpoint = text(raw.endpoint);
+    const token = text(raw.token);
+    if (!endpoint || !token) return null;
+    return {
+      version: Number(raw.version) || 1,
+      mode: text(raw.mode) || 'automatic',
+      endpoint,
+      token,
+      expiresAt: text(raw.expiresAt) || null
+    };
+  }
+
   function notify(message, error = false) {
     const old = document.getElementById('site-roster-import-toast');
     if (old) old.remove();
@@ -114,7 +129,7 @@
     el.textContent = message;
     el.style.cssText = `position:fixed;right:20px;bottom:20px;z-index:14000;padding:12px 16px;border-radius:8px;color:#fff;font-size:12px;background:${error ? '#3a0d17' : '#082c31'};border:1px solid ${error ? '#ff0055' : '#00e5ff'};box-shadow:0 12px 30px rgba(0,0,0,.55);max-width:460px;`;
     document.body.appendChild(el);
-    setTimeout(() => el.remove(), 4800);
+    setTimeout(() => el.remove(), 5200);
   }
 
   function applyRoster(data, fileName = 'CosplayChess_elenco.json') {
@@ -132,6 +147,7 @@
     store.g.rosterFormat = isOfficialSiteExport(data) ? 'cosplaychess-participants' : 'legacy';
     store.g.rosterExportVersion = data?.version || null;
     store.g.rosterEvent = data?.event && typeof data.event === 'object' ? { ...data.event } : null;
+    store.g.resultSync = normalizeResultSync(data);
     delete store.g.autoLineupSummary;
     delete store.g.autoLineupLastRun;
     delete store.g.matchRuntime;
@@ -140,9 +156,13 @@
     try { renderBoard(); } catch (_) {}
     try { renderConfigLists(); } catch (_) {}
     try { window.refreshCosplayAutoLineup?.(); } catch (_) {}
+    try { window.refreshCosplayResultSync?.(); } catch (_) {}
 
     const eventName = store.g.rosterEvent?.name ? ` do evento ${store.g.rosterEvent.name}` : '';
-    notify(`${people.length} participante(s)${eventName} carregado(s) do JSON do site. Agora você pode clicar em “Acionar JSON” para montar o tabuleiro automaticamente.`);
+    const syncMessage = store.g.resultSync
+      ? ' A sincronização automática de resultados com o site está ATIVA.'
+      : ' Este JSON não possui sincronização automática; a exportação manual do resultado ficará disponível como backup.';
+    notify(`${people.length} participante(s)${eventName} carregado(s) do JSON do site. Agora você pode clicar em “Acionar JSON” para montar o tabuleiro automaticamente.${syncMessage}`, !store.g.resultSync && isOfficialSiteExport(data));
   }
 
   function importFile(input) {
@@ -231,7 +251,7 @@
     document.body.appendChild(lineupScript);
   };
 
-  // escalação/áudio -> automação -> layout amplo -> exportador de resultado -> UX de duelo/jogadas.
+  // escalação/áudio -> automação -> layout amplo -> resultado/sincronização -> UX de duelo/jogadas.
   const existingExperience = document.querySelector('script[data-participant-experience]');
   if (!existingExperience) {
     const experienceScript = document.createElement('script');
