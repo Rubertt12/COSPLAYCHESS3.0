@@ -79,6 +79,7 @@ window.COSPLAYCHESS_CONFIG = {
     if (collectiblePages.includes(page) && !previewMode) {
       loadStyle('./champion-collectible.css');
       loadStyle('./champion-card-magic.css');
+      loadStyle('./champion-card-responsive.css');
       loadScript('./champion-collectible.js', () => loadScript('./champion-card-magic.js'));
     }
 
