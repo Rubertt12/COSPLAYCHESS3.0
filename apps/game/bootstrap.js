@@ -124,6 +124,7 @@ function installJsonSettingsUi(window) {
   if (!window || window.isDestroyed()) return;
   const rosterEditorUrl = pathToFileURL(path.join(__dirname, 'roster-editor.js')).href;
   const rosterGuardUrl = pathToFileURL(path.join(__dirname, 'roster-guard.js')).href;
+  const playerJsonAutofillUrl = pathToFileURL(path.join(__dirname, 'game-player-json-autofill.js')).href;
   const siteRosterImportUrl = pathToFileURL(path.join(__dirname, 'site-roster-import.js')).href;
 
   window.webContents.on('did-finish-load', () => {
@@ -157,7 +158,7 @@ function installJsonSettingsUi(window) {
           if (grid) dataCard.insertBefore(help, grid);
           else dataCard.appendChild(help);
         }
-        help.textContent = 'Importe o arquivo gerado por “Exportar para o app” no site. Depois use “Acionar JSON” para o sistema distribuir o elenco automaticamente; o Modo Edição fica disponível para ajustes manuais.';
+        help.textContent = 'Importe o arquivo gerado por “Exportar para o app” no site. Player 1 e Player 2 serão aplicados automaticamente com nome e foto; depois use “Acionar JSON” para distribuir as peças.';
         help.style.cssText = 'font-size:9px;color:#aaa;line-height:1.45;margin:8px 0 10px;';
 
         const backButton = Array.from(settings.querySelectorAll('button')).find(btn => /VOLTAR/i.test(btn.textContent || ''));
@@ -174,7 +175,7 @@ function installJsonSettingsUi(window) {
         editLabel.innerHTML = input + ' MODO EDIÇÃO (REVISAR ESCALAÇÃO)';
       }
 
-      const loadSiteRosterImport = () => {
+      const loadSiteRosterOnly = () => {
         if (document.querySelector('script[data-site-roster-import]')) return;
         const siteScript = document.createElement('script');
         siteScript.src = ${JSON.stringify(siteRosterImportUrl)};
@@ -182,17 +183,31 @@ function installJsonSettingsUi(window) {
         document.body.appendChild(siteScript);
       };
 
+      const loadPlayerAutofill = () => {
+        const existing = document.querySelector('script[data-player-json-autofill]');
+        if (existing) {
+          if (window.__cosplayGamePlayerJsonAutofillLoaded) loadSiteRosterOnly();
+          else existing.addEventListener('load', loadSiteRosterOnly, { once: true });
+          return;
+        }
+        const playerScript = document.createElement('script');
+        playerScript.src = ${JSON.stringify(playerJsonAutofillUrl)};
+        playerScript.dataset.playerJsonAutofill = 'true';
+        playerScript.onload = loadSiteRosterOnly;
+        document.body.appendChild(playerScript);
+      };
+
       const loadGuard = () => {
         const existingGuard = document.querySelector('script[data-roster-guard]');
         if (existingGuard) {
-          if (window.__cosplayRosterGuardLoaded) loadSiteRosterImport();
-          else existingGuard.addEventListener('load', loadSiteRosterImport, { once: true });
+          if (window.__cosplayRosterGuardLoaded) loadPlayerAutofill();
+          else existingGuard.addEventListener('load', loadPlayerAutofill, { once: true });
           return;
         }
         const guardScript = document.createElement('script');
         guardScript.src = ${JSON.stringify(rosterGuardUrl)};
         guardScript.dataset.rosterGuard = 'true';
-        guardScript.onload = loadSiteRosterImport;
+        guardScript.onload = loadPlayerAutofill;
         document.body.appendChild(guardScript);
       };
 
