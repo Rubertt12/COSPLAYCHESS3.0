@@ -1,5 +1,7 @@
 (()=>{
-  const PAGE_SIZE=5;
+  const GRID_LIMIT=6;
+  const GRID_PAGE_SIZE=6;
+  const LIST_PAGE_SIZE=15;
   const CONTACT_UNLOCK_MS=5*60*1000;
   let currentPage=1;
   let contactsUnlockedUntil=0;
@@ -7,8 +9,11 @@
   function safe(v=''){
     return typeof esc==='function'?esc(v):String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
+
   const contactsUnlocked=()=>Date.now()<contactsUnlockedUntil;
-  const hiddenContact=(type)=>type==='email'?'••••••••@••••••.•••':'(••) •••••-••••';
+  const hiddenContact=type=>type==='email'?'••••••••@••••••.•••':'(••) •••••-••••';
+  const isListMode=rows=>rows.length>GRID_LIMIT;
+  const pageSizeFor=rows=>isListMode(rows)?LIST_PAGE_SIZE:GRID_PAGE_SIZE;
 
   function musicData(row={}){
     return {
@@ -32,6 +37,13 @@
         ?`<audio class="registration-music-player" controls preload="none" src="${url}">Seu navegador não suporta áudio.</audio>`
         :`<a class="registration-music-link" href="${url}" target="_blank" rel="noopener noreferrer">Abrir música ↗</a>`):''}
     </div>`;
+  }
+
+  function renderListMusic(row){
+    const music=musicData(row);
+    if(!music.name&&!music.url)return '<span class="registration-list-muted">—</span>';
+    if(!music.url)return `<span class="registration-list-music-name">♫ ${safe(music.name)}</span>`;
+    return `<a class="registration-list-music" href="${safe(music.url)}" target="_blank" rel="noopener noreferrer" title="${safe(music.name||'Abrir música')}">♫ Música</a>`;
   }
 
   function pageButton(page,label=String(page),extra=''){
@@ -92,16 +104,18 @@
       const {error}=await db.from('cosplay_registrations').delete().eq('id',id);
       if(error)throw error;
       registrations=registrations.filter(r=>r.id!==id);
-      const totalPages=Math.max(1,Math.ceil(registrations.length/PAGE_SIZE));
+      const size=pageSizeFor(registrations);
+      const totalPages=Math.max(1,Math.ceil(registrations.length/size));
       currentPage=Math.min(currentPage,totalPages);
       if(typeof renderStats==='function')renderStats();
       window.renderRegistrations();
     }catch(err){alert(`Não foi possível excluir o inscrito: ${err.message||err}`);}
   };
 
-  function renderPagination(root,totalPages,totalItems){
+  function renderPagination(root,totalPages,totalItems,pageSize,listMode){
+    const modeLabel=listMode?'lista compacta':'cards';
     if(totalPages<=1){
-      root.insertAdjacentHTML('beforeend',`<div class="registration-pagination single"><span>${totalItems} inscrito${totalItems===1?'':'s'}</span></div>`);
+      root.insertAdjacentHTML('beforeend',`<div class="registration-pagination single"><span>${totalItems} inscrito${totalItems===1?'':'s'} • ${modeLabel}</span></div>`);
       return;
     }
     const pages=[];
@@ -112,7 +126,7 @@
     if(end<totalPages){if(end<totalPages-1)pages.push('<span class="registration-page-gap">…</span>');pages.push(pageButton(totalPages));}
     root.insertAdjacentHTML('beforeend',`
       <div class="registration-pagination">
-        <span class="registration-page-info">Página ${currentPage} de ${totalPages} • ${totalItems} inscritos</span>
+        <span class="registration-page-info">Página ${currentPage} de ${totalPages} • ${totalItems} inscritos • ${pageSize} por página</span>
         <div class="registration-page-controls">
           ${pageButton(Math.max(1,currentPage-1),'‹ Anterior',currentPage===1?'disabled':'')}
           ${pages.join('')}
@@ -121,8 +135,52 @@
       </div>`);
     root.querySelectorAll('[data-registration-page]').forEach(btn=>{
       if(btn.classList.contains('disabled')){btn.disabled=true;return;}
-      btn.addEventListener('click',()=>{currentPage=Number(btn.dataset.registrationPage)||1;window.renderRegistrations();root.scrollIntoView({behavior:'smooth',block:'nearest'});});
+      btn.addEventListener('click',()=>{
+        currentPage=Number(btn.dataset.registrationPage)||1;
+        window.renderRegistrations();
+        root.scrollIntoView({behavior:'smooth',block:'nearest'});
+      });
     });
+  }
+
+  function renderPrivacyBar(unlocked,listMode,total){
+    return `<div class="registration-privacy-bar">
+      <div><b>${listMode?'Visualização em lista':'Visualização em cards'}</b><span>${listMode?`${total} inscritos — modo compacto ativado automaticamente`:`Até ${GRID_LIMIT} inscritos — modo visual em cards`}</span></div>
+      <div class="registration-privacy-actions"><span>${unlocked?'Contatos liberados temporariamente':'E-mail e WhatsApp protegidos'}</span><button type="button" class="mini-btn ${unlocked?'contact-open':''}" onclick="${unlocked?'void(0)':'unlockRegistrationContacts()'}">${unlocked?'Desbloqueado':'Ver contatos'}</button></div>
+    </div>`;
+  }
+
+  function renderCard(r,unlocked){
+    return `<article class="registration-card">
+      <div class="registration-card-head">
+        <div class="registration-card-avatar" style="${r.character_photo_url?`background-image:url('${safe(r.character_photo_url)}')`:''}">${r.character_photo_url?'':'<span>♟</span>'}</div>
+        <div class="registration-card-title"><span class="registration-event-name">${safe(r.cosplay_events?.title||'Evento')}</span><h3>${safe(r.character_name||'Personagem')}</h3><p>${safe(r.full_name||'')}</p></div>
+      </div>
+      <div class="registration-card-details">
+        <div><span>E-mail</span><b class="protected-contact">${unlocked?safe(r.email||'—'):hiddenContact('email')}</b></div>
+        <div><span>WhatsApp</span><b class="protected-contact">${unlocked?safe(r.whatsapp||'—'):hiddenContact('phone')}</b></div>
+        <div><span>Lado</span><b>${safe(r.side_preference||'Sem preferência')}</b></div>
+        <div><span>Peça</span><b>${safe(r.piece_preference||'Sem preferência')}</b></div>
+        <div class="registration-detail-wide"><span>2ª preferência</span><b>${safe(r.second_piece_preference||'Sem segunda preferência')}</b></div>
+      </div>
+      ${renderMusic(r)}
+      <div class="registration-card-footer"><label><span>Status</span><select onchange="updateRegistrationStatus('${safe(r.id)}',this.value)"><option value="confirmed" ${r.status==='confirmed'?'selected':''}>Confirmado</option><option value="waitlist" ${r.status==='waitlist'?'selected':''}>Lista de espera</option><option value="cancelled" ${r.status==='cancelled'?'selected':''}>Cancelado</option></select></label><button type="button" class="mini-btn danger registration-delete-btn" onclick="deleteRegistration('${safe(r.id)}','${safe((r.full_name||r.character_name||'este inscrito').replace(/'/g,"&#39;"))}')">Excluir inscrito</button></div>
+    </article>`;
+  }
+
+  function renderListRow(r,unlocked){
+    return `<article class="registration-list-row">
+      <div class="registration-list-person">
+        <div class="registration-list-avatar" style="${r.character_photo_url?`background-image:url('${safe(r.character_photo_url)}')`:''}">${r.character_photo_url?'':'♟'}</div>
+        <div><span>${safe(r.cosplay_events?.title||'Evento')}</span><b>${safe(r.character_name||'Personagem')}</b><small>${safe(r.full_name||'')}</small></div>
+      </div>
+      <div class="registration-list-field"><span>Lado</span><b>${safe(r.side_preference||'Sem preferência')}</b></div>
+      <div class="registration-list-field"><span>Peça</span><b>${safe(r.piece_preference||'Sem preferência')}</b><small>2ª: ${safe(r.second_piece_preference||'—')}</small></div>
+      <div class="registration-list-field registration-list-contact"><span>Contato</span><b>${unlocked?safe(r.email||'—'):hiddenContact('email')}</b><small>${unlocked?safe(r.whatsapp||'—'):hiddenContact('phone')}</small></div>
+      <div class="registration-list-field"><span>Trilha</span>${renderListMusic(r)}</div>
+      <div class="registration-list-status"><span>Status</span><select onchange="updateRegistrationStatus('${safe(r.id)}',this.value)"><option value="confirmed" ${r.status==='confirmed'?'selected':''}>Confirmado</option><option value="waitlist" ${r.status==='waitlist'?'selected':''}>Espera</option><option value="cancelled" ${r.status==='cancelled'?'selected':''}>Cancelado</option></select></div>
+      <div class="registration-list-actions"><button type="button" class="mini-btn danger" onclick="deleteRegistration('${safe(r.id)}','${safe((r.full_name||r.character_name||'este inscrito').replace(/'/g,"&#39;"))}')">Excluir</button></div>
+    </article>`;
   }
 
   window.renderRegistrations=function(){
@@ -130,47 +188,20 @@
     if(!root)return;
     const rows=Array.isArray(registrations)?registrations:[];
     if(!rows.length){currentPage=1;root.innerHTML='<div class="empty-card">Nenhum inscrito encontrado.</div>';return;}
-    const totalPages=Math.max(1,Math.ceil(rows.length/PAGE_SIZE));
+
+    const listMode=isListMode(rows);
+    const pageSize=pageSizeFor(rows);
+    const totalPages=Math.max(1,Math.ceil(rows.length/pageSize));
     currentPage=Math.min(Math.max(1,currentPage),totalPages);
-    const start=(currentPage-1)*PAGE_SIZE;
-    const pageRows=rows.slice(start,start+PAGE_SIZE);
+    const start=(currentPage-1)*pageSize;
+    const pageRows=rows.slice(start,start+pageSize);
     const unlocked=contactsUnlocked();
 
-    root.innerHTML=`
-      <div class="registration-privacy-bar">
-        <span>${unlocked?'Contatos liberados temporariamente':'E-mail e WhatsApp protegidos'}</span>
-        <button type="button" class="mini-btn ${unlocked?'contact-open':''}" onclick="${unlocked?'void(0)':'unlockRegistrationContacts()'}">${unlocked?'Desbloqueado':'Ver contatos'}</button>
-      </div>
-      <div class="registration-card-grid">${pageRows.map(r=>`
-      <article class="registration-card">
-        <div class="registration-card-head">
-          <div class="registration-card-avatar" style="${r.character_photo_url?`background-image:url('${safe(r.character_photo_url)}')`:''}">${r.character_photo_url?'':'<span>♟</span>'}</div>
-          <div class="registration-card-title">
-            <span class="registration-event-name">${safe(r.cosplay_events?.title||'Evento')}</span>
-            <h3>${safe(r.character_name||'Personagem')}</h3>
-            <p>${safe(r.full_name||'')}</p>
-          </div>
-        </div>
-        <div class="registration-card-details">
-          <div><span>E-mail</span><b class="protected-contact">${unlocked?safe(r.email||'—'):hiddenContact('email')}</b></div>
-          <div><span>WhatsApp</span><b class="protected-contact">${unlocked?safe(r.whatsapp||'—'):hiddenContact('phone')}</b></div>
-          <div><span>Lado</span><b>${safe(r.side_preference||'Sem preferência')}</b></div>
-          <div><span>Peça</span><b>${safe(r.piece_preference||'Sem preferência')}</b></div>
-          <div class="registration-detail-wide"><span>2ª preferência</span><b>${safe(r.second_piece_preference||'Sem segunda preferência')}</b></div>
-        </div>
-        ${renderMusic(r)}
-        <div class="registration-card-footer">
-          <label><span>Status</span>
-            <select onchange="updateRegistrationStatus('${safe(r.id)}',this.value)">
-              <option value="confirmed" ${r.status==='confirmed'?'selected':''}>Confirmado</option>
-              <option value="waitlist" ${r.status==='waitlist'?'selected':''}>Lista de espera</option>
-              <option value="cancelled" ${r.status==='cancelled'?'selected':''}>Cancelado</option>
-            </select>
-          </label>
-          <button type="button" class="mini-btn danger registration-delete-btn" onclick="deleteRegistration('${safe(r.id)}','${safe((r.full_name||r.character_name||'este inscrito').replace(/'/g,"&#39;"))}')">Excluir inscrito</button>
-        </div>
-      </article>`).join('')}</div>`;
-    renderPagination(root,totalPages,rows.length);
+    root.innerHTML=renderPrivacyBar(unlocked,listMode,rows.length)+(listMode
+      ?`<div class="registration-compact-list"><div class="registration-list-head"><span>Cosplayer / personagem</span><span>Lado</span><span>Peça</span><span>Contato</span><span>Música</span><span>Status</span><span>Ação</span></div>${pageRows.map(r=>renderListRow(r,unlocked)).join('')}</div>`
+      :`<div class="registration-card-grid">${pageRows.map(r=>renderCard(r,unlocked)).join('')}</div>`);
+
+    renderPagination(root,totalPages,rows.length,pageSize,listMode);
   };
 
   const filter=document.getElementById('registrationEventFilter');
