@@ -123,6 +123,7 @@ window.COSPLAYCHESS_CONFIG = {
       loadStyle('./hero-instagram.css');
       loadStyle('./readability.css');
       loadStyle('./partners.css');
+      loadScript('./free-button-runtime.js?v=20260819-drag1');
       /* site-cms.js já é carregado explicitamente pelo index.html. */
       loadScript('./entry-yatta.js', () => {
         loadScript('./hero-instagram.js', () => {
