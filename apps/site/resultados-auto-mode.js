@@ -44,21 +44,32 @@
   function decorateMatchRows() {
     const root = document.getElementById('adminMatches');
     if (!root) return;
+
     root.querySelectorAll('[data-edit-match]').forEach(button => {
       const id = button.dataset.editMatch;
       const item = button.closest('.community-admin-item');
       if (!item || !id) return;
+
       const row = sourceByMatch.get(String(id));
+      const auto = row?.ingest_source === 'game-auto';
+      const expectedText = auto ? '☁ RECEBIDA DO JOGO' : '✎ MANUAL / LEGADO';
+
       let badge = item.querySelector('.match-source-badge');
       if (!badge) {
         badge = document.createElement('span');
         badge.className = 'match-source-badge';
         item.insertBefore(badge, item.firstChild);
       }
-      const auto = row?.ingest_source === 'game-auto';
-      badge.classList.toggle('auto', auto);
-      badge.textContent = auto ? '☁ RECEBIDA DO JOGO' : '✎ MANUAL / LEGADO';
-      button.textContent = 'Corrigir';
+
+      if (badge.classList.contains('auto') !== auto) {
+        badge.classList.toggle('auto', auto);
+      }
+      if (badge.textContent !== expectedText) {
+        badge.textContent = expectedText;
+      }
+      if (button.textContent !== 'Corrigir') {
+        button.textContent = 'Corrigir';
+      }
     });
   }
 
@@ -99,7 +110,14 @@
   function observeMatches() {
     const root = document.getElementById('adminMatches');
     if (!root) return;
-    new MutationObserver(decorateMatchRows).observe(root, { childList: true, subtree: true });
+
+    // Observe apenas substituições/adições diretas na lista. Não usamos subtree,
+    // pois decorateMatchRows() também altera elementos internos e isso causava
+    // um loop infinito de MutationObserver que congelava a página.
+    const observer = new MutationObserver(() => {
+      requestAnimationFrame(decorateMatchRows);
+    });
+    observer.observe(root, { childList: true });
     decorateMatchRows();
   }
 
