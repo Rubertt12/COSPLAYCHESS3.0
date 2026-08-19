@@ -79,10 +79,11 @@
         fill:#fff!important;
         stroke:none!important;
       }
-      .community-nav [data-fergorverse-instagram] .instagram-cms-label{
+      .community-nav [data-fergorverse-instagram] .instagram-cms-label,
+      .community-nav [data-fergorverse-instagram] [data-instagram-label]{
         display:inline-block!important;
         position:relative!important;
-        z-index:2!important;
+        z-index:3!important;
         font-size:13px!important;
         font-weight:900!important;
         line-height:1.15!important;
@@ -90,7 +91,9 @@
         white-space:nowrap!important;
         flex:1 1 auto!important;
         text-align:left!important;
-        text-shadow:none!important;
+        text-shadow:0 1px 2px rgba(0,0,0,.18)!important;
+        opacity:1!important;
+        visibility:visible!important;
       }
       .community-nav [data-fergorverse-instagram]:hover{
         transform:translateY(-2px)!important;
@@ -109,7 +112,8 @@
         .community-nav [data-fergorverse-instagram] .instagram-cms-icon svg{
           width:29px!important;height:29px!important;min-width:29px!important;flex-basis:29px!important
         }
-        .community-nav [data-fergorverse-instagram] .instagram-cms-label{font-size:12px!important}
+        .community-nav [data-fergorverse-instagram] .instagram-cms-label,
+        .community-nav [data-fergorverse-instagram] [data-instagram-label]{font-size:12px!important}
       }
     `;
     document.head.appendChild(style);
@@ -117,6 +121,13 @@
 
   function cmsContent(){
     return window.__COSPLAYCHESS_PUBLISHED_CMS__?.content || {};
+  }
+
+  function findText(button){
+    const dedicated=button.querySelector(':scope > .instagram-cms-label,:scope > [data-instagram-label]');
+    if(dedicated?.textContent?.trim()) return dedicated.textContent.trim();
+    const legacy=[...button.children].find(el=>el.tagName==='SPAN' && !el.classList.contains('instagram-cms-icon'));
+    return legacy?.textContent?.trim() || '';
   }
 
   function ensureButtonStructure(button){
@@ -129,13 +140,16 @@
       icon.className='instagram-cms-icon';
       icon.setAttribute('aria-hidden','true');
       icon.innerHTML=ICON_SVG;
+    }else if(!icon.querySelector('svg')){
+      icon.innerHTML=ICON_SVG;
     }
 
-    let label=button.querySelector(':scope > .instagram-cms-label');
+    let label=button.querySelector(':scope > .instagram-cms-label,:scope > [data-instagram-label]');
     if(!label){
       label=document.createElement('span');
-      label.className='instagram-cms-label';
     }
+    label.className='instagram-cms-label';
+    label.dataset.instagramLabel='true';
 
     button.replaceChildren(icon,label);
     return label;
@@ -146,12 +160,13 @@
     const button=document.querySelector('.community-nav [data-fergorverse-instagram]');
     if(!button)return;
     const content=cmsContent();
-    const previousText=button.querySelector('span')?.textContent?.trim();
+    const previousText=findText(button);
     const label=ensureButtonStructure(button);
     const text=String(content.instagramText || previousText || FALLBACK_TEXT).trim() || FALLBACK_TEXT;
     const url=String(content.instagramUrl || button.getAttribute('href') || FALLBACK_URL).trim() || FALLBACK_URL;
     label.textContent=text;
     button.href=url;
+    button.dataset.instagramTextReady='true';
     button.setAttribute('aria-label',text);
     button.setAttribute('title',text);
   }
@@ -169,6 +184,7 @@
     window.addEventListener('cosplaychess:cms-applied',applyFromCms);
     setTimeout(applyFromCms,350);
     setTimeout(applyFromCms,1200);
+    setTimeout(applyFromCms,1800);
   }
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
