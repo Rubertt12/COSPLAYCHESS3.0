@@ -24,64 +24,80 @@
         <div><span class="kicker">HISTÓRIA DO COSPLAYCHESS</span><h1>Resultados, ranking & <i>troféus</i></h1></div>
       </div>
 
-      <section class="panel-card result-import-card">
-        <div class="panel-title result-import-title">
-          <div><span class="kicker">FLUXO RECOMENDADO</span><h2>Importar resultado do jogo</h2><p>Ao terminar a batalha, exporte o resultado pelo CosplayChess e envie o JSON aqui. O site identifica Player 1/Player 2, elenco, capturas e sobreviventes antes de atualizar a história.</p></div>
-          <span class="result-import-badge">JSON OFICIAL</span>
+      <section class="panel-card auto-results-card">
+        <div class="auto-results-icon">☁</div>
+        <div class="auto-results-copy">
+          <span class="kicker">SINCRONIZAÇÃO AUTOMÁTICA</span>
+          <h2>O jogo publica o resultado sozinho</h2>
+          <p>Depois que o elenco oficial do evento é carregado no CosplayChess, você não precisa registrar a partida nesta tela. Ao definir o vencedor, o aplicativo envia automaticamente vencedor, Player 1/2, peças, participantes, capturas, eliminações, sobreviventes, movimentos e estatísticas para o site.</p>
+          <div class="auto-results-flow"><span>JOGO TERMINA</span><b>→</b><span>SUPABASE</span><b>→</b><span>HALL DA FAMA</span><b>→</b><span>RANKING</span><b>→</b><span>CONQUISTAS</span></div>
         </div>
-
-        <div class="result-import-drop">
-          <div class="result-import-icon">🏆</div>
-          <div><b>CosplayChess_Resultado_*.json</b><span>O arquivo precisa ter sido gerado pelo botão “Exportar resultado para o site” após o fim da partida.</span></div>
-          <button id="chooseResultImportBtn" class="btn gold" type="button">SELECIONAR RESULTADO</button>
-          <input id="resultImportInput" type="file" accept="application/json,.json" hidden>
-        </div>
-
-        <div id="resultImportPreview" class="result-import-preview" hidden></div>
-
-        <div class="result-import-footer">
-          <label class="result-publish-toggle"><input id="resultImportPublished" type="checkbox" checked><span>Publicar imediatamente no Ranking, Hall da Fama e Conquistas</span></label>
-          <button id="confirmResultImportBtn" class="btn gold big" type="button" disabled>CONFIRMAR E ATUALIZAR O SITE</button>
-        </div>
-        <div id="resultImportStatus" class="form-status">Selecione um arquivo de resultado para começar.</div>
+        <div class="auto-results-state"><strong>ATIVO</strong><span>Fluxo principal</span></div>
       </section>
 
-      <div class="manual-result-divider"><span>OU REGISTRE / CORRIJA MANUALMENTE</span></div>
-
-      <div class="admin-community-grid">
+      <div class="admin-community-grid results-overview-grid">
         <section class="panel-card">
-          <div class="panel-title"><div><span class="kicker">PARTIDA OFICIAL · MANUAL</span><h2>Registrar resultado</h2></div></div>
-          <form id="matchForm" class="admin-match-form">
-            <input type="hidden" name="id">
-            <div class="two"><label><span>Evento *</span><select id="matchEvent" name="eventId" required><option value="">Selecione...</option></select></label><label><span>Nome da partida</span><input name="matchLabel" placeholder="Final, Partida 01..."></label></div>
-            <div class="two"><label><span>Data/hora *</span><input type="datetime-local" name="playedAt" required></label><label><span>Publicado</span><select name="published"><option value="true">Sim</option><option value="false">Não</option></select></label></div>
-            <div class="two"><label><span>Personagem vencedor *</span><input name="winnerCharacter" required></label><label><span>Cosplayer vencedor *</span><input name="winnerCosplayer" required></label></div>
-            <div class="two"><label><span>Personagem adversário</span><input name="opponentCharacter"></label><label><span>Cosplayer adversário</span><input name="opponentCosplayer"></label></div>
-            <label><span>Observação</span><textarea name="notes" rows="3" placeholder="Resumo, lance decisivo, curiosidade..."></textarea></label>
-            <div><span class="kicker">ESTATÍSTICAS DAS PEÇAS</span><p class="hint">Ao escolher o evento, os inscritos aparecem abaixo. Informe as capturas; marque quem morreu e quem fez parte do lado vencedor. Quem não morreu será contado como sobrevivente.</p><div id="participantStats" class="participant-stats"><div class="empty-card">Selecione um evento.</div></div></div>
-            <button class="btn gold big" type="submit">Salvar partida e atualizar ranking</button><div id="matchStatus" class="form-status"></div>
-          </form>
+          <div class="panel-title"><div><span class="kicker">HALL DA FAMA</span><h2>Partidas recebidas</h2><p class="hint">Resultados enviados pelo aplicativo aparecem aqui automaticamente. Os controles servem apenas para correção administrativa.</p></div></div>
+          <div id="resultSyncSummary" class="result-sync-summary"><span>Carregando histórico...</span></div>
+          <div id="adminMatches" class="community-admin-list"><div class="empty-card">Carregando...</div></div>
         </section>
 
         <section class="panel-card">
-          <div class="panel-title"><div><span class="kicker">HALL DA FAMA</span><h2>Partidas registradas</h2></div></div>
-          <div id="adminMatches" class="community-admin-list"><div class="empty-card">Carregando...</div></div>
+          <div class="panel-title"><div><span class="kicker">CONQUISTAS</span><h2>Desbloqueios automáticos</h2><p class="hint">Primeiro Movimento, Primeira Captura, Caçador, Sobrevivente, Veterano, Campeão e Imortal são calculados pelo histórico recebido do jogo.</p></div></div>
+          <div id="adminAwards" class="community-admin-list"><div class="empty-card">Carregando...</div></div>
         </section>
       </div>
 
-      <section class="panel-card" style="margin-top:16px">
-        <div class="panel-title"><div><span class="kicker">CONQUISTAS</span><h2>Conceder troféu</h2><p class="hint">As conquistas automáticas continuam sendo calculadas pelas partidas. Use esta área para troféus especiais ou correções administrativas.</p></div></div>
+      <section class="panel-card special-award-card">
+        <div class="panel-title"><div><span class="kicker">TROFÉU ESPECIAL</span><h2>Conquista da organização</h2><p class="hint">Use apenas para uma conquista especial que não depende das estatísticas da partida. As conquistas normais são sempre automáticas.</p></div></div>
         <form id="awardForm" class="community-admin-form">
-          <label><span>Conquista *</span><select id="awardAchievement" name="achievementId" required><option value="">Selecione...</option></select></label>
+          <label><span>Conquista especial *</span><select id="awardAchievement" name="achievementId" required><option value="">Carregando...</option></select></label>
           <div class="two"><label><span>Cosplayer *</span><input name="cosplayerName" required></label><label><span>Personagem</span><input name="characterName"></label></div>
           <label><span>Evento</span><select id="awardEvent" name="eventId"><option value="">Conquista geral</option></select></label>
-          <label><span>Observação</span><textarea name="note" rows="2"></textarea></label>
-          <button class="btn gold" type="submit">Conceder troféu</button><div id="awardStatus" class="form-status"></div>
+          <label><span>Motivo / observação</span><textarea name="note" rows="2"></textarea></label>
+          <button class="btn gold" type="submit">Conceder conquista especial</button><div id="awardStatus" class="form-status"></div>
         </form>
-        <div id="adminAwards" class="community-admin-list" style="margin-top:18px"></div>
       </section>
 
-      <!-- Compatibilidade temporária com o runtime anterior; o editor visual agora vive em equipe-admin.html. -->
+      <details id="manualRecoveryPanel" class="manual-recovery-panel">
+        <summary><span>⚠</span><div><b>Recuperação e correções manuais</b><small>Abra somente se o evento ficou sem internet, a sincronização falhou ou um resultado precisar ser corrigido.</small></div><em>ABRIR</em></summary>
+        <div class="manual-recovery-body">
+          <section class="panel-card result-import-card">
+            <div class="panel-title result-import-title">
+              <div><span class="kicker">BACKUP DE EMERGÊNCIA</span><h2>Importar JSON de resultado</h2><p>Se o envio automático falhar, use o JSON de backup gerado pelo aplicativo. O ID único da partida impede importação duplicada.</p></div>
+              <span class="result-import-badge">FALLBACK</span>
+            </div>
+            <div class="result-import-drop">
+              <div class="result-import-icon">💾</div>
+              <div><b>CosplayChess_Resultado_*.json</b><span>Use somente como recuperação de uma partida que não sincronizou automaticamente.</span></div>
+              <button id="chooseResultImportBtn" class="btn gold" type="button">SELECIONAR BACKUP</button>
+              <input id="resultImportInput" type="file" accept="application/json,.json" hidden>
+            </div>
+            <div id="resultImportPreview" class="result-import-preview" hidden></div>
+            <div class="result-import-footer">
+              <label class="result-publish-toggle"><input id="resultImportPublished" type="checkbox" checked><span>Publicar imediatamente após recuperar</span></label>
+              <button id="confirmResultImportBtn" class="btn gold big" type="button" disabled>RECUPERAR PARTIDA</button>
+            </div>
+            <div id="resultImportStatus" class="form-status">Nenhum backup selecionado.</div>
+          </section>
+
+          <section class="panel-card manual-match-card">
+            <div class="panel-title"><div><span class="kicker">CORREÇÃO ADMINISTRATIVA</span><h2>Editar / registrar manualmente</h2><p class="hint">Não faz parte do fluxo normal. Use apenas para corrigir dados ou reconstruir uma partida excepcionalmente.</p></div></div>
+            <form id="matchForm" class="admin-match-form">
+              <input type="hidden" name="id">
+              <div class="two"><label><span>Evento *</span><select id="matchEvent" name="eventId" required><option value="">Selecione...</option></select></label><label><span>Nome da partida</span><input name="matchLabel" placeholder="Final, Partida 01..."></label></div>
+              <div class="two"><label><span>Data/hora *</span><input type="datetime-local" name="playedAt" required></label><label><span>Publicado</span><select name="published"><option value="true">Sim</option><option value="false">Não</option></select></label></div>
+              <div class="two"><label><span>Vencedor *</span><input name="winnerCharacter" placeholder="PLAYER 1 / PLAYER 2" required></label><label><span>Nome do Player vencedor *</span><input name="winnerCosplayer" required></label></div>
+              <div class="two"><label><span>Adversário</span><input name="opponentCharacter" placeholder="PLAYER 1 / PLAYER 2"></label><label><span>Nome do Player adversário</span><input name="opponentCosplayer"></label></div>
+              <label><span>Observação</span><textarea name="notes" rows="3" placeholder="Motivo da correção..."></textarea></label>
+              <div><span class="kicker">ESTATÍSTICAS DAS PEÇAS</span><p class="hint">Somente para reconstrução manual: informe capturas, eliminações e lado vencedor.</p><div id="participantStats" class="participant-stats"><div class="empty-card">Selecione um evento.</div></div></div>
+              <button class="btn gold big" type="submit">Salvar correção manual</button><div id="matchStatus" class="form-status"></div>
+            </form>
+          </section>
+        </div>
+      </details>
+
+      <!-- Compatibilidade temporária com runtimes antigos; editor da equipe vive em equipe-admin.html. -->
       <div hidden aria-hidden="true"><button id="addTeamMemberBtn" type="button"></button><div id="teamEditor"></div></div>
     </section>
   </main>
