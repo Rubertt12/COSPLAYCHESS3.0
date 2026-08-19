@@ -210,17 +210,31 @@
     document.body.appendChild(uxScript);
   };
 
+  const loadPlayerPhotoSync = () => {
+    const existing = document.querySelector('script[data-player-photo-sync]');
+    if (existing) {
+      if (window.__cosplayPlayerPhotoSyncLoaded) loadGameUxPolish();
+      else existing.addEventListener('load', loadGameUxPolish, { once: true });
+      return;
+    }
+    const photoScript = document.createElement('script');
+    photoScript.src = 'game-player-photo-sync.js';
+    photoScript.dataset.playerPhotoSync = 'true';
+    photoScript.onload = loadGameUxPolish;
+    document.body.appendChild(photoScript);
+  };
+
   const loadGameResultExport = () => {
     const existing = document.querySelector('script[data-game-result-export]');
     if (existing) {
-      if (window.__cosplayGameResultExportLoaded) loadGameUxPolish();
-      else existing.addEventListener('load', loadGameUxPolish, { once: true });
+      if (window.__cosplayGameResultExportLoaded) loadPlayerPhotoSync();
+      else existing.addEventListener('load', loadPlayerPhotoSync, { once: true });
       return;
     }
     const resultScript = document.createElement('script');
     resultScript.src = 'game-result-export.js';
     resultScript.dataset.gameResultExport = 'true';
-    resultScript.onload = loadGameUxPolish;
+    resultScript.onload = loadPlayerPhotoSync;
     document.body.appendChild(resultScript);
   };
 
@@ -252,7 +266,7 @@
     document.body.appendChild(lineupScript);
   };
 
-  // escalação/áudio -> automação -> layout amplo -> resultado/sincronização -> UX de duelo/jogadas.
+  // escalação/áudio -> automação -> layout amplo -> resultado -> fotos dos Players -> UX de duelo/jogadas.
   const existingExperience = document.querySelector('script[data-participant-experience]');
   if (!existingExperience) {
     const experienceScript = document.createElement('script');
