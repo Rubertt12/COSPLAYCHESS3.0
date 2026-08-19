@@ -57,9 +57,16 @@
   function applyInstagramText(text){
     if(text===undefined || text===null) return;
     qa('[data-fergorverse-instagram]').forEach(button=>{
-      const label=button.querySelector('span');
+      let label=button.querySelector('.instagram-cms-label,[data-instagram-label]');
+      if(!label){
+        label=[...button.children].find(el=>el.tagName==='SPAN' && !el.classList.contains('instagram-cms-icon')) || null;
+      }
+      if(!label && !button.querySelector('svg')){
+        label=document.createElement('span');
+        label.dataset.instagramLabel='true';
+        button.appendChild(label);
+      }
       if(label) label.textContent=text;
-      else if(!button.querySelector('svg')) button.textContent=text;
     });
   }
 
@@ -129,12 +136,13 @@
       document.documentElement.dataset.cmsPublished='false';
       return;
     }
+    window.__COSPLAYCHESS_PUBLISHED_CMS__={key,content,apply:null};
     const apply=()=>registration?applyRegistration(content):applyLanding(content);
+    window.__COSPLAYCHESS_PUBLISHED_CMS__.apply=apply;
     apply();
     requestAnimationFrame(apply);
     setTimeout(apply,250);
     setTimeout(apply,1000);
-    window.__COSPLAYCHESS_PUBLISHED_CMS__={key,content,apply};
     window.dispatchEvent(new CustomEvent('cosplaychess:cms-applied',{detail:{key}}));
   }
 
