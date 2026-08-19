@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#0b0710">
-  <meta name="description" content="Hall da Fama do CosplayChess com vencedores, personagens e eventos.">
+  <meta name="description" content="Hall da Fama do CosplayChess com os campeões oficiais de cada evento.">
   <title>Hall da Fama — CosplayChess</title>
   <link rel="icon" href="./img/favicon-Photoroom.png">
   <link rel="stylesheet" href="./landing.css">
@@ -21,17 +21,17 @@
   <main>
     <section class="community-hero shell">
       <div>
-        <span class="kicker">VENCEDORES • EVENTOS • HISTÓRIA</span>
+        <span class="kicker">CAMPEÕES • EVENTOS • HISTÓRIA</span>
         <h1>Hall da <i>Fama.</i></h1>
-        <p>Os personagens que escreveram seus nomes nas partidas do CosplayChess. Cada quadro registra o evento, o personagem vencedor, o cosplayer e quem estava do outro lado do confronto.</p>
+        <p>Aqui ficam registrados os campeões oficiais de cada evento do CosplayChess. O Hall usa o resultado da partida para mostrar qual Player venceu, o lado campeão — Brancas ou Pretas — e quem ficou do outro lado do confronto.</p>
         <div class="community-nav"><a class="btn gold big" href="./ranking.html">Abrir ranking</a><a class="btn dark big" href="./universo.html">Universo Fergorverse</a></div>
       </div>
       <div class="community-mark"><img src="./img/favicon-Photoroom.png" alt="CosplayChess Hall da Fama"></div>
     </section>
 
     <section class="community-section shell">
-      <div class="section-head"><div><span class="kicker">CAPÍTULOS QUE JÁ FORAM JOGADOS</span><h2 class="community-title">Campeões do <i>tabuleiro.</i></h2></div></div>
-      <div id="championsGrid" class="champions-grid"><div class="empty-card">Carregando resultados...</div></div>
+      <div class="section-head"><div><span class="kicker">CAMPEÕES DE CADA EVENTO</span><h2 class="community-title">Quem conquistou o <i>tabuleiro.</i></h2></div></div>
+      <div id="championsGrid" class="champions-grid"><div class="empty-card">Carregando campeões...</div></div>
     </section>
   </main>
 
@@ -39,6 +39,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
   <script src="./community.js"></script>
+  <script src="./hall-champion-mode.js"></script>
   <script src="./community-cms-runtime.js"></script>
 </body>
 </html>
