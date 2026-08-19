@@ -9,8 +9,8 @@
   <meta http-equiv="Expires" content="0">
   <title>CMS Visual — Fergorverse</title>
   <link rel="icon" type="image/png" href="./img/logofergoverse.png">
-  <link rel="stylesheet" href="./cms-visual.css?v=20260819-buttons1">
-  <link rel="stylesheet" href="./cms-pages.css?v=20260818-1736">
+  <link rel="stylesheet" href="./cms-visual.css?v=20260819-global1">
+  <link rel="stylesheet" href="./cms-pages.css?v=20260819-global1">
 </head>
 <body>
   <div id="cmsGate" class="cms-gate" hidden>
@@ -38,6 +38,7 @@
 
       <div class="cms-page-tabs" role="tablist">
         <button class="active" type="button" data-page="landing">Landing</button>
+        <button type="button" data-page="global">Global</button>
         <button type="button" data-page="registration">Inscrição</button>
         <button type="button" data-page="about">Sobre</button>
         <button type="button" data-page="universe">Universo</button>
@@ -82,7 +83,7 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./config.js?v=20260819-buttons1"></script>
+  <script src="./config.js?v=20260819-global1"></script>
   <script>
     (()=>{
       const tabs=document.querySelector('.cms-page-tabs');
@@ -96,12 +97,13 @@
       }
     })();
   </script>
-  <script src="./cms-visual.js?v=20260819-buttons1"></script>
-  <script src="./cms-buttons.js?v=20260819-buttons1"></script>
-  <script src="./cms-pages.js?v=20260818-1736"></script>
-  <script src="./cms-about.js?v=20260818-1736"></script>
-  <script src="./cms-media.js?v=20260818-1736"></script>
-  <script src="./cms-external-video.js?v=20260818-1736"></script>
-  <script src="./cms-open-published.js?v=20260818-1736"></script>
+  <script src="./cms-visual.js?v=20260819-global1"></script>
+  <script src="./cms-buttons.js?v=20260819-global1"></script>
+  <script src="./cms-pages.js?v=20260819-global1"></script>
+  <script src="./cms-about.js?v=20260819-global1"></script>
+  <script src="./cms-media.js?v=20260819-global1"></script>
+  <script src="./cms-external-video.js?v=20260819-global1"></script>
+  <script src="./cms-open-published.js?v=20260819-global1"></script>
+  <script src="./cms-global.js?v=20260819-global1"></script>
 </body>
 </html>
