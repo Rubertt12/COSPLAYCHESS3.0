@@ -1,0 +1,2 @@
+Redeploy trigger for current CosplayChess main after build rate limit.
+Local time: 2026-08-19 00:07 America/Sao_Paulo
