@@ -41,7 +41,7 @@ if (fs.existsSync(gameIndex)) {
                 <div class="unit-card" id="json-data-settings" style="margin-top:14px; background:rgba(0,229,255,0.06); border:1px solid rgba(0,229,255,0.28); padding:12px; border-radius:8px;">
                     <b style="display:block; color:var(--accent); font-size:10px; letter-spacing:1px; margin-bottom:6px;">💾 ELENCO DO EVENTO (JSON DO SITE)</b>
                     <div class="json-settings-help" style="font-size:9px; color:#aaa; line-height:1.45; margin-bottom:10px;">
-                        Importe o arquivo gerado em “Exportar para o app” no painel do site. Depois use “Acionar JSON” para distribuir o elenco automaticamente; o Modo Edição continua disponível para ajustes manuais.
+                        Importe o arquivo gerado em “Exportar para o app” no painel do site. Player 1 e Player 2 entram automaticamente com nome e foto; depois use “Acionar JSON” para distribuir as peças.
                     </div>
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
                         <button class="btn-play-sm" style="width:100%; font-size:9px; padding:10px 6px;" onclick="document.getElementById('import-file').click()">IMPORTAR JSON DO SITE</button>
@@ -67,7 +67,7 @@ if (fs.existsSync(gameIndex)) {
   if (!html.includes('src="roster-editor.js"')) {
     html = html.replace(
       '<script src="script.js"></script>',
-      '<script src="script.js"></script>\n<script src="roster-editor.js"></script>\n<script src="roster-guard.js"></script>\n<script src="site-roster-import.js"></script>'
+      '<script src="script.js"></script>\n<script src="roster-editor.js"></script>\n<script src="roster-guard.js"></script>\n<script src="game-player-json-autofill.js"></script>\n<script src="site-roster-import.js"></script>'
     );
   } else {
     if (!html.includes('src="roster-guard.js"')) {
@@ -76,10 +76,16 @@ if (fs.existsSync(gameIndex)) {
         '<script src="roster-editor.js"></script>\n<script src="roster-guard.js"></script>'
       );
     }
-    if (!html.includes('src="site-roster-import.js"')) {
+    if (!html.includes('src="game-player-json-autofill.js"')) {
       html = html.replace(
         '<script src="roster-guard.js"></script>',
-        '<script src="roster-guard.js"></script>\n<script src="site-roster-import.js"></script>'
+        '<script src="roster-guard.js"></script>\n<script src="game-player-json-autofill.js"></script>'
+      );
+    }
+    if (!html.includes('src="site-roster-import.js"')) {
+      html = html.replace(
+        '<script src="game-player-json-autofill.js"></script>',
+        '<script src="game-player-json-autofill.js"></script>\n<script src="site-roster-import.js"></script>'
       );
     }
   }
