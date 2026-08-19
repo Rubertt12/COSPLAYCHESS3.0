@@ -31,6 +31,24 @@
     renderLauncher();
   }
 
+  async function pruneCollection() {
+    const cards = loadCollection();
+    if (!cards.length) return [];
+    const ids = cards.map(card => card.id).filter(Boolean);
+    if (!ids.length) return [];
+    const { data, error } = await db
+      .from('cosplay_matches')
+      .select('id,collectible_enabled,source_result_id')
+      .in('id', ids);
+    if (error) return cards;
+    const active = new Set((data || [])
+      .filter(row => row.collectible_enabled && String(row.source_result_id || '').trim())
+      .map(row => String(row.id)));
+    const kept = cards.filter(card => active.has(String(card.id)));
+    if (kept.length !== cards.length) saveCollection(kept);
+    return kept;
+  }
+
   function hasCard(id) {
     return loadCollection().some(card => String(card.id) === String(id));
   }
@@ -49,8 +67,10 @@
   async function getCurrentChampion() {
     const { data: matches, error } = await db
       .from('cosplay_matches')
-      .select('id,event_id,match_label,played_at,winner_player,winner_side,winner_cosplayer,winner_photo_url,player1_name,player2_name,cosplay_events(id,title,start_at,venue,city)')
+      .select('id,event_id,match_label,played_at,winner_player,winner_side,winner_cosplayer,winner_photo_url,player1_name,player2_name,collectible_enabled,source_result_id,cosplay_events(id,title,start_at,venue,city)')
       .eq('published', true)
+      .eq('collectible_enabled', true)
+      .not('source_result_id', 'is', null)
       .neq('winner_side', 'DRAW')
       .order('played_at', { ascending: false })
       .limit(25);
@@ -110,9 +130,9 @@
     launcher.innerHTML = `♛ Minha coleção <b>${cards.length}</b>`;
   }
 
-  function openCollection() {
+  async function openCollection() {
     document.querySelector('.cc-collection-overlay')?.remove();
-    const cards = loadCollection();
+    const cards = await pruneCollection();
     const overlay = document.createElement('div');
     overlay.className = 'cc-collection-overlay';
     overlay.innerHTML = `
@@ -127,7 +147,7 @@
             <b>${esc(card.championName)}</b>
             <span>${esc(card.eventTitle)} · Player ${esc(card.player)} · ${esc(card.sideName)}</span>
             <span>${esc(card.code)}</span>
-          </article>`).join('')}</div>` : '<div class="cc-collection-empty">Você ainda não capturou nenhum card de campeão.</div>'}
+          </article>`).join('')}</div>` : '<div class="cc-collection-empty">Você ainda não capturou nenhum card de campeão ativo.</div>'}
       </div>`;
     overlay.addEventListener('click', event => {
       if (event.target === overlay || event.target.closest('[data-close-collection]')) overlay.remove();
@@ -177,7 +197,7 @@
           <button class="cc-capture-card" type="button" ${owned ? 'disabled' : ''}>${owned ? '✓ CARD NA COLEÇÃO' : 'CAPTURAR CARD'}</button>
           <button class="cc-view-collection" type="button">MINHA COLEÇÃO</button>
         </div>
-        <div class="cc-card-caption">Este card fica disponível enquanto não abrir a inscrição do próximo evento. Depois de capturado, continua salvo na sua coleção neste navegador.</div>
+        <div class="cc-card-caption">Este card só fica disponível enquanto estiver ativado pela organização e até a abertura das inscrições do próximo evento.</div>
       </div>`;
     overlay.querySelector('.cc-card-close').addEventListener('click', () => overlay.remove());
     overlay.addEventListener('click', event => { if (event.target === overlay) overlay.remove(); });
@@ -199,6 +219,7 @@
   }
 
   async function init() {
+    await pruneCollection();
     renderLauncher();
     const champion = await getCurrentChampion();
     if (!champion || !shouldAutoShow(champion)) return;
