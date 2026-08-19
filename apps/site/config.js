@@ -78,7 +78,8 @@ window.COSPLAYCHESS_CONFIG = {
     const collectiblePages = ['index.html', '', 'sobre.html', 'universo.html', 'hall-da-fama.html', 'ranking.html', 'conquistas.html'];
     if (collectiblePages.includes(page) && !previewMode) {
       loadStyle('./champion-collectible.css');
-      loadScript('./champion-collectible.js');
+      loadStyle('./champion-card-magic.css');
+      loadScript('./champion-collectible.js', () => loadScript('./champion-card-magic.js'));
     }
 
     if (page === 'cms.html') {
