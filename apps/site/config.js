@@ -75,6 +75,12 @@ window.COSPLAYCHESS_CONFIG = {
       document.head.appendChild(link);
     };
 
+    const collectiblePages = ['index.html', '', 'sobre.html', 'universo.html', 'hall-da-fama.html', 'ranking.html', 'conquistas.html'];
+    if (collectiblePages.includes(page) && !previewMode) {
+      loadStyle('./champion-collectible.css');
+      loadScript('./champion-collectible.js');
+    }
+
     if (page === 'cms.html') {
       loadScript('./cms-partners.js');
       return;
