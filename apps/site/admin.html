@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="./admin-registration-grid.css?v=20260818-2">
   <link rel="stylesheet" href="./admin-layout.css">
   <link rel="stylesheet" href="./admin-command-center.css?v=20260821-3">
+  <link rel="stylesheet" href="./backoffice-polish.css?v=20260821-final1">
 </head>
 <body class="admin-page">
   <header class="topbar admin-topbar">
@@ -46,7 +47,7 @@
 
       <div class="command-content">
         <section id="overview" class="command-section command-dashboard">
-          <div class="welcome-banner"><span>💡</span><b>Bem-vindo à Central de Comando do CosplayChess!</b><small>Gerencie eventos, inscrições, elenco e muito mais.</small><button type="button" aria-label="Fechar aviso">×</button></div>
+          <div class="welcome-banner"><span>💡</span><b>Bem-vindo à Central de Comando do CosplayChess!</b><small>Gerencie eventos, inscrições, elenco e muito mais.</small><button id="dismissWelcome" type="button" aria-label="Fechar aviso">×</button></div>
 
           <div class="metric-grid">
             <article class="metric-card"><div class="metric-icon purple">▣</div><div><span>Eventos</span><b id="statEvents">0</b><small>Eventos criados</small><a href="#events">Ver todos →</a></div></article>
@@ -75,7 +76,7 @@
               <div class="dash-panel-head"><div><h2>Ações Rápidas</h2></div></div>
               <div class="quick-action-grid">
                 <button id="quickNewEvent" type="button"><span class="qa-icon purple">＋</span><b>Novo Evento</b><small>Criar evento</small></button>
-                <a href="#registrations"><span class="qa-icon purple">♟</span><b>Nova Inscrição</b><small>Gerenciar inscrições</small></a>
+                <a href="#registrations"><span class="qa-icon purple">♟</span><b>Inscrições</b><small>Gerenciar inscrições</small></a>
                 <a href="#registrations"><span class="qa-icon gold">♜</span><b>Gerenciar Elenco</b><small>Ver personagens</small></a>
                 <a href="#events"><span class="qa-icon green">▧</span><b>Galeria</b><small>Gerenciar imagens</small></a>
                 <a href="./resultados-admin.html"><span class="qa-icon purple">♛</span><b>Ver Rankings</b><small>Ranking completo</small></a>
@@ -110,5 +111,6 @@
     document.querySelectorAll('.password-toggle').forEach(button=>button.addEventListener('click',()=>{const input=button.parentElement.querySelector('input');const showing=input.type==='text';input.type=showing?'password':'text';button.textContent=showing?'🐵':'🙈';}));
     document.querySelectorAll('.command-nav a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('.command-nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active');}));
     const identityObserver=new MutationObserver(()=>{const v=document.getElementById('adminIdentity').textContent;if(v)document.getElementById('sidebarIdentity').textContent=v;});identityObserver.observe(document.getElementById('adminIdentity'),{childList:true,subtree:true});
+    document.getElementById('dismissWelcome')?.addEventListener('click',e=>e.currentTarget.parentElement.remove());
   </script>
 </body></html>
