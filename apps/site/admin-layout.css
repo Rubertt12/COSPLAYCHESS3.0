@@ -1,3 +1,5 @@
+@import url('./admin-reference-exact.css?v=20260821-exact1');
+
 .admin-page .admin-grid{
   grid-template-columns:1fr!important;
   gap:20px;
