@@ -3,27 +3,29 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#0b0710">
+  <meta name="theme-color" content="#09070c">
   <title>Central de Comando — CosplayChess</title>
   <link rel="icon" href="./img/favicon-Photoroom.png">
   <link rel="stylesheet" href="./landing.css">
   <link rel="stylesheet" href="./admin.css">
   <link rel="stylesheet" href="./admin-registration-grid.css?v=20260818-2">
   <link rel="stylesheet" href="./admin-layout.css">
-  <link rel="stylesheet" href="./admin-command-center.css?v=20260821-1">
+  <link rel="stylesheet" href="./admin-command-center.css?v=20260821-3">
 </head>
 <body class="admin-page">
   <header class="topbar admin-topbar">
-    <a class="brand" href="./index.html"><img src="./img/fergorverse-logo.webp" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a>
-    <div class="top-actions"><span id="adminIdentity" class="identity"></span><button id="logoutBtn" class="btn ghost" hidden>Sair</button><a class="btn dark" href="./index.html">Ver site</a></div>
+    <a class="brand" href="./index.html"><img src="./img/fergorverse-logo.webp" alt="CosplayChess"><span><b>COSPLAY</b><em>CHESS</em></span></a>
+    <div class="admin-top-center"><span id="adminIdentity" class="identity"></span><button id="logoutBtn" class="btn ghost" hidden>Sair</button><a class="btn gold" href="./cms.html">CMS Visual</a><a class="btn dark" href="./index.html" target="_blank">Ver site ↗</a></div>
+    <div class="admin-badge">♛ <span>Super Admin</span></div>
   </header>
+
   <main class="admin-shell shell">
     <section id="authPanel" class="auth-grid" aria-label="Acesso administrativo">
       <div class="admin-intro"><span class="kicker">PAINEL DA ORGANIZAÇÃO</span><h1>Controle os próximos <i>capítulos do espetáculo.</i></h1><p>Entre para administrar eventos, fotos, inscrições e o elenco que será enviado ao aplicativo do CosplayChess.</p></div>
-      <div class="auth-card"><div class="auth-tabs" role="tablist" aria-label="Acesso administrativo"><button class="active" type="button" data-auth-tab="login" role="tab" aria-selected="true">Entrar</button><button type="button" data-auth-tab="bootstrap" role="tab" aria-selected="false">Cadastrar admin</button></div>
-        <form id="loginForm" class="stack" autocomplete="on"><label><span>E-mail</span><input type="email" name="email" required autocomplete="email" value="cosplaychess@outlook.com" placeholder="seuemail@exemplo.com"></label><label><span>Senha</span><span class="password-field"><input type="password" name="password" required autocomplete="current-password" placeholder="Sua senha"><button class="password-toggle" type="button" aria-label="Mostrar senha" title="Mostrar senha">🐵</button></span></label><button class="btn gold" type="submit">Entrar no painel</button><button id="forgotPasswordBtn" class="btn ghost" type="button">Esqueci minha senha</button></form>
-        <form id="bootstrapForm" class="stack" hidden autocomplete="on"><p class="hint">Cadastro disponível apenas para o primeiro administrador da plataforma.</p><label><span>Nome</span><input name="displayName" required autocomplete="name" placeholder="Nome do administrador"></label><label><span>E-mail</span><input type="email" name="email" required autocomplete="email" placeholder="seuemail@exemplo.com"></label><label><span>Senha</span><span class="password-field"><input type="password" name="password" minlength="8" required autocomplete="new-password" placeholder="Mínimo de 8 caracteres"><button class="password-toggle" type="button" aria-label="Mostrar senha" title="Mostrar senha">🐵</button></span></label><label><span>Código de primeiro acesso</span><input name="bootstrapCode" required autocomplete="off" placeholder="Código de ativação"></label><button class="btn gold" type="submit">Criar administrador</button></form>
-        <form id="recoveryForm" class="stack" hidden autocomplete="on"><p class="hint">Link de recuperação validado. Defina uma nova senha para o painel administrativo.</p><label><span>Nova senha</span><span class="password-field"><input type="password" name="password" minlength="8" required autocomplete="new-password" placeholder="Nova senha"><button class="password-toggle" type="button" aria-label="Mostrar senha" title="Mostrar senha">🐵</button></span></label><label><span>Confirmar nova senha</span><span class="password-field"><input type="password" name="confirmPassword" minlength="8" required autocomplete="new-password" placeholder="Repita a nova senha"><button class="password-toggle" type="button" aria-label="Mostrar senha" title="Mostrar senha">🐵</button></span></label><button class="btn gold" type="submit">Salvar nova senha</button></form><div id="authStatus" class="form-status" aria-live="polite"></div>
+      <div class="auth-card"><div class="auth-tabs" role="tablist"><button class="active" type="button" data-auth-tab="login">Entrar</button><button type="button" data-auth-tab="bootstrap">Cadastrar admin</button></div>
+        <form id="loginForm" class="stack"><label><span>E-mail</span><input type="email" name="email" required autocomplete="email" value="cosplaychess@outlook.com"></label><label><span>Senha</span><span class="password-field"><input type="password" name="password" required autocomplete="current-password"><button class="password-toggle" type="button">🐵</button></span></label><button class="btn gold" type="submit">Entrar no painel</button><button id="forgotPasswordBtn" class="btn ghost" type="button">Esqueci minha senha</button></form>
+        <form id="bootstrapForm" class="stack" hidden><p class="hint">Cadastro disponível apenas para o primeiro administrador da plataforma.</p><label><span>Nome</span><input name="displayName" required></label><label><span>E-mail</span><input type="email" name="email" required></label><label><span>Senha</span><span class="password-field"><input type="password" name="password" minlength="8" required><button class="password-toggle" type="button">🐵</button></span></label><label><span>Código de primeiro acesso</span><input name="bootstrapCode" required></label><button class="btn gold" type="submit">Criar administrador</button></form>
+        <form id="recoveryForm" class="stack" hidden><p class="hint">Defina uma nova senha.</p><label><span>Nova senha</span><span class="password-field"><input type="password" name="password" minlength="8" required><button class="password-toggle" type="button">🐵</button></span></label><label><span>Confirmar senha</span><span class="password-field"><input type="password" name="confirmPassword" minlength="8" required><button class="password-toggle" type="button">🐵</button></span></label><button class="btn gold" type="submit">Salvar nova senha</button></form><div id="authStatus" class="form-status"></div>
       </div>
     </section>
 
@@ -31,26 +33,62 @@
       <aside class="command-sidebar">
         <div class="sidebar-title"><span>♜</span><div><b>CENTRAL</b><small>DE COMANDO</small></div></div>
         <nav class="command-nav">
-          <a class="active" href="#overview"><span>▦</span> Dashboard</a>
+          <a class="active" href="#overview"><span>⌂</span> Dashboard</a>
           <p>EVENTOS</p>
-          <a href="#events"><span>♟</span> Eventos</a><a href="#registrations"><span>◎</span> Inscrições</a><a href="#registrations"><span>♜</span> Elenco</a>
+          <a href="#events"><span>▣</span> Eventos</a><a href="#registrations"><span>♟</span> Inscrições</a><a href="#registrations"><span>♜</span> Elenco</a>
           <p>COMPETIÇÃO</p>
-          <a href="./resultados-admin.html"><span>♛</span> Rankings & História</a><a href="./conquistas.html"><span>✦</span> Conquistas</a>
+          <a href="./resultados-admin.html"><span>♛</span> Rankings & História</a><a href="./conquistas.html"><span>★</span> Conquistas</a>
           <p>CONTEÚDO</p>
           <a href="#events"><span>▧</span> Galeria</a><a href="./index.html" target="_blank"><span>↗</span> Preview do site</a>
         </nav>
-        <div class="sidebar-user"><div class="user-orb">♚</div><div><b id="sidebarIdentity">Administrador</b><small>CosplayChess</small></div></div>
+        <div class="sidebar-user"><div class="user-orb">♛</div><div><b id="sidebarIdentity">Administrador</b><small>CosplayChess</small><span>Super Admin</span></div></div>
       </aside>
 
       <div class="command-content">
-        <section id="overview" class="command-section">
-          <div class="admin-heading"><div><span class="kicker">CENTRAL DE COMANDO</span><h1>Visão <i>geral</i></h1><p>Acompanhe o espetáculo sem precisar caçar informação pelo painel.</p></div><button id="newEventBtn" class="btn gold">+ Novo evento</button></div>
-          <div class="admin-stats command-stats"><article><span>Eventos</span><b id="statEvents">0</b><small>cadastrados</small></article><article><span>Inscritos</span><b id="statRegistrations">0</b><small>no filtro atual</small></article><article><span>Confirmados</span><b id="statConfirmed">0</b><small>no elenco</small></article><article><span>Fotos</span><b id="statPhotos">0</b><small>publicadas</small></article></div>
-          <div class="overview-strip"><div><span class="kicker">OPERAÇÃO</span><h2>Próximas ações</h2></div><div class="quick-actions"><a href="#registrations" class="quick-card"><b>Revisar inscrições</b><span>Aprovar, aguardar ou cancelar participantes →</span></a><a href="#events" class="quick-card"><b>Organizar eventos</b><span>Editar agenda, capa e galeria →</span></a><a href="./resultados-admin.html" class="quick-card"><b>Atualizar competição</b><span>História, resultados e rankings →</span></a></div></div>
+        <section id="overview" class="command-section command-dashboard">
+          <div class="welcome-banner"><span>💡</span><b>Bem-vindo à Central de Comando do CosplayChess!</b><small>Gerencie eventos, inscrições, elenco e muito mais.</small><button type="button" aria-label="Fechar aviso">×</button></div>
+
+          <div class="metric-grid">
+            <article class="metric-card"><div class="metric-icon purple">▣</div><div><span>Eventos</span><b id="statEvents">0</b><small>Eventos criados</small><a href="#events">Ver todos →</a></div></article>
+            <article class="metric-card"><div class="metric-icon green">♟</div><div><span>Inscrições</span><b id="statRegistrations">0</b><small>Inscrições recebidas</small><a href="#registrations">Ver todas →</a></div></article>
+            <article class="metric-card"><div class="metric-icon gold">♜</div><div><span>Elenco</span><b id="statConfirmed">0</b><small>Personagens confirmados</small><a href="#registrations">Gerenciar →</a></div></article>
+            <article class="metric-card"><div class="metric-icon red">★</div><div><span>Fotos</span><b id="statPhotos">0</b><small>Imagens publicadas</small><a href="#events">Ver galeria →</a></div></article>
+          </div>
+
+          <div class="dashboard-grid top-grid">
+            <article class="dash-panel chart-panel">
+              <div class="dash-panel-head"><div><h2>Inscrições por Evento</h2><p>Total de inscrições por evento</p></div><span>Últimos 6 eventos⌄</span></div>
+              <div id="eventBars" class="event-bars"></div>
+            </article>
+            <article class="dash-panel recent-panel">
+              <div class="dash-panel-head"><div><h2>Últimas Inscrições</h2></div><a href="#registrations">Ver todas</a></div>
+              <div id="recentRegistrations" class="recent-list"></div>
+            </article>
+          </div>
+
+          <div class="dashboard-grid bottom-grid">
+            <article class="dash-panel upcoming-panel">
+              <div class="dash-panel-head"><div><h2>Próximos Eventos</h2></div><a href="#events">Ver todos</a></div>
+              <div id="upcomingEvents" class="upcoming-list"></div>
+            </article>
+            <article class="dash-panel quick-panel">
+              <div class="dash-panel-head"><div><h2>Ações Rápidas</h2></div></div>
+              <div class="quick-action-grid">
+                <button id="quickNewEvent" type="button"><span class="qa-icon purple">＋</span><b>Novo Evento</b><small>Criar evento</small></button>
+                <a href="#registrations"><span class="qa-icon purple">♟</span><b>Nova Inscrição</b><small>Gerenciar inscrições</small></a>
+                <a href="#registrations"><span class="qa-icon gold">♜</span><b>Gerenciar Elenco</b><small>Ver personagens</small></a>
+                <a href="#events"><span class="qa-icon green">▧</span><b>Galeria</b><small>Gerenciar imagens</small></a>
+                <a href="./resultados-admin.html"><span class="qa-icon purple">♛</span><b>Ver Rankings</b><small>Ranking completo</small></a>
+                <a href="./conquistas.html"><span class="qa-icon red">★</span><b>Ver Conquistas</b><small>Conquistas do jogo</small></a>
+                <a href="./index.html" target="_blank"><span class="qa-icon blue">◉</span><b>Preview do site</b><small>Ver site publicado</small></a>
+                <a href="./cms.html"><span class="qa-icon gray">⚙</span><b>Configurações</b><small>Ajustes do CMS</small></a>
+              </div>
+            </article>
+          </div>
         </section>
 
         <section id="events" class="panel-card command-section">
-          <div class="panel-title"><div><span class="kicker">AGENDA & GALERIA</span><h2>Eventos</h2><p>Gerencie publicação, inscrições, capas e fotos.</p></div><button class="btn ghost" type="button" onclick="document.getElementById('newEventBtn').click()">+ Criar evento</button></div>
+          <div class="panel-title"><div><span class="kicker">AGENDA & GALERIA</span><h2>Eventos</h2><p>Gerencie publicação, inscrições, capas e fotos.</p></div><button id="newEventBtn" class="btn gold" type="button">+ Criar evento</button></div>
           <div id="adminEvents" class="admin-events"></div>
         </section>
 
@@ -59,15 +97,18 @@
           <div class="status-legend"><span><i class="dot confirmed"></i> Confirmado</span><span><i class="dot waitlist"></i> Em análise</span><span><i class="dot cancelled"></i> Cancelado</span></div>
           <div id="registrationsList" class="registration-list"></div>
         </section>
+
+        <footer class="admin-footer"><span>CosplayChess CMS v3.0</span><span>© 2026 CosplayChess. Todos os direitos reservados.</span></footer>
       </div>
     </section>
   </main>
-  <div id="eventModal" class="modal" hidden><div class="modal-card"><button class="modal-close" data-close-modal>×</button><span class="kicker">EVENTO</span><h2 id="eventModalTitle">Novo evento</h2><form id="eventForm" class="signup-form"><input type="hidden" name="id"><div class="two"><label><span>Título *</span><input name="title" required></label><label><span>Slug *</span><input name="slug" required placeholder="anime-extreme-2026"></label></div><label class="wide"><span>Descrição</span><textarea name="description" rows="4"></textarea></label><div class="two"><label><span>Local</span><input name="venue"></label><label><span>Cidade</span><input name="city"></label></div><div class="two"><label><span>Data/hora *</span><input type="datetime-local" name="startAt" required></label><label><span>Limite de participantes</span><input type="number" name="maxParticipants" min="1"></label></div><div class="two toggle-row"><label><input type="checkbox" name="published"><span>Publicado no site</span></label><label><input type="checkbox" name="registrationOpen" checked><span>Inscrições abertas</span></label></div><label class="photo-field wide"><span>Capa do evento</span><input id="eventCoverInput" type="file" accept="image/jpeg,image/png,image/webp"><small>Opcional. Ao salvar, a imagem será enviada para a galeria do evento.</small></label><button class="btn gold big wide" type="submit">Salvar evento</button><div id="eventFormStatus" class="form-status"></div></form></div></div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script src="./admin.js"></script><script src="./admin-result-sync-export.js"></script><script src="./admin-registration-grid.js?v=20260818-2"></script><script src="./admin-emergency-reset.js"></script><script src="./admin-gallery.js"></script>
+
+  <div id="eventModal" class="modal" hidden><div class="modal-card"><button class="modal-close" data-close-modal>×</button><span class="kicker">EVENTO</span><h2 id="eventModalTitle">Novo evento</h2><form id="eventForm" class="signup-form"><input type="hidden" name="id"><div class="two"><label><span>Título *</span><input name="title" required></label><label><span>Slug *</span><input name="slug" required></label></div><label class="wide"><span>Descrição</span><textarea name="description" rows="4"></textarea></label><div class="two"><label><span>Local</span><input name="venue"></label><label><span>Cidade</span><input name="city"></label></div><div class="two"><label><span>Data/hora *</span><input type="datetime-local" name="startAt" required></label><label><span>Limite de participantes</span><input type="number" name="maxParticipants" min="1"></label></div><div class="two toggle-row"><label><input type="checkbox" name="published"><span>Publicado no site</span></label><label><input type="checkbox" name="registrationOpen" checked><span>Inscrições abertas</span></label></div><label class="photo-field wide"><span>Capa do evento</span><input id="eventCoverInput" type="file" accept="image/jpeg,image/png,image/webp"><small>Opcional. A imagem também entra na galeria.</small></label><button class="btn gold big wide" type="submit">Salvar evento</button><div id="eventFormStatus" class="form-status"></div></form></div></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script src="./admin.js"></script><script src="./admin-dashboard-pro.js?v=20260821-1"></script><script src="./admin-result-sync-export.js"></script><script src="./admin-registration-grid.js?v=20260818-2"></script><script src="./admin-emergency-reset.js"></script><script src="./admin-gallery.js"></script>
   <script>
-    document.querySelectorAll('.password-toggle').forEach(button=>{button.addEventListener('click',()=>{const input=button.parentElement.querySelector('input');const showing=input.type==='text';input.type=showing?'password':'text';button.textContent=showing?'🐵':'🙈';button.setAttribute('aria-label',showing?'Mostrar senha':'Ocultar senha');button.setAttribute('title',showing?'Mostrar senha':'Ocultar senha');});});
+    document.querySelectorAll('.password-toggle').forEach(button=>button.addEventListener('click',()=>{const input=button.parentElement.querySelector('input');const showing=input.type==='text';input.type=showing?'password':'text';button.textContent=showing?'🐵':'🙈';}));
     document.querySelectorAll('.command-nav a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('.command-nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active');}));
     const identityObserver=new MutationObserver(()=>{const v=document.getElementById('adminIdentity').textContent;if(v)document.getElementById('sidebarIdentity').textContent=v;});identityObserver.observe(document.getElementById('adminIdentity'),{childList:true,subtree:true});
   </script>
-</body>
-</html>
+</body></html>
