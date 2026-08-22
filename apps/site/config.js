@@ -77,6 +77,7 @@ window.COSPLAYCHESS_CONFIG = {
 
     const globalCmsPages = ['index.html', '', 'cadastro.html', 'galeria-eventos.html', 'sobre.html', 'universo.html', 'hall-da-fama.html', 'ranking.html', 'conquistas.html'];
     if (globalCmsPages.includes(page)) loadScript('./site-global-cms.js?v=20260819-global1');
+    if (globalCmsPages.includes(page) && !previewMode) loadScript('./visitor-tracker.js?v=20260822-unique1');
 
     const collectiblePages = ['index.html', '', 'sobre.html', 'universo.html', 'hall-da-fama.html', 'ranking.html', 'conquistas.html'];
     if (collectiblePages.includes(page) && !previewMode) {
@@ -93,6 +94,7 @@ window.COSPLAYCHESS_CONFIG = {
 
     if (page === 'admin.html') {
       loadStyle('./admin-partners.css');
+      loadScript('./admin-visitor-metric.js?v=20260822-unique1');
       loadScript('./admin-cms.js', () => {
         const stack = document.getElementById('cmsStack');
         if (stack) stack.hidden = true;
