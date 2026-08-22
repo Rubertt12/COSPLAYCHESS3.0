@@ -6,7 +6,6 @@ window.COSPLAYCHESS_CONFIG = {
   timezone: 'America/Sao_Paulo'
 };
 
-/* Um único cliente Supabase por contexto de navegador. */
 (() => {
   const cfg = window.COSPLAYCHESS_CONFIG;
   const sdk = window.supabase;
@@ -44,11 +43,8 @@ window.COSPLAYCHESS_CONFIG = {
     const page = location.pathname.split('/').pop() || 'index.html';
     const previewMode = new URLSearchParams(location.search).get('cmsPreview') === '1';
     const sameAsset = (candidate, wanted) => {
-      try {
-        return new URL(candidate, location.href).pathname === new URL(wanted, location.href).pathname;
-      } catch {
-        return candidate === wanted;
-      }
+      try { return new URL(candidate, location.href).pathname === new URL(wanted, location.href).pathname; }
+      catch { return candidate === wanted; }
     };
     const loadScript = (src, onload) => {
       const existing = [...document.scripts].find(s => sameAsset(s.getAttribute('src') || '', src));
@@ -84,6 +80,11 @@ window.COSPLAYCHESS_CONFIG = {
       loadScript('./gallery-album-fan.js?v=20260822-fan1');
     }
 
+    if (page === 'index.html' || page === '' || page === 'admin.html') {
+      loadStyle('./gallery-fan-unified.css?v=20260822-fan2');
+      loadScript('./gallery-fan-unified.js?v=20260822-fan2');
+    }
+
     const collectiblePages = ['index.html', '', 'sobre.html', 'universo.html', 'hall-da-fama.html', 'ranking.html', 'conquistas.html'];
     if (collectiblePages.includes(page) && !previewMode) {
       loadStyle('./champion-collectible.css');
@@ -92,16 +93,15 @@ window.COSPLAYCHESS_CONFIG = {
       loadScript('./champion-collectible.js', () => loadScript('./champion-card-magic.js'));
     }
 
-    if (page === 'cms.html') {
-      loadScript('./cms-partners.js');
-      return;
-    }
+    if (page === 'cms.html') { loadScript('./cms-partners.js'); return; }
 
     if (page === 'admin.html') {
       loadStyle('./admin-partners.css');
       loadStyle('./admin-search-v2.css?v=20260822-search2');
+      loadStyle('./admin-onedrive.css?v=20260822-od1');
       loadScript('./admin-visitor-metric.js?v=20260822-unique1');
       loadScript('./admin-search-v2.js?v=20260822-search2');
+      loadScript('./admin-onedrive.js?v=20260822-od1');
       loadScript('./admin-cms.js', () => {
         const stack = document.getElementById('cmsStack');
         if (stack) stack.hidden = true;
@@ -123,25 +123,19 @@ window.COSPLAYCHESS_CONFIG = {
       return;
     }
 
-    if (page === 'resultados-admin.html') {
-      loadScript('./resultados-team-media.js');
-      return;
-    }
+    if (page === 'resultados-admin.html') { loadScript('./resultados-team-media.js'); return; }
 
     if (page === 'index.html' || page === '') {
       loadStyle('./hero-instagram.css');
       loadStyle('./readability.css');
       loadStyle('./partners.css');
       loadScript('./free-button-runtime.js?v=20260819-drag1');
-      /* site-cms.js já é carregado explicitamente pelo index.html. */
       loadScript('./entry-yatta.js', () => {
         loadScript('./hero-instagram.js', () => {
           loadScript('./instagram-button-icon.js', () => {
             loadScript('./partners-public.js');
             loadScript('./landing-intro-video.js', () => {
-              loadScript('./landing-intro-external.js', () => {
-                if (previewMode) loadScript('./site-preview-runtime.js');
-              });
+              loadScript('./landing-intro-external.js', () => { if (previewMode) loadScript('./site-preview-runtime.js'); });
             });
           });
         });
@@ -150,14 +144,10 @@ window.COSPLAYCHESS_CONFIG = {
     }
 
     if (page === 'cadastro.html') {
-      /* site-cms.js já é carregado explicitamente pelo cadastro.html. */
-      loadScript('./registration-dynamic.js', () => {
-        if (previewMode) loadScript('./site-preview-runtime.js');
-      });
+      loadScript('./registration-dynamic.js', () => { if (previewMode) loadScript('./site-preview-runtime.js'); });
       return;
     }
 
-    /* Estas páginas já incluem seus runtimes no próprio HTML. Não carregar novamente aqui. */
     if (page === 'sobre.html') return;
     if (['universo.html','hall-da-fama.html','ranking.html','conquistas.html'].includes(page)) return;
   };
