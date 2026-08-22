@@ -5,7 +5,7 @@ const dashboard=document.getElementById('dashboardPanel');
 const authStatus=document.getElementById('authStatus');
 const recoveryForm=document.getElementById('recoveryForm');
 const esc=(v='')=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
-let currentEvents=[]; let registrations=[]; let recoveryMode=new URLSearchParams(location.search).get('recovery')==='1';
+let currentEvents=[]; let registrations=[]; let registrationsExactCount=0; let recoveryMode=new URLSearchParams(location.search).get('recovery')==='1';
 
 function msg(el,text,type=''){el.className=`form-status ${type}`;el.textContent=text;}
 function slugify(v){return String(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');}
@@ -25,10 +25,36 @@ document.getElementById('logoutBtn').onclick=async()=>{await db.auth.signOut();l
 async function uploadEventImage(file,eventId,prefix='cover'){if(!file)return null;const ext=(file.name.split('.').pop()||'jpg').toLowerCase();const path=`${eventId}/${prefix}-${crypto.randomUUID()}.${ext}`;const{error}=await db.storage.from('cosplaychess-event-media').upload(path,file,{contentType:file.type,upsert:false});if(error)throw error;return db.storage.from('cosplaychess-event-media').getPublicUrl(path).data.publicUrl;}
 async function refreshAll(){await loadEvents();await loadRegistrations();renderStats();}
 async function loadEvents(){const{data,error}=await db.from('cosplay_events').select('*,cosplay_event_photos(count)').order('start_at',{ascending:false});if(error)throw error;currentEvents=data||[];renderEvents();const filter=document.getElementById('registrationEventFilter');const selected=filter.value;filter.innerHTML='<option value="">Todos os eventos</option>'+currentEvents.map(e=>`<option value="${e.id}">${esc(e.title)}</option>`).join('');filter.value=selected;}
-async function loadRegistrations(){const eventId=document.getElementById('registrationEventFilter').value;let q=db.from('cosplay_registrations').select('*,cosplay_events(title,start_at)').order('created_at',{ascending:false});if(eventId)q=q.eq('event_id',eventId);const{data,error}=await q;if(error)throw error;registrations=data||[];renderRegistrations();}
+async function loadRegistrations(){
+  const eventId=document.getElementById('registrationEventFilter').value;
+  let countQ=db.from('cosplay_registrations').select('id',{count:'exact',head:true});
+  if(eventId)countQ=countQ.eq('event_id',eventId);
+  const {count,error:countError}=await countQ;
+  if(countError)throw countError;
+  registrationsExactCount=count||0;
+  const batchSize=500; const rows=[];
+  for(let from=0;from<registrationsExactCount;from+=batchSize){
+    let q=db.from('cosplay_registrations').select('*,cosplay_events(title,start_at)').order('created_at',{ascending:false}).range(from,Math.min(from+batchSize-1,registrationsExactCount-1));
+    if(eventId)q=q.eq('event_id',eventId);
+    const{data,error}=await q;if(error)throw error;
+    rows.push(...(data||[]));
+    if(!data||data.length<batchSize)break;
+  }
+  registrations=rows;
+  renderRegistrations();
+}
 function renderEvents(){const root=document.getElementById('adminEvents');root.innerHTML=currentEvents.length?currentEvents.map(e=>`<article class="admin-event"><div class="admin-event-cover" style="${e.cover_url?`background-image:url('${esc(e.cover_url)}')`:''}"></div><div><span>${e.published?'PUBLICADO':'RASCUNHO'} • ${e.registration_open?'INSCRIÇÕES ABERTAS':'FECHADO'}</span><h3>${esc(e.title)}</h3><p>${new Date(e.start_at).toLocaleString('pt-BR')} • ${esc([e.venue,e.city].filter(Boolean).join(' / '))}</p><div class="row-actions"><button class="mini-btn" onclick="editEvent('${e.id}')">Editar</button><button class="mini-btn" onclick="addGalleryPhoto('${e.id}')">+ Foto</button><button class="mini-btn danger" onclick="deleteEvent('${e.id}')">Excluir</button></div></div></article>`).join(''):'<div class="empty-card">Nenhum evento cadastrado.</div>';}
-function renderRegistrations(){const root=document.getElementById('registrationsList');root.innerHTML=registrations.length?registrations.map(r=>`<article class="registration-row"><div class="avatar" style="${r.character_photo_url?`background-image:url('${esc(r.character_photo_url)}')`:''}"></div><div class="registration-main"><b>${esc(r.character_name)}</b><span>${esc(r.full_name)} • ${esc(r.cosplay_events?.title||'')}</span><small>${esc(r.email)} • ${esc(r.whatsapp)} • ${esc(r.side_preference)}</small><small>Peça: ${esc(r.piece_preference||'Sem preferência')} • 2ª: ${esc(r.second_piece_preference||'Sem segunda preferência')}</small></div><select onchange="updateRegistrationStatus('${r.id}',this.value)"><option ${r.status==='confirmed'?'selected':''}>confirmed</option><option ${r.status==='waitlist'?'selected':''}>waitlist</option><option ${r.status==='cancelled'?'selected':''}>cancelled</option></select></article>`).join(''):'<div class="empty-card">Nenhum inscrito encontrado.</div>';}
-function renderStats(){document.getElementById('statEvents').textContent=currentEvents.length;document.getElementById('statRegistrations').textContent=registrations.length;document.getElementById('statConfirmed').textContent=registrations.filter(r=>r.status==='confirmed').length;document.getElementById('statPhotos').textContent=currentEvents.reduce((n,e)=>n+(e.cosplay_event_photos?.[0]?.count||0),0);}
+function renderRegistrations(){
+  const root=document.getElementById('registrationsList');
+  root.classList.toggle('registration-grid-mode',registrations.length>0&&registrations.length<=8);
+  root.classList.toggle('registration-list-mode',registrations.length>8);
+  root.dataset.count=String(registrations.length);
+  const head=document.querySelector('#registrations .v6-management-head p');
+  if(head)head.textContent=`${registrations.length} de ${registrationsExactCount} inscrito${registrationsExactCount===1?'':'s'} carregado${registrations.length===1?'':'s'} · ${registrations.length<=8?'visualização em grid':'visualização em lista'}.`;
+  root.innerHTML=registrations.length?registrations.map(r=>`<article class="registration-row"><div class="avatar" style="${r.character_photo_url?`background-image:url('${esc(r.character_photo_url)}')`:''}"></div><div class="registration-main"><b>${esc(r.character_name)}</b><span>${esc(r.full_name)} • ${esc(r.cosplay_events?.title||'')}</span><small>${esc(r.email)} • ${esc(r.whatsapp)} • ${esc(r.side_preference)}</small><small>Peça: ${esc(r.piece_preference||'Sem preferência')} • 2ª: ${esc(r.second_piece_preference||'Sem segunda preferência')}</small></div><select onchange="updateRegistrationStatus('${r.id}',this.value)"><option ${r.status==='confirmed'?'selected':''}>confirmed</option><option ${r.status==='waitlist'?'selected':''}>waitlist</option><option ${r.status==='cancelled'?'selected':''}>cancelled</option></select></article>`).join(''):'<div class="empty-card">Nenhum inscrito encontrado.</div>';
+  if(registrations.length!==registrationsExactCount){console.warn(`[CosplayChess] Divergência nas inscrições: banco=${registrationsExactCount}, carregadas=${registrations.length}`);}
+}
+function renderStats(){document.getElementById('statEvents').textContent=currentEvents.length;document.getElementById('statRegistrations').textContent=registrationsExactCount;document.getElementById('statConfirmed').textContent=registrations.filter(r=>r.status==='confirmed').length;document.getElementById('statPhotos').textContent=currentEvents.reduce((n,e)=>n+(e.cosplay_event_photos?.[0]?.count||0),0);}
 document.getElementById('registrationEventFilter').onchange=async()=>{await loadRegistrations();renderStats();};
 document.getElementById('newEventBtn').onclick=()=>openEventModal();
 document.querySelector('[data-close-modal]').onclick=()=>document.getElementById('eventModal').hidden=true;
