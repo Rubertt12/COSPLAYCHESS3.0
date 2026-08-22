@@ -1,4 +1,4 @@
 Production redeploy trigger.
 Source: main stable Admin V5
 Hotfix: remove infinite MutationObserver loop after admin login
-Date: 2026-08-21 22:17 -03:00
+Redeploy retry: 2026-08-21 22:23 -03:00
