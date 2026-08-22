@@ -2,9 +2,9 @@ alter table public.cosplay_event_photos
   add column if not exists source_provider text,
   add column if not exists source_file_id text;
 
-create unique index if not exists cosplay_event_photos_source_unique
-  on public.cosplay_event_photos(event_id, source_provider, source_file_id)
-  where source_file_id is not null;
+drop index if exists public.cosplay_event_photos_source_unique;
+create unique index cosplay_event_photos_source_unique
+  on public.cosplay_event_photos(event_id, source_provider, source_file_id);
 
 create table if not exists public.cosplay_google_drive_event_links (
   event_id uuid primary key references public.cosplay_events(id) on delete cascade,
