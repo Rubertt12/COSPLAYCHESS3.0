@@ -38,3 +38,12 @@
   obs.observe(document.body,{childList:true,subtree:true});
   setTimeout(install,200);setTimeout(install,700);setTimeout(install,1500);
 })();
+
+(()=>{
+  if(!document.querySelector('link[data-admin-onedrive]')){
+    const l=document.createElement('link');l.rel='stylesheet';l.href='./admin-onedrive.css?v=20260822-od1';l.dataset.adminOnedrive='1';document.head.appendChild(l);
+  }
+  if(!document.querySelector('script[data-admin-onedrive]')){
+    const s=document.createElement('script');s.src='./admin-onedrive.js?v=20260822-od1';s.dataset.adminOnedrive='1';s.async=false;document.body.appendChild(s);
+  }
+})();
