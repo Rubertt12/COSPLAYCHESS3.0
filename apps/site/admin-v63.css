@@ -33,3 +33,48 @@ button:disabled,.btn:disabled,.v5-btn:disabled,.v6-primary:disabled,.v6-icon-btn
 .signup-form .big{min-height:48px!important;border-radius:11px!important;background:linear-gradient(135deg,#7a45dc,#9b64f2)!important;border:1px solid #a57af6!important;color:#fff!important;font-weight:850!important;box-shadow:0 12px 28px rgba(124,58,237,.24)!important}.signup-form .big:hover{transform:translateY(-1px);background:linear-gradient(135deg,#8955e7,#a978fa)!important;box-shadow:0 15px 34px rgba(124,58,237,.32)!important}
 .row-actions{display:flex!important;gap:8px!important;flex-wrap:wrap!important}.panel-actions{display:flex!important;gap:9px!important;align-items:center!important;flex-wrap:wrap!important}
 @media(max-width:1300px){.admin-events{grid-template-columns:1fr}.a63-notifications{right:20px}}@media(max-width:850px){.v6-mainbar{border-radius:12px}.a63-tools{align-items:stretch}.a63-tools .a63-search{flex-basis:100%}.admin-event{grid-template-columns:110px minmax(0,1fr)}.admin-event-cover{min-height:150px}.v6-mainbar-actions{gap:7px!important}.v6-search{display:none!important}.panel-actions{width:100%}.panel-actions select,.panel-actions button{flex:1;min-width:180px}}@media(max-width:620px){.admin-event{grid-template-columns:1fr}.admin-event-cover{height:180px!important}.a63-segmented{width:100%}.a63-segmented button{flex:1}.a63-notifications{right:8px;top:66px}.v6-primary small{display:none}.v6-greeting h1{font-size:20px!important}.v6-primary{padding:0 13px!important}.row-actions .mini-btn{flex:1}.panel-actions select,.panel-actions button{width:100%;flex-basis:100%}}
+
+
+/* Registration workspace — readability and visual hierarchy */
+#registrations{padding:26px!important}
+#registrations .v6-management-head{align-items:flex-start;gap:20px;margin-bottom:18px}
+#registrations .v6-management-head h2{margin:0 0 7px;font-size:28px!important;line-height:1.15;letter-spacing:-.5px}
+#registrations .v6-management-head p{max-width:650px;margin:0;color:#9fb0c4!important;font-size:13px!important;line-height:1.55}
+#registrations .panel-actions select{min-width:230px;min-height:46px;padding:0 38px 0 14px;border:1px solid #30445e;border-radius:11px;background:#091522;color:#eef4fa;font-size:13px;outline:0}
+#registrations .panel-actions select:focus{border-color:#785ed5;box-shadow:0 0 0 3px rgba(124,58,237,.1)}
+#registrations #exportRosterBtn{min-height:46px;font-size:13px}
+.registration-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 16px}
+.registration-summary-card{min-height:86px;display:flex;align-items:center;gap:12px;padding:14px;border:1px solid #253750;border-radius:13px;background:linear-gradient(145deg,#111f31,#0a1725)}
+.registration-summary-card>i{width:42px;height:42px;display:grid;place-items:center;flex:0 0 42px;border-radius:11px;background:#1d2c41;color:#b6c6d9;font-size:18px;font-style:normal}
+.registration-summary-card span,.registration-summary-card small,.registration-summary-card strong{display:block}
+.registration-summary-card small{color:#a7b6c8;font-size:12px;font-weight:800;letter-spacing:.7px;text-transform:uppercase}
+.registration-summary-card strong{margin-top:5px;color:#fff;font-size:24px;line-height:1}
+.registration-summary-card.confirmed>i{background:rgba(39,214,155,.12);color:#60e7ba}
+.registration-summary-card.waitlist>i{background:rgba(243,189,75,.13);color:#f5c863}
+.registration-summary-card.cancelled>i{background:rgba(239,92,103,.12);color:#ff7d86}
+#registrations .status-legend{min-height:44px;display:flex;align-items:center;gap:22px;margin:0 0 14px;padding:11px 14px;border:1px solid #223247;border-radius:11px;background:#091522;color:#c3ceda;font-size:13px}
+#registrations .status-legend span{display:inline-flex;align-items:center;font-weight:700}
+#registrations .dot{width:9px;height:9px;margin-right:7px;box-shadow:0 0 0 3px rgba(255,255,255,.035)}
+#registrations .a63-tools{gap:10px;margin-bottom:16px}
+#registrations .a63-tools .a63-search,#registrations .a63-tools select{min-height:46px;padding:0 14px;border-radius:11px;font-size:13px}
+#registrations .a63-tools .a63-search{min-width:300px}
+#registrations .a63-segmented{min-height:46px;align-items:center;padding:4px;border-radius:11px}
+#registrations .a63-segmented button{min-height:36px!important;padding:0 14px!important;font-size:12px!important}
+#registrations .a63-count{padding:0 6px;color:#b7c4d2;font-size:13px}
+#registrations .registration-list.registration-grid-mode{gap:16px}
+#registrations .registration-grid-mode .registration-row{grid-template-columns:88px minmax(0,1fr);min-height:220px;padding:20px!important;gap:16px}
+#registrations .registration-grid-mode .registration-row>.avatar{width:88px!important;height:88px!important;border-radius:14px!important}
+#registrations .registration-main b{font-size:18px!important;line-height:1.3;white-space:normal}
+#registrations .registration-main span{margin-top:6px!important;color:#cbd5e1!important;font-size:13.5px!important;line-height:1.5!important;white-space:normal}
+#registrations .registration-main small{margin-top:5px!important;color:#a7b7c9!important;font-size:12.5px!important;line-height:1.55!important;white-space:normal}
+#registrations .registration-row select{min-height:44px;padding:0 12px!important;border-radius:10px!important;font-size:13.5px}
+#registrations .a63-badge{margin-top:10px;padding:6px 10px;font-size:12px}
+#registrations .registration-list.registration-list-mode{gap:12px}
+#registrations .registration-list-mode .registration-row{grid-template-columns:64px minmax(0,1fr) 175px;min-height:104px;padding:14px 16px!important}
+#registrations .registration-list-mode .registration-row>.avatar{width:64px!important;height:64px!important;border-radius:12px!important}
+#registrations .registration-list-mode .registration-main b{font-size:16px!important}
+#registrations .registration-list-mode .registration-row>select{width:175px}
+#registrations .empty-card{padding:36px;font-size:13px;line-height:1.5}
+@media(max-width:1050px){.registration-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:850px){#registrations{padding:20px!important}#registrations .v6-management-head h2{font-size:25px!important}#registrations .panel-actions select,#registrations #exportRosterBtn{min-width:0}.registration-summary{grid-template-columns:repeat(2,minmax(0,1fr))}#registrations .registration-list-mode .registration-row{grid-template-columns:60px minmax(0,1fr)}#registrations .registration-list-mode .registration-row>select{grid-column:1/-1;width:100%}}
+@media(max-width:620px){#registrations{padding:16px!important}#registrations .v6-management-head h2{font-size:23px!important}#registrations .v6-management-head p{font-size:12px!important}.registration-summary{grid-template-columns:1fr 1fr;gap:8px}.registration-summary-card{min-height:72px;padding:11px;gap:9px}.registration-summary-card>i{width:36px;height:36px;flex-basis:36px;font-size:16px}.registration-summary-card small{font-size:10.5px}.registration-summary-card strong{font-size:19px}#registrations .status-legend{gap:12px;font-size:11px}#registrations .a63-tools .a63-search{min-width:0}#registrations .registration-grid-mode .registration-row{grid-template-columns:68px minmax(0,1fr);min-height:0;padding:15px!important}#registrations .registration-grid-mode .registration-row>.avatar{width:68px!important;height:68px!important}#registrations .registration-main b{font-size:16px!important}#registrations .registration-main span{font-size:12.5px!important}#registrations .registration-main small{font-size:11.5px!important}}
