@@ -2,6 +2,9 @@
   if (window.__cosplayGoogleDriveSafeLoader) return;
   window.__cosplayGoogleDriveSafeLoader = true;
 
+  const css=[...document.querySelectorAll('link[rel="stylesheet"]')].find(l=>(l.getAttribute('href')||'').includes('admin-google-drive.css'));
+  if(css)css.href='./admin-google-drive.css?v=20260822-gd-screen2';
+
   const RealMutationObserver = window.MutationObserver;
   if (!RealMutationObserver) return;
 
@@ -19,7 +22,7 @@
   const loadScreen=()=>{
     if(document.querySelector('script[data-gd-screen]'))return;
     const s=document.createElement('script');
-    s.src='./admin-google-drive-screen.js?v=20260822-gd-screen1';
+    s.src='./admin-google-drive-screen.js?v=20260822-gd-screen2';
     s.async=false;
     s.dataset.gdScreen='1';
     document.body.appendChild(s);
