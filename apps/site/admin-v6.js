@@ -1,4 +1,5 @@
 (()=>{
+  if(!document.querySelector('link[data-sidebar-v62]')){const l=document.createElement('link');l.rel='stylesheet';l.href='./admin-sidebar-v62.css?v=20260821-v62';l.dataset.sidebarV62='1';document.head.appendChild(l);}
   const $=(s,r=document)=>r.querySelector(s);
   const $$=(s,r=document)=>[...r.querySelectorAll(s)];
   const esc6=(v='')=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -22,7 +23,6 @@
 
   function createAuxViews(){
     const main=$('.v6-main'); if(!main)return;
-    const nav=$('.v6-nav');
     const linkMap={'Páginas':'pages','Blog / Notícias':'blog','Banners':'banners','Depoimentos':'testimonials','FAQ':'faq','Configurações Gerais':'settings','Redes Sociais':'social','Usuários':'users','Backup & Exportar':'backup','Logs de Atividade':'logs'};
     Object.entries(linkMap).forEach(([label,id])=>{const a=$$('.v6-nav a').find(x=>x.textContent.trim().includes(label));if(a)a.setAttribute('href','#'+id);});
     Object.entries(AUX).forEach(([id,cfg])=>{
