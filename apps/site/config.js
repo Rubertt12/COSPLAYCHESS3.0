@@ -3,7 +3,8 @@ window.COSPLAYCHESS_CONFIG = {
   supabaseKey: 'sb_publishable_FU4bO8phnJybvgQWgDrm8A_A-X8fz84',
   functionsBase: 'https://cotudgzjyzkljahnknuf.supabase.co/functions/v1',
   organizer: 'CosplayChess',
-  timezone: 'America/Sao_Paulo'
+  timezone: 'America/Sao_Paulo',
+  googleDriveClientId: '681538072713-6pcvhjrpsmtm7bq6uufskdbo9slcdi69.apps.googleusercontent.com'
 };
 
 (() => {
@@ -98,10 +99,10 @@ window.COSPLAYCHESS_CONFIG = {
     if (page === 'admin.html') {
       loadStyle('./admin-partners.css');
       loadStyle('./admin-search-v2.css?v=20260822-search2');
-      loadStyle('./admin-google-drive.css?v=20260822-gd1');
+      loadStyle('./admin-google-drive.css?v=20260822-gd2');
       loadScript('./admin-visitor-metric.js?v=20260822-unique1');
       loadScript('./admin-search-v2.js?v=20260822-search2');
-      loadScript('./admin-google-drive.js?v=20260822-gd1');
+      loadScript('./admin-google-drive.js?v=20260822-gd2');
       loadScript('./admin-cms.js', () => {
         const stack = document.getElementById('cmsStack');
         if (stack) stack.hidden = true;
