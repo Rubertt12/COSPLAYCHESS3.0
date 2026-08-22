@@ -79,6 +79,11 @@ window.COSPLAYCHESS_CONFIG = {
     if (globalCmsPages.includes(page)) loadScript('./site-global-cms.js?v=20260819-global1');
     if (globalCmsPages.includes(page) && !previewMode) loadScript('./visitor-tracker.js?v=20260822-unique1');
 
+    if (page === 'galeria-eventos.html') {
+      loadStyle('./gallery-album-fan.css?v=20260822-fan1');
+      loadScript('./gallery-album-fan.js?v=20260822-fan1');
+    }
+
     const collectiblePages = ['index.html', '', 'sobre.html', 'universo.html', 'hall-da-fama.html', 'ranking.html', 'conquistas.html'];
     if (collectiblePages.includes(page) && !previewMode) {
       loadStyle('./champion-collectible.css');
