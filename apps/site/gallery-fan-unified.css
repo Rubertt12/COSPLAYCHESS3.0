@@ -1,0 +1,21 @@
+/* CosplayChess — unified event album fan */
+.cc-album-fan{position:relative;min-height:230px;display:grid;place-items:center;padding:28px 18px 18px;overflow:visible}
+.cc-fan-card{position:absolute;width:min(76%,270px);aspect-ratio:4/3;border-radius:18px;background:#16101a center/cover no-repeat;border:1px solid rgba(255,255,255,.12);box-shadow:0 18px 46px rgba(0,0,0,.32);transition:transform .28s ease,filter .28s ease,opacity .28s ease;transform-origin:50% 90%}
+.cc-fan-card:nth-child(1){transform:translate(-34px,8px) rotate(-10deg);filter:brightness(.72)}
+.cc-fan-card:nth-child(2){transform:translate(34px,8px) rotate(10deg);filter:brightness(.78)}
+.cc-fan-card:nth-child(3){transform:translate(0,18px) rotate(2deg);filter:brightness(.82)}
+.cc-fan-cover{position:relative!important;z-index:6!important;transform:none!important;filter:none!important;width:min(82%,290px)!important;border-color:rgba(224,190,119,.42)!important;box-shadow:0 26px 70px rgba(0,0,0,.48),0 0 0 1px rgba(212,170,92,.08)!important}
+.cc-fan-cover:after{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(to top,rgba(7,5,9,.5),transparent 58%);pointer-events:none}
+.cc-album:hover .cc-fan-card:nth-child(1){transform:translate(-58px,2px) rotate(-15deg)}
+.cc-album:hover .cc-fan-card:nth-child(2){transform:translate(58px,2px) rotate(15deg)}
+.cc-album:hover .cc-fan-card:nth-child(3){transform:translate(0,4px) rotate(4deg)}
+.cc-album:hover .cc-fan-cover{transform:translateY(-5px)!important}
+.cc-album-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:6px;color:#9c93a0;font-size:10px}.cc-album-meta b{color:#e8c56f}
+#galleryGrid.cc-home-albums{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:22px!important;overflow:visible!important}
+.cc-home-album{display:block;overflow:visible!important;border:1px solid rgba(255,255,255,.08);border-radius:20px;background:linear-gradient(155deg,#130e16,#0c0910);padding:0 0 18px;text-decoration:none;color:inherit;transition:.2s ease}.cc-home-album:hover{transform:translateY(-4px);border-color:rgba(212,170,92,.38)}
+.cc-home-album-body{padding:4px 18px 0}.cc-home-album-body small{color:#d4aa5c;font-size:9px;font-weight:800}.cc-home-album-body h3{margin:7px 0 7px;font-size:21px}.cc-home-album-body p{margin:0;color:#958c99;font-size:10px;line-height:1.55}
+.cc-admin-album-preview{margin:0 0 18px;padding:16px 18px 18px;border:1px solid rgba(255,255,255,.075);border-radius:16px;background:linear-gradient(145deg,#0d1521,#09111c)}
+.cc-admin-album-preview[hidden]{display:none!important}.cc-admin-album-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:6px}.cc-admin-album-head div{display:grid;gap:4px}.cc-admin-album-head small{color:#d4aa5c;font-size:8px;letter-spacing:1.2px;font-weight:900}.cc-admin-album-head strong{font-size:18px}.cc-admin-album-head span{color:#8190a2;font-size:9px}.cc-admin-album-preview .cc-album-fan{min-height:245px;max-width:620px;margin:auto}.cc-admin-album-preview .cc-fan-card{width:min(60%,320px)}.cc-admin-album-preview .cc-fan-cover{width:min(66%,350px)!important}
+@media(max-width:980px){#galleryGrid.cc-home-albums{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:640px){#galleryGrid.cc-home-albums{grid-template-columns:1fr!important}.cc-album-fan{min-height:205px}.cc-fan-card{width:min(72%,240px)}.cc-fan-cover{width:min(78%,260px)!important}.cc-admin-album-preview .cc-fan-card{width:min(70%,260px)}.cc-admin-album-preview .cc-fan-cover{width:min(76%,280px)!important}}
+@media(prefers-reduced-motion:reduce){.cc-fan-card,.cc-home-album{transition:none}}
