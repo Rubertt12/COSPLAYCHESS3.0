@@ -74,8 +74,6 @@ window.COSPLAYCHESS_CONFIG = {
 
     const globalCmsPages = ['index.html', '', 'cadastro.html', 'galeria-eventos.html', 'sobre.html', 'universo.html', 'hall-da-fama.html', 'ranking.html', 'conquistas.html'];
     if (globalCmsPages.includes(page)) loadScript('./site-global-cms.js?v=20260819-global1');
-    if (globalCmsPages.includes(page) && !previewMode) loadScript('./visitor-tracker.js?v=20260822-unique1');
-
     if (page === 'galeria-eventos.html') {
       loadStyle('./gallery-album-fan.css?v=20260822-fan1');
       loadScript('./gallery-album-fan.js?v=20260822-fan1');
@@ -100,7 +98,6 @@ window.COSPLAYCHESS_CONFIG = {
       loadStyle('./admin-partners.css');
       loadStyle('./admin-search-v2.css?v=20260822-search2');
       loadStyle('./admin-google-drive.css?v=20260822-gd2');
-      loadScript('./admin-visitor-metric.js?v=20260822-unique1');
       loadScript('./admin-search-v2.js?v=20260822-search2');
       loadScript('./admin-google-drive-session.js?v=20260822-gd-session1', () => {
         loadScript('./admin-google-drive-db-compat.js?v=20260822-gd-db1', () => {
@@ -122,7 +119,7 @@ window.COSPLAYCHESS_CONFIG = {
         loadScript('./admin-privacy.js', () => {
           loadScript('./admin-private-groups.js');
           loadScript('./admin-game-link.js');
-          loadScript('./admin-partners.js', () => loadScript('./admin-partners-layout-fix.js?v=20260822-fix1'));
+          loadScript('./admin-partners.js', () => loadScript('./admin-partners-layout-fix.js?v=20260822-fix2'));
         });
       });
       return;
