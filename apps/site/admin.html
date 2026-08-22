@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#070910">
+  <meta name="theme-color" content="#07101d">
   <meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate">
-  <title>CosplayChess — Central de Comando</title>
+  <title>CosplayChess — Painel Administrativo</title>
   <link rel="icon" href="./img/favicon-Photoroom.png">
-  <link rel="stylesheet" href="./admin-v5.css?v=20260821-v5">
+  <link rel="stylesheet" href="./admin-v5.css?v=20260821-stable">
+  <link rel="stylesheet" href="./admin-v6.css?v=20260821-v6">
 </head>
-<body class="admin-v5">
+<body class="admin-v5 admin-v6">
   <header class="v5-topbar">
     <a class="v5-brand" href="./index.html" aria-label="CosplayChess"><img src="./img/fergorverse-logo.webp" alt=""><div><strong>COSPLAY</strong><span>CHESS</span></div></a>
     <div class="v5-top-actions"><span id="adminIdentity" class="v5-identity"></span><button id="logoutBtn" class="v5-btn ghost" hidden>Sair</button><a class="v5-btn gold" href="./cms.html">CMS Visual</a><a class="v5-btn dark" href="./index.html" target="_blank" rel="noopener">Ver site ↗</a></div>
@@ -27,74 +28,78 @@
     </div>
   </section>
 
-  <main id="dashboardPanel" class="v5-shell" hidden>
-    <aside class="v5-sidebar">
-      <div class="v5-side-head"><span class="rook">♜</span><div><strong>CENTRAL</strong><small>DE COMANDO</small></div></div>
-      <nav class="v5-nav">
-        <a class="active" href="#overview"><i>⌂</i>Dashboard</a>
-        <div class="nav-title">EVENTOS</div>
-        <a href="#events"><i>▣</i>Eventos</a><a href="#registrations"><i>♟</i>Inscrições</a><a href="#registrations"><i>♜</i>Elenco</a>
-        <div class="nav-title">COMPETIÇÃO</div>
-        <a href="./resultados-admin.html"><i>♛</i>Rankings & História</a><a href="./conquistas.html"><i>★</i>Conquistas</a>
-        <div class="nav-title">CONTEÚDO</div>
-        <a href="#events"><i>▧</i>Galeria</a><a href="./index.html" target="_blank"><i>↗</i>Preview do site</a>
+  <main id="dashboardPanel" class="v6-shell" hidden>
+    <aside class="v6-sidebar">
+      <a class="v6-brand" href="#overview"><img src="./img/fergorverse-logo.webp" alt=""><div><strong>COSPLAY<br>CHESS</strong><span>PAINEL ADMINISTRATIVO</span></div><em class="v6-version">v6.0</em></a>
+      <nav class="v6-nav">
+        <a class="active" href="#overview"><i>⌂</i><span>Dashboard</span></a>
+        <div class="v6-nav-title">GERENCIAR CONTEÚDO</div>
+        <a href="#events"><i>▣</i><span>Eventos</span></a>
+        <a href="#registrations"><i>♙</i><span>Inscrições</span></a>
+        <a href="#eventGalleryPanel"><i>▧</i><span>Galeria</span></a>
+        <a href="./cms.html"><i>□</i><span>Páginas</span></a>
+        <a href="./cms.html"><i>▤</i><span>Blog / Notícias</span></a>
+        <a href="./cms.html"><i>⚑</i><span>Banners</span></a>
+        <a href="./cms.html"><i>〽</i><span>Depoimentos</span></a>
+        <a href="./cms.html"><i>?</i><span>FAQ</span></a>
+        <div class="v6-nav-title">CONFIGURAÇÕES</div>
+        <a href="./cms.html"><i>⚙</i><span>Configurações Gerais</span></a>
+        <a href="./cms.html"><i>⌘</i><span>Redes Sociais</span></a>
+        <a href="#registrations"><i>♧</i><span>Usuários</span></a>
+        <div class="v6-nav-title">SISTEMA</div>
+        <a href="#registrations"><i>◉</i><span>Backup & Exportar</span></a>
+        <a href="#activity"><i>☷</i><span>Logs de Atividade</span></a>
       </nav>
-      <div class="v5-user"><div class="avatar">♛</div><div><strong id="sidebarIdentity">Administrador</strong><small>CosplayChess</small><span>Super Admin</span></div></div>
+      <div class="v6-sidebar-spacer"></div>
+      <div class="v6-user-card"><div class="v6-user-avatar">♛</div><div><strong id="sidebarIdentity">Administrador</strong><span>Administrador</span></div><button id="v6Logout" type="button" title="Sair">›</button></div>
+      <button id="v6Collapse" class="v6-collapse" type="button">‹ <span>Recolher menu</span></button>
     </aside>
 
-    <div class="v5-content">
-      <section id="overview" class="v5-dashboard">
-        <div class="v5-welcome"><span>💡</span><strong>Bem-vindo à Central de Comando do CosplayChess!</strong><span class="text">Gerencie eventos, inscrições, elenco e muito mais.</span><button id="dismissWelcome" type="button" aria-label="Fechar">×</button></div>
+    <section class="v6-main">
+      <header class="v6-mainbar">
+        <button id="v6Menu" class="v6-menu" type="button">☰</button>
+        <div class="v6-greeting"><h1>Bem-vindo, <span id="v6GreetingName">Admin</span>! 👑</h1><p>Aqui está o resumo do sistema Cosplay Chess.</p></div>
+        <div class="v6-mainbar-actions"><label class="v6-search">⌕<input id="v6Search" type="search" placeholder="Buscar..."><kbd>Ctrl K</kbd></label><button class="v6-icon-btn" type="button">♧<b>3</b></button><button id="v6NewEvent" class="v6-primary" type="button">＋ Novo Evento &nbsp; <small>Ctrl N</small></button></div>
+      </header>
 
-        <div class="v5-metrics">
-          <article class="v5-metric"><div class="icon purple">▣</div><div><span class="label">Eventos</span><b id="statEvents" class="number">0</b><small>Eventos criados</small><a href="#events">Ver todos →</a></div></article>
-          <article class="v5-metric"><div class="icon green">♟</div><div><span class="label">Inscrições</span><b id="statRegistrations" class="number">0</b><small>Inscrições recebidas</small><a href="#registrations">Ver todas →</a></div></article>
-          <article class="v5-metric"><div class="icon gold">♜</div><div><span class="label">Elenco</span><b id="statConfirmed" class="number">0</b><small>Personagens confirmados</small><a href="#registrations">Gerenciar →</a></div></article>
-          <article class="v5-metric"><div class="icon red">★</div><div><span class="label">Galeria</span><b id="statPhotos" class="number">0</b><small>Imagens publicadas</small><a href="#events">Ver todas →</a></div></article>
+      <section id="overview">
+        <div class="v6-metrics">
+          <article class="v6-metric"><div class="v6-metric-icon purple">▣</div><div><span>EVENTOS</span><b id="statEvents">0</b><small class="good">eventos cadastrados</small></div></article>
+          <article class="v6-metric"><div class="v6-metric-icon blue">♙</div><div><span>INSCRIÇÕES</span><b id="statRegistrations">0</b><small class="good">participantes recebidos</small></div></article>
+          <article class="v6-metric"><div class="v6-metric-icon green">▧</div><div><span>GALERIA</span><b id="statPhotos">0</b><small class="info">imagens publicadas</small></div></article>
+          <article class="v6-metric"><div class="v6-metric-icon orange">♜</div><div><span>ELENCO</span><b id="statConfirmed">0</b><small class="good">confirmados</small></div></article>
+          <article class="v6-metric"><div class="v6-metric-icon violet">◉</div><div><span>PRÓXIMOS</span><b id="statUpcoming">0</b><small class="good">eventos futuros</small></div></article>
         </div>
 
-        <div class="v5-grid top">
-          <article class="v5-panel"><div class="v5-panel-head"><div><h2>Inscrições por Evento</h2><p>Total de inscrições por evento</p></div><span class="v5-chip">Últimos 6 eventos⌄</span></div><div id="eventBars" class="event-bars"></div></article>
-          <article class="v5-panel"><div class="v5-panel-head"><div><h2>Últimas Inscrições</h2></div><a href="#registrations">Ver todas</a></div><div id="recentRegistrations" class="recent-list"></div></article>
+        <div class="v6-grid-main">
+          <article class="v6-card"><div class="v6-card-head"><h2>Próximos Eventos</h2><a href="#events">Ver todos</a></div><div id="v6Upcoming" class="v6-upcoming"></div></article>
+          <article id="activity" class="v6-card"><div class="v6-card-head"><h2>Atividade Recente</h2><a href="#registrations">Ver tudo</a></div><div id="v6Activity" class="v6-activity"></div></article>
         </div>
 
-        <div class="v5-grid bottom">
-          <article class="v5-panel"><div class="v5-panel-head"><div><h2>Próximos Eventos</h2></div><a href="#events">Ver todos</a></div><div id="upcomingEvents" class="upcoming-list"></div></article>
-          <article class="v5-panel"><div class="v5-panel-head"><div><h2>Ações Rápidas</h2></div></div><div class="quick-action-grid">
-            <button id="quickNewEvent" type="button"><span class="qa-icon purple">＋</span><b>Novo Evento</b><small>Criar evento</small></button>
-            <a href="#registrations"><span class="qa-icon purple">♟</span><b>Inscrições</b><small>Gerenciar inscrições</small></a>
-            <a href="#registrations"><span class="qa-icon gold">♜</span><b>Gerenciar Elenco</b><small>Ver personagens</small></a>
-            <a href="#events"><span class="qa-icon green">▧</span><b>Galeria</b><small>Gerenciar imagens</small></a>
-            <a href="./resultados-admin.html"><span class="qa-icon purple">♛</span><b>Ver Rankings</b><small>Ranking completo</small></a>
-            <a href="./conquistas.html"><span class="qa-icon red">★</span><b>Ver Conquistas</b><small>Conquistas do jogo</small></a>
-            <a href="./index.html" target="_blank"><span class="qa-icon blue">◉</span><b>Preview do site</b><small>Ver site publicado</small></a>
-            <a href="./cms.html"><span class="qa-icon gray">⚙</span><b>Configurações</b><small>Ajustes do CMS</small></a>
-          </div></article>
+        <div class="v6-grid-bottom">
+          <article class="v6-card"><div class="v6-card-head"><h2>Inscrições por Status</h2><button type="button">Ver relatório</button></div><div class="v6-chart-body"><div class="v6-donut-wrap"><div id="v6Donut" class="v6-donut"><div class="v6-donut-center"><span>Total</span><b id="v6DonutTotal">0</b></div></div><div id="v6Legend" class="v6-legend"></div></div></div></article>
+          <article class="v6-card"><div class="v6-card-head"><h2>Inscrições dos Últimos 7 Dias</h2><button type="button">Ver relatório</button></div><div class="v6-chart-body"><div class="v6-spark"><svg id="v6SparkSvg" preserveAspectRatio="none"></svg></div></div></article>
+          <article class="v6-card"><div class="v6-card-head"><h2>Status do Sistema</h2></div><div class="v6-system-list"><div class="v6-system-row"><span>◎ Banco de dados</span><b>Online</b></div><div class="v6-system-row"><span>▧ Armazenamento</span><b class="info">Supabase</b></div><div class="v6-system-row"><span>♢ Autenticação</span><b>Ativa</b></div><div class="v6-system-row"><span>◷ Última sincronização</span><b class="info">Agora</b></div></div></article>
         </div>
       </section>
 
-      <section id="events" class="v5-section"><div class="v5-section-head"><div><span class="kicker">AGENDA & GALERIA</span><h2>Eventos</h2><p>Gerencie publicação, inscrições, capas e fotos.</p></div><button id="newEventBtn" class="v5-btn gold" type="button">+ Criar evento</button></div><div id="adminEvents" class="admin-events"></div></section>
+      <section id="events" class="v6-management"><div class="v6-management-head"><div><h2>Eventos</h2><p>Gerencie publicação, inscrições, capas e fotos dos eventos.</p></div><button id="newEventBtn" class="v5-btn gold" type="button">+ Criar evento</button></div><div id="adminEvents" class="admin-events"></div></section>
 
-      <section id="registrations" class="v5-section"><div class="v5-section-head"><div><span class="kicker">ELENCO</span><h2>Inscrições</h2><p>Revise participantes e prepare o elenco do aplicativo.</p></div><div class="panel-actions"><select id="registrationEventFilter"><option value="">Todos os eventos</option></select><button id="exportRosterBtn" class="v5-btn gold">Exportar para o app</button></div></div><div class="status-legend"><span><i class="dot confirmed"></i>Confirmado</span><span><i class="dot waitlist"></i>Em análise</span><span><i class="dot cancelled"></i>Cancelado</span></div><div id="registrationsList" class="registration-list"></div></section>
+      <section id="registrations" class="v6-management"><div class="v6-management-head"><div><h2>Inscrições</h2><p>Revise participantes, status e prepare o elenco do aplicativo.</p></div><div class="panel-actions"><select id="registrationEventFilter"><option value="">Todos os eventos</option></select><button id="exportRosterBtn" class="v5-btn gold">Exportar para o app</button></div></div><div class="status-legend"><span><i class="dot confirmed"></i>Confirmado</span><span><i class="dot waitlist"></i>Em análise</span><span><i class="dot cancelled"></i>Cancelado</span></div><div id="registrationsList" class="registration-list"></div></section>
 
-      <footer class="admin-footer"><span>CosplayChess CMS v4.0</span><span>© 2026 CosplayChess. Todos os direitos reservados.</span></footer>
-    </div>
+      <footer class="admin-footer"><span>Cosplay Chess © 2026 — Todos os direitos reservados.</span><span>Desenvolvido para o CosplayChess 💜</span></footer>
+    </section>
   </main>
 
   <div id="eventModal" class="modal" hidden><div class="modal-card"><button class="modal-close" data-close-modal>×</button><span class="kicker">EVENTO</span><h2 id="eventModalTitle">Novo evento</h2><form id="eventForm" class="signup-form"><input type="hidden" name="id"><div class="two"><label><span>Título *</span><input name="title" required></label><label><span>Slug *</span><input name="slug" required></label></div><label class="wide"><span>Descrição</span><textarea name="description" rows="4"></textarea></label><div class="two"><label><span>Local</span><input name="venue"></label><label><span>Cidade</span><input name="city"></label></div><div class="two"><label><span>Data/hora *</span><input type="datetime-local" name="startAt" required></label><label><span>Limite de participantes</span><input type="number" name="maxParticipants" min="1"></label></div><div class="two toggle-row"><label><input type="checkbox" name="published"><span>Publicado no site</span></label><label><input type="checkbox" name="registrationOpen" checked><span>Inscrições abertas</span></label></div><label class="wide"><span>Capa do evento</span><input id="eventCoverInput" type="file" accept="image/jpeg,image/png,image/webp"></label><button class="v5-btn gold big wide" type="submit">Salvar evento</button><div id="eventFormStatus" class="form-status wide"></div></form></div></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
-  <script src="./admin.js?v=20260821-v5"></script>
-  <script src="./admin-dashboard-pro.js?v=20260821-v5"></script>
+  <script src="./admin.js?v=20260821-v6"></script>
   <script src="./admin-result-sync-export.js"></script>
   <script src="./admin-emergency-reset.js"></script>
   <script src="./admin-gallery.js"></script>
-  <script>
-    document.querySelectorAll('.password-toggle').forEach(button=>button.addEventListener('click',()=>{const input=button.parentElement.querySelector('input');input.type=input.type==='password'?'text':'password';}));
-    document.querySelectorAll('.v5-nav a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('.v5-nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active');}));
-    const identity=document.getElementById('adminIdentity');if(identity){new MutationObserver(()=>{const v=identity.textContent.trim();if(v)document.getElementById('sidebarIdentity').textContent=v;}).observe(identity,{childList:true,subtree:true});}
-    document.getElementById('dismissWelcome')?.addEventListener('click',e=>e.currentTarget.parentElement.remove());
-  </script>
+  <script src="./admin-v6.js?v=20260821-v6"></script>
+  <script>document.querySelectorAll('.password-toggle').forEach(button=>button.addEventListener('click',()=>{const input=button.parentElement.querySelector('input');input.type=input.type==='password'?'text':'password';}));</script>
 </body>
 </html>
