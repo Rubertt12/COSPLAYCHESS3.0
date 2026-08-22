@@ -94,7 +94,9 @@ window.COSPLAYCHESS_CONFIG = {
 
     if (page === 'admin.html') {
       loadStyle('./admin-partners.css');
+      loadStyle('./admin-search-v2.css?v=20260822-search2');
       loadScript('./admin-visitor-metric.js?v=20260822-unique1');
+      loadScript('./admin-search-v2.js?v=20260822-search2');
       loadScript('./admin-cms.js', () => {
         const stack = document.getElementById('cmsStack');
         if (stack) stack.hidden = true;
