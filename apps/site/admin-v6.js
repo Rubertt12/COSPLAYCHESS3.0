@@ -3,7 +3,6 @@
   const $$=(s,r=document)=>[...r.querySelectorAll(s)];
   const esc6=(v='')=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const fmtDate=v=>{try{return new Date(v).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'})}catch{return'—'}};
-  const fmtTime=v=>{try{return new Date(v).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}catch{return''}};
 
   function getEvents(){try{return Array.isArray(currentEvents)?currentEvents:[]}catch{return[]}}
   function getRegs(){try{return Array.isArray(registrations)?registrations:[]}catch{return[]}}
@@ -11,6 +10,42 @@
   function syncAuthLayout(){
     const dash=$('#dashboardPanel');
     document.body.classList.toggle('admin-authenticated',!!dash&&!dash.hidden);
+  }
+
+  function ensureViews(){
+    const dash=$('#dashboardPanel');
+    if(!dash)return;
+    const main=$('.v6-main',dash);
+    if(!main)return;
+    ['overview','events','registrations'].forEach(id=>{
+      const el=$('#'+id);
+      if(el){el.classList.add('v6-view');el.dataset.view=id;}
+    });
+    const gallery=$('#eventGalleryPanel');
+    if(gallery){gallery.classList.add('v6-view','v6-management');gallery.dataset.view='gallery';}
+  }
+
+  function viewIdFromHash(hash){
+    const raw=(hash||'').replace('#','');
+    if(raw==='eventGalleryPanel')return'gallery';
+    if(['overview','events','registrations','gallery'].includes(raw))return raw;
+    return'overview';
+  }
+
+  function openView(id,{push=true}={}){
+    ensureViews();
+    const target=id==='gallery'?$('#eventGalleryPanel'):$(`#${id}`);
+    if(!target){ if(id==='gallery'){setTimeout(()=>openView('gallery',{push:false}),120);return;} id='overview'; }
+    $$('.v6-view').forEach(v=>{v.hidden=v.dataset.view!==id;v.classList.toggle('is-active',v.dataset.view===id);});
+    $$('.v6-nav a').forEach(a=>{
+      const vid=viewIdFromHash(a.getAttribute('href'));
+      a.classList.toggle('active',vid===id && a.getAttribute('href')?.startsWith('#'));
+    });
+    const titleMap={overview:'Dashboard',events:'Eventos',registrations:'Inscrições',gallery:'Galeria'};
+    const title=$('#v6ViewTitle'); if(title)title.textContent=titleMap[id]||'Dashboard';
+    document.body.dataset.adminView=id;
+    if(push){const hash=id==='gallery'?'#eventGalleryPanel':`#${id}`;if(location.hash!==hash)history.replaceState({},'',hash);}
+    const scroll=$('.v6-view.is-active'); if(scroll)scroll.scrollTop=0;
   }
 
   function renderUpcoming(){
@@ -36,10 +71,7 @@
   }
 
   function renderDonut(){
-    const total=getRegs().length;
-    const confirmed=getRegs().filter(r=>r.status==='confirmed').length;
-    const wait=getRegs().filter(r=>r.status==='waitlist').length;
-    const cancelled=getRegs().filter(r=>r.status==='cancelled').length;
+    const regs=getRegs(),total=regs.length,confirmed=regs.filter(r=>r.status==='confirmed').length,wait=regs.filter(r=>r.status==='waitlist').length,cancelled=regs.filter(r=>r.status==='cancelled').length;
     const el=$('#v6Donut'); if(el){const a=total?confirmed/total*100:0,b=total?wait/total*100:0;el.style.background=`conic-gradient(#7c3aed 0 ${a}%,#2e7df6 ${a}% ${a+b}%,#ef4444 ${a+b}% 100%)`;}
     const num=$('#v6DonutTotal'); if(num)num.textContent=total;
     const legend=$('#v6Legend'); if(legend)legend.innerHTML=`<div><i style="background:#7c3aed"></i>Confirmados <b>${confirmed}</b></div><div><i style="background:#2e7df6"></i>Em análise <b>${wait}</b></div><div><i style="background:#ef4444"></i>Cancelados <b>${cancelled}</b></div>`;
@@ -62,14 +94,9 @@
     $('#statUpcoming')?.replaceChildren(document.createTextNode(String(next)));
   }
 
-  function renderV6(){renderUpcoming();renderActivity();renderDonut();renderSpark();renderExtraMetrics();}
+  function renderV6(){ensureViews();renderUpcoming();renderActivity();renderDonut();renderSpark();renderExtraMetrics();}
 
-  try{
-    if(typeof renderStats==='function'){
-      const base=renderStats;
-      renderStats=function(){base();renderV6();};
-    }
-  }catch{}
+  try{if(typeof renderStats==='function'){const base=renderStats;renderStats=function(){base();renderV6();};}}catch{}
 
   $('#v6NewEvent')?.addEventListener('click',()=>$('#newEventBtn')?.click());
   $('#v6Logout')?.addEventListener('click',()=>$('#logoutBtn')?.click());
@@ -79,14 +106,23 @@
     const q=e.target.value.trim().toLowerCase();
     $$('.admin-event,.registration-row').forEach(el=>el.style.display=!q||el.textContent.toLowerCase().includes(q)?'':'none');
   });
+
   document.addEventListener('keydown',e=>{
     if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('#v6Search')?.focus();}
     if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='n'){e.preventDefault();$('#newEventBtn')?.click();}
+    if(e.key==='Escape'&&!$('#eventModal')?.hidden){$('#eventModal').hidden=true;}
   });
-  $$('.v6-nav a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{$$('.v6-nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active')}));
+
+  $$('.v6-nav a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openView(viewIdFromHash(a.getAttribute('href')))}));
+  window.addEventListener('hashchange',()=>openView(viewIdFromHash(location.hash),{push:false}));
 
   const identity=$('#adminIdentity');
   if(identity){new MutationObserver(()=>{const name=identity.textContent.trim();if(name){const s=$('#sidebarIdentity');const g=$('#v6GreetingName');if(s)s.textContent=name;if(g)g.textContent=name.split('@')[0];}}).observe(identity,{childList:true,subtree:true});}
-  const dash=$('#dashboardPanel'); if(dash)new MutationObserver(()=>{syncAuthLayout();if(!dash.hidden)requestAnimationFrame(renderV6)}).observe(dash,{attributes:true,attributeFilter:['hidden']});
-  syncAuthLayout(); setTimeout(renderV6,300);
+  const dash=$('#dashboardPanel'); if(dash)new MutationObserver(()=>{syncAuthLayout();if(!dash.hidden){requestAnimationFrame(()=>{renderV6();openView(viewIdFromHash(location.hash),{push:false});});}}).observe(dash,{attributes:true,attributeFilter:['hidden']});
+
+  const galleryWatch=new MutationObserver(()=>{if($('#eventGalleryPanel')){ensureViews();if(viewIdFromHash(location.hash)==='gallery')openView('gallery',{push:false});galleryWatch.disconnect();}});
+  galleryWatch.observe(document.body,{childList:true,subtree:true});
+
+  syncAuthLayout();
+  setTimeout(()=>{renderV6();openView(viewIdFromHash(location.hash),{push:false});},300);
 })();
