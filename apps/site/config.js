@@ -81,8 +81,8 @@ window.COSPLAYCHESS_CONFIG = {
     }
 
     if (page === 'index.html' || page === '' || page === 'admin.html') {
-      loadStyle('./gallery-fan-unified.css?v=20260822-fan2');
-      loadScript('./gallery-fan-unified.js?v=20260822-fan2');
+      loadStyle('./gallery-albums-v2.css?v=20260822-fan3');
+      loadScript('./gallery-albums-v2.js?v=20260822-fan3');
     }
 
     const collectiblePages = ['index.html', '', 'sobre.html', 'universo.html', 'hall-da-fama.html', 'ranking.html', 'conquistas.html'];
