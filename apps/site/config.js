@@ -110,7 +110,7 @@ window.COSPLAYCHESS_CONFIG = {
         loadScript('./admin-privacy.js', () => {
           loadScript('./admin-private-groups.js');
           loadScript('./admin-game-link.js');
-          loadScript('./admin-partners.js');
+          loadScript('./admin-partners.js', () => loadScript('./admin-partners-layout-fix.js?v=20260822-fix1'));
         });
       });
       return;
