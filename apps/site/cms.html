@@ -3,15 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#09070c">
+  <meta name="theme-color" content="#07101d">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>CMS Visual — Fergorverse</title>
+  <title>CMS Visual — CosplayChess</title>
   <link rel="icon" type="image/png" href="./img/logofergoverse.png">
   <link rel="stylesheet" href="./cms-visual.css?v=20260819-global1">
   <link rel="stylesheet" href="./cms-pages.css?v=20260819-global1">
   <link rel="stylesheet" href="./backoffice-polish.css?v=20260821-final1">
+  <link rel="stylesheet" href="./cms-v6.css?v=20260821-v6">
 </head>
 <body class="cms-page">
   <div id="cmsGate" class="cms-gate" hidden>
@@ -29,7 +30,7 @@
       <header class="cms-sidebar-head">
         <a class="cms-brand" href="./index.html" target="_blank" rel="noopener">
           <img src="./img/logofergoverse.png" alt="Fergorverse">
-          <span><b>CMS VISUAL</b><small>FERGORVERSE</small></span>
+          <span><b>CMS VISUAL</b><small>COSPLAYCHESS</small></span>
         </a>
         <div class="cms-head-actions">
           <a class="cms-icon-btn" href="./admin.html" title="Voltar ao Admin">←</a>
@@ -85,19 +86,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js?v=20260819-global1"></script>
-  <script>
-    (()=>{
-      const tabs=document.querySelector('.cms-page-tabs');
-      if(tabs && !tabs.querySelector('[data-page="about"]')){
-        const about=document.createElement('button');
-        about.type='button';
-        about.dataset.page='about';
-        about.textContent='Sobre';
-        const universe=tabs.querySelector('[data-page="universe"]');
-        tabs.insertBefore(about,universe||null);
-      }
-    })();
-  </script>
   <script src="./cms-visual.js?v=20260819-global1"></script>
   <script src="./cms-buttons.js?v=20260819-global1"></script>
   <script src="./cms-pages.js?v=20260819-global1"></script>
@@ -106,5 +94,6 @@
   <script src="./cms-external-video.js?v=20260819-global1"></script>
   <script src="./cms-open-published.js?v=20260819-global1"></script>
   <script src="./cms-global.js?v=20260819-global1"></script>
+  <script src="./cms-v6.js?v=20260821-v6"></script>
 </body>
 </html>
