@@ -1,13 +1,15 @@
 (()=>{
   const cfg=window.COSPLAYCHESS_CONFIG;if(!cfg||!window.supabase)return;
   const db=window.COSPLAYCHESS_DB||window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseKey);
-  const esc=(v='')=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const esc=(v='')=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
   const fmt=v=>{try{return new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',year:'numeric',timeZone:cfg.timezone}).format(new Date(v))}catch{return''}};
   function fanHtml(event,photos,compact=false){
-    const pics=(photos||[]).filter(p=>p.photo_url).slice(0,4);const cover=event.cover_url||pics[0]?.photo_url||'';
-    const slots=['s1','s2','s3','s4'].map((c,i)=>pics[i]?`<span class="gallery-album-sheet ${c}" style="background-image:url('${esc(pics[i].photo_url)}')"></span>`:'').join('');
+    const all=(photos||[]).filter(p=>p&&p.photo_url);
+    const cover=event.cover_url||all[0]?.photo_url||'';
+    const extras=all.filter(p=>String(p.photo_url)!==String(cover)).slice(0,4);
+    const slots=['s1','s2','s3','s4'].map((c,i)=>extras[i]?`<span class="gallery-album-sheet ${c}" style="background-image:url('${esc(extras[i].photo_url)}')"></span>`:'').join('');
     const place=[event.venue,event.city].filter(Boolean).join(' • ')||'Local a definir';
-    return `<div class="gallery-album-fan">${slots}<span class="gallery-album-cover" style="${cover?`background-image:url('${esc(cover)}')`:''}">${compact?'':(photos.length?'<span class="gallery-album-badge">ÁLBUM</span>':'')}</span></div><div class="gallery-album-body"><div class="gallery-album-date">▣ ${esc(fmt(event.start_at))}</div><h3 class="gallery-album-title">${esc(event.title||'Evento')}</h3><div class="gallery-album-meta"><span>⌖ ${esc(place)}</span><span>▧ ${photos.length} foto${photos.length===1?'':'s'}</span></div>${compact?'':`<a class="gallery-album-cta" href="./galeria-eventos.html?event=${encodeURIComponent(event.id)}">Ver álbum completo →</a>`}</div>`;
+    return `<div class="gallery-album-fan ${extras.length?'has-fan':'cover-only'}">${slots}<span class="gallery-album-cover" style="${cover?`background-image:url('${esc(cover)}')`:''}">${compact?'':(all.length?'<span class="gallery-album-badge">ÁLBUM</span>':'')}</span></div><div class="gallery-album-body"><div class="gallery-album-date">▣ ${esc(fmt(event.start_at))}</div><h3 class="gallery-album-title">${esc(event.title||'Evento')}</h3><div class="gallery-album-meta"><span>⌖ ${esc(place)}</span><span>▧ ${all.length} foto${all.length===1?'':'s'}</span></div>${compact?'':`<a class="gallery-album-cta" href="./galeria-eventos.html?event=${encodeURIComponent(event.id)}">Ver álbum completo →</a>`}</div>`;
   }
   async function data(){
     const {data:events,error}=await db.from('cosplay_events').select('id,title,venue,city,start_at,cover_url,published').eq('published',true).order('start_at',{ascending:false});if(error)throw error;
