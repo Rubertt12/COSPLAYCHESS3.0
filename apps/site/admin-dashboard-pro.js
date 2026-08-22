@@ -1,4 +1,17 @@
 (()=>{
+  if(!document.querySelector('link[data-admin-v5-polish]')){
+    const link=document.createElement('link');
+    link.rel='stylesheet';
+    link.href='./admin-v5-polish.css?v=20260821-polish2';
+    link.dataset.adminV5Polish='1';
+    document.head.appendChild(link);
+  }
+
+  const intro=document.querySelector('#authPanel .admin-intro h1');
+  if(intro) intro.innerHTML='Controle os próximos <i>capítulos do espetáculo.</i>';
+  const introP=document.querySelector('#authPanel .admin-intro p');
+  if(introP) introP.textContent='Entre para administrar eventos, fotos, inscrições e o elenco que será enviado ao aplicativo do CosplayChess.';
+
   const esc2=(v='')=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const fmtDate=(v)=>{try{return new Date(v).toLocaleDateString('pt-BR')}catch{return''}};
   const fmtShort=(v)=>{try{return new Date(v).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'})}catch{return''}};
@@ -11,9 +24,9 @@
 
     const events=Array.isArray(currentEvents)?currentEvents:[];
     const regs=Array.isArray(registrations)?registrations:[];
-
     const countByEvent=new Map();
     regs.forEach(r=>countByEvent.set(r.event_id,(countByEvent.get(r.event_id)||0)+1));
+
     const chartEvents=[...events].sort((a,b)=>new Date(b.start_at)-new Date(a.start_at)).slice(0,6).reverse();
     const max=Math.max(1,...chartEvents.map(e=>countByEvent.get(e.id)||0));
     bars.innerHTML=chartEvents.length?chartEvents.map(e=>{
@@ -38,20 +51,32 @@
     }).join(''):'<div class="empty-card">Nenhum evento cadastrado.</div>';
   }
 
-  const oldRenderStats=renderStats;
-  renderStats=function(){oldRenderStats();renderDashboardExtras();};
+  function relocateGallery(){
+    const gallery=document.getElementById('eventGalleryPanel');
+    const content=document.querySelector('.v5-content');
+    const footer=content?.querySelector('.admin-footer');
+    if(!gallery||!content||gallery.parentElement===content)return;
+    gallery.classList.add('v5-section');
+    if(footer) content.insertBefore(gallery,footer); else content.appendChild(gallery);
+    const upload=gallery.querySelector('#galleryUploadBtn');
+    if(upload){upload.classList.remove('btn');upload.classList.add('v5-btn');}
+  }
 
-  const quick=document.getElementById('quickNewEvent');
-  if(quick)quick.addEventListener('click',()=>document.getElementById('newEventBtn')?.click());
+  const oldRenderStats=typeof renderStats==='function'?renderStats:null;
+  if(oldRenderStats) renderStats=function(){oldRenderStats();renderDashboardExtras();};
 
-  document.querySelector('.welcome-banner button')?.addEventListener('click',e=>e.currentTarget.parentElement.remove());
+  document.getElementById('quickNewEvent')?.addEventListener('click',()=>document.getElementById('newEventBtn')?.click());
+  document.querySelector('.v5-welcome button')?.addEventListener('click',e=>e.currentTarget.parentElement.remove());
 
-  const obs=new MutationObserver(()=>{
-    const dash=document.getElementById('dashboardPanel');
-    if(dash&&!dash.hidden)renderDashboardExtras();
-  });
   const dash=document.getElementById('dashboardPanel');
-  if(dash)obs.observe(dash,{attributes:true,attributeFilter:['hidden']});
+  if(dash){
+    const obs=new MutationObserver(()=>{
+      if(!dash.hidden)renderDashboardExtras();
+      relocateGallery();
+    });
+    obs.observe(dash,{attributes:true,childList:true,subtree:true,attributeFilter:['hidden']});
+  }
 
-  setTimeout(renderDashboardExtras,400);
+  setTimeout(()=>{renderDashboardExtras();relocateGallery();},250);
+  setTimeout(relocateGallery,900);
 })();
