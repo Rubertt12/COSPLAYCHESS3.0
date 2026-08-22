@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="./admin-v5.css?v=20260821-stable">
   <link rel="stylesheet" href="./admin-v6.css?v=20260821-v6">
   <link rel="stylesheet" href="./admin-v6-views.css?v=20260821-v61">
+  <link rel="stylesheet" href="./admin-v63.css?v=20260822-v63">
 </head>
 <body class="admin-v5 admin-v6">
   <header class="v5-topbar">
@@ -31,25 +32,25 @@
 
   <main id="dashboardPanel" class="v6-shell" hidden>
     <aside class="v6-sidebar">
-      <a class="v6-brand" href="#overview"><img src="./img/fergorverse-logo.webp" alt=""><div><strong>COSPLAY<br>CHESS</strong><span>PAINEL ADMINISTRATIVO</span></div><em class="v6-version">v6.1</em></a>
+      <a class="v6-brand" href="#overview"><img src="./img/fergorverse-logo.webp" alt=""><div><strong>COSPLAY<br>CHESS</strong><span>PAINEL ADMINISTRATIVO</span></div><em class="v6-version">v6.3</em></a>
       <nav class="v6-nav">
         <a class="active" href="#overview"><i>⌂</i><span>Dashboard</span></a>
         <div class="v6-nav-title">GERENCIAR CONTEÚDO</div>
         <a href="#events"><i>▣</i><span>Eventos</span></a>
         <a href="#registrations"><i>♙</i><span>Inscrições</span></a>
         <a href="#eventGalleryPanel"><i>▧</i><span>Galeria</span></a>
-        <a href="./cms.html"><i>□</i><span>Páginas</span></a>
-        <a href="./cms.html"><i>▤</i><span>Blog / Notícias</span></a>
-        <a href="./cms.html"><i>⚑</i><span>Banners</span></a>
-        <a href="./cms.html"><i>〽</i><span>Depoimentos</span></a>
-        <a href="./cms.html"><i>?</i><span>FAQ</span></a>
+        <a href="#pages"><i>□</i><span>Páginas</span></a>
+        <a href="#blog"><i>▤</i><span>Blog / Notícias</span></a>
+        <a href="#banners"><i>⚑</i><span>Banners</span></a>
+        <a href="#testimonials"><i>〽</i><span>Depoimentos</span></a>
+        <a href="#faq"><i>?</i><span>FAQ</span></a>
         <div class="v6-nav-title">CONFIGURAÇÕES</div>
-        <a href="./cms.html"><i>⚙</i><span>Configurações Gerais</span></a>
-        <a href="./cms.html"><i>⌘</i><span>Redes Sociais</span></a>
-        <a href="#registrations"><i>♧</i><span>Usuários</span></a>
+        <a href="#settings"><i>⚙</i><span>Configurações Gerais</span></a>
+        <a href="#social"><i>⌘</i><span>Redes Sociais</span></a>
+        <a href="#users"><i>♧</i><span>Usuários</span></a>
         <div class="v6-nav-title">SISTEMA</div>
-        <a href="#registrations"><i>◉</i><span>Backup & Exportar</span></a>
-        <a href="#activity"><i>☷</i><span>Logs de Atividade</span></a>
+        <a href="#backup"><i>◉</i><span>Backup & Exportar</span></a>
+        <a href="#logs"><i>☷</i><span>Logs de Atividade</span></a>
       </nav>
       <div class="v6-sidebar-spacer"></div>
       <div class="v6-user-card"><div class="v6-user-avatar">♛</div><div><strong id="sidebarIdentity">Administrador</strong><span>Administrador</span></div><button id="v6Logout" type="button" title="Sair">›</button></div>
@@ -60,7 +61,7 @@
       <header class="v6-mainbar">
         <button id="v6Menu" class="v6-menu" type="button">☰</button>
         <div class="v6-greeting"><h1>Bem-vindo, <span id="v6GreetingName">Admin</span>! 👑</h1><p>Aqui está o resumo do sistema Cosplay Chess.</p></div>
-        <div class="v6-mainbar-actions"><label class="v6-search">⌕<input id="v6Search" type="search" placeholder="Buscar..."><kbd>Ctrl K</kbd></label><button class="v6-icon-btn" type="button">♧<b>3</b></button><button id="v6NewEvent" class="v6-primary" type="button">＋ Novo Evento &nbsp; <small>Ctrl N</small></button></div>
+        <div class="v6-mainbar-actions"><label class="v6-search">⌕<input id="v6Search" type="search" placeholder="Buscar..."><kbd>Ctrl K</kbd></label><button class="v6-icon-btn" type="button" aria-label="Alertas">♧<b>0</b></button><button id="v6NewEvent" class="v6-primary" type="button">＋ Novo Evento &nbsp; <small>Ctrl N</small></button></div>
       </header>
 
       <section id="overview">
@@ -95,11 +96,12 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
-  <script src="./admin.js?v=20260821-v6"></script>
+  <script src="./admin.js?v=20260822-v63"></script>
   <script src="./admin-result-sync-export.js"></script>
   <script src="./admin-emergency-reset.js"></script>
-  <script src="./admin-gallery.js"></script>
-  <script src="./admin-v6.js?v=20260821-v61"></script>
+  <script src="./admin-gallery.js?v=20260822-v63"></script>
+  <script src="./admin-v6.js?v=20260822-v63"></script>
+  <script src="./admin-v63.js?v=20260822-v63"></script>
   <script>document.querySelectorAll('.password-toggle').forEach(button=>button.addEventListener('click',()=>{const input=button.parentElement.querySelector('input');input.type=input.type==='password'?'text':'password';}));</script>
 </body>
 </html>
