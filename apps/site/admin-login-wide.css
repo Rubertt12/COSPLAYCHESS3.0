@@ -1,52 +1,42 @@
-/* Admin Login Wide — full viewport authentication layout */
+/* Admin Login Wide — balanced full-screen authentication layout */
 body:not(.admin-authenticated){
   min-height:100vh;
+  overflow:hidden;
   background:
-    radial-gradient(circle at 14% 24%,rgba(124,58,237,.14),transparent 30%),
-    radial-gradient(circle at 76% 18%,rgba(212,170,92,.10),transparent 26%),
-    linear-gradient(135deg,#050914 0%,#07101d 52%,#070a12 100%);
+    radial-gradient(circle at 12% 22%,rgba(124,58,237,.13),transparent 32%),
+    radial-gradient(circle at 80% 18%,rgba(212,170,92,.08),transparent 26%),
+    linear-gradient(135deg,#060916 0%,#07101c 54%,#080b13 100%);
 }
 
-body:not(.admin-authenticated) .v5-topbar{
-  position:absolute;
-  inset:0 0 auto 0;
-  z-index:20;
-  min-height:78px;
-  padding:0 clamp(24px,3.2vw,64px);
-  background:linear-gradient(180deg,rgba(4,8,16,.86),rgba(4,8,16,.34),transparent);
-  border-bottom:0;
-  backdrop-filter:none;
-}
-
-body:not(.admin-authenticated) .v5-topbar .v5-top-actions,
-body:not(.admin-authenticated) .v5-topbar .v5-role{
-  display:none!important;
-}
+/* No header competing with the authentication screen. */
+body:not(.admin-authenticated) .v5-topbar{display:none!important}
 
 body:not(.admin-authenticated) #authPanel.auth-grid{
   position:relative;
   width:100%;
+  height:100vh;
   min-height:100vh;
   margin:0;
-  padding:118px clamp(32px,6vw,112px) 54px;
+  padding:clamp(28px,4vh,52px) clamp(42px,5vw,92px);
   box-sizing:border-box;
   display:grid!important;
-  grid-template-columns:minmax(0,1.35fr) minmax(390px,.65fr);
-  gap:clamp(54px,8vw,150px);
+  grid-template-columns:minmax(0,.92fr) minmax(420px,.72fr);
+  gap:clamp(48px,6vw,110px);
   align-items:center;
+  justify-content:center;
   overflow:hidden;
 }
 
 body:not(.admin-authenticated) #authPanel.auth-grid::before{
   content:"";
   position:absolute;
-  left:-9vw;
-  bottom:-28vh;
-  width:58vw;
-  height:58vw;
+  left:-12vw;
+  bottom:-38vh;
+  width:62vw;
+  height:62vw;
   border-radius:50%;
-  border:1px solid rgba(212,170,92,.08);
-  box-shadow:0 0 0 70px rgba(212,170,92,.018),0 0 0 150px rgba(124,58,237,.012);
+  border:1px solid rgba(212,170,92,.07);
+  box-shadow:0 0 0 80px rgba(212,170,92,.015),0 0 0 170px rgba(124,58,237,.01);
   pointer-events:none;
 }
 
@@ -54,7 +44,7 @@ body:not(.admin-authenticated) .admin-intro{
   position:relative;
   z-index:1;
   width:100%;
-  max-width:900px;
+  max-width:720px;
   padding:0;
   align-self:center;
 }
@@ -62,177 +52,192 @@ body:not(.admin-authenticated) .admin-intro{
 body:not(.admin-authenticated) .admin-intro::before{
   content:"";
   display:block;
-  width:clamp(92px,8vw,132px);
+  width:clamp(76px,6vw,104px);
   aspect-ratio:1;
-  margin:0 0 30px;
+  margin:0 0 24px;
   background:url('./img/fergorverse-logo.webp') center/contain no-repeat;
-  filter:drop-shadow(0 18px 34px rgba(0,0,0,.45));
+  filter:drop-shadow(0 16px 34px rgba(0,0,0,.46));
 }
 
 body:not(.admin-authenticated) .admin-intro .kicker{
   display:inline-flex;
   align-items:center;
   gap:10px;
-  margin-bottom:18px;
+  margin-bottom:14px;
   color:#e5bd69;
-  font-size:11px;
+  font-size:10px;
   font-weight:900;
-  letter-spacing:2.4px;
+  letter-spacing:2.2px;
 }
 
 body:not(.admin-authenticated) .admin-intro h1{
-  max-width:900px;
-  margin:0 0 24px;
+  max-width:690px;
+  margin:0 0 20px;
   color:#f8f8fb;
-  font-family:Georgia,'Times New Roman',serif;
-  font-size:clamp(54px,6vw,96px);
-  line-height:.92;
-  letter-spacing:-2.6px;
-}
-
-body:not(.admin-authenticated) .admin-intro h1 i{
-  color:#e3ba68;
-  font-weight:400;
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  font-size:clamp(46px,4.65vw,76px);
+  font-weight:850;
+  line-height:1.02;
+  letter-spacing:-2.2px;
 }
 
 body:not(.admin-authenticated) .admin-intro p{
-  max-width:690px;
+  max-width:610px;
   margin:0;
   color:#aeb8c9;
-  font-size:clamp(14px,1.15vw,18px);
-  line-height:1.7;
+  font-size:clamp(13px,1vw,16px);
+  line-height:1.65;
 }
 
 body:not(.admin-authenticated) .auth-card{
   position:relative;
   z-index:2;
-  width:min(100%,500px);
+  width:min(100%,520px);
+  max-height:calc(100vh - 64px);
   justify-self:end;
-  padding:28px;
-  border:1px solid rgba(148,163,184,.16);
-  border-radius:24px;
-  background:linear-gradient(180deg,rgba(15,24,39,.96),rgba(8,14,25,.98));
-  box-shadow:0 34px 90px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.035);
+  padding:24px 26px;
+  box-sizing:border-box;
+  border:1px solid rgba(212,170,92,.17);
+  border-radius:22px;
+  background:linear-gradient(180deg,rgba(15,20,32,.97),rgba(8,13,23,.985));
+  box-shadow:0 30px 80px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.03);
   backdrop-filter:blur(18px);
 }
 
 body:not(.admin-authenticated) .auth-card::before{
-  content:"ACESSO ADMINISTRATIVO";
+  content:"";
   display:block;
-  margin-bottom:18px;
-  color:#e2b85f;
-  font-size:10px;
+  width:86px;
+  height:86px;
+  margin:0 auto 10px;
+  background:url('./img/fergorverse-logo.webp') center/contain no-repeat;
+  filter:drop-shadow(0 10px 24px rgba(0,0,0,.4));
+}
+
+body:not(.admin-authenticated) .auth-card::after{
+  content:"COSPLAY  CHESS\A ACESSO ADMINISTRATIVO";
+  white-space:pre;
+  display:block;
+  margin:0 0 18px;
+  text-align:center;
+  color:#f4efe8;
+  font-size:18px;
   font-weight:900;
-  letter-spacing:1.8px;
+  letter-spacing:2px;
+  line-height:1.55;
 }
 
 body:not(.admin-authenticated) .auth-tabs{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:6px;
-  margin:0 0 24px;
+  margin:0 0 18px;
   padding:5px;
-  border:1px solid rgba(148,163,184,.12);
-  border-radius:14px;
-  background:#07111f;
+  border:1px solid rgba(148,163,184,.10);
+  border-radius:13px;
+  background:#07101c;
 }
 
 body:not(.admin-authenticated) .auth-tabs button{
-  min-height:44px;
+  min-height:42px;
   border:0;
-  border-radius:10px;
+  border-radius:9px;
   background:transparent;
-  color:#7f8ca0;
+  color:#8995a7;
   font-weight:800;
   cursor:pointer;
 }
 
 body:not(.admin-authenticated) .auth-tabs button.active{
-  color:#15100a;
-  background:linear-gradient(135deg,#c9953f,#f0c568);
-  box-shadow:0 8px 22px rgba(218,169,79,.18);
+  color:#17100a;
+  background:linear-gradient(135deg,#c9953f,#efc266);
+  box-shadow:0 8px 22px rgba(218,169,79,.17);
 }
 
 body:not(.admin-authenticated) .auth-card .stack{
   display:grid;
-  gap:16px;
+  gap:13px;
   padding:0;
 }
 
 body:not(.admin-authenticated) .auth-card label{
   display:grid;
-  gap:8px;
+  gap:7px;
   color:#aab6c8;
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:.55px;
+  font-size:9px;
+  font-weight:850;
+  letter-spacing:.6px;
 }
 
 body:not(.admin-authenticated) .auth-card input{
   width:100%;
-  min-height:52px;
+  min-height:48px;
   box-sizing:border-box;
-  padding:0 15px;
-  border:1px solid rgba(148,163,184,.18);
-  border-radius:12px;
+  padding:0 14px;
+  border:1px solid rgba(148,163,184,.16);
+  border-radius:11px;
   outline:none;
-  background:#06101d;
+  background:#06101c;
   color:#f7f9fc;
-  font-size:14px;
+  font-size:13px;
   transition:.18s ease;
 }
 
 body:not(.admin-authenticated) .auth-card input:focus{
   border-color:rgba(226,184,95,.58);
-  box-shadow:0 0 0 3px rgba(226,184,95,.08);
+  box-shadow:0 0 0 3px rgba(226,184,95,.07);
 }
 
 body:not(.admin-authenticated) .password-field{position:relative;display:block}
-body:not(.admin-authenticated) .password-field input{padding-right:54px}
+body:not(.admin-authenticated) .password-field input{padding-right:52px}
 body:not(.admin-authenticated) .password-toggle{
   position:absolute;
-  top:50%;right:9px;
+  top:50%;right:8px;
   transform:translateY(-50%);
-  width:38px;height:38px;
+  width:36px;height:36px;
   display:grid;place-items:center;
-  border:0;border-radius:10px;
-  background:rgba(255,255,255,.035);
+  border:0;border-radius:9px;
+  background:rgba(255,255,255,.025);
   color:#e7c36e;
   cursor:pointer;
-  font-size:19px;
+  font-size:18px;
 }
 
 body:not(.admin-authenticated) .auth-card .v5-btn{
-  min-height:50px;
+  min-height:47px;
   justify-content:center;
-  border-radius:12px;
+  border-radius:11px;
 }
 
 body:not(.admin-authenticated) #authStatus{
-  min-height:20px;
-  margin:14px 0 0;
-  font-size:11px;
+  min-height:18px;
+  margin:10px 0 0;
+  font-size:10px;
 }
 
-@media(max-width:980px){
+@media(max-width:1050px){
+  body:not(.admin-authenticated){overflow:auto}
   body:not(.admin-authenticated) #authPanel.auth-grid{
+    height:auto;
+    min-height:100vh;
     grid-template-columns:1fr;
-    gap:34px;
+    gap:28px;
     align-content:center;
-    padding:116px 28px 46px;
+    padding:38px 28px;
   }
-  body:not(.admin-authenticated) .admin-intro{max-width:760px;text-align:left}
-  body:not(.admin-authenticated) .admin-intro h1{font-size:clamp(48px,10vw,76px)}
-  body:not(.admin-authenticated) .admin-intro::before{width:88px;margin-bottom:20px}
-  body:not(.admin-authenticated) .auth-card{justify-self:stretch;width:100%;max-width:640px}
+  body:not(.admin-authenticated) .admin-intro{max-width:680px;text-align:left}
+  body:not(.admin-authenticated) .admin-intro h1{font-size:clamp(44px,8vw,64px)}
+  body:not(.admin-authenticated) .admin-intro::before{width:78px;margin-bottom:18px}
+  body:not(.admin-authenticated) .auth-card{justify-self:start;width:100%;max-width:580px;max-height:none}
 }
 
 @media(max-width:620px){
-  body:not(.admin-authenticated) .v5-topbar{min-height:70px;padding:0 16px}
-  body:not(.admin-authenticated) #authPanel.auth-grid{padding:94px 16px 28px;gap:24px}
-  body:not(.admin-authenticated) .admin-intro h1{font-size:44px;letter-spacing:-1.4px}
+  body:not(.admin-authenticated) #authPanel.auth-grid{padding:26px 16px;gap:22px}
+  body:not(.admin-authenticated) .admin-intro h1{font-size:40px;letter-spacing:-1.3px}
   body:not(.admin-authenticated) .admin-intro p{font-size:13px;line-height:1.55}
-  body:not(.admin-authenticated) .admin-intro::before{width:72px;margin-bottom:16px}
-  body:not(.admin-authenticated) .auth-card{padding:20px;border-radius:18px}
+  body:not(.admin-authenticated) .admin-intro::before{width:66px;margin-bottom:14px}
+  body:not(.admin-authenticated) .auth-card{padding:18px;border-radius:18px}
+  body:not(.admin-authenticated) .auth-card::before{width:70px;height:70px}
+  body:not(.admin-authenticated) .auth-card::after{font-size:15px;margin-bottom:14px}
   body:not(.admin-authenticated) .auth-tabs button{min-height:40px;font-size:10px}
 }
