@@ -28,6 +28,15 @@
     document.body.appendChild(s);
   };
 
+  const loadGalleryLive=()=>{
+    if(document.querySelector('script[data-gd-gallery-live]'))return;
+    const s=document.createElement('script');
+    s.src='./admin-gallery-drive-live-sync.js?v=20260822-live1';
+    s.async=false;
+    s.dataset.gdGalleryLive='1';
+    document.body.appendChild(s);
+  };
+
   window.MutationObserver = SafeMutationObserver;
   const script = document.createElement('script');
   script.src = './admin-google-drive.js?v=20260822-gd4-safe';
@@ -35,11 +44,13 @@
   script.onload = () => {
     window.MutationObserver = RealMutationObserver;
     loadScreen();
+    loadGalleryLive();
     window.dispatchEvent(new CustomEvent('cosplay:google-drive-ready'));
   };
   script.onerror = () => {
     window.MutationObserver = RealMutationObserver;
     loadScreen();
+    loadGalleryLive();
     console.error('Falha ao carregar integração segura do Google Drive.');
   };
   document.body.appendChild(script);
