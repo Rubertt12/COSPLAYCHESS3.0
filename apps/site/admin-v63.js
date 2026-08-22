@@ -1,5 +1,7 @@
 (()=>{
   const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+  if(!document.querySelector('link[data-sidebar-menu-fix]')){const l=document.createElement('link');l.rel='stylesheet';l.href='./admin-sidebar-menu-fix.css?v=20260822';l.dataset.sidebarMenuFix='1';document.head.appendChild(l);}
+  function moveMenuIntoSidebar(){const sidebar=$('.v6-sidebar'),brand=$('.v6-brand'),menu=$('#v6Menu');if(!sidebar||!brand||!menu||menu.closest('.v6-sidebar-top'))return;const top=document.createElement('div');top.className='v6-sidebar-top';sidebar.insertBefore(top,sidebar.firstChild);top.appendChild(brand);top.appendChild(menu);menu.title='Abrir ou recolher menu';menu.setAttribute('aria-label','Abrir ou recolher menu');}
   let layoutMode=localStorage.getItem('cosplayAdminRegistrationsLayout')||'auto';
   const toast=(title,text='')=>{let root=$('.a63-toast-stack');if(!root){root=document.createElement('div');root.className='a63-toast-stack';document.body.appendChild(root);}const el=document.createElement('div');el.className='a63-toast';el.innerHTML=`<b>${title}</b><span>${text}</span>`;root.appendChild(el);setTimeout(()=>el.remove(),3200)};
   function regs(){try{return Array.isArray(registrations)?registrations:[]}catch{return[]}}
@@ -16,7 +18,7 @@
   function improveCmsLinks(){const map={pages:'landing',blog:'blog',banners:'banners',testimonials:'testimonials',faq:'faq',settings:'settings',social:'social'};Object.entries(map).forEach(([view,target])=>{$$('.v6-nav a').forEach(a=>{if(a.getAttribute('href')==='#'+view)a.href=`./cms.html?section=${target}`;});});}
   function modalUX(){const modal=$('#eventModal');if(!modal||modal.dataset.a63)return;modal.dataset.a63='1';modal.addEventListener('click',e=>{if(e.target===modal)modal.hidden=true;});}
   function wireShortcuts(){document.addEventListener('keydown',e=>{if(e.key==='/'&&!/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName)){e.preventDefault();const active=document.body.dataset.adminView;if(active==='registrations')$('#registrations .a63-search')?.focus();else if(active==='events')$('#events .a63-search')?.focus();else $('#v6Search')?.focus();}});}
-  function refresh(){enhanceNotificationButton();enhanceRegistrations();enhanceEvents();improveCmsLinks();modalUX();renderAlerts();}
+  function refresh(){moveMenuIntoSidebar();enhanceNotificationButton();enhanceRegistrations();enhanceEvents();improveCmsLinks();modalUX();renderAlerts();}
   const ro=$('#registrationsList'),eo=$('#adminEvents');if(ro)new MutationObserver(()=>requestAnimationFrame(enhanceRegistrations)).observe(ro,{childList:true});if(eo)new MutationObserver(()=>requestAnimationFrame(enhanceEvents)).observe(eo,{childList:true});
-  wireShortcuts();setTimeout(refresh,450);setTimeout(refresh,1200);
+  wireShortcuts();moveMenuIntoSidebar();setTimeout(refresh,120);setTimeout(refresh,450);setTimeout(refresh,1200);
 })();
