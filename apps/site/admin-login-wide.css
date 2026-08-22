@@ -1,6 +1,13 @@
 /* Admin Login Wide — balanced full-screen authentication layout */
+html,
+body:not(.admin-authenticated){
+  width:100%;
+  max-width:none!important;
+  min-width:0!important;
+}
 body:not(.admin-authenticated){
   min-height:100vh;
+  margin:0!important;
   overflow:hidden;
   background:
     radial-gradient(circle at 12% 22%,rgba(124,58,237,.13),transparent 32%),
@@ -13,17 +20,20 @@ body:not(.admin-authenticated) .v5-topbar{display:none!important}
 
 body:not(.admin-authenticated) #authPanel.auth-grid{
   position:relative;
-  width:100%;
+  left:0!important;
+  right:0!important;
+  width:100vw!important;
+  max-width:none!important;
   height:100vh;
   min-height:100vh;
-  margin:0;
+  margin:0!important;
   padding:clamp(28px,4vh,52px) clamp(42px,5vw,92px);
   box-sizing:border-box;
   display:grid!important;
-  grid-template-columns:minmax(0,.92fr) minmax(420px,.72fr);
-  gap:clamp(48px,6vw,110px);
+  grid-template-columns:minmax(0,1fr) minmax(420px,520px);
+  gap:clamp(60px,7vw,140px);
   align-items:center;
-  justify-content:center;
+  justify-content:stretch;
   overflow:hidden;
 }
 
@@ -44,9 +54,10 @@ body:not(.admin-authenticated) .admin-intro{
   position:relative;
   z-index:1;
   width:100%;
-  max-width:720px;
+  max-width:760px;
   padding:0;
   align-self:center;
+  justify-self:start;
 }
 
 body:not(.admin-authenticated) .admin-intro::before{
@@ -92,7 +103,8 @@ body:not(.admin-authenticated) .admin-intro p{
 body:not(.admin-authenticated) .auth-card{
   position:relative;
   z-index:2;
-  width:min(100%,520px);
+  width:100%;
+  max-width:520px!important;
   max-height:calc(100vh - 64px);
   justify-self:end;
   padding:24px 26px;
@@ -218,6 +230,7 @@ body:not(.admin-authenticated) #authStatus{
 @media(max-width:1050px){
   body:not(.admin-authenticated){overflow:auto}
   body:not(.admin-authenticated) #authPanel.auth-grid{
+    width:100%!important;
     height:auto;
     min-height:100vh;
     grid-template-columns:1fr;
@@ -228,7 +241,7 @@ body:not(.admin-authenticated) #authStatus{
   body:not(.admin-authenticated) .admin-intro{max-width:680px;text-align:left}
   body:not(.admin-authenticated) .admin-intro h1{font-size:clamp(44px,8vw,64px)}
   body:not(.admin-authenticated) .admin-intro::before{width:78px;margin-bottom:18px}
-  body:not(.admin-authenticated) .auth-card{justify-self:start;width:100%;max-width:580px;max-height:none}
+  body:not(.admin-authenticated) .auth-card{justify-self:start;width:100%;max-width:580px!important;max-height:none}
 }
 
 @media(max-width:620px){
