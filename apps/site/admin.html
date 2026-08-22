@@ -8,6 +8,7 @@
   <title>CosplayChess — Central de Comando</title>
   <link rel="icon" href="./img/favicon-Photoroom.png">
   <link rel="stylesheet" href="./admin-v5.css?v=20260821-v5">
+  <link rel="stylesheet" href="./admin-v5.1.css?v=20260821-v51">
 </head>
 <body class="admin-v5">
   <header class="v5-topbar">
@@ -77,7 +78,7 @@
 
       <section id="registrations" class="v5-section"><div class="v5-section-head"><div><span class="kicker">ELENCO</span><h2>Inscrições</h2><p>Revise participantes e prepare o elenco do aplicativo.</p></div><div class="panel-actions"><select id="registrationEventFilter"><option value="">Todos os eventos</option></select><button id="exportRosterBtn" class="v5-btn gold">Exportar para o app</button></div></div><div class="status-legend"><span><i class="dot confirmed"></i>Confirmado</span><span><i class="dot waitlist"></i>Em análise</span><span><i class="dot cancelled"></i>Cancelado</span></div><div id="registrationsList" class="registration-list"></div></section>
 
-      <footer class="admin-footer"><span>CosplayChess CMS v4.0</span><span>© 2026 CosplayChess. Todos os direitos reservados.</span></footer>
+      <footer class="admin-footer"><span>CosplayChess CMS v4.1</span><span>© 2026 CosplayChess. Todos os direitos reservados.</span></footer>
     </div>
   </main>
 
@@ -90,6 +91,7 @@
   <script src="./admin-result-sync-export.js"></script>
   <script src="./admin-emergency-reset.js"></script>
   <script src="./admin-gallery.js"></script>
+  <script src="./admin-v5.1.js?v=20260821-v51"></script>
   <script>
     document.querySelectorAll('.password-toggle').forEach(button=>button.addEventListener('click',()=>{const input=button.parentElement.querySelector('input');input.type=input.type==='password'?'text':'password';}));
     document.querySelectorAll('.v5-nav a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('.v5-nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active');}));
