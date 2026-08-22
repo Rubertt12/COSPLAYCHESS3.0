@@ -31,7 +31,7 @@ window.COSPLAYCHESS_CONFIG = {
   if (document.querySelector('link[data-site-wide]')) return;
   const link = document.createElement('link');
   link.rel = 'stylesheet';
-  link.href = './site-wide.css';
+  link.href = './site-wide.css?v=20260822-mobile1';
   link.dataset.siteWide = 'true';
   document.head.appendChild(link);
 })();
