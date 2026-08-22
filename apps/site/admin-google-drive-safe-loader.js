@@ -6,33 +6,37 @@
   if (!RealMutationObserver) return;
 
   class SafeMutationObserver {
-    constructor(callback){
-      this._real = new RealMutationObserver(callback);
-    }
+    constructor(callback){ this._real = new RealMutationObserver(callback); }
     observe(target, options){
       const isDangerousGlobalWatch = target === document.body && options?.childList && options?.subtree;
-      if (isDangerousGlobalWatch) {
-        // O script antigo observava o body inteiro e re-renderizava em resposta
-        // às próprias alterações, causando loop infinito. Ignoramos só esse caso.
-        return;
-      }
+      if (isDangerousGlobalWatch) return;
       return this._real.observe(target, options);
     }
     disconnect(){ return this._real.disconnect(); }
     takeRecords(){ return this._real.takeRecords(); }
   }
 
-  window.MutationObserver = SafeMutationObserver;
+  const loadScreen=()=>{
+    if(document.querySelector('script[data-gd-screen]'))return;
+    const s=document.createElement('script');
+    s.src='./admin-google-drive-screen.js?v=20260822-gd-screen1';
+    s.async=false;
+    s.dataset.gdScreen='1';
+    document.body.appendChild(s);
+  };
 
+  window.MutationObserver = SafeMutationObserver;
   const script = document.createElement('script');
-  script.src = './admin-google-drive.js?v=20260822-gd3-safe';
+  script.src = './admin-google-drive.js?v=20260822-gd4-safe';
   script.async = false;
   script.onload = () => {
     window.MutationObserver = RealMutationObserver;
+    loadScreen();
     window.dispatchEvent(new CustomEvent('cosplay:google-drive-ready'));
   };
   script.onerror = () => {
     window.MutationObserver = RealMutationObserver;
+    loadScreen();
     console.error('Falha ao carregar integração segura do Google Drive.');
   };
   document.body.appendChild(script);
