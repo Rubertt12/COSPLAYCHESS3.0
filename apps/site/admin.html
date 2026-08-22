@@ -9,6 +9,7 @@
   <link rel="icon" href="./img/favicon-Photoroom.png">
   <link rel="stylesheet" href="./admin-v5.css?v=20260821-stable">
   <link rel="stylesheet" href="./admin-v6.css?v=20260821-v6">
+  <link rel="stylesheet" href="./admin-v6-views.css?v=20260821-v61">
 </head>
 <body class="admin-v5 admin-v6">
   <header class="v5-topbar">
@@ -30,7 +31,7 @@
 
   <main id="dashboardPanel" class="v6-shell" hidden>
     <aside class="v6-sidebar">
-      <a class="v6-brand" href="#overview"><img src="./img/fergorverse-logo.webp" alt=""><div><strong>COSPLAY<br>CHESS</strong><span>PAINEL ADMINISTRATIVO</span></div><em class="v6-version">v6.0</em></a>
+      <a class="v6-brand" href="#overview"><img src="./img/fergorverse-logo.webp" alt=""><div><strong>COSPLAY<br>CHESS</strong><span>PAINEL ADMINISTRATIVO</span></div><em class="v6-version">v6.1</em></a>
       <nav class="v6-nav">
         <a class="active" href="#overview"><i>⌂</i><span>Dashboard</span></a>
         <div class="v6-nav-title">GERENCIAR CONTEÚDO</div>
@@ -81,13 +82,12 @@
           <article class="v6-card"><div class="v6-card-head"><h2>Inscrições dos Últimos 7 Dias</h2><button type="button">Ver relatório</button></div><div class="v6-chart-body"><div class="v6-spark"><svg id="v6SparkSvg" preserveAspectRatio="none"></svg></div></div></article>
           <article class="v6-card"><div class="v6-card-head"><h2>Status do Sistema</h2></div><div class="v6-system-list"><div class="v6-system-row"><span>◎ Banco de dados</span><b>Online</b></div><div class="v6-system-row"><span>▧ Armazenamento</span><b class="info">Supabase</b></div><div class="v6-system-row"><span>♢ Autenticação</span><b>Ativa</b></div><div class="v6-system-row"><span>◷ Última sincronização</span><b class="info">Agora</b></div></div></article>
         </div>
+        <footer class="admin-footer"><span>Cosplay Chess © 2026 — Todos os direitos reservados.</span><span>Desenvolvido para o CosplayChess 💜</span></footer>
       </section>
 
       <section id="events" class="v6-management"><div class="v6-management-head"><div><h2>Eventos</h2><p>Gerencie publicação, inscrições, capas e fotos dos eventos.</p></div><button id="newEventBtn" class="v5-btn gold" type="button">+ Criar evento</button></div><div id="adminEvents" class="admin-events"></div></section>
 
       <section id="registrations" class="v6-management"><div class="v6-management-head"><div><h2>Inscrições</h2><p>Revise participantes, status e prepare o elenco do aplicativo.</p></div><div class="panel-actions"><select id="registrationEventFilter"><option value="">Todos os eventos</option></select><button id="exportRosterBtn" class="v5-btn gold">Exportar para o app</button></div></div><div class="status-legend"><span><i class="dot confirmed"></i>Confirmado</span><span><i class="dot waitlist"></i>Em análise</span><span><i class="dot cancelled"></i>Cancelado</span></div><div id="registrationsList" class="registration-list"></div></section>
-
-      <footer class="admin-footer"><span>Cosplay Chess © 2026 — Todos os direitos reservados.</span><span>Desenvolvido para o CosplayChess 💜</span></footer>
     </section>
   </main>
 
@@ -99,7 +99,7 @@
   <script src="./admin-result-sync-export.js"></script>
   <script src="./admin-emergency-reset.js"></script>
   <script src="./admin-gallery.js"></script>
-  <script src="./admin-v6.js?v=20260821-v6"></script>
+  <script src="./admin-v6.js?v=20260821-v61"></script>
   <script>document.querySelectorAll('.password-toggle').forEach(button=>button.addEventListener('click',()=>{const input=button.parentElement.querySelector('input');input.type=input.type==='password'?'text':'password';}));</script>
 </body>
 </html>
