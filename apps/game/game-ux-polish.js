@@ -431,11 +431,11 @@
     }
 
     if (/\/jogo(?:\/|$)/i.test(location.pathname)) {
-      location.href = '../index.html';
+      location.href = '../admin.html';
       return;
     }
     if (history.length > 1) history.back();
-    else location.href = '../index.html';
+    else location.href = '../admin.html';
   }
 
   function installExitButtons() {

@@ -1613,6 +1613,34 @@ function closeStartMenuSettings() {
     document.getElementById('start-menu-settings-content').classList.add('menu-panel-hidden');
 }
 
+async function exitCosplayChess() {
+    let matchInProgress = false;
+    try { matchInProgress = typeof isLive !== 'undefined' && !!isLive; } catch (_) {}
+    const question = matchInProgress
+        ? 'Há uma partida em andamento. Deseja sair do Cosplay Chess mesmo assim?'
+        : 'Deseja sair do Cosplay Chess?';
+    if (!window.confirm(question)) return;
+
+    try {
+        if (window.electronAPI?.quitApp) {
+            await window.electronAPI.quitApp();
+            return;
+        }
+    } catch (_) {}
+
+    if (location.protocol === 'file:') {
+        window.close();
+        return;
+    }
+
+    if (/\/jogo(?:\/|$)/i.test(location.pathname)) {
+        location.href = '../admin.html';
+        return;
+    }
+    if (history.length > 1) history.back();
+    else location.href = '../admin.html';
+}
+
 function startBattle() {
     playUISound('click');
     if (!store.g.theme) store.g.theme = 'default';

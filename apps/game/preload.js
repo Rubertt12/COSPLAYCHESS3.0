@@ -22,6 +22,7 @@ const musicAPI = {
 contextBridge.exposeInMainWorld('electronAPI', {
   setFullscreen: (value) => ipcRenderer.invoke('set-fullscreen', value),
   isFullscreen: () => ipcRenderer.invoke('is-fullscreen'),
+  quitApp: () => ipcRenderer.invoke('app:quit'),
   updates: updaterAPI,
   music: musicAPI
 });

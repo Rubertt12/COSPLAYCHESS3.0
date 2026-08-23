@@ -195,6 +195,12 @@ function injectBranding() {
       font-size: 17px !important;
     }
 
+    #start-menu #main-start-options .btn.game-exit-btn {
+      min-height: 48px !important;
+      padding: 12px 16px !important;
+      font-size: 12px !important;
+    }
+
     @media (max-width: 1100px), (max-height: 760px) {
       #start-menu .start-content {
         width: min(1080px, 96vw) !important;
@@ -475,6 +481,11 @@ ipcMain.handle('set-fullscreen', (event, value) => {
 ipcMain.handle('is-fullscreen', (event) => {
   const win = BrowserWindow.fromWebContents(event.sender);
   return win ? win.isFullScreen() : false;
+});
+
+ipcMain.handle('app:quit', () => {
+  setImmediate(() => app.quit());
+  return true;
 });
 
 ipcMain.handle('updates:get-state', () => getPublicUpdateState());

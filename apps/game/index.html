@@ -41,6 +41,12 @@
                         onclick="openStartMenuSettings()" 
                         onmouseenter="playUISound('hover')"
                         style="width:100%; padding: 22px; font-size: 16px;">CONFIGURAÇÕES</button>
+                <button id="game-exit-btn-start" class="btn game-exit-btn"
+                        onclick="exitCosplayChess()"
+                        onmouseenter="playUISound('hover')"
+                        style="width:100%; margin-top:12px; padding:14px; font-size:12px; background:#241118; color:#ff9db7; border:1px solid #5b2737;">
+                        ⏻ SAIR DO JOGO
+                </button>
             </div>
 
             <!-- Conteúdo das configurações, inicialmente oculto -->
@@ -187,6 +193,7 @@
         <button class="btn" onclick="undoMove()" style="background:#2a2a35; color:#fff; margin-bottom: 8px;">⟲ DESFAZER JOGADA</button>
         <button class="btn" onclick="clearBoardPieces()" style="background:#222; color:#fff; margin-bottom: 8px;">🧹 LIMPAR TABULEIRO</button>
         <button class="btn" onclick="resetGame()" style="background:var(--danger); color:#fff;">⚠️ RESET TOTAL</button>
+        <button id="game-exit-btn-system" class="btn game-exit-btn" onclick="exitCosplayChess()" style="margin-top:8px; background:#241118; color:#ff9db7; border:1px solid #5b2737;">⏻ SAIR DO JOGO</button>
     </div>
 
     <div style="padding: 15px; background: #000; border-top: 1px solid #222;">
