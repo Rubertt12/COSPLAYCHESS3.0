@@ -108,6 +108,7 @@
   async function loadVacancies(){
     const dbClient=client();if(!dbClient)return;
     try{
+      const{data:{session}}=await dbClient.auth.getSession();if(!session)return;
       const rows=[];const batch=1000;
       for(let from=0;;from+=batch){const{data,error}=await dbClient.from('cosplay_registrations').select('event_id,status').neq('status','cancelled').range(from,from+batch-1);if(error)throw error;rows.push(...(data||[]));if(!data||data.length<batch)break;}
       activeRegistrations=new Map();rows.forEach(r=>activeRegistrations.set(r.event_id,(activeRegistrations.get(r.event_id)||0)+1));applyVacancies();
