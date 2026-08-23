@@ -209,20 +209,77 @@
       @keyframes duelSlash{0%,35%{opacity:0;transform:rotate(42deg) scaleY(0)}55%{opacity:1;transform:rotate(42deg) scaleY(1.2)}100%{opacity:0;transform:rotate(42deg) scaleY(.3) translateY(-80px)}}
       @keyframes duelSpark{0%,46%{opacity:0}53%{opacity:1}100%{opacity:0;transform:rotate(var(--angle)) translateY(-180px) scaleY(.3)}}
 
+      #arena.duel-cinematic .arena-content.duel-v2{transform-origin:center;will-change:transform,filter}
+      #arena.duel-cinematic .duel-impact-layer.active{opacity:1;animation:none}
+      #arena .duel-impact-flash{position:absolute;inset:0;opacity:0;background:radial-gradient(circle at center,rgba(255,251,229,.82),rgba(255,186,55,.28) 22%,transparent 58%)}
+      #arena .duel-speed-lines{position:absolute;left:8%;right:8%;top:22%;height:46%;opacity:0;filter:blur(.2px);background:repeating-linear-gradient(0deg,transparent 0 17px,rgba(255,235,189,.78) 18px,transparent 20px);mask-image:linear-gradient(90deg,transparent,black 20%,black 80%,transparent)}
+      #arena.duel-left-wins .duel-speed-lines{transform:skewX(-18deg) translateX(-34%)}
+      #arena.duel-right-wins .duel-speed-lines{transform:skewX(18deg) translateX(34%)}
+      #arena.duel-cinematic .duel-impact-layer.active .duel-speed-lines{animation:duelCinematicTrail .58s cubic-bezier(.1,.8,.2,1) .31s both}
+      #arena.duel-cinematic .duel-impact-layer.active .duel-impact-flash{animation:duelCinematicFlash 1.32s ease-out both}
+      #arena.duel-cinematic .duel-impact-layer.active .duel-impact-ring{animation:duelCinematicRing .72s cubic-bezier(.1,.76,.18,1) .48s both}
+      #arena.duel-cinematic .duel-impact-layer.active .duel-impact-slash{animation:duelCinematicSlash .62s cubic-bezier(.12,.85,.18,1) .42s both}
+      #arena.duel-left-wins{--duel-slash-angle:55deg}
+      #arena.duel-right-wins{--duel-slash-angle:-55deg}
+      #arena .duel-impact-slash{transform:rotate(var(--duel-slash-angle,48deg)) scaleY(0)}
+      #arena.duel-cinematic .duel-impact-layer.active .duel-spark{animation:duelCinematicSpark .7s ease-out calc(.48s + var(--delay,0s)) both}
+      #arena .duel-result-banner{position:absolute;left:50%;top:50%;width:min(390px,75%);transform:translate(-50%,-35%) scale(.82);padding:15px 20px;border-radius:14px;text-align:center;background:linear-gradient(135deg,rgba(8,8,12,.96),rgba(27,20,19,.94));border:1px solid rgba(255,214,132,.48);box-shadow:0 20px 65px rgba(0,0,0,.74),0 0 34px rgba(255,181,56,.17);opacity:0}
+      #arena .duel-result-banner small{display:block;color:#e6b95e;font-size:9px;font-weight:1000;letter-spacing:3px}
+      #arena .duel-result-banner strong{display:block;margin-top:5px;color:#fff7e4;font-family:Georgia,serif;font-size:clamp(21px,3.2vw,34px);line-height:1.08;text-shadow:0 4px 18px rgba(0,0,0,.7)}
+      #arena .duel-result-banner span{display:block;margin-top:6px;color:#9d939d;font-size:8px;font-weight:900;letter-spacing:1px}
+      #arena.duel-cinematic .duel-impact-layer.active .duel-result-banner{animation:duelResultReveal .48s cubic-bezier(.16,.82,.18,1) .88s both}
+      #arena.duel-left-wins .duel-result-banner{border-color:rgba(190,235,255,.64);box-shadow:0 20px 65px rgba(0,0,0,.74),0 0 38px rgba(135,216,255,.2)}
+      #arena.duel-right-wins .duel-result-banner{border-color:rgba(255,100,129,.62);box-shadow:0 20px 65px rgba(0,0,0,.74),0 0 38px rgba(255,61,98,.2)}
+      #arena.duel-charging .fighter:not(.duel-winner){opacity:.58;filter:saturate(.55) brightness(.72);transition:opacity .24s ease,filter .24s ease}
+      #arena.duel-charging .fighter.duel-winner{overflow:visible;filter:brightness(1.08);box-shadow:0 0 0 1px rgba(255,226,165,.32),0 18px 60px rgba(0,0,0,.55),0 0 44px rgba(255,187,65,.15)}
+      #arena.duel-charging .fighter.duel-winner .duel-energy i{animation:duelChargeBar .34s ease-out both}
+      #arena .fighter.duel-attack-left{z-index:8;animation:duelCinematicCardLeft 1.34s cubic-bezier(.16,.8,.2,1) both}
+      #arena .fighter.duel-attack-right{z-index:8;animation:duelCinematicCardRight 1.34s cubic-bezier(.16,.8,.2,1) both}
+      #arena .fighter.duel-attack-left .arena-box{animation:duelPortraitStrikeLeft 1.34s cubic-bezier(.16,.8,.2,1) both}
+      #arena .fighter.duel-attack-right .arena-box{animation:duelPortraitStrikeRight 1.34s cubic-bezier(.16,.8,.2,1) both}
+      #arena .fighter.duel-hit-left{animation:duelCinematicHitLeft 1.34s ease-out both}
+      #arena .fighter.duel-hit-right{animation:duelCinematicHitRight 1.34s ease-out both}
+      #arena.duel-impact-now .arena-content.duel-v2{animation:duelCameraImpact .34s linear both}
+      #arena.duel-impact-now .duel-versus-core{animation:duelVsBurst .38s ease-out both}
+
+      @keyframes duelChargeBar{from{transform:scaleX(.12);filter:brightness(1)}to{transform:scaleX(1);filter:brightness(2.2)}}
+      @keyframes duelCinematicCardLeft{0%,16%{transform:none}28%{transform:translateX(-10px) scale(.995)}49%{transform:translateX(26px) scale(1.018)}57%{transform:translateX(34px) scale(1.025)}70%{transform:translateX(17px)}100%{transform:none}}
+      @keyframes duelCinematicCardRight{0%,16%{transform:none}28%{transform:translateX(10px) scale(.995)}49%{transform:translateX(-26px) scale(1.018)}57%{transform:translateX(-34px) scale(1.025)}70%{transform:translateX(-17px)}100%{transform:none}}
+      @keyframes duelPortraitStrikeLeft{0%,18%{transform:none;filter:brightness(1)}30%{transform:translateX(-8px) scale(.98);filter:brightness(1.25)}48%{transform:translateX(56px) scale(1.08);filter:brightness(1.6) contrast(1.08)}58%{transform:translateX(42px) scale(1.055)}100%{transform:none;filter:none}}
+      @keyframes duelPortraitStrikeRight{0%,18%{transform:none;filter:brightness(1)}30%{transform:translateX(8px) scale(.98);filter:brightness(1.25)}48%{transform:translateX(-56px) scale(1.08);filter:brightness(1.6) contrast(1.08)}58%{transform:translateX(-42px) scale(1.055)}100%{transform:none;filter:none}}
+      @keyframes duelCinematicHitLeft{0%,44%{transform:none;filter:none;opacity:.58}49%{transform:translateX(-24px) rotate(-2.5deg);filter:brightness(2.6) saturate(.15);opacity:1}54%{transform:translateX(14px) rotate(1.4deg);filter:brightness(.54) saturate(.5);opacity:.76}60%{transform:translateX(-9px)}66%{transform:translateX(5px);filter:brightness(.7)}82%{transform:none;opacity:.48}100%{transform:none;filter:grayscale(.4) brightness(.65);opacity:.42}}
+      @keyframes duelCinematicHitRight{0%,44%{transform:none;filter:none;opacity:.58}49%{transform:translateX(24px) rotate(2.5deg);filter:brightness(2.6) saturate(.15);opacity:1}54%{transform:translateX(-14px) rotate(-1.4deg);filter:brightness(.54) saturate(.5);opacity:.76}60%{transform:translateX(9px)}66%{transform:translateX(-5px);filter:brightness(.7)}82%{transform:none;opacity:.48}100%{transform:none;filter:grayscale(.4) brightness(.65);opacity:.42}}
+      @keyframes duelCinematicTrail{0%{opacity:0}28%{opacity:.95}100%{opacity:0;transform:skewX(0) translateX(0) scaleX(1.5)}}
+      @keyframes duelCinematicFlash{0%,39%{opacity:0}47%{opacity:.18}49%{opacity:1}52%{opacity:.08}56%{opacity:.7}63%,100%{opacity:0}}
+      @keyframes duelCinematicRing{0%{opacity:0;transform:scale(.12)}18%{opacity:1}100%{opacity:0;transform:scale(4.2)}}
+      @keyframes duelCinematicSlash{0%{opacity:0;transform:rotate(var(--duel-slash-angle,48deg)) scaleY(0)}20%{opacity:1;transform:rotate(var(--duel-slash-angle,48deg)) scaleY(1.35)}100%{opacity:0;transform:rotate(var(--duel-slash-angle,48deg)) scaleY(.25) translateY(-120px)}}
+      @keyframes duelCinematicSpark{0%{opacity:0}12%{opacity:1}100%{opacity:0;transform:rotate(var(--angle)) translateY(-230px) scaleY(.22)}}
+      @keyframes duelCameraImpact{0%,100%{transform:none}18%{transform:translate(-7px,3px) rotate(-.35deg)}35%{transform:translate(6px,-3px) rotate(.25deg)}52%{transform:translate(-4px,-1px)}70%{transform:translate(3px,2px)}}
+      @keyframes duelVsBurst{0%{transform:scale(1);filter:brightness(1)}45%{transform:scale(1.34) rotate(5deg);filter:brightness(3) drop-shadow(0 0 22px #ffc75c)}100%{transform:scale(.92);filter:brightness(.72)}}
+      @keyframes duelResultReveal{from{opacity:0;transform:translate(-50%,-35%) scale(.72);filter:blur(8px)}to{opacity:1;transform:translate(-50%,-50%) scale(1);filter:none}}
+
       @media(max-width:760px){
         #move-name-banner{top:72px}
         #arena .arena-content.duel-v2{padding:16px!important}
         #arena .arena-fighters{grid-template-columns:1fr!important}
         #arena .duel-versus-core{min-height:62px!important}
         #arena .arena-box{min-height:220px!important;aspect-ratio:16/10!important}
-        #arena .fighter.duel-attack-left{animation-name:duelAttackDown}
-        #arena .fighter.duel-attack-right{animation-name:duelAttackUp}
-        #arena .fighter.duel-hit-left,#arena .fighter.duel-hit-right{animation-name:duelHitMobile}
+        #arena .fighter.duel-attack-left{animation-name:duelCinematicCardDown}
+        #arena .fighter.duel-attack-right{animation-name:duelCinematicCardUp}
+        #arena .fighter.duel-attack-left .arena-box{animation-name:duelPortraitStrikeDown}
+        #arena .fighter.duel-attack-right .arena-box{animation-name:duelPortraitStrikeUp}
+        #arena .fighter.duel-hit-left,#arena .fighter.duel-hit-right{animation-name:duelCinematicHitMobile}
+        #arena .duel-result-banner{top:50%;width:min(330px,86%)}
       }
       @keyframes duelAttackDown{0%,25%{transform:translateY(0)}42%{transform:translateY(-10px)}62%{transform:translateY(34px) scale(1.025)}100%{transform:none}}
       @keyframes duelAttackUp{0%,25%{transform:translateY(0)}42%{transform:translateY(10px)}62%{transform:translateY(-34px) scale(1.025)}100%{transform:none}}
       @keyframes duelHitMobile{0%,48%{transform:translateX(0);filter:none}58%{transform:translateX(14px);filter:brightness(2.2) saturate(.2)}69%{transform:translateX(-9px);filter:brightness(.75)}100%{transform:none;filter:none}}
-      @media(prefers-reduced-motion:reduce){#arena .fighter,#arena .duel-impact-layer,#arena .duel-impact-ring,#arena .duel-impact-slash,#arena .duel-spark,#arena .duel-versus-core span,#arena .duel-live-status i,#arena .duel-energy i{animation-duration:.01ms!important;animation-delay:0ms!important;animation-iteration-count:1!important}}
+      @keyframes duelCinematicCardDown{0%,18%{transform:none}30%{transform:translateY(-8px)}50%{transform:translateY(26px) scale(1.018)}100%{transform:none}}
+      @keyframes duelCinematicCardUp{0%,18%{transform:none}30%{transform:translateY(8px)}50%{transform:translateY(-26px) scale(1.018)}100%{transform:none}}
+      @keyframes duelPortraitStrikeDown{0%,18%{transform:none}30%{transform:translateY(-7px) scale(.98)}49%{transform:translateY(38px) scale(1.06)}100%{transform:none}}
+      @keyframes duelPortraitStrikeUp{0%,18%{transform:none}30%{transform:translateY(7px) scale(.98)}49%{transform:translateY(-38px) scale(1.06)}100%{transform:none}}
+      @keyframes duelCinematicHitMobile{0%,44%{transform:none;filter:none;opacity:.58}50%{transform:translateX(17px);filter:brightness(2.5) saturate(.15);opacity:1}57%{transform:translateX(-11px);filter:brightness(.55);opacity:.7}65%{transform:translateX(6px)}100%{transform:none;filter:grayscale(.4) brightness(.65);opacity:.42}}
+      @media(prefers-reduced-motion:reduce){#arena .fighter,#arena .arena-box,#arena .arena-content,#arena .duel-impact-layer,#arena .duel-impact-flash,#arena .duel-speed-lines,#arena .duel-result-banner,#arena .duel-impact-ring,#arena .duel-impact-slash,#arena .duel-spark,#arena .duel-versus-core,#arena .duel-versus-core span,#arena .duel-live-status i,#arena .duel-energy i{animation-duration:.01ms!important;animation-delay:0ms!important;animation-iteration-count:1!important}}
     `;
     document.head.appendChild(style);
   }
@@ -319,6 +376,8 @@
     fighter.classList.remove('duel-side-B', 'duel-side-P');
     fighter.classList.add(`duel-side-${info.side}`);
     fighter.dataset.duelSide = info.side;
+    fighter.dataset.duelCharacter = info.character;
+    fighter.dataset.duelPiece = info.piece;
     image.dataset.sideLabel = `${info.player} · ${info.sideLabel}`;
     image.setAttribute('aria-label', `${info.character}, ${info.piece}, ${info.sideLabel}`);
 
@@ -368,17 +427,20 @@
     layer.className = 'duel-impact-layer';
     layer.setAttribute('aria-hidden', 'true');
     layer.innerHTML = `
+      <i class="duel-impact-flash"></i>
+      <i class="duel-speed-lines"></i>
       <i class="duel-impact-ring"></i>
       <i class="duel-impact-slash"></i>
-      ${[-72, -38, -8, 24, 58, 92, 126, 160].map((angle, index) => `<i class="duel-spark" style="--angle:${angle}deg;--delay:${(index % 3) * .025}s"></i>`).join('')}`;
+      ${[-72, -38, -8, 24, 58, 92, 126, 160].map((angle, index) => `<i class="duel-spark" style="--angle:${angle}deg;--delay:${(index % 3) * .025}s"></i>`).join('')}
+      <div class="duel-result-banner"><small>VITÓRIA</small><strong class="duel-result-name"></strong><span class="duel-result-detail"></span></div>`;
     content.appendChild(layer);
     return layer;
   }
 
   function prepareDuelAnimation(arena, content, fighterA, fighterD) {
-    arena.classList.remove('duel-resolving');
+    arena.classList.remove('duel-resolving', 'duel-cinematic', 'duel-charging', 'duel-striking', 'duel-impact-now', 'duel-left-wins', 'duel-right-wins');
     [fighterA, fighterD].forEach(fighter => {
-      fighter.classList.remove('duel-enter-left', 'duel-enter-right', 'duel-attack-left', 'duel-attack-right', 'duel-hit-left', 'duel-hit-right');
+      fighter.classList.remove('duel-enter-left', 'duel-enter-right', 'duel-attack-left', 'duel-attack-right', 'duel-hit-left', 'duel-hit-right', 'duel-winner', 'duel-loser');
       fighter.querySelectorAll('button').forEach(button => { button.disabled = false; });
     });
     const layer = ensureDuelEffects(content);
@@ -407,19 +469,41 @@
     const leftWon = side === arena.dataset.leftSide;
     const winner = leftWon ? fighterA : fighterD;
     const loser = leftWon ? fighterD : fighterA;
-    arena.classList.add('duel-resolving');
+    const winnerName = winner.dataset.duelCharacter || (leftWon ? 'ATACANTE' : 'DEFENSOR');
+    const winnerDetail = `${winner.dataset.duelPiece || 'PEÇA'} · ${winner.dataset.duelSide === 'B' ? 'BRANCAS' : 'PRETAS'}`;
+    arena.classList.add('duel-resolving', 'duel-cinematic', 'duel-charging', leftWon ? 'duel-left-wins' : 'duel-right-wins');
+    winner.classList.add('duel-winner');
+    loser.classList.add('duel-loser');
     content.querySelectorAll('button').forEach(button => { button.disabled = true; });
     const status = content.querySelector('.duel-live-status span');
-    if (status) status.textContent = leftWon ? 'ATAQUE DECISIVO' : 'CONTRA-ATAQUE DECISIVO';
+    if (status) status.textContent = 'CARREGANDO GOLPE';
 
     winner.classList.add(leftWon ? 'duel-attack-left' : 'duel-attack-right');
     loser.classList.add(leftWon ? 'duel-hit-right' : 'duel-hit-left');
     const layer = ensureDuelEffects(content);
+    const resultName = layer.querySelector('.duel-result-name');
+    const resultDetail = layer.querySelector('.duel-result-detail');
+    if (resultName) resultName.textContent = winnerName;
+    if (resultDetail) resultDetail.textContent = winnerDetail;
     layer.classList.remove('active');
     void layer.offsetWidth;
     layer.classList.add('active');
     try { playUISound('click'); } catch (_) {}
-    const duration = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 80 : 840;
+    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (!reducedMotion) {
+      setTimeout(() => {
+        arena.classList.add('duel-striking');
+        if (status) status.textContent = leftWon ? 'ATAQUE DECISIVO' : 'CONTRA-ATAQUE DECISIVO';
+      }, 300);
+      setTimeout(() => {
+        arena.classList.add('duel-impact-now');
+        try { playUISound('click'); } catch (_) {}
+      }, 620);
+      setTimeout(() => {
+        if (status) status.textContent = `VITÓRIA · ${winnerName}`;
+      }, 980);
+    }
+    const duration = reducedMotion ? 80 : 1420;
     setTimeout(done, duration);
     return true;
   }
