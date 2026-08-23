@@ -52,36 +52,62 @@
             <!-- Conteúdo das configurações, inicialmente oculto -->
             <div id="start-menu-settings-content" class="menu-panel menu-panel-hidden">
                 <div class="menu-section-title" style="margin-top:0">ESTILO DO TABULEIRO</div>
-                <div class="theme-grid" style="grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px;">
-                    <button class="theme-card selected" data-theme="default" 
+                <div class="theme-grid">
+                    <button class="theme-card selected" data-theme="default"
                             onclick="setTheme('default')" onmouseenter="previewTheme('default')" onmouseleave="revertTheme()">
-                        <strong>NEON</strong>
-                        <span>Visual moderno e futurista</span>
+                        <span class="theme-card-art"><b class="theme-card-icon">♜</b><span class="theme-card-swatches"><i style="--swatch:#e1b45d"></i><i style="--swatch:#7d203c"></i><i style="--swatch:#151116"></i></span></span>
+                        <strong>FERGORVERSE</strong>
+                        <span class="theme-card-description">Ébano, vinho e ouro vitoriano</span>
+                        <small>CLÁSSICO · CINEMÁTICO</small>
                     </button>
-                    <button class="theme-card" data-theme="forest" 
+                    <button class="theme-card" data-theme="forest"
                             onclick="setTheme('forest')" onmouseenter="previewTheme('forest')" onmouseleave="revertTheme()">
-                        <strong>FLORESTA</strong>
-                        <span>Verde suave para um clima natural</span>
+                        <span class="theme-card-art"><b class="theme-card-icon">❦</b><span class="theme-card-swatches"><i style="--swatch:#79d89b"></i><i style="--swatch:#d4a74f"></i><i style="--swatch:#10251a"></i></span></span>
+                        <strong>BOSQUE ENCANTADO</strong>
+                        <span class="theme-card-description">Verde profundo e magia natural</span>
+                        <small>NATUREZA · FANTASIA</small>
                     </button>
-                    <button class="theme-card" data-theme="fire" 
+                    <button class="theme-card" data-theme="fire"
                             onclick="setTheme('fire')" onmouseenter="previewTheme('fire')" onmouseleave="revertTheme()">
-                        <strong>CHAMA</strong>
-                        <span>Contraste quente e energético</span>
+                        <span class="theme-card-art"><b class="theme-card-icon">♨</b><span class="theme-card-swatches"><i style="--swatch:#ffad3e"></i><i style="--swatch:#ff3f45"></i><i style="--swatch:#351008"></i></span></span>
+                        <strong>INFERNO</strong>
+                        <span class="theme-card-description">Fogo, brasas e impacto agressivo</span>
+                        <small>ENERGIA · BATALHA</small>
                     </button>
-                    <button class="theme-card" data-theme="ice" 
+                    <button class="theme-card" data-theme="ice"
                             onclick="setTheme('ice')" onmouseenter="previewTheme('ice')" onmouseleave="revertTheme()">
-                        <strong>GELADO</strong>
-                        <span>Frio e limpo para partida tática</span>
+                        <span class="theme-card-art"><b class="theme-card-icon">❄</b><span class="theme-card-swatches"><i style="--swatch:#82dbff"></i><i style="--swatch:#7c8fff"></i><i style="--swatch:#0a2033"></i></span></span>
+                        <strong>GLACIAL</strong>
+                        <span class="theme-card-description">Cristal, névoa e luz congelante</span>
+                        <small>GELO · PRECISÃO</small>
                     </button>
-                    <button class="theme-card" data-theme="purple" 
+                    <button class="theme-card" data-theme="purple"
                             onclick="setTheme('purple')" onmouseenter="previewTheme('purple')" onmouseleave="revertTheme()">
-                        <strong>ROXO</strong>
-                        <span>Mistério e poder místico</span>
+                        <span class="theme-card-art"><b class="theme-card-icon">✦</b><span class="theme-card-swatches"><i style="--swatch:#c477ff"></i><i style="--swatch:#ff5ea8"></i><i style="--swatch:#211032"></i></span></span>
+                        <strong>ARCANO</strong>
+                        <span class="theme-card-description">Runas, magia e poder imperial</span>
+                        <small>MÍSTICO · ROYAL</small>
                     </button>
-                    <button class="theme-card" data-theme="pink" 
+                    <button class="theme-card" data-theme="pink"
                             onclick="setTheme('pink')" onmouseenter="previewTheme('pink')" onmouseleave="revertTheme()">
-                        <strong>ROSA</strong>
-                        <span>Energia e estilo vibrante</span>
+                        <span class="theme-card-art"><b class="theme-card-icon">✿</b><span class="theme-card-swatches"><i style="--swatch:#ff84bd"></i><i style="--swatch:#ffd0e6"></i><i style="--swatch:#3b172e"></i></span></span>
+                        <strong>SAKURA</strong>
+                        <span class="theme-card-description">Pétalas, brilho e drama elegante</span>
+                        <small>ANIME · DELICADO</small>
+                    </button>
+                    <button class="theme-card" data-theme="cyber"
+                            onclick="setTheme('cyber')" onmouseenter="previewTheme('cyber')" onmouseleave="revertTheme()">
+                        <span class="theme-card-art"><b class="theme-card-icon">⌁</b><span class="theme-card-swatches"><i style="--swatch:#00ebff"></i><i style="--swatch:#ff2c91"></i><i style="--swatch:#051827"></i></span></span>
+                        <strong>CYBERPUNK</strong>
+                        <span class="theme-card-description">Neon, grade digital e alta tensão</span>
+                        <small>FUTURO · NEON</small>
+                    </button>
+                    <button class="theme-card" data-theme="eclipse"
+                            onclick="setTheme('eclipse')" onmouseenter="previewTheme('eclipse')" onmouseleave="revertTheme()">
+                        <span class="theme-card-art"><b class="theme-card-icon">◐</b><span class="theme-card-swatches"><i style="--swatch:#f0d8a2"></i><i style="--swatch:#8e2337"></i><i style="--swatch:#08080b"></i></span></span>
+                        <strong>ECLIPSE</strong>
+                        <span class="theme-card-description">Sombras densas e brilho lunar</span>
+                        <small>DARK · DRAMÁTICO</small>
                     </button>
                 </div>
                 <div class="start-config-row" style="justify-content: flex-start; margin-bottom: 10px;">
@@ -324,6 +350,7 @@
 </div>
 
 <script src="script.js"></script>
+<script src="game-ux-polish.js" data-game-ux-polish="true"></script>
 <script src="game-piece-photo-position.js"></script>
 </body>
 </html>

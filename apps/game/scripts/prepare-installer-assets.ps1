@@ -4,9 +4,11 @@ $ErrorActionPreference = "Stop"
 $projectRoot = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 $buildDir = Join-Path $projectRoot "build"
 New-Item -ItemType Directory -Force -Path $buildDir | Out-Null
+$package = Get-Content (Join-Path $projectRoot "package.json") -Raw | ConvertFrom-Json
+$appVersion = [string]$package.version
 
-# Usa a logo Fergorverse transparente e arte anime que já fazem parte do projeto.
-$logoPath = Join-Path $projectRoot "img\fergorverse-logo-installer.png"
+# Usa a mesma logo ampliada do executável para manter toda a identidade consistente.
+$logoPath = Join-Path $projectRoot "img\favicon\cosplaychess-app.png"
 $animePath = Join-Path $projectRoot "img\img\kuroshitsuji.png"
 
 if (-not (Test-Path $logoPath)) { throw "Logo do instalador não encontrada: $logoPath" }
@@ -82,8 +84,9 @@ try {
         $divider = [System.Drawing.Pen]::new((C 205 158 67), 1)
         try { $g.DrawLine($divider, 32, 205, 132, 205) } finally { $divider.Dispose() }
         Draw-CenteredText $g "FERGORVERSE" $brandFont $goldBrush 217 164
-        Draw-CenteredText $g "INSTALADOR OFICIAL" $tinyFont $muted 241 164
-        Draw-CenteredText $g "♜  •  ♛  •  ♞" $brandFont $goldBrush 270 164
+        Draw-CenteredText $g "INSTALAÇÃO PERSONALIZADA" $tinyFont $muted 239 164
+        Draw-CenteredText $g "ATALHOS • ATUALIZAÇÃO" $tinyFont $muted 254 164
+        Draw-CenteredText $g "VERSÃO $appVersion" $brandFont $goldBrush 278 164
     } finally {
         $ivory.Dispose(); $goldBrush.Dispose(); $muted.Dispose()
         $titleFont.Dispose(); $brandFont.Dispose(); $tinyFont.Dispose()

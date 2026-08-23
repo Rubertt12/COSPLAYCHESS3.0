@@ -70,7 +70,7 @@ let arenaAudios = { left: null, right: null };
 let arenaPlayback = { left: null, right: null };
 let audioContext = null;
 let isLive = false, turn = 'B', sel = null, pending = null, gySel = null;
-const themeOptions = ['default','forest','fire','ice','purple','pink'];
+const themeOptions = ['default','forest','fire','ice','purple','pink','cyber','eclipse'];
 let lastCapturePos = null;
 
 // Preset de Wallpapers (Padronizado para minúsculas)
@@ -117,7 +117,6 @@ function loadData() {
             document.getElementById('fullscreen-setting').checked = !!store.g.fullscreen;
         }
         applyFullscreen(store.g.fullscreen);
-        if (!store.g.wallpaper) randomWallpaperPreset(true);
         applyWallpaper(store.g.wallpaper);
         populateWallpaperThumbnails();
         renderBoard(); renderGraveyard(); updateUI(); renderConfigLists(); setupAmbientUI(); updateBoardZoom(store.g.zoomBoard); updateWallpaperSelectionUI(); renderLog();
@@ -235,8 +234,10 @@ function setTheme(theme) {
 }
 
 function previewTheme(theme) {
+    if (!themeOptions.includes(theme)) theme = 'default';
     themeOptions.forEach(opt => document.body.classList.remove('theme-' + opt));
     document.body.classList.add('theme-' + theme);
+    document.body.dataset.themePack = theme;
 }
 
 function revertTheme() {
@@ -244,10 +245,11 @@ function revertTheme() {
 }
 
 function applyTheme(theme) {
-    if (!theme) theme = 'default';
+    if (!themeOptions.includes(theme)) theme = 'default';
     store.g.theme = theme;
     themeOptions.forEach(opt => document.body.classList.remove('theme-' + opt));
     document.body.classList.add('theme-' + theme);
+    document.body.dataset.themePack = theme;
     updateThemeSelectionUI();
     save();
 }
@@ -274,6 +276,7 @@ function toggleFullscreen(enabled) {
 }
 
 function applyWallpaper(url) {
+    document.body.dataset.wallpaper = url ? 'true' : 'false';
     if (url) {
         document.body.style.backgroundImage = `url(${url})`;
         document.body.style.backgroundSize = 'cover';
@@ -325,9 +328,9 @@ function upWallpaper(input) {
             const oldVideo = document.getElementById('custom-wallpaper-video');
             if (oldVideo) oldVideo.remove();
 
-            document.body.style.backgroundImage = `url('${data}')`;
-            document.body.style.backgroundSize = 'cover';
-            document.body.style.backgroundPosition = 'center';
+            store.g.wallpaper = data;
+            applyWallpaper(data);
+            save();
 
             localStorage.setItem('wallpaperType', 'image');
             localStorage.setItem('wallpaperData', data);
@@ -337,20 +340,12 @@ function upWallpaper(input) {
     reader.readAsDataURL(file);
 }
 function clearWallpaper() {
-    const video = document.getElementById('custom-wallpaper-video');
-
-    if (video) {
-        video.remove();
-    }
-
-    document.body.style.backgroundImage = '';
-
-    localStorage.removeItem('wallpaperType');
-    localStorage.removeItem('wallpaperData');
-}
-function clearWallpaper() {
+    document.getElementById('custom-wallpaper-video')?.remove();
     store.g.wallpaper = null;
     applyWallpaper(null);
+    localStorage.removeItem('wallpaperType');
+    localStorage.removeItem('wallpaperData');
+    updateWallpaperSelectionUI();
     save();
 }
 

@@ -17,6 +17,7 @@
     "glob": "^10.3.15"
   },
   "author": "Rubra Studios",
+  "homepage": "https://cosplaychess-nine.vercel.app/",
   "license": "MIT",
   "devDependencies": {
     "electron": "^42.3.3",
@@ -27,6 +28,9 @@
   "build": {
     "appId": "com.rubra.cosplaychess",
     "productName": "Cosplay Chess",
+    "copyright": "Copyright © 2026 Rubra Studios · Fergorverse",
+    "asar": true,
+    "compression": "maximum",
     "directories": {
       "output": "dist"
     },
@@ -44,6 +48,8 @@
         "portable"
       ],
       "icon": "img/favicon/cosplaychess-app.ico",
+      "executableName": "CosplayChess",
+      "legalTrademarks": "Cosplay Chess · Fergorverse",
       "forceCodeSigning": false
     },
     "mac": {
@@ -54,11 +60,20 @@
     },
     "nsis": {
       "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
       "shortcutName": "Cosplay Chess",
+      "menuCategory": "Fergorverse",
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false,
+      "displayLanguageSelector": false,
       "installerLanguages": ["pt_BR"],
       "language": "1046",
+      "installerIcon": "img/favicon/cosplaychess-app.ico",
+      "uninstallerIcon": "img/favicon/cosplaychess-app.ico",
       "installerSidebar": "build/installerSidebar.bmp",
       "uninstallerSidebar": "build/installerSidebar.bmp",
       "installerHeader": "build/installerHeader.bmp",

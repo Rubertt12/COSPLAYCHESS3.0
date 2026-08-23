@@ -1,9 +1,8 @@
 {
   "productName": "Cosplay Chess",
   "authors": "Rubra Studios",
-  "version": "1.0.2",
-  "icon": "img/favicon-Photoroom.png",
+  "version": "1.1.0",
+  "icon": "img/favicon/cosplaychess-app.ico",
   "outputDirectory": "dist/installer",
-  "setupIcon": "img/favicon-Photoroom.png",
-  "loadingGif": "img/favicon-Photoroom.png"
+  "setupIcon": "img/favicon/cosplaychess-app.ico"
 }
