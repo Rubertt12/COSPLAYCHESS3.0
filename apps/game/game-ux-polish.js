@@ -133,39 +133,43 @@
       #move-name-banner span{display:block;color:#eee7ef;font-size:10px;line-height:1.35}
       .move-log-tag{display:inline-block;margin-right:5px;padding:2px 5px;border:1px solid rgba(224,190,119,.25);border-radius:5px;color:#e8be69;font-size:8px;font-weight:900;letter-spacing:.5px}
 
-      #arena .arena-content.duel-v2{position:relative;width:min(1060px,95vw)!important;max-height:94vh;overflow:auto;padding:24px!important;border-radius:22px!important;border:1px solid rgba(224,190,119,.26)!important;background:radial-gradient(circle at 50% 5%,rgba(224,190,119,.09),transparent 34%),linear-gradient(160deg,#0e0c12,#08080c)!important;box-shadow:0 34px 110px rgba(0,0,0,.78)!important}
-      #arena .duel-arena-header{text-align:center;margin:0 auto 20px;max-width:780px}
+      #arena .arena-content.duel-v2{position:relative;width:min(1060px,100%)!important;height:min(700px,calc(100vh - 24px));height:min(700px,calc(100dvh - 24px));max-height:none!important;min-height:0;overflow:hidden!important;padding:clamp(12px,2.2dvh,24px) clamp(12px,2vw,24px)!important;border-radius:22px!important;border:1px solid rgba(224,190,119,.26)!important;background:radial-gradient(circle at 50% 5%,rgba(224,190,119,.09),transparent 34%),linear-gradient(160deg,#0e0c12,#08080c)!important;box-shadow:0 34px 110px rgba(0,0,0,.78)!important;box-sizing:border-box;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:clamp(8px,1.5dvh,14px)}
+      #arena .arena-content.duel-v2 *{box-sizing:border-box}
+      #arena .duel-arena-header{text-align:center;margin:0 auto;max-width:780px;min-width:0}
       #arena .duel-arena-header small{display:block;color:#c89e52;font-size:9px;font-weight:900;letter-spacing:2.4px;text-transform:uppercase}
-      #arena .duel-arena-header h2{margin:5px 0 4px;color:#fff5df;font-family:Georgia,serif;font-size:clamp(24px,3vw,38px);font-weight:500}
+      #arena .duel-arena-header h2{margin:5px 0 4px;color:#fff5df;font-family:Georgia,serif;font-size:clamp(24px,3vw,38px);font-weight:500;line-height:1.05;overflow-wrap:anywhere}
       #arena .duel-arena-header p{margin:0;color:#847d89;font-size:10px;line-height:1.5}
-      #arena .arena-fighters{display:grid!important;grid-template-columns:minmax(0,1fr) 90px minmax(0,1fr)!important;align-items:stretch!important;gap:16px!important;width:100%}
-      #arena .fighter{position:relative;min-width:0;padding:15px;border-radius:18px;border:1px solid rgba(255,255,255,.09);overflow:hidden;display:flex;flex-direction:column;background:#101015}
+      #arena .arena-fighters{display:grid!important;grid-template-columns:minmax(0,1fr) clamp(54px,8vw,90px) minmax(0,1fr)!important;align-items:stretch!important;gap:clamp(8px,1.5vw,16px)!important;width:100%;height:100%;min-width:0;min-height:0;overflow:visible}
+      #arena .fighter{position:relative;width:100%;height:100%;min-width:0;min-height:0;padding:clamp(9px,1.4vw,15px);border-radius:18px;border:1px solid rgba(255,255,255,.09);overflow:hidden;display:flex;flex-direction:column;background:#101015}
       #arena .fighter.duel-side-B{background:linear-gradient(155deg,rgba(222,238,247,.12),rgba(13,17,22,.98));border-color:rgba(191,231,255,.42);box-shadow:inset 0 0 36px rgba(153,218,255,.04)}
       #arena .fighter.duel-side-P{background:linear-gradient(155deg,rgba(104,22,39,.22),rgba(10,9,12,.99));border-color:rgba(255,86,116,.37);box-shadow:inset 0 0 36px rgba(255,70,102,.035)}
-      #arena .arena-box{position:relative!important;width:100%!important;height:auto!important;aspect-ratio:4/3!important;min-height:190px!important;max-height:340px!important;border-radius:14px!important;background-size:cover!important;background-position:center 18%!important;background-repeat:no-repeat!important;overflow:hidden!important;border-width:2px!important}
+      #arena .arena-box{position:relative!important;width:100%!important;height:clamp(110px,32dvh,340px)!important;flex:1 1 auto;aspect-ratio:auto!important;min-height:0!important;max-height:340px!important;margin-bottom:0!important;border-radius:14px!important;background-size:cover!important;background-position:center 18%!important;background-repeat:no-repeat!important;overflow:hidden!important;border-width:2px!important}
       #arena .fighter.duel-side-B .arena-box{border-color:#d9f3ff!important;box-shadow:0 14px 38px rgba(0,0,0,.38),0 0 0 1px rgba(207,240,255,.16)!important}
       #arena .fighter.duel-side-P .arena-box{border-color:#ff607d!important;box-shadow:0 14px 38px rgba(0,0,0,.42),0 0 0 1px rgba(255,96,125,.12)!important}
       #arena .arena-box[data-side-label]::after{content:attr(data-side-label);position:absolute;right:9px;bottom:8px;padding:5px 8px;border-radius:999px;background:rgba(0,0,0,.78);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:8px;font-weight:1000;letter-spacing:1.2px;box-shadow:0 4px 14px rgba(0,0,0,.35)}
-      #arena .duel-fighter-meta{padding:12px 2px 5px;min-height:98px;text-align:left}
+      #arena .duel-fighter-meta{padding:clamp(7px,1.4dvh,12px) 2px 3px;min-height:0;text-align:left;flex:0 0 auto}
       #arena .duel-fighter-meta .duel-role{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:5px;color:#8c8490;font-size:8px;font-weight:900;letter-spacing:1px;text-transform:uppercase}
       #arena .duel-fighter-meta .duel-role b{color:#d8ac59}
       #arena .duel-fighter-meta h3{margin:0;color:#fff;font-family:Georgia,serif;font-size:clamp(17px,2vw,24px);line-height:1.1;overflow-wrap:anywhere}
       #arena .duel-fighter-meta .duel-piece-line{margin-top:5px;color:#bdb4c0;font-size:9px;font-weight:800;letter-spacing:.7px}
       #arena .duel-fighter-meta .duel-cosplayer{margin-top:5px;color:#7d7581;font-size:9px;line-height:1.35}
-      #arena .duel-victory-btn{margin-top:auto!important;width:100%!important;min-height:44px!important;font-size:10px!important;font-weight:1000!important;letter-spacing:1px!important;border-radius:10px!important}
+      #arena .duel-victory-btn{margin-top:auto!important;width:100%!important;min-height:40px!important;padding:8px 5px!important;font-size:10px!important;font-weight:1000!important;letter-spacing:1px!important;border-radius:10px!important}
       #arena .fighter.duel-side-B .duel-victory-btn{background:linear-gradient(135deg,#dff5ff,#9ed8ed)!important;color:#071117!important;border:1px solid #eefbff!important}
       #arena .fighter.duel-side-P .duel-victory-btn{background:linear-gradient(135deg,#9e253d,#e04864)!important;color:#fff!important;border:1px solid #ff7890!important}
       #arena .duel-versus-core{display:flex!important;flex-direction:column;align-items:center;justify-content:center!important;gap:2px;color:#5f5863!important;text-align:center}
       #arena .duel-versus-core span{font-size:30px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.6))}
       #arena .duel-versus-core b{color:#d6ab5a;font-family:Georgia,serif;font-size:21px;letter-spacing:2px}
       #arena .duel-versus-core small{margin-top:5px;color:#7c7480;font-size:8px;line-height:1.35}
-      #arena .arena-audio-btns{margin-top:4px!important}
-      #arena .arena-sound-label{min-height:20px;margin-bottom:8px;color:#7f7783!important}
+      #arena .arena-audio-btns{margin-top:3px!important;flex:0 0 auto}
+      #arena .arena-audio-btns .btn{min-height:30px!important;padding:6px!important}
+      #arena .arena-sound-label{min-height:18px;margin:5px 0 6px!important;color:#7f7783!important;flex:0 0 auto}
       #arena .duel-shortcut{display:block;margin-top:5px;color:#675f69;font-size:7px;text-align:center;letter-spacing:.6px}
-      #arena{background:radial-gradient(circle at 50% 42%,rgba(208,156,65,.12),rgba(2,2,5,.93) 52%,rgba(0,0,0,.98))!important;perspective:1200px}
+      #arena{padding:12px;overflow:hidden;box-sizing:border-box;background:radial-gradient(circle at 50% 42%,rgba(208,156,65,.12),rgba(2,2,5,.93) 52%,rgba(0,0,0,.98))!important;perspective:1200px}
       #arena .arena-content.duel-v2::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.2;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:32px 32px;mask-image:linear-gradient(to bottom,black,transparent 82%)}
       #arena .arena-content.duel-v2::after{content:'';position:absolute;inset:-35% 24%;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(226,177,87,.055),transparent);transform:rotate(14deg);animation:duelAmbientSweep 5s linear infinite}
       #arena .duel-arena-header,#arena .arena-fighters,#arena .duel-cancel-row{position:relative;z-index:2}
+      #arena .duel-cancel-row{min-height:34px;margin-top:0!important;text-align:center!important}
+      #arena .duel-cancel-row .btn{width:min(160px,100%)!important;min-height:34px;padding:7px 12px!important}
       #arena .duel-live-status{display:inline-flex;align-items:center;gap:7px;margin-top:10px;padding:6px 10px;border-radius:999px;border:1px solid rgba(224,190,119,.2);background:rgba(224,190,119,.055);color:#b8a27d;font-size:8px;font-weight:900;letter-spacing:1.2px}
       #arena .duel-live-status i{width:6px;height:6px;border-radius:50%;background:#f2c76e;box-shadow:0 0 12px #e7b751;animation:duelStatusPulse 1.1s ease-in-out infinite alternate}
       #arena .fighter::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.7;background:radial-gradient(circle at 50% 0,rgba(255,255,255,.09),transparent 34%)}
@@ -260,16 +264,78 @@
 
       @media(max-width:760px){
         #move-name-banner{top:72px}
-        #arena .arena-content.duel-v2{padding:16px!important}
-        #arena .arena-fighters{grid-template-columns:1fr!important}
-        #arena .duel-versus-core{min-height:62px!important}
-        #arena .arena-box{min-height:220px!important;aspect-ratio:16/10!important}
-        #arena .fighter.duel-attack-left{animation-name:duelCinematicCardDown}
-        #arena .fighter.duel-attack-right{animation-name:duelCinematicCardUp}
-        #arena .fighter.duel-attack-left .arena-box{animation-name:duelPortraitStrikeDown}
-        #arena .fighter.duel-attack-right .arena-box{animation-name:duelPortraitStrikeUp}
-        #arena .fighter.duel-hit-left,#arena .fighter.duel-hit-right{animation-name:duelCinematicHitMobile}
-        #arena .duel-result-banner{top:50%;width:min(330px,86%)}
+        #arena{padding:6px}
+        #arena .arena-content.duel-v2{width:100%!important;height:min(680px,calc(100vh - 12px));height:min(680px,calc(100dvh - 12px));padding:10px!important;border-radius:16px!important;gap:8px}
+        #arena .duel-arena-header small{font-size:7px;letter-spacing:1.7px}
+        #arena .duel-arena-header h2{margin:3px 0;font-size:clamp(15px,4.8vw,22px);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+        #arena .duel-arena-header p{font-size:8px;line-height:1.25;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+        #arena .duel-live-status{margin-top:5px;padding:4px 7px;font-size:6.5px;letter-spacing:.8px}
+        #arena .arena-fighters{grid-template-columns:minmax(0,1fr) 32px minmax(0,1fr)!important;gap:6px!important}
+        #arena .fighter{padding:8px;border-radius:12px}
+        #arena .arena-box{height:clamp(100px,27dvh,210px)!important;max-height:210px!important;border-radius:10px!important}
+        #arena .arena-box[data-side-label]::after{right:5px;bottom:5px;max-width:calc(100% - 10px);padding:3px 5px;font-size:6px;letter-spacing:.45px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        #arena .duel-fighter-meta{padding:7px 0 2px}
+        #arena .duel-fighter-meta .duel-role{display:block;margin-bottom:3px;font-size:6.5px;letter-spacing:.45px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        #arena .duel-fighter-meta .duel-role b{display:block;margin-top:2px;overflow:hidden;text-overflow:ellipsis}
+        #arena .duel-fighter-meta h3{font-size:clamp(13px,4vw,17px);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+        #arena .duel-fighter-meta .duel-piece-line{margin-top:3px;font-size:7px;letter-spacing:.25px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        #arena .duel-fighter-meta .duel-cosplayer{margin-top:3px;font-size:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        #arena .duel-energy{margin:3px 0 5px}
+        #arena .arena-audio-btns{gap:3px!important}
+        #arena .arena-audio-btns .btn{min-height:28px!important;padding:5px 2px!important;font-size:9px!important}
+        #arena .arena-sound-label{display:none}
+        #arena .duel-victory-btn{min-height:36px!important;padding:6px 2px!important;font-size:7.5px!important;letter-spacing:.35px!important;border-radius:7px!important}
+        #arena .duel-shortcut{display:none}
+        #arena .duel-versus-core{min-width:0!important;min-height:0!important}
+        #arena .duel-versus-core span{font-size:21px}
+        #arena .duel-versus-core b{font-size:13px;letter-spacing:.5px}
+        #arena .duel-versus-core small{display:none}
+        #arena .duel-cancel-row{min-height:32px}
+        #arena .duel-cancel-row .btn{min-height:32px;padding:5px 10px!important;font-size:8px!important}
+        #arena .duel-result-banner{top:50%;width:min(330px,90%);padding:12px}
+      }
+      @media(max-width:360px){
+        #arena .arena-content.duel-v2{padding:8px!important;gap:6px}
+        #arena .arena-fighters{grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr)!important;gap:4px!important}
+        #arena .fighter{padding:6px}
+        #arena .arena-box{height:clamp(90px,25dvh,180px)!important;max-height:180px!important}
+        #arena .duel-arena-header p,#arena .duel-fighter-meta .duel-cosplayer{display:none}
+        #arena .duel-fighter-meta .duel-role span{display:none}
+        #arena .duel-versus-core span{font-size:18px}
+        #arena .duel-versus-core b{font-size:11px}
+      }
+      @media(max-height:620px){
+        #arena{padding:6px}
+        #arena .arena-content.duel-v2{height:calc(100vh - 12px);height:calc(100dvh - 12px);padding:8px 10px!important;gap:5px;border-radius:14px!important}
+        #arena .duel-arena-header h2{margin:2px 0;font-size:17px}
+        #arena .duel-arena-header p{display:none}
+        #arena .duel-live-status{margin-top:3px;padding:3px 7px;font-size:6px}
+        #arena .arena-fighters{gap:7px!important}
+        #arena .fighter{padding:6px 8px;border-radius:11px}
+        #arena .arena-box{height:clamp(74px,22dvh,145px)!important;max-height:145px!important;border-radius:9px!important}
+        #arena .duel-fighter-meta{padding:4px 0 1px}
+        #arena .duel-fighter-meta .duel-role{margin-bottom:2px;font-size:6px}
+        #arena .duel-fighter-meta h3{font-size:14px;line-height:1}
+        #arena .duel-fighter-meta .duel-piece-line{margin-top:2px;font-size:6.5px}
+        #arena .duel-fighter-meta .duel-cosplayer{display:none}
+        #arena .duel-energy{margin:2px 0 3px}
+        #arena .arena-audio-btns .btn{min-height:25px!important;padding:3px!important}
+        #arena .arena-sound-label{display:none}
+        #arena .duel-victory-btn{min-height:30px!important;padding:4px 3px!important;font-size:7px!important}
+        #arena .duel-shortcut{display:none}
+        #arena .duel-cancel-row{min-height:27px}
+        #arena .duel-cancel-row .btn{min-height:27px;padding:3px 10px!important}
+      }
+      @media(max-height:480px){
+        #arena .duel-arena-header small{display:none}
+        #arena .duel-arena-header h2{font-size:15px}
+        #arena .duel-live-status{margin-top:2px}
+        #arena .arena-box{height:clamp(62px,19dvh,100px)!important;max-height:100px!important}
+        #arena .duel-fighter-meta .duel-role{display:none}
+        #arena .duel-fighter-meta h3{font-size:12px}
+        #arena .duel-fighter-meta .duel-piece-line{font-size:6px}
+        #arena .arena-audio-btns .btn{min-height:22px!important}
+        #arena .duel-victory-btn{min-height:27px!important}
       }
       @keyframes duelAttackDown{0%,25%{transform:translateY(0)}42%{transform:translateY(-10px)}62%{transform:translateY(34px) scale(1.025)}100%{transform:none}}
       @keyframes duelAttackUp{0%,25%{transform:translateY(0)}42%{transform:translateY(10px)}62%{transform:translateY(-34px) scale(1.025)}100%{transform:none}}
