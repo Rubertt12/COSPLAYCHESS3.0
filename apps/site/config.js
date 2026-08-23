@@ -73,7 +73,11 @@ window.COSPLAYCHESS_CONFIG = {
     };
 
     const globalCmsPages = ['index.html', '', 'cadastro.html', 'galeria-eventos.html', 'sobre.html', 'universo.html', 'hall-da-fama.html', 'ranking.html', 'conquistas.html'];
-    if (globalCmsPages.includes(page)) loadScript('./site-global-cms.js?v=20260819-global1');
+    if (globalCmsPages.includes(page)) {
+      loadScript('./site-global-cms.js?v=20260819-global1');
+      loadStyle('./site-content-sections-v8.css?v=20260823-content1');
+      loadScript('./site-content-sections-v8.js?v=20260823-content1');
+    }
     if (globalCmsPages.includes(page) && !previewMode) loadScript('./visitor-tracker.js?v=20260822-anon1');
     if (page === 'galeria-eventos.html') {
       loadStyle('./gallery-album-fan.css?v=20260822-fan1');
@@ -99,8 +103,10 @@ window.COSPLAYCHESS_CONFIG = {
       loadStyle('./admin-partners.css');
       loadStyle('./admin-search-v2.css?v=20260822-search2');
       loadStyle('./admin-google-drive.css?v=20260822-gd2');
+      loadStyle('./admin-content-manager-v8.css?v=20260823-content1');
       loadScript('./admin-visitor-metric.js?v=20260822-anon1');
       loadScript('./admin-search-v2.js?v=20260822-search2');
+      loadScript('./admin-content-manager-v8.js?v=20260823-content1');
       loadScript('./admin-google-drive-session.js?v=20260822-gd-session1', () => {
         loadScript('./admin-google-drive-db-compat.js?v=20260822-gd-db1', () => {
           loadScript('./admin-google-drive-safe-loader.js?v=20260822-gd-safe2');

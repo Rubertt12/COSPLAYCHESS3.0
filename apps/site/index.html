@@ -67,6 +67,6 @@
     <a class="footer-admin" href="./admin.html" aria-label="Acesso administrativo">Admin</a>
   </div>
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script src="./landing.js?v=20260819-6"></script><script src="./community.js"></script><script src="./site-cms.js?v=20260819-buttons2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js?v=20260823-content1"></script><script src="./landing.js?v=20260819-6"></script><script src="./community.js"></script><script src="./site-cms.js?v=20260819-buttons2"></script>
 <script>(()=>{const toggle=document.querySelector('.mobile-menu-toggle'),menu=document.getElementById('mobileMenu');if(!toggle||!menu)return;const setOpen=open=>{toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Fechar menu':'Abrir menu');menu.dataset.open=String(open);document.body.classList.toggle('mobile-menu-open',open)};toggle.addEventListener('click',e=>{e.stopPropagation();setOpen(toggle.getAttribute('aria-expanded')!=='true')});menu.addEventListener('click',e=>{if(e.target.closest('a'))setOpen(false)});document.addEventListener('click',e=>{if(toggle.getAttribute('aria-expanded')==='true'&&!menu.contains(e.target)&&!toggle.contains(e.target))setOpen(false)});document.addEventListener('keydown',e=>{if(e.key==='Escape')setOpen(false)});window.addEventListener('resize',()=>{if(window.innerWidth>760)setOpen(false)})})();</script>
 </body></html>
