@@ -1,0 +1,28 @@
+.registration-row>.avatar.registration-photo-avatar{position:relative;display:block;min-width:0;min-height:0;padding:0!important;overflow:hidden;border:1px solid #40536f!important;background:#132033!important;color:inherit!important;box-shadow:none!important;cursor:pointer;isolation:isolate}
+.registration-row>.avatar.registration-photo-avatar:hover{border-color:#8b6fe4!important;box-shadow:0 0 0 3px rgba(124,58,237,.13)!important;transform:none!important}
+.registration-photo-avatar img{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;pointer-events:none;user-select:none;transition:transform .18s ease,object-position .18s ease}
+.registration-photo-avatar-hint{position:absolute;right:4px;bottom:4px;z-index:2;width:21px;height:21px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.3);border-radius:7px;background:rgba(5,12,21,.88);color:#fff;font-size:11px;line-height:1;box-shadow:0 4px 12px rgba(0,0,0,.32)}
+.registration-photo-empty{display:grid!important;place-items:center;color:#8798ad;font-size:20px}
+.registration-main .registration-photo-edit-btn{width:max-content;min-height:30px!important;margin-top:9px;padding:0 9px!important;border:1px solid #3d5370!important;border-radius:8px!important;background:#132238!important;color:#cfdbea!important;font-size:10.5px!important;font-weight:800!important;box-shadow:none!important}
+.registration-main .registration-photo-edit-btn:hover{border-color:#7f65d0!important;background:#1b2d46!important;color:#fff!important;transform:none!important}
+.registration-photo-modal[hidden]{display:none!important}
+.registration-photo-modal{z-index:420;padding:14px}
+.registration-photo-modal-card{position:relative;width:min(860px,100%);max-height:94vh;overflow:auto;padding:26px;border:1px solid #30445e;border-radius:18px;background:linear-gradient(150deg,#101d2d,#091522);box-shadow:0 36px 100px rgba(0,0,0,.65)}
+.registration-photo-modal-card h2{margin:7px 48px 7px 0;color:#fff;font-size:24px;line-height:1.2}
+.registration-photo-description{max-width:690px;margin:0 0 20px;color:#9fb0c4;font-size:12.5px;line-height:1.55}
+.registration-photo-editor-grid{display:grid;grid-template-columns:minmax(280px,1.05fr) minmax(260px,.95fr);gap:24px;align-items:center}
+.registration-photo-preview{position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;border:1px solid #405675;border-radius:16px;background:#060d16;cursor:grab;touch-action:none;user-select:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025),0 18px 45px rgba(0,0,0,.26)}
+.registration-photo-preview.dragging{cursor:grabbing;border-color:#8b70e2}
+.registration-photo-preview img{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;pointer-events:none;user-select:none;will-change:transform,object-position}
+.registration-photo-preview>span{position:absolute;left:50%;bottom:12px;z-index:2;transform:translateX(-50%);width:max-content;max-width:calc(100% - 24px);padding:7px 10px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(4,10,18,.76);color:#e5edf7;font-size:10px;font-weight:800;backdrop-filter:blur(8px);pointer-events:none}
+.registration-photo-original-note{display:block;margin-top:9px;color:#7f90a5;font-size:10px;text-align:center}
+.registration-photo-controls{display:grid;gap:18px;padding:18px;border:1px solid #253952;border-radius:15px;background:rgba(7,17,29,.72)}
+.registration-photo-controls label{display:grid;gap:9px}
+.registration-photo-controls label>span{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#c7d3df;font-size:11px;font-weight:800}
+.registration-photo-controls label b{color:#bda9ff;font-size:11px}
+.registration-photo-controls input[type="range"]{width:100%;height:6px;margin:5px 0;accent-color:#8b5cf6;cursor:pointer}
+.registration-photo-actions{display:grid;grid-template-columns:1fr 1.35fr;gap:9px;margin-top:2px}
+.registration-photo-actions button{width:100%;min-height:42px!important}
+#registrationPhotoStatus{min-height:19px;margin:0}
+@media(max-width:760px){.registration-photo-modal-card{padding:20px}.registration-photo-editor-grid{grid-template-columns:1fr;gap:16px}.registration-photo-preview{max-width:430px;margin:auto}.registration-photo-controls{padding:15px}}
+@media(max-width:480px){.registration-photo-modal{padding:7px}.registration-photo-modal-card{padding:18px 14px;border-radius:14px}.registration-photo-modal-card h2{font-size:20px}.registration-photo-description{font-size:11.5px}.registration-photo-preview>span{font-size:9px}.registration-photo-actions{grid-template-columns:1fr}.registration-photo-controls{gap:15px}.registration-main .registration-photo-edit-btn{width:100%;justify-content:center}}

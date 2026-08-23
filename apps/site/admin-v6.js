@@ -61,8 +61,9 @@
       const personName=r.full_name||r.character_name||'Participante';
       const characterName=r.character_name||personName;
       const initial=(personName.trim().charAt(0)||'♟').toUpperCase();
+      const photoStyle=typeof window.registrationPhotoImageStyle==='function'?window.registrationPhotoImageStyle(r):'object-position:center';
       const avatar=r.character_photo_url
-        ?`<div class="v6-activity-icon v6-activity-photo" style="overflow:hidden;padding:0;border:2px solid rgba(139,92,246,.42);background:#0e1926"><img src="${esc6(r.character_photo_url)}" alt="Foto de ${esc6(personName)}" loading="lazy" style="width:100%;height:100%;display:block;object-fit:cover;object-position:center"></div>`
+        ?`<div class="v6-activity-icon v6-activity-photo" style="overflow:hidden;padding:0;border:2px solid rgba(139,92,246,.42);background:#0e1926"><img src="${esc6(r.character_photo_url)}" alt="Foto de ${esc6(personName)}" loading="lazy" style="width:100%;height:100%;display:block;object-fit:cover;${photoStyle}"></div>`
         :`<div class="v6-activity-icon" aria-label="${esc6(personName)}">${esc6(initial)}</div>`;
       const details=`${esc6(personName)}${r.character_name?` • ${esc6(characterName)}`:''} · ${esc6(r.cosplay_events?.title||'CosplayChess')}`;
       return `<div class="v6-activity-row">${avatar}<div class="v6-activity-main"><b>${i===0?'Nova inscrição':'Inscrição atualizada'}</b><span>${details}</span></div><span class="v6-activity-time">${fmtDate(r.created_at)}</span></div>`;
