@@ -83,6 +83,7 @@
     const piece = store.p[id];
     if (piece.rosterManagedName) delete piece.name;
     if (piece.rosterManagedImg) delete piece.img;
+    if (piece.rosterManagedPhotoCrop) delete piece.photoCrop;
     if (piece.rosterManagedSound && !options.keepSound) {
       delete piece.sound;
       delete piece.soundName;
@@ -94,6 +95,7 @@
     delete piece.participantRealName;
     delete piece.rosterManagedName;
     delete piece.rosterManagedImg;
+    delete piece.rosterManagedPhotoCrop;
     delete piece.rosterManagedSound;
   }
 
@@ -119,6 +121,8 @@
     const previousParticipantId = target.participantId;
     if (previousParticipantId && previousParticipantId !== person.id) {
       if (target.rosterManagedImg) delete target.img;
+      if (target.rosterManagedPhotoCrop) delete target.photoCrop;
+      delete target.rosterManagedPhotoCrop;
       if (target.rosterManagedSound || target.soundSource === 'manual') {
         delete target.sound;
         delete target.soundName;
@@ -137,9 +141,15 @@
     if (person.photo) {
       target.img = person.photo;
       target.rosterManagedImg = true;
+      target.photoCrop = typeof window.normalizePiecePhotoCrop === 'function'
+        ? window.normalizePiecePhotoCrop(person.photoCrop)
+        : (person.photoCrop ? { ...person.photoCrop } : { x: 50, y: 50, zoom: 1 });
+      target.rosterManagedPhotoCrop = true;
     } else if (target.rosterManagedImg) {
       delete target.img;
       delete target.rosterManagedImg;
+      if (target.rosterManagedPhotoCrop) delete target.photoCrop;
+      delete target.rosterManagedPhotoCrop;
     }
 
     const registered = participantMusic(person);
@@ -222,6 +232,7 @@
         </div>
         <div id="participant-v2-list" style="padding:8px 20px 18px;overflow:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:9px;min-height:220px;"></div>
         <div style="padding:12px 20px 16px;border-top:1px solid #222;display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;">
+          <button id="participant-v2-position" type="button" class="btn" style="margin:0;padding:10px 13px;">✥ POSICIONAR FOTO</button>
           <button id="participant-v2-photo" type="button" class="btn" style="margin:0;padding:10px 13px;">🖼 FOTO MANUAL</button>
           <button id="participant-v2-unlink" type="button" class="btn" style="margin:0;padding:10px 13px;background:#25151b;color:#ff8cab;">DESVINCULAR</button>
           <button data-close type="button" class="btn" style="margin:0;padding:10px 13px;background:#18181e;">FECHAR</button>
@@ -258,7 +269,9 @@
         const music = participantMusic(person);
         const score = preferenceScore(person, pieceId);
         const image = person.photo
-          ? `<img src="${esc(person.photo)}" alt="" style="width:64px;height:64px;object-fit:cover;border-radius:10px;border:1px solid #333;flex:0 0 auto;">`
+          ? (typeof window.piecePhotoFrameMarkup === 'function'
+              ? window.piecePhotoFrameMarkup(person.photo, person.photoCrop, { width: 64, radius: 10 })
+              : `<img src="${esc(person.photo)}" alt="" style="width:64px;height:64px;object-fit:cover;border-radius:10px;border:1px solid #333;flex:0 0 auto;">`)
           : `<div style="width:64px;height:64px;border-radius:10px;border:1px solid #333;background:#141419;display:flex;align-items:center;justify-content:center;font-size:25px;flex:0 0 auto;">♟</div>`;
         const badges = [
           person.preferredPiece ? `<span style="padding:3px 6px;border-radius:999px;background:rgba(0,229,255,.08);color:#9ef8ff;font-size:8px;">1ª ${esc(person.preferredPiece)}</span>` : '',
@@ -299,6 +312,15 @@
     modal.addEventListener('click', event => { if (event.target === modal) close(); });
     search.addEventListener('input', () => render(search.value));
     modal.querySelector('#participant-v2-unlink')?.addEventListener('click', () => { clearParticipant(pieceId); close(); });
+    const positionButton = modal.querySelector('#participant-v2-position');
+    if (positionButton) {
+      positionButton.disabled = !store.p[pieceId]?.img;
+      positionButton.style.opacity = positionButton.disabled ? '.4' : '1';
+      positionButton.addEventListener('click', () => {
+        close();
+        window.openPiecePhotoPositionEditor?.(pieceId);
+      });
+    }
     modal.querySelector('#participant-v2-photo')?.addEventListener('click', () => {
       close();
       const input = document.createElement('input');
@@ -312,6 +334,8 @@
           if (!store.p[pieceId]) store.p[pieceId] = {};
           store.p[pieceId].img = event.target.result;
           store.p[pieceId].rosterManagedImg = false;
+          store.p[pieceId].photoCrop = { x: 50, y: 50, zoom: 1 };
+          store.p[pieceId].rosterManagedPhotoCrop = false;
           persist(true);
           enhancedRenderConfigLists();
         };
@@ -352,7 +376,10 @@
         const realName = piece.participantRealName || participant?.name || '';
         const info = soundStatus(piece, participant);
         const volume = Number.isFinite(Number(piece.volume)) ? Number(piece.volume) : 0.8;
-        const image = piece.img
+        const imageMarkup = piece.img && typeof window.piecePhotoFrameMarkup === 'function'
+          ? window.piecePhotoFrameMarkup(piece.img, piece.photoCrop, { width: 46, radius: 9 })
+          : '';
+        const image = piece.img && !imageMarkup
           ? `background-image:url('${String(piece.img).replace(/'/g, '%27')}');background-size:cover;background-position:center;`
           : '';
         const sourceColor = info.source === 'registration' ? '#8fffc0' : info.source === 'manual' ? '#ffd27d' : '#666';
@@ -361,7 +388,7 @@
         card.style.cssText = 'padding:12px;margin-bottom:9px;border:1px solid #24242d;background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.008));border-radius:11px;';
         card.innerHTML = `
           <div style="display:flex;align-items:center;gap:11px;">
-            <div style="width:46px;height:46px;${image}background-color:#09090d;border-radius:9px;border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;flex:0 0 auto;">${piece.img ? '' : '♟'}</div>
+            ${imageMarkup || `<div style="width:46px;height:46px;${image}background-color:#09090d;border-radius:9px;border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;flex:0 0 auto;">${piece.img ? '' : '♟'}</div>`}
             <div style="min-width:0;flex:1;">
               <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
                 <strong style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;">${esc(character)}</strong>
@@ -399,8 +426,9 @@
             </div>
           </div>
 
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px;">
             <button type="button" onclick="pickParticipantPhoto('${id}')" style="border:1px solid #2b2b34;background:#141419;color:#bbb;border-radius:7px;padding:7px;font-size:8px;cursor:pointer;">🖼 TROCAR FOTO</button>
+            <button type="button" onclick="openPiecePhotoPositionEditor('${id}')" ${piece.img ? '' : 'disabled'} style="border:1px solid #2b2b34;background:#141419;color:#bbb;border-radius:7px;padding:7px;font-size:8px;cursor:${piece.img ? 'pointer' : 'not-allowed'};opacity:${piece.img ? '1' : '.4'};">✥ POSICIONAR</button>
             <button type="button" onclick="editParticipantDisplayName('${id}')" style="border:1px solid #2b2b34;background:#141419;color:#bbb;border-radius:7px;padding:7px;font-size:8px;cursor:pointer;">✎ NOME NO JOGO</button>
           </div>`;
         cont.appendChild(card);
@@ -476,6 +504,8 @@
         if (!store.p[id]) store.p[id] = {};
         store.p[id].img = event.target.result;
         store.p[id].rosterManagedImg = false;
+        store.p[id].photoCrop = { x: 50, y: 50, zoom: 1 };
+        store.p[id].rosterManagedPhotoCrop = false;
         persist(true);
         enhancedRenderConfigLists();
       };

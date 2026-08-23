@@ -77,6 +77,7 @@
     const piece = store.p[pieceId];
     if (piece.rosterManagedName) delete piece.name;
     if (piece.rosterManagedImg) delete piece.img;
+    if (piece.rosterManagedPhotoCrop) delete piece.photoCrop;
     if (piece.rosterManagedSound) {
       delete piece.sound;
       delete piece.soundName;
@@ -88,6 +89,7 @@
     delete piece.participantRealName;
     delete piece.rosterManagedName;
     delete piece.rosterManagedImg;
+    delete piece.rosterManagedPhotoCrop;
     delete piece.rosterManagedSound;
     delete piece.autoLineupReason;
   }
@@ -107,9 +109,15 @@
     if (person.photo) {
       target.img = person.photo;
       target.rosterManagedImg = true;
+      target.photoCrop = typeof window.normalizePiecePhotoCrop === 'function'
+        ? window.normalizePiecePhotoCrop(person.photoCrop)
+        : (person.photoCrop ? { ...person.photoCrop } : { x: 50, y: 50, zoom: 1 });
+      target.rosterManagedPhotoCrop = true;
     } else {
       delete target.img;
       delete target.rosterManagedImg;
+      if (target.rosterManagedPhotoCrop) delete target.photoCrop;
+      delete target.rosterManagedPhotoCrop;
     }
 
     const music = participantMusic(person);

@@ -12,6 +12,11 @@
     return typeof value === 'string' ? value.trim() : '';
   }
 
+  function bounded(value, min, max, fallback) {
+    const number = Number(value);
+    return Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : fallback;
+  }
+
   function first(source, keys) {
     if (!source || typeof source !== 'object') return '';
     for (const key of keys) {
@@ -49,6 +54,14 @@
     const musicName = text(raw.musicName) || text(musicObject.name) || first(raw, ['music_name', 'theme_music_name']);
     const musicUrl = text(raw.musicUrl) || text(musicObject.url) || first(raw, ['music_url', 'theme_music_url']);
     const musicFileUrl = text(raw.musicFileUrl) || text(musicObject.fileUrl) || first(raw, ['music_file_url', 'theme_music_file_url']);
+    const rawPhotoCrop = raw.photoCrop || raw.photo_crop || raw.extra_fields?.photo_crop;
+    const photoCrop = rawPhotoCrop && typeof rawPhotoCrop === 'object'
+      ? {
+          x: bounded(rawPhotoCrop.x, 0, 100, 50),
+          y: bounded(rawPhotoCrop.y, 0, 100, 50),
+          zoom: bounded(rawPhotoCrop.zoom, 1, 3, 1)
+        }
+      : null;
 
     return {
       id: String(id),
@@ -59,6 +72,7 @@
         'fotoUrl', 'foto_url', 'photoUrl', 'photo_url', 'imageUrl', 'image_url',
         'profileImage', 'profile_image'
       ]),
+      photoCrop,
       character: first(raw, ['cosplay', 'personagem', 'character', 'fantasia', 'personagemCosplay', 'personagem_cosplay']),
       preferredPiece: first(raw, [
         'peca', 'peça', 'piece', 'pecaDesejada', 'peçaDesejada', 'peca_desejada',

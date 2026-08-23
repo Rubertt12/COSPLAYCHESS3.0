@@ -26,6 +26,11 @@
     return '';
   }
 
+  function bounded(value, min, max, fallback) {
+    const number = Number(value);
+    return Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : fallback;
+  }
+
   function getRosterArray(data) {
     if (Array.isArray(data)) return data;
     if (!data || typeof data !== 'object') return [];
@@ -49,6 +54,14 @@
       'foto', 'photo', 'imagem', 'image', 'avatar', 'fotoUrl', 'foto_url',
       'photoUrl', 'photo_url', 'imageUrl', 'image_url', 'profileImage', 'profile_image'
     ]);
+    const rawPhotoCrop = raw.photoCrop || raw.photo_crop || raw.extra_fields?.photo_crop;
+    const photoCrop = rawPhotoCrop && typeof rawPhotoCrop === 'object'
+      ? {
+          x: bounded(rawPhotoCrop.x, 0, 100, 50),
+          y: bounded(rawPhotoCrop.y, 0, 100, 50),
+          zoom: bounded(rawPhotoCrop.zoom, 1, 3, 1)
+        }
+      : null;
     const character = firstValue(raw, [
       'personagem', 'character', 'cosplay', 'fantasia', 'personagemCosplay', 'personagem_cosplay'
     ]);
@@ -67,6 +80,7 @@
       id: String(id),
       name,
       photo,
+      photoCrop,
       character,
       preferredPiece,
       team,
@@ -109,10 +123,12 @@
     const piece = store.p[pieceId];
     if (piece.rosterManagedName) delete piece.name;
     if (piece.rosterManagedImg) delete piece.img;
+    if (piece.rosterManagedPhotoCrop) delete piece.photoCrop;
     delete piece.participantId;
     delete piece.participant;
     delete piece.rosterManagedName;
     delete piece.rosterManagedImg;
+    delete piece.rosterManagedPhotoCrop;
     persistAndRefresh();
   }
 
@@ -132,14 +148,18 @@
       const old = store.p[previousPiece] || {};
       if (old.rosterManagedName) delete old.name;
       if (old.rosterManagedImg) delete old.img;
+      if (old.rosterManagedPhotoCrop) delete old.photoCrop;
       delete old.participantId;
       delete old.participant;
       delete old.rosterManagedName;
       delete old.rosterManagedImg;
+      delete old.rosterManagedPhotoCrop;
     }
 
     const target = store.p[pieceId];
     if (target.rosterManagedImg) delete target.img;
+    if (target.rosterManagedPhotoCrop) delete target.photoCrop;
+    delete target.rosterManagedPhotoCrop;
 
     target.name = participant.name;
     target.participantId = participant.id;
@@ -149,8 +169,14 @@
     if (participant.photo) {
       target.img = participant.photo;
       target.rosterManagedImg = true;
+      target.photoCrop = typeof window.normalizePiecePhotoCrop === 'function'
+        ? window.normalizePiecePhotoCrop(participant.photoCrop)
+        : (participant.photoCrop ? { ...participant.photoCrop } : { x: 50, y: 50, zoom: 1 });
+      target.rosterManagedPhotoCrop = true;
     } else {
       delete target.rosterManagedImg;
+      if (target.rosterManagedPhotoCrop) delete target.photoCrop;
+      delete target.rosterManagedPhotoCrop;
     }
 
     persistAndRefresh();

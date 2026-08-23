@@ -217,6 +217,8 @@ function triggerQuickUpload(id) {
             r.onload = ev => {
                 if(!store.p[id]) store.p[id] = {};
                 store.p[id].img = ev.target.result;
+                store.p[id].photoCrop = { x: 50, y: 50, zoom: 1 };
+                store.p[id].rosterManagedPhotoCrop = false;
                 save();
                 renderBoard(); 
                 renderConfigLists();
@@ -667,6 +669,7 @@ function renderBoard() {
         if(id) {
             const c = document.createElement('div'); c.className='piece-container';
             const p = document.createElement('div'); p.className='piece';
+            p.dataset.pieceId = id;
             // Se a peça tem imagem personalizada, usa-a
             if (store.p[id]?.img) {
                 p.style.backgroundImage = `url(${store.p[id].img})`;
@@ -691,6 +694,7 @@ function renderBoard() {
             }
 
             p.onclick = (e) => { if(edit) { e.stopPropagation(); triggerQuickUpload(id); } };
+            if (typeof window.applyPiecePhotoCrop === 'function') window.applyPiecePhotoCrop(p, id, { board: true });
 
             c.appendChild(p);
             if(edit) {
@@ -806,6 +810,7 @@ function openArena() {
 
     const setFighter = (el, id, type) => {
         el.innerHTML = ''; 
+        el.dataset.pieceId = id;
         if (store.p[id]?.img) {
             el.style.backgroundImage = `url(${store.p[id].img})`;
         } else {
@@ -830,6 +835,7 @@ function openArena() {
             el.style.boxShadow = '0 4px 10px rgba(0,0,0,0.4)';
             el.innerText = glyph;
         }
+        if (typeof window.applyPiecePhotoCrop === 'function') window.applyPiecePhotoCrop(el, id);
     };
     setFighter(imgA, idA, typeA);
     setFighter(imgD, idD, typeD);
@@ -1346,6 +1352,7 @@ function renderGraveyard() {
     const gy = document.getElementById('graveyard'); gy.innerHTML = '';
     store.graveyard.forEach((id, idx) => {
         const p = document.createElement('div'); p.className = `gy-piece ${gySel === idx ? 'selected' : ''}`;
+        p.dataset.pieceId = id;
         if(store.p[id]?.img) p.style.backgroundImage = `url(${store.p[id].img})`;
         else {
             const type = id.charAt(0);
@@ -1365,6 +1372,7 @@ function renderGraveyard() {
             p.style.fontSize = '14px';
             p.innerText = glyph;
         }
+        if (typeof window.applyPiecePhotoCrop === 'function') window.applyPiecePhotoCrop(p, id);
         p.onclick = () => { gySel = (gySel === idx) ? null : idx; renderGraveyard(); };
         gy.appendChild(p);
     });
@@ -1521,7 +1529,7 @@ function updatePieceName(id, newName) {
     renderBoard(); 
 }
 
-function upPiece(id, i) { const r = new FileReader(); r.onload = e => { if(!store.p[id]) store.p[id]={}; store.p[id].img = e.target.result; save(); renderBoard(); renderConfigLists(); }; r.readAsDataURL(i.files[0]); }
+function upPiece(id, i) { const r = new FileReader(); r.onload = e => { if(!store.p[id]) store.p[id]={}; store.p[id].img = e.target.result; store.p[id].photoCrop = { x: 50, y: 50, zoom: 1 }; store.p[id].rosterManagedPhotoCrop = false; save(); renderBoard(); renderConfigLists(); }; r.readAsDataURL(i.files[0]); }
 function upPieceSound(id, i) { const r = new FileReader(); r.onload = e => { if(!store.p[id]) store.p[id]={}; store.p[id].sound = e.target.result; if (pieceSoundAudios[id]) pieceSoundAudios[id].src = e.target.result; if (store.p[id].volume === undefined) store.p[id].volume = 0.8; save(); renderConfigLists(); }; r.readAsDataURL(i.files[0]); }
 
 function updatePieceVolume(id, value) {

@@ -23,6 +23,11 @@
     return '';
   }
 
+  function bounded(value, min, max, fallback) {
+    const number = Number(value);
+    return Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : fallback;
+  }
+
   function normalizePerson(raw, index, fallbackId = '') {
     if (!raw || typeof raw !== 'object') return null;
 
@@ -67,12 +72,21 @@
       'id', 'uuid', 'codigo', 'código', 'matricula', 'matrícula', 'registration_id'
     ]);
     const id = sourceId || email || fallbackId || `${name.toLowerCase().replace(/\s+/g, '-')}-${index + 1}`;
+    const rawPhotoCrop = raw.photoCrop || raw.photo_crop || raw.extra_fields?.photo_crop;
+    const photoCrop = rawPhotoCrop && typeof rawPhotoCrop === 'object'
+      ? {
+          x: bounded(rawPhotoCrop.x, 0, 100, 50),
+          y: bounded(rawPhotoCrop.y, 0, 100, 50),
+          zoom: bounded(rawPhotoCrop.zoom, 1, 3, 1)
+        }
+      : null;
 
     return {
       id: String(id),
       name,
       nick,
       photo,
+      photoCrop,
       character,
       preferredPiece,
       secondPreferredPiece,
@@ -194,6 +208,7 @@
     const editMode = document.getElementById('edit-mode');
     if (!editMode?.checked) return;
 
+    if (event.target?.closest?.('.cc-piece-crop-trigger')) return;
     const piece = event.target?.closest?.('#board .piece');
     if (!piece) return;
     const square = piece.closest('.sq');
