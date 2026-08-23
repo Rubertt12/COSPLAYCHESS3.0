@@ -126,6 +126,86 @@
       #game-exit-btn-start:hover{border-color:#ff5d80!important;background:linear-gradient(135deg,#311820,#4a1422)!important}
       #game-exit-btn-system{width:100%;margin-top:8px!important;background:#2c141b!important;color:#ff9aae!important;border:1px solid rgba(255,87,120,.35)!important}
 
+      #sidebar.cc-settings-drawer{left:0!important;width:min(600px,96vw)!important;height:100vh;height:100dvh!important;transform:translateX(-102%);transition:transform .34s cubic-bezier(.16,1,.3,1)!important;border-right:1px solid rgba(224,190,119,.34)!important;background:linear-gradient(165deg,rgba(15,14,19,.985),rgba(6,7,10,.995))!important;box-shadow:34px 0 100px rgba(0,0,0,.72);overflow:hidden}
+      #sidebar.cc-settings-drawer.open{left:0!important;transform:translateX(0)}
+      #sidebar .cc-control-header{position:relative;padding:22px 24px 18px!important;border-bottom:1px solid rgba(255,255,255,.075)!important;background:radial-gradient(circle at 8% 0,rgba(224,190,119,.12),transparent 38%)}
+      #sidebar .cc-control-kicker{color:#d4aa59;font-size:8px;font-weight:1000;letter-spacing:2.4px;text-transform:uppercase}
+      #sidebar .cc-control-header h2{margin:5px 42px 3px 0!important;color:#fff5df!important;font-family:Georgia,serif;font-size:25px!important;font-weight:500;letter-spacing:.2px!important}
+      #sidebar .cc-control-subtitle{margin:0 48px 14px 0;color:#79727d;font-size:9px;line-height:1.45}
+      #sidebar .cc-drawer-close{position:absolute;right:18px;top:18px;width:34px;height:34px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:#131319;color:#aaa;font-size:18px;cursor:pointer}
+      #sidebar .cc-drawer-close:hover{border-color:#d3aa5c;color:#ffe1a1}
+      #sidebar .cc-mode-toggles{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px!important;margin-top:0!important}
+      #sidebar .cc-mode-toggle{min-width:0;padding:9px 8px!important;border:1px solid rgba(255,255,255,.07);border-radius:9px;background:rgba(255,255,255,.025);color:#8c8690!important;font-size:7px!important;font-weight:900!important;line-height:1.25;letter-spacing:.4px;display:flex!important;align-items:center!important;gap:7px!important;cursor:pointer}
+      #sidebar .cc-mode-toggle:has(input:checked){border-color:rgba(224,190,119,.38);background:rgba(224,190,119,.08);color:#f0ca7d!important}
+      #sidebar .cc-mode-toggle input{width:15px;height:15px;accent-color:#d3a955;flex:0 0 auto}
+      #sidebar .tabs{padding:8px 10px;gap:5px;background:#08080b!important;border-bottom:1px solid rgba(255,255,255,.07)}
+      #sidebar .tabs button{min-width:0;padding:9px 5px!important;border:1px solid transparent!important;border-radius:9px;color:#68626d!important;font-size:7px!important;letter-spacing:.5px!important;display:flex;flex-direction:column;align-items:center;gap:3px;transition:.18s ease}
+      #sidebar .tabs button span{font-size:15px;line-height:1}
+      #sidebar .tabs button b{font-size:7px;letter-spacing:.75px}
+      #sidebar .tabs button.active{color:#ffe1a0!important;border-color:rgba(224,190,119,.26)!important;background:rgba(224,190,119,.075)!important;box-shadow:inset 0 0 18px rgba(224,190,119,.035)}
+      #sidebar .scroll-area{padding:16px 18px 24px!important;scrollbar-gutter:stable;overscroll-behavior:contain}
+      #sidebar .cc-piece-origin-header{display:none!important}
+      .cc-piece-workspace-head{position:sticky;top:-16px;z-index:12;margin:-16px -18px 12px;padding:17px 18px 13px;background:linear-gradient(180deg,rgba(8,8,12,.99) 84%,rgba(8,8,12,.88),transparent);backdrop-filter:blur(12px)}
+      .cc-piece-title-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+      .cc-piece-title-row small{display:block;color:#b58c47;font-size:7px;font-weight:1000;letter-spacing:2px}
+      .cc-piece-title-row h3{margin:4px 0 0;color:#f5efe6;font-family:Georgia,serif;font-size:21px;font-weight:500}
+      .cc-piece-count{color:#746d78;font-size:8px;white-space:nowrap}.cc-piece-count b{color:#e5bd6b;font-size:16px}
+      .cc-piece-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:11px}
+      .cc-piece-stats div{padding:7px 8px;border:1px solid rgba(255,255,255,.055);border-radius:8px;background:rgba(255,255,255,.022)}
+      .cc-piece-stats b{display:block;color:#eee;font-size:12px}.cc-piece-stats span{display:block;margin-top:2px;color:#625d67;font-size:6px;font-weight:900;letter-spacing:.7px}
+      .cc-piece-search{position:relative;margin-top:9px}.cc-piece-search span{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:12px;pointer-events:none}
+      .cc-piece-search input{width:100%;height:38px;padding:0 36px!important;border:1px solid #25252d!important;border-radius:10px!important;background:#101015!important;color:#eee!important;font-size:10px!important;outline:none}
+      .cc-piece-search input:focus{border-color:rgba(224,190,119,.5)!important;box-shadow:0 0 0 3px rgba(224,190,119,.06)}
+      .cc-piece-filter-row{display:flex;gap:5px;margin-top:7px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}.cc-piece-filter-row::-webkit-scrollbar{display:none}
+      .cc-piece-filter{flex:0 0 auto;padding:6px 8px;border:1px solid #25252d;border-radius:999px;background:#101015;color:#706a74;font-size:6.5px;font-weight:900;letter-spacing:.45px;cursor:pointer}
+      .cc-piece-filter.active{border-color:rgba(224,190,119,.4);background:rgba(224,190,119,.09);color:#f0c979}
+      .cc-piece-settings-grid{display:grid;grid-template-columns:1fr;gap:8px}
+      #sidebar .cc-piece-card{margin:0!important;padding:12px!important;border:1px solid rgba(255,255,255,.075)!important;border-radius:13px!important;background:linear-gradient(150deg,rgba(255,255,255,.035),rgba(255,255,255,.012))!important;box-shadow:0 10px 28px rgba(0,0,0,.16);transition:border-color .18s ease,background .18s ease}
+      #sidebar .cc-piece-card:hover,#sidebar .cc-piece-card.expanded{border-color:rgba(224,190,119,.26)!important;background:linear-gradient(150deg,rgba(224,190,119,.055),rgba(255,255,255,.012))!important}
+      .cc-piece-card-head{min-width:0;flex-wrap:nowrap!important}
+      .cc-piece-photo{flex:0 0 auto!important}
+      .cc-piece-main{min-width:0;flex:1}.cc-piece-main strong{font-size:13px!important}
+      .cc-piece-state{display:flex;gap:4px;align-items:center;margin-left:auto}
+      .cc-piece-state span{width:24px;height:24px;display:grid;place-items:center;border:1px solid #292932;border-radius:7px;background:#111116;color:#514d55;font-size:10px}
+      .cc-piece-state span.ok{border-color:rgba(90,226,159,.2);background:rgba(90,226,159,.06);color:#83efb7}
+      .cc-piece-card-head>button:not(.cc-piece-expand){padding:7px 8px!important;font-size:7px!important;white-space:nowrap}
+      .cc-piece-expand{width:31px;height:31px;display:grid;place-items:center;border:1px solid #303039;border-radius:8px;background:#15151b;color:#8c858f;cursor:pointer;font-size:13px;transition:.18s ease}
+      .cc-piece-card.expanded .cc-piece-expand{transform:rotate(180deg);border-color:rgba(224,190,119,.4);color:#f0c979}
+      .cc-piece-details{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .28s ease,opacity .2s ease}
+      .cc-piece-details-inner{min-height:0;overflow:hidden}
+      .cc-piece-card.expanded .cc-piece-details{grid-template-rows:1fr;opacity:1}
+      .cc-piece-card.expanded .cc-piece-details-inner{padding-top:2px}
+      .cc-piece-no-results{display:none;padding:30px 20px;text-align:center;border:1px dashed #27272f;border-radius:12px;color:#69636e;font-size:9px}.cc-piece-no-results.show{display:block}
+      #list-log .cc-log-head,#list-sys .cc-system-head{margin-bottom:12px;padding:14px;border:1px solid rgba(224,190,119,.14);border-radius:12px;background:rgba(224,190,119,.04)}
+      #list-log .cc-log-head small,#list-sys .cc-system-head small{color:#b28a47;font-size:7px;font-weight:1000;letter-spacing:2px}
+      #list-log .cc-log-head h3,#list-sys .cc-system-head h3{margin:4px 0 2px;color:#f5eee2;font-family:Georgia,serif;font-size:19px;font-weight:500}
+      #list-log .cc-log-head p,#list-sys .cc-system-head p{margin:0;color:#6f6973;font-size:8px;line-height:1.4}
+      #list-log .log-entry{margin-bottom:5px;padding:9px 10px!important;border:1px solid rgba(255,255,255,.055)!important;border-radius:8px;background:rgba(255,255,255,.018)}
+      #list-sys .unit-card{margin-bottom:8px!important;padding:13px!important;border-radius:11px!important;border-color:rgba(255,255,255,.075)!important;background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012))!important}
+      #list-sys>.btn{width:100%!important;min-height:40px!important;margin:0 0 7px!important;border-radius:10px!important;font-size:8px!important;letter-spacing:.65px}
+      #list-sys .cc-danger-zone{margin-top:13px;padding:11px;border:1px solid rgba(255,75,112,.18);border-radius:12px;background:rgba(255,75,112,.035)}
+      #list-sys .cc-danger-zone>small{display:block;margin:0 2px 8px;color:#b96778;font-size:7px;font-weight:1000;letter-spacing:1.7px}
+      #sidebar .cc-sidebar-footer{padding:12px 16px!important;background:linear-gradient(180deg,#09090d,#050506)!important;border-top:1px solid rgba(255,255,255,.075)!important}
+      #sidebar .cc-sidebar-footer .btn{min-height:45px;border-radius:10px!important;box-shadow:0 9px 28px rgba(0,0,0,.3)}
+      #start-menu-settings-content .cc-settings-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 12px}
+      #start-menu-settings-content .cc-overview-stat{padding:11px;border:1px solid rgba(255,255,255,.065);border-radius:10px;background:rgba(255,255,255,.025)}
+      #start-menu-settings-content .cc-overview-stat span{display:block;color:#77717c;font-size:7px;font-weight:900;letter-spacing:1px}.cc-overview-stat b{display:block;margin-top:4px;color:#f2e9dc;font-size:13px}
+      #start-menu-settings-content .cc-settings-jumps{display:flex;gap:6px;margin:0 0 14px;overflow-x:auto;scrollbar-width:none}.cc-settings-jumps::-webkit-scrollbar{display:none}
+      #start-menu-settings-content .cc-settings-jumps button{flex:0 0 auto;padding:8px 10px;border:1px solid #292932;border-radius:999px;background:#111116;color:#8b8490;font-size:7px;font-weight:900;letter-spacing:.6px;cursor:pointer}
+      #start-menu-settings-content .cc-settings-jumps button:hover{border-color:rgba(224,190,119,.4);color:#f0c979}
+      @media(max-width:760px){
+        #sidebar.cc-settings-drawer{width:100vw!important}
+        #sidebar .cc-control-header{padding:17px 16px 13px!important}
+        #sidebar .cc-control-header h2{font-size:21px!important}
+        #sidebar .cc-control-subtitle{display:none}
+        #sidebar .cc-mode-toggles{margin-top:10px!important}
+        #sidebar .scroll-area{padding:13px 12px 20px!important}
+        .cc-piece-workspace-head{top:-13px;margin:-13px -12px 10px;padding:14px 12px 11px}
+        .cc-piece-card-head{flex-wrap:wrap!important}.cc-piece-main{min-width:150px}
+        .cc-piece-state{order:3;margin-left:58px}.cc-piece-expand{margin-left:auto}
+        #start-menu-settings-content .cc-settings-overview{grid-template-columns:1fr}
+      }
+
       .duel-timing-card{margin:12px 0;padding:14px;border:1px solid rgba(224,190,119,.2);border-radius:13px;background:linear-gradient(145deg,rgba(224,190,119,.075),rgba(13,13,18,.94));box-shadow:inset 0 0 0 1px rgba(255,255,255,.02)}
       .duel-timing-card .duel-timing-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:11px}
       .duel-timing-card .duel-timing-heading small{display:block;color:#cda858;font-size:8px;font-weight:1000;letter-spacing:1.6px}
@@ -479,6 +559,309 @@
       else system.prepend(card);
     }
     syncDuelTimingControls();
+  }
+
+  const PIECE_SETTINGS_ORDER = ['T1', 'C1', 'B1', 'Q1', 'K1', 'B2', 'C2', 'T2', 'P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8'];
+  const pieceSettingsState = {
+    white: { query: '', filter: 'all' },
+    black: { query: '', filter: 'all' }
+  };
+  const expandedPieceSettings = new Set();
+  const observedSettingsLists = new WeakSet();
+
+  function pieceSettingsInfo(id) {
+    let piece = {};
+    try { piece = store?.p?.[id] || {}; } catch (_) {}
+    const assigned = Boolean(piece.participantId || piece.participantRealName || piece.participant?.name);
+    const photo = Boolean(piece.img);
+    const audio = Boolean(piece.sound);
+    return {
+      id,
+      assigned,
+      photo,
+      audio,
+      searchable: [id, piece.name, piece.participantRealName, piece.participant?.name, piece.participant?.character]
+        .filter(Boolean).join(' ').toLocaleLowerCase('pt-BR')
+    };
+  }
+
+  function applyPieceSettingsFilter(side) {
+    const container = document.getElementById(`list-${side}`);
+    if (!container) return;
+    const state = pieceSettingsState[side];
+    const query = state.query.trim().toLocaleLowerCase('pt-BR');
+    let visible = 0;
+    container.querySelectorAll('.cc-piece-card').forEach(card => {
+      const matchesQuery = !query || String(card.dataset.search || '').includes(query);
+      const matchesFilter = state.filter === 'all'
+        || (state.filter === 'assigned' && card.dataset.assigned === 'true')
+        || (state.filter === 'photo' && card.dataset.photo === 'false')
+        || (state.filter === 'audio' && card.dataset.audio === 'false');
+      card.hidden = !(matchesQuery && matchesFilter) || card.dataset.layoutHidden === 'true';
+      if (!card.hidden) visible += 1;
+    });
+    container.querySelector('.cc-piece-no-results')?.classList.toggle('show', visible === 0);
+    const visibleLabel = container.querySelector('[data-cc-visible-count]');
+    if (visibleLabel) visibleLabel.textContent = String(visible);
+  }
+
+  function decoratePieceSettingsList(side) {
+    const container = document.getElementById(`list-${side}`);
+    if (!container || container.dataset.ccDecorating === '1') return;
+    if (container.querySelector('.cc-piece-workspace-head')) {
+      applyPieceSettingsFilter(side);
+      return;
+    }
+    container.dataset.ccDecorating = '1';
+    try {
+      const team = side === 'white' ? 'B' : 'P';
+      const cards = Array.from(container.children).filter(child => child.classList.contains('unit-card'));
+      const info = cards.map((card, index) => ({ card, data: pieceSettingsInfo(`${PIECE_SETTINGS_ORDER[index] || `P${index + 1}`}_${team}`) }));
+      const activeInfo = info.filter(item => item.card.style.display !== 'none');
+      const stats = {
+        assigned: activeInfo.filter(item => item.data.assigned).length,
+        photo: activeInfo.filter(item => item.data.photo).length,
+        audio: activeInfo.filter(item => item.data.audio).length
+      };
+      const origin = Array.from(container.children).find(child => !child.classList.contains('unit-card'));
+      origin?.classList.add('cc-piece-origin-header');
+
+      const head = document.createElement('div');
+      head.className = 'cc-piece-workspace-head';
+      head.innerHTML = `
+        <div class="cc-piece-title-row">
+          <div><small>CONFIGURAÇÃO DAS PEÇAS</small><h3>${side === 'white' ? 'Brancas' : 'Pretas'}</h3></div>
+          <div class="cc-piece-count"><b data-cc-visible-count>${activeInfo.length}</b> de ${activeInfo.length}</div>
+        </div>
+        <div class="cc-piece-stats">
+          <div><b>${stats.assigned}</b><span>ESCALADAS</span></div>
+          <div><b>${stats.photo}</b><span>COM FOTO</span></div>
+          <div><b>${stats.audio}</b><span>COM ÁUDIO</span></div>
+        </div>
+        <label class="cc-piece-search"><span>⌕</span><input type="search" placeholder="Buscar personagem, cosplayer ou peça..." value="${esc(pieceSettingsState[side].query)}" aria-label="Buscar peças ${side === 'white' ? 'brancas' : 'pretas'}"></label>
+        <div class="cc-piece-filter-row" role="group" aria-label="Filtrar peças">
+          <button class="cc-piece-filter" data-filter="all">TODAS</button>
+          <button class="cc-piece-filter" data-filter="assigned">ESCALADAS</button>
+          <button class="cc-piece-filter" data-filter="photo">SEM FOTO</button>
+          <button class="cc-piece-filter" data-filter="audio">SEM ÁUDIO</button>
+        </div>`;
+      head.querySelector('.cc-piece-search input')?.addEventListener('input', event => {
+        pieceSettingsState[side].query = event.target.value;
+        applyPieceSettingsFilter(side);
+      });
+      head.querySelectorAll('.cc-piece-filter').forEach(button => {
+        button.classList.toggle('active', button.dataset.filter === pieceSettingsState[side].filter);
+        button.addEventListener('click', () => {
+          pieceSettingsState[side].filter = button.dataset.filter || 'all';
+          head.querySelectorAll('.cc-piece-filter').forEach(item => item.classList.toggle('active', item === button));
+          applyPieceSettingsFilter(side);
+        });
+      });
+
+      const grid = document.createElement('div');
+      grid.className = 'cc-piece-settings-grid';
+      info.forEach(({ card, data }) => {
+        card.classList.add('cc-piece-card');
+        card.dataset.pieceId = data.id;
+        card.dataset.assigned = String(data.assigned);
+        card.dataset.photo = String(data.photo);
+        card.dataset.audio = String(data.audio);
+        card.dataset.search = data.searchable;
+        card.dataset.layoutHidden = String(card.style.display === 'none');
+        const children = Array.from(card.children);
+        const cardHead = children.shift();
+        if (cardHead) {
+          cardHead.classList.add('cc-piece-card-head');
+          cardHead.children[0]?.classList.add('cc-piece-photo');
+          cardHead.children[1]?.classList.add('cc-piece-main');
+          const state = document.createElement('div');
+          state.className = 'cc-piece-state';
+          state.innerHTML = `<span class="${data.assigned ? 'ok' : ''}" title="${data.assigned ? 'Participante escalado' : 'Sem participante'}">♟</span><span class="${data.photo ? 'ok' : ''}" title="${data.photo ? 'Foto configurada' : 'Sem foto'}">▣</span><span class="${data.audio ? 'ok' : ''}" title="${data.audio ? 'Áudio configurado' : 'Sem áudio'}">♪</span>`;
+          const expand = document.createElement('button');
+          expand.type = 'button';
+          expand.className = 'cc-piece-expand';
+          expand.textContent = '⌄';
+          expand.title = 'Abrir ajustes da peça';
+          expand.setAttribute('aria-label', `Abrir ajustes de ${data.id}`);
+          expand.addEventListener('click', () => {
+            const open = card.classList.toggle('expanded');
+            if (open) expandedPieceSettings.add(data.id); else expandedPieceSettings.delete(data.id);
+            expand.setAttribute('aria-expanded', String(open));
+          });
+          cardHead.append(state, expand);
+        }
+        const details = document.createElement('div');
+        details.className = 'cc-piece-details';
+        const detailsInner = document.createElement('div');
+        detailsInner.className = 'cc-piece-details-inner';
+        children.forEach(child => detailsInner.appendChild(child));
+        details.appendChild(detailsInner);
+        card.appendChild(details);
+        if (expandedPieceSettings.has(data.id)) card.classList.add('expanded');
+        card.querySelector('.cc-piece-expand')?.setAttribute('aria-expanded', String(card.classList.contains('expanded')));
+        grid.appendChild(card);
+      });
+      const empty = document.createElement('div');
+      empty.className = 'cc-piece-no-results';
+      empty.textContent = 'Nenhuma peça encontrada com esse filtro.';
+      container.prepend(head);
+      container.append(grid, empty);
+      applyPieceSettingsFilter(side);
+    } finally {
+      delete container.dataset.ccDecorating;
+    }
+  }
+
+  function observeSettingsList(id, callback) {
+    const target = document.getElementById(id);
+    if (!target || observedSettingsLists.has(target)) return;
+    observedSettingsLists.add(target);
+    let scheduled = false;
+    new MutationObserver(() => {
+      if (scheduled) return;
+      scheduled = true;
+      setTimeout(() => { scheduled = false; callback(); }, 0);
+    }).observe(target, { childList: true });
+  }
+
+  function decorateSidebarShell() {
+    const sidebar = document.getElementById('sidebar');
+    if (!sidebar) return;
+    sidebar.classList.add('cc-settings-drawer');
+    const header = sidebar.firstElementChild;
+    if (header && !header.classList.contains('cc-control-header')) {
+      header.classList.add('cc-control-header');
+      const title = header.querySelector('h2');
+      if (title) title.textContent = 'Central da partida';
+      const kicker = document.createElement('div');
+      kicker.className = 'cc-control-kicker';
+      kicker.textContent = 'COSPLAY CHESS · CONTROLE';
+      header.prepend(kicker);
+      const subtitle = document.createElement('p');
+      subtitle.className = 'cc-control-subtitle';
+      subtitle.textContent = 'Organize o elenco, ajuste as peças e controle a operação do jogo.';
+      title?.insertAdjacentElement('afterend', subtitle);
+      const toggles = header.querySelector('div:not(.cc-control-kicker)');
+      toggles?.classList.add('cc-mode-toggles');
+      toggles?.querySelectorAll('label').forEach(label => label.classList.add('cc-mode-toggle'));
+      const close = document.createElement('button');
+      close.type = 'button';
+      close.className = 'cc-drawer-close';
+      close.textContent = '×';
+      close.title = 'Fechar configurações';
+      close.addEventListener('click', () => { if (sidebar.classList.contains('open')) window.toggleMenu?.(); });
+      header.appendChild(close);
+    }
+    const tabContent = {
+      white: ['♙', 'BRANCAS'],
+      black: ['♟', 'PRETAS'],
+      log: ['≡', 'HISTÓRICO'],
+      sys: ['⚙', 'SISTEMA']
+    };
+    Object.entries(tabContent).forEach(([id, value]) => {
+      const button = document.getElementById(`t-${id}`);
+      if (button && !button.querySelector('b')) button.innerHTML = `<span>${value[0]}</span><b>${value[1]}</b>`;
+    });
+    sidebar.lastElementChild?.classList.add('cc-sidebar-footer');
+
+    if (!sidebar.__ccOpenObserver) {
+      sidebar.__ccOpenObserver = new MutationObserver(() => document.body.classList.toggle('cc-settings-open', sidebar.classList.contains('open')));
+      sidebar.__ccOpenObserver.observe(sidebar, { attributes: true, attributeFilter: ['class'] });
+    }
+  }
+
+  function decorateSystemSettings() {
+    const system = document.getElementById('list-sys');
+    if (!system) return;
+    if (!system.querySelector('.cc-system-head')) {
+      const head = document.createElement('div');
+      head.className = 'cc-system-head';
+      head.innerHTML = '<small>OPERAÇÃO DO JOGO</small><h3>Sistema e partida</h3><p>Áudio, tabuleiro, dados e comandos gerais organizados em um só lugar.</p>';
+      system.prepend(head);
+    }
+    system.querySelectorAll('.unit-card').forEach(card => card.classList.add('cc-system-card'));
+    let danger = system.querySelector('.cc-danger-zone');
+    if (!danger) {
+      const dangerous = Array.from(system.querySelectorAll(':scope > button')).filter(button => /clearBoardPieces|resetGame|exitCosplayChess/.test(button.getAttribute('onclick') || '') || button.id === 'game-exit-btn-system');
+      if (dangerous.length) {
+        danger = document.createElement('div');
+        danger.className = 'cc-danger-zone';
+        danger.innerHTML = '<small>ÁREA DE CONTROLE CRÍTICO</small>';
+        dangerous.forEach(button => danger.appendChild(button));
+        system.appendChild(danger);
+      }
+    }
+  }
+
+  function decorateLogSettings() {
+    const log = document.getElementById('list-log');
+    if (!log || log.querySelector('.cc-log-head')) return;
+    const head = document.createElement('div');
+    head.className = 'cc-log-head';
+    head.innerHTML = '<small>REGISTRO DA PARTIDA</small><h3>Histórico de jogadas</h3><p>As ações mais recentes aparecem primeiro.</p>';
+    log.prepend(head);
+  }
+
+  function decorateStartSettings() {
+    const settings = document.getElementById('start-menu-settings-content');
+    if (!settings) return;
+    const header = settings.querySelector('.settings-v3-header');
+    if (header) {
+      const title = header.querySelector('h2');
+      const description = header.querySelector('p');
+      if (title) title.textContent = 'Central da partida';
+      if (description) description.textContent = 'Defina visual, regras, duelo e elenco antes de abrir o tabuleiro.';
+    }
+    const timing = storedDuelTiming();
+    const rosterCount = (() => { try { return Array.isArray(store?.g?.roster) ? store.g.roster.length : 0; } catch (_) { return 0; } })();
+    const formation = (() => { try { return store?.g?.layoutPieceCount || store?.g?.appliedLayout || 32; } catch (_) { return 32; } })();
+    let overview = settings.querySelector('.cc-settings-overview');
+    if (!overview) {
+      overview = document.createElement('div');
+      overview.className = 'cc-settings-overview';
+      (header || settings.firstElementChild)?.insertAdjacentElement('afterend', overview);
+    }
+    overview.innerHTML = `<div class="cc-overview-stat"><span>FORMAÇÃO</span><b>${formation} peças</b></div><div class="cc-overview-stat"><span>ELENCO IMPORTADO</span><b>${rosterCount} inscritos</b></div><div class="cc-overview-stat"><span>TEMPO DO DUELO</span><b>${timingLabel(timing.animationMs + timing.winnerMs)}</b></div>`;
+
+    const visual = settings.querySelector('.menu-section-title');
+    const match = document.getElementById('opponent-select')?.closest('.start-config-row');
+    const duel = document.getElementById('duel-timing-settings');
+    const rosterCard = document.getElementById('json-data-settings') || document.getElementById('auto-lineup-card');
+    const targets = [
+      ['VISUAL', visual],
+      ['PARTIDA', match],
+      ['DUELO', duel],
+      ['ELENCO', rosterCard]
+    ].filter(item => item[1]);
+    targets.forEach(([label, target], index) => {
+      target.id ||= `cc-settings-section-${index}`;
+      target.style.scrollMarginTop = '105px';
+    });
+    if (!settings.querySelector('.cc-settings-jumps') && targets.length) {
+      const jumps = document.createElement('div');
+      jumps.className = 'cc-settings-jumps';
+      targets.forEach(([label, target]) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = label;
+        button.addEventListener('click', () => target.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+        jumps.appendChild(button);
+      });
+      overview.insertAdjacentElement('afterend', jumps);
+    }
+  }
+
+  function installSettingsWorkspace() {
+    decorateSidebarShell();
+    decorateStartSettings();
+    decoratePieceSettingsList('white');
+    decoratePieceSettingsList('black');
+    decorateSystemSettings();
+    decorateLogSettings();
+    observeSettingsList('list-white', () => decoratePieceSettingsList('white'));
+    observeSettingsList('list-black', () => decoratePieceSettingsList('black'));
+    observeSettingsList('list-sys', decorateSystemSettings);
+    observeSettingsList('list-log', decorateLogSettings);
   }
 
   function ensureMoveBanner() {
@@ -884,10 +1267,12 @@
   installMoveNaming();
   installArenaUpgrade();
   installDuelTimingSettings();
+  installSettingsWorkspace();
   installExitButtons();
 
   setTimeout(() => {
     installDuelTimingSettings();
+    installSettingsWorkspace();
     installExitButtons();
     try {
       const last = store?.g?.lastMoveDisplay;
