@@ -126,6 +126,22 @@
       #game-exit-btn-start:hover{border-color:#ff5d80!important;background:linear-gradient(135deg,#311820,#4a1422)!important}
       #game-exit-btn-system{width:100%;margin-top:8px!important;background:#2c141b!important;color:#ff9aae!important;border:1px solid rgba(255,87,120,.35)!important}
 
+      .duel-timing-card{margin:12px 0;padding:14px;border:1px solid rgba(224,190,119,.2);border-radius:13px;background:linear-gradient(145deg,rgba(224,190,119,.075),rgba(13,13,18,.94));box-shadow:inset 0 0 0 1px rgba(255,255,255,.02)}
+      .duel-timing-card .duel-timing-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:11px}
+      .duel-timing-card .duel-timing-heading small{display:block;color:#cda858;font-size:8px;font-weight:1000;letter-spacing:1.6px}
+      .duel-timing-card .duel-timing-heading strong{display:block;margin-top:3px;color:#f7f0e5;font-size:13px}
+      .duel-timing-card .duel-timing-heading span{color:#756f79;font-size:18px}
+      .duel-timing-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+      .duel-timing-control{display:block;padding:10px;border:1px solid rgba(255,255,255,.065);border-radius:10px;background:rgba(255,255,255,.025)}
+      .duel-timing-control>span{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;color:#aaa3ae;font-size:8px;font-weight:900;letter-spacing:.7px}
+      .duel-timing-control b{color:#f2ca77;font-size:10px;white-space:nowrap}
+      .duel-timing-control input{width:100%;accent-color:#d6ab5a;cursor:pointer}
+      .duel-timing-help{margin:9px 2px 0;color:#716b75;font-size:8px;line-height:1.45}
+      #duel-timing-system{margin-top:0}
+      #duel-timing-system .duel-timing-grid{grid-template-columns:1fr}
+      #duel-timing-system .duel-timing-heading strong{font-size:11px}
+      @media(max-width:520px){.duel-timing-grid{grid-template-columns:1fr}}
+
       #move-name-banner{position:fixed;top:84px;left:50%;z-index:8500;transform:translate(-50%,-10px);width:min(620px,calc(100vw - 32px));padding:10px 15px;border:1px solid rgba(224,190,119,.38);border-radius:12px;background:linear-gradient(135deg,rgba(13,12,18,.96),rgba(31,21,25,.96));box-shadow:0 16px 45px rgba(0,0,0,.5);backdrop-filter:blur(10px);opacity:0;visibility:hidden;pointer-events:none;transition:.22s ease;text-align:center}
       #move-name-banner.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
       #move-name-banner small{display:block;color:#9e929f;font-size:8px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase}
@@ -219,32 +235,32 @@
       #arena .duel-speed-lines{position:absolute;left:8%;right:8%;top:22%;height:46%;opacity:0;filter:blur(.2px);background:repeating-linear-gradient(0deg,transparent 0 17px,rgba(255,235,189,.78) 18px,transparent 20px);mask-image:linear-gradient(90deg,transparent,black 20%,black 80%,transparent)}
       #arena.duel-left-wins .duel-speed-lines{transform:skewX(-18deg) translateX(-34%)}
       #arena.duel-right-wins .duel-speed-lines{transform:skewX(18deg) translateX(34%)}
-      #arena.duel-cinematic .duel-impact-layer.active .duel-speed-lines{animation:duelCinematicTrail .58s cubic-bezier(.1,.8,.2,1) .31s both}
-      #arena.duel-cinematic .duel-impact-layer.active .duel-impact-flash{animation:duelCinematicFlash 1.32s ease-out both}
-      #arena.duel-cinematic .duel-impact-layer.active .duel-impact-ring{animation:duelCinematicRing .72s cubic-bezier(.1,.76,.18,1) .48s both}
-      #arena.duel-cinematic .duel-impact-layer.active .duel-impact-slash{animation:duelCinematicSlash .62s cubic-bezier(.12,.85,.18,1) .42s both}
+      #arena.duel-cinematic .duel-impact-layer.active .duel-speed-lines{animation:duelCinematicTrail var(--duel-trail-duration,600ms) cubic-bezier(.1,.8,.2,1) var(--duel-trail-delay,310ms) both}
+      #arena.duel-cinematic .duel-impact-layer.active .duel-impact-flash{animation:duelCinematicFlash var(--duel-animation-duration,1400ms) ease-out both}
+      #arena.duel-cinematic .duel-impact-layer.active .duel-impact-ring{animation:duelCinematicRing var(--duel-ring-duration,760ms) cubic-bezier(.1,.76,.18,1) var(--duel-impact-delay,500ms) both}
+      #arena.duel-cinematic .duel-impact-layer.active .duel-impact-slash{animation:duelCinematicSlash var(--duel-slash-duration,640ms) cubic-bezier(.12,.85,.18,1) var(--duel-slash-delay,430ms) both}
       #arena.duel-left-wins{--duel-slash-angle:55deg}
       #arena.duel-right-wins{--duel-slash-angle:-55deg}
       #arena .duel-impact-slash{transform:rotate(var(--duel-slash-angle,48deg)) scaleY(0)}
-      #arena.duel-cinematic .duel-impact-layer.active .duel-spark{animation:duelCinematicSpark .7s ease-out calc(.48s + var(--delay,0s)) both}
+      #arena.duel-cinematic .duel-impact-layer.active .duel-spark{animation:duelCinematicSpark var(--duel-spark-duration,730ms) ease-out calc(var(--duel-impact-delay,500ms) + var(--delay,0s)) both}
       #arena .duel-result-banner{position:absolute;left:50%;top:50%;width:min(390px,75%);transform:translate(-50%,-35%) scale(.82);padding:15px 20px;border-radius:14px;text-align:center;background:linear-gradient(135deg,rgba(8,8,12,.96),rgba(27,20,19,.94));border:1px solid rgba(255,214,132,.48);box-shadow:0 20px 65px rgba(0,0,0,.74),0 0 34px rgba(255,181,56,.17);opacity:0}
       #arena .duel-result-banner small{display:block;color:#e6b95e;font-size:9px;font-weight:1000;letter-spacing:3px}
       #arena .duel-result-banner strong{display:block;margin-top:5px;color:#fff7e4;font-family:Georgia,serif;font-size:clamp(21px,3.2vw,34px);line-height:1.08;text-shadow:0 4px 18px rgba(0,0,0,.7)}
       #arena .duel-result-banner span{display:block;margin-top:6px;color:#9d939d;font-size:8px;font-weight:900;letter-spacing:1px}
-      #arena.duel-cinematic .duel-impact-layer.active .duel-result-banner{animation:duelResultReveal .48s cubic-bezier(.16,.82,.18,1) .88s both}
+      #arena.duel-cinematic .duel-impact-layer.active .duel-result-banner{animation:duelResultReveal var(--duel-result-reveal-duration,420ms) cubic-bezier(.16,.82,.18,1) var(--duel-result-delay,1400ms) both}
       #arena.duel-left-wins .duel-result-banner{border-color:rgba(190,235,255,.64);box-shadow:0 20px 65px rgba(0,0,0,.74),0 0 38px rgba(135,216,255,.2)}
       #arena.duel-right-wins .duel-result-banner{border-color:rgba(255,100,129,.62);box-shadow:0 20px 65px rgba(0,0,0,.74),0 0 38px rgba(255,61,98,.2)}
       #arena.duel-charging .fighter:not(.duel-winner){opacity:.58;filter:saturate(.55) brightness(.72);transition:opacity .24s ease,filter .24s ease}
       #arena.duel-charging .fighter.duel-winner{overflow:visible;filter:brightness(1.08);box-shadow:0 0 0 1px rgba(255,226,165,.32),0 18px 60px rgba(0,0,0,.55),0 0 44px rgba(255,187,65,.15)}
       #arena.duel-charging .fighter.duel-winner .duel-energy i{animation:duelChargeBar .34s ease-out both}
-      #arena .fighter.duel-attack-left{z-index:8;animation:duelCinematicCardLeft 1.34s cubic-bezier(.16,.8,.2,1) both}
-      #arena .fighter.duel-attack-right{z-index:8;animation:duelCinematicCardRight 1.34s cubic-bezier(.16,.8,.2,1) both}
-      #arena .fighter.duel-attack-left .arena-box{animation:duelPortraitStrikeLeft 1.34s cubic-bezier(.16,.8,.2,1) both}
-      #arena .fighter.duel-attack-right .arena-box{animation:duelPortraitStrikeRight 1.34s cubic-bezier(.16,.8,.2,1) both}
-      #arena .fighter.duel-hit-left{animation:duelCinematicHitLeft 1.34s ease-out both}
-      #arena .fighter.duel-hit-right{animation:duelCinematicHitRight 1.34s ease-out both}
-      #arena.duel-impact-now .arena-content.duel-v2{animation:duelCameraImpact .34s linear both}
-      #arena.duel-impact-now .duel-versus-core{animation:duelVsBurst .38s ease-out both}
+      #arena .fighter.duel-attack-left{z-index:8;animation:duelCinematicCardLeft var(--duel-animation-duration,1400ms) cubic-bezier(.16,.8,.2,1) both}
+      #arena .fighter.duel-attack-right{z-index:8;animation:duelCinematicCardRight var(--duel-animation-duration,1400ms) cubic-bezier(.16,.8,.2,1) both}
+      #arena .fighter.duel-attack-left .arena-box{animation:duelPortraitStrikeLeft var(--duel-animation-duration,1400ms) cubic-bezier(.16,.8,.2,1) both}
+      #arena .fighter.duel-attack-right .arena-box{animation:duelPortraitStrikeRight var(--duel-animation-duration,1400ms) cubic-bezier(.16,.8,.2,1) both}
+      #arena .fighter.duel-hit-left{animation:duelCinematicHitLeft var(--duel-animation-duration,1400ms) ease-out both}
+      #arena .fighter.duel-hit-right{animation:duelCinematicHitRight var(--duel-animation-duration,1400ms) ease-out both}
+      #arena.duel-impact-now .arena-content.duel-v2{animation:duelCameraImpact var(--duel-camera-duration,360ms) linear both}
+      #arena.duel-impact-now .duel-versus-core{animation:duelVsBurst var(--duel-camera-duration,360ms) ease-out both}
 
       @keyframes duelChargeBar{from{transform:scaleX(.12);filter:brightness(1)}to{transform:scaleX(1);filter:brightness(2.2)}}
       @keyframes duelCinematicCardLeft{0%,16%{transform:none}28%{transform:translateX(-10px) scale(.995)}49%{transform:translateX(26px) scale(1.018)}57%{transform:translateX(34px) scale(1.025)}70%{transform:translateX(17px)}100%{transform:none}}
@@ -348,6 +364,121 @@
       @media(prefers-reduced-motion:reduce){#arena .fighter,#arena .arena-box,#arena .arena-content,#arena .duel-impact-layer,#arena .duel-impact-flash,#arena .duel-speed-lines,#arena .duel-result-banner,#arena .duel-impact-ring,#arena .duel-impact-slash,#arena .duel-spark,#arena .duel-versus-core,#arena .duel-versus-core span,#arena .duel-live-status i,#arena .duel-energy i{animation-duration:.01ms!important;animation-delay:0ms!important;animation-iteration-count:1!important}}
     `;
     document.head.appendChild(style);
+  }
+
+  const DUEL_TIMING_DEFAULTS = { animationMs: 1400, winnerMs: 1000 };
+  const DUEL_TIMING_LIMITS = {
+    animationMs: { min: 600, max: 4000, step: 100 },
+    winnerMs: { min: 500, max: 5000, step: 250 }
+  };
+  const DUEL_TIMING_STORAGE_KEY = 'cosplayChessDuelTiming';
+
+  function boundedTiming(value, key) {
+    const limit = DUEL_TIMING_LIMITS[key];
+    const number = Number(value);
+    if (!limit || !Number.isFinite(number)) return DUEL_TIMING_DEFAULTS[key];
+    return Math.min(limit.max, Math.max(limit.min, Math.round(number / limit.step) * limit.step));
+  }
+
+  function storedDuelTiming() {
+    let local = {};
+    try { local = JSON.parse(localStorage.getItem(DUEL_TIMING_STORAGE_KEY) || '{}') || {}; } catch (_) {}
+    let game = {};
+    try { game = store?.g || {}; } catch (_) {}
+    return {
+      animationMs: boundedTiming(game.duelAnimationMs ?? local.animationMs, 'animationMs'),
+      winnerMs: boundedTiming(game.duelWinnerMs ?? local.winnerMs, 'winnerMs')
+    };
+  }
+
+  function timingLabel(milliseconds) {
+    return `${(milliseconds / 1000).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 2 })} s`;
+  }
+
+  function applyDuelTimingVariables(arena, timing = storedDuelTiming()) {
+    if (!arena) return timing;
+    const animation = timing.animationMs;
+    const winner = timing.winnerMs;
+    const values = {
+      '--duel-animation-duration': animation,
+      '--duel-trail-duration': Math.round(animation * .43),
+      '--duel-trail-delay': Math.round(animation * .22),
+      '--duel-ring-duration': Math.round(animation * .54),
+      '--duel-impact-delay': Math.round(animation * .36),
+      '--duel-slash-duration': Math.round(animation * .46),
+      '--duel-slash-delay': Math.round(animation * .31),
+      '--duel-spark-duration': Math.round(animation * .52),
+      '--duel-camera-duration': Math.min(520, Math.max(240, Math.round(animation * .26))),
+      '--duel-result-delay': animation,
+      '--duel-result-reveal-duration': Math.min(420, Math.max(180, Math.round(winner * .35)))
+    };
+    Object.entries(values).forEach(([name, value]) => arena.style.setProperty(name, `${value}ms`));
+    return timing;
+  }
+
+  function syncDuelTimingControls(timing = storedDuelTiming()) {
+    document.querySelectorAll('[data-duel-timing]').forEach(input => {
+      const key = input.dataset.duelTiming === 'winner' ? 'winnerMs' : 'animationMs';
+      input.value = String(timing[key]);
+      const value = input.closest('.duel-timing-control')?.querySelector('[data-duel-timing-value]');
+      if (value) value.textContent = timingLabel(timing[key]);
+    });
+    applyDuelTimingVariables(document.getElementById('arena'), timing);
+  }
+
+  function persistDuelTiming(key, value) {
+    const timing = storedDuelTiming();
+    timing[key] = boundedTiming(value, key);
+    try {
+      if (!store.g) store.g = {};
+      store.g.duelAnimationMs = timing.animationMs;
+      store.g.duelWinnerMs = timing.winnerMs;
+    } catch (_) {}
+    try { localStorage.setItem(DUEL_TIMING_STORAGE_KEY, JSON.stringify(timing)); } catch (_) {}
+    syncDuelTimingControls(timing);
+    clearTimeout(persistDuelTiming.timer);
+    persistDuelTiming.timer = setTimeout(() => { try { save(); } catch (_) {} }, 120);
+  }
+
+  function duelTimingCard(id, compact = false) {
+    const card = document.createElement('div');
+    card.id = id;
+    card.className = `${compact ? 'unit-card ' : ''}duel-timing-card`;
+    card.innerHTML = `
+      <div class="duel-timing-heading">
+        <div><small>TEMPO DO DUELO</small><strong>Animação e resultado</strong></div><span aria-hidden="true">⏱</span>
+      </div>
+      <div class="duel-timing-grid">
+        <label class="duel-timing-control"><span>ATAQUE <b data-duel-timing-value></b></span><input data-duel-timing="animation" type="range" min="600" max="4000" step="100" aria-label="Duração da animação de ataque"></label>
+        <label class="duel-timing-control"><span>VENCEDOR <b data-duel-timing-value></b></span><input data-duel-timing="winner" type="range" min="500" max="5000" step="250" aria-label="Tempo de exibição do vencedor"></label>
+      </div>
+      <p class="duel-timing-help">Ataque controla o golpe completo. Vencedor define quanto tempo o resultado fica na tela.</p>`;
+    card.querySelectorAll('[data-duel-timing]').forEach(input => {
+      input.addEventListener('input', () => {
+        const key = input.dataset.duelTiming === 'winner' ? 'winnerMs' : 'animationMs';
+        persistDuelTiming(key, input.value);
+      });
+    });
+    return card;
+  }
+
+  function installDuelTimingSettings() {
+    const settings = document.getElementById('start-menu-settings-content');
+    if (settings && !document.getElementById('duel-timing-settings')) {
+      const card = duelTimingCard('duel-timing-settings');
+      const back = settings.querySelector('.btn-back');
+      if (back) settings.insertBefore(card, back);
+      else settings.appendChild(card);
+    }
+
+    const system = document.getElementById('list-sys');
+    if (system && !document.getElementById('duel-timing-system')) {
+      const card = duelTimingCard('duel-timing-system', true);
+      const zoomCard = document.getElementById('board-zoom')?.closest('.unit-card');
+      if (zoomCard) zoomCard.insertAdjacentElement('afterend', card);
+      else system.prepend(card);
+    }
+    syncDuelTimingControls();
   }
 
   function ensureMoveBanner() {
@@ -537,6 +668,7 @@
     const loser = leftWon ? fighterD : fighterA;
     const winnerName = winner.dataset.duelCharacter || (leftWon ? 'ATACANTE' : 'DEFENSOR');
     const winnerDetail = `${winner.dataset.duelPiece || 'PEÇA'} · ${winner.dataset.duelSide === 'B' ? 'BRANCAS' : 'PRETAS'}`;
+    const timing = applyDuelTimingVariables(arena);
     arena.classList.add('duel-resolving', 'duel-cinematic', 'duel-charging', leftWon ? 'duel-left-wins' : 'duel-right-wins');
     winner.classList.add('duel-winner');
     loser.classList.add('duel-loser');
@@ -560,16 +692,18 @@
       setTimeout(() => {
         arena.classList.add('duel-striking');
         if (status) status.textContent = leftWon ? 'ATAQUE DECISIVO' : 'CONTRA-ATAQUE DECISIVO';
-      }, 300);
+      }, Math.round(timing.animationMs * .22));
       setTimeout(() => {
         arena.classList.add('duel-impact-now');
         try { playUISound('click'); } catch (_) {}
-      }, 620);
+      }, Math.round(timing.animationMs * .46));
       setTimeout(() => {
         if (status) status.textContent = `VITÓRIA · ${winnerName}`;
-      }, 980);
+      }, timing.animationMs);
+    } else if (status) {
+      status.textContent = `VITÓRIA · ${winnerName}`;
     }
-    const duration = reducedMotion ? 80 : 1420;
+    const duration = reducedMotion ? timing.winnerMs : timing.animationMs + timing.winnerMs;
     setTimeout(done, duration);
     return true;
   }
@@ -749,9 +883,11 @@
   installStyles();
   installMoveNaming();
   installArenaUpgrade();
+  installDuelTimingSettings();
   installExitButtons();
 
   setTimeout(() => {
+    installDuelTimingSettings();
     installExitButtons();
     try {
       const last = store?.g?.lastMoveDisplay;
