@@ -126,6 +126,138 @@
       #game-exit-btn-start:hover{border-color:#ff5d80!important;background:linear-gradient(135deg,#311820,#4a1422)!important}
       #game-exit-btn-system{width:100%;margin-top:8px!important;background:#2c141b!important;color:#ff9aae!important;border:1px solid rgba(255,87,120,.35)!important}
 
+      /* Entrada da partida */
+      #start-menu.cc-start-screen{padding:clamp(8px,2vw,22px);background:radial-gradient(circle at 16% 18%,rgba(224,190,119,.11),transparent 30%),radial-gradient(circle at 86% 78%,rgba(145,38,66,.12),transparent 34%),rgba(3,3,6,.94)!important;overflow:hidden}
+      #start-menu.cc-start-screen::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.17;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,black,transparent 88%)}
+      #start-menu .start-content.cc-start-shell:not(.settings-expanded){position:relative;width:min(1160px,96vw)!important;height:min(690px,94dvh)!important;max-height:94dvh!important;display:grid!important;grid-template-columns:minmax(0,.92fr) minmax(430px,1.08fr);overflow:hidden!important;border:1px solid rgba(224,190,119,.22)!important;border-radius:28px!important;background:linear-gradient(135deg,rgba(16,15,20,.985),rgba(7,7,11,.99))!important;box-shadow:0 42px 120px rgba(0,0,0,.72),inset 0 0 0 1px rgba(255,255,255,.03),0 0 70px rgba(224,190,119,.045)!important}
+      #start-menu .start-content.cc-start-shell:not(.settings-expanded)::after{content:'♜';position:absolute;left:-36px;bottom:-86px;color:rgba(224,190,119,.035);font-family:Georgia,serif;font-size:310px;line-height:1;pointer-events:none;transform:rotate(-8deg)}
+      #start-menu .cc-start-hero{position:relative;z-index:1;min-width:0!important;padding:clamp(34px,5vw,66px)!important;align-items:flex-start!important;text-align:left!important;border-right:1px solid rgba(224,190,119,.14)!important;background:radial-gradient(circle at 38% 32%,rgba(224,190,119,.09),transparent 34%),linear-gradient(150deg,rgba(255,255,255,.025),transparent 62%)}
+      #start-menu .cc-start-kicker{display:flex;align-items:center;gap:9px;margin-bottom:clamp(22px,3.5dvh,38px);color:#c9a45d;font-size:8px;font-weight:1000;letter-spacing:2.6px;text-transform:uppercase}
+      #start-menu .cc-start-kicker::before{content:'';width:26px;height:1px;background:#c9a45d;box-shadow:0 0 12px rgba(224,190,119,.55)}
+      #start-menu .cc-start-hero .start-logo{width:min(360px,100%)!important;max-height:220px;object-fit:contain;object-position:left center;margin:0 0 clamp(18px,3dvh,28px)!important;filter:drop-shadow(0 18px 32px rgba(0,0,0,.4)) drop-shadow(0 0 24px rgba(224,190,119,.08))!important}
+      #start-menu .cc-start-hero h1{margin:0 0 12px!important;color:#fff5df!important;background:none!important;-webkit-text-fill-color:currentColor!important;font-family:Georgia,serif;font-size:clamp(31px,4vw,54px)!important;font-weight:500!important;line-height:.95;letter-spacing:clamp(2px,.7vw,7px)!important;text-wrap:balance}
+      #start-menu .cc-start-hero>p{max-width:420px!important;margin:0!important;color:#89828d!important;font-size:clamp(10px,1vw,12px)!important;line-height:1.7!important;letter-spacing:.7px!important;text-transform:none!important;opacity:1!important}
+      #start-menu .cc-start-features{display:flex;flex-wrap:wrap;gap:7px;margin-top:clamp(22px,4dvh,38px)}
+      #start-menu .cc-start-features span{padding:7px 10px;border:1px solid rgba(224,190,119,.15);border-radius:999px;background:rgba(224,190,119,.045);color:#958b78;font-size:7px;font-weight:900;letter-spacing:.8px;text-transform:uppercase}
+      #start-menu .cc-start-features span::before{content:'◆';margin-right:6px;color:#d5ad60;font-size:5px}
+      #start-menu .start-config-col.cc-start-config{min-width:0!important;min-height:0!important;padding:0!important;background:radial-gradient(circle at 100% 0,rgba(155,35,65,.095),transparent 36%)}
+      #start-menu .cc-start-actions{padding:clamp(28px,5vw,58px)!important;justify-content:center!important;gap:9px;overflow:hidden!important}
+      #start-menu .cc-start-actions .cc-start-actions-head{margin-bottom:8px}
+      #start-menu .cc-start-actions .cc-start-actions-head small{display:block;color:#b49151;font-size:8px;font-weight:1000;letter-spacing:2.2px;text-transform:uppercase}
+      #start-menu .cc-start-actions .cc-start-actions-head h2{margin:7px 0 5px;color:#f6efe4;font-family:Georgia,serif;font-size:clamp(26px,3vw,38px);font-weight:500;line-height:1.08}
+      #start-menu .cc-start-actions .cc-start-actions-head p{margin:0!important;color:#77717c!important;font-size:9px!important;line-height:1.5!important;letter-spacing:.2px!important;text-transform:none!important;opacity:1!important}
+      #start-menu .cc-start-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:5px 0 11px}
+      #start-menu .cc-start-summary div{min-width:0;padding:10px 11px;border:1px solid rgba(255,255,255,.06);border-radius:10px;background:rgba(255,255,255,.022)}
+      #start-menu .cc-start-summary span{display:block;color:#66616a;font-size:6.5px;font-weight:900;letter-spacing:.8px;text-transform:uppercase}
+      #start-menu .cc-start-summary b{display:block;margin-top:4px;overflow:hidden;color:#e8dfd1;font-size:10px;text-overflow:ellipsis;white-space:nowrap}
+      #start-menu .cc-start-actions>.btn{width:100%!important;height:auto!important;min-height:47px;margin:0!important;padding:12px 16px!important;border-radius:11px!important;font-size:8px!important;font-weight:1000!important;letter-spacing:1.25px!important;transition:transform .2s ease,border-color .2s ease,background .2s ease,box-shadow .2s ease!important}
+      #start-menu .cc-start-actions>.btn:hover{transform:translateY(-2px)}
+      #start-menu .cc-start-actions>.cc-start-primary{position:relative;min-height:68px!important;padding:14px 54px 14px 17px!important;text-align:left;background:linear-gradient(135deg,#e0bd78,#b78339)!important;border:1px solid #efce8b!important;color:#171009!important;box-shadow:0 16px 36px rgba(184,130,50,.16)!important;overflow:hidden}
+      #start-menu .cc-start-actions>.cc-start-primary::after{content:'→';position:absolute;right:18px;top:50%;transform:translateY(-50%);font-family:Georgia,serif;font-size:25px;transition:transform .2s ease}
+      #start-menu .cc-start-actions>.cc-start-primary:hover{box-shadow:0 19px 42px rgba(184,130,50,.25)!important}
+      #start-menu .cc-start-actions>.cc-start-primary:hover::after{transform:translate(4px,-50%)}
+      #start-menu .cc-start-primary strong{display:block;font-size:12px;letter-spacing:1.5px}
+      #start-menu .cc-start-primary small{display:block;margin-top:4px;color:rgba(23,16,9,.62);font-size:7px;letter-spacing:.45px}
+      #start-menu .cc-start-actions>.cc-start-settings{background:rgba(255,255,255,.035)!important;border:1px solid rgba(255,255,255,.1)!important;color:#d7d0d8!important}
+      #start-menu .cc-start-actions>.al-main-trigger{width:100%;min-height:43px;margin:0!important;padding:10px 14px!important;border-radius:11px;background:rgba(224,190,119,.055)!important;border:1px solid rgba(224,190,119,.18)!important;color:#dfbd78!important;font-size:8px;font-weight:1000;letter-spacing:1px;cursor:pointer}
+      #start-menu .cc-start-actions>#game-exit-btn-start{min-height:42px!important;background:transparent!important;border-color:rgba(255,94,126,.16)!important;color:#a86574!important}
+      #start-menu .cc-start-hint{margin:7px 4px 0;color:#57525b;font-size:7px;line-height:1.45;text-align:center;letter-spacing:.5px}
+      #start-menu .start-content.cc-start-shell.settings-expanded .cc-start-hero{align-items:center!important;text-align:center!important}
+      #start-menu .start-content.cc-start-shell.settings-expanded .cc-start-kicker,#start-menu .start-content.cc-start-shell.settings-expanded .cc-start-features{display:none!important}
+      #start-menu .start-content.cc-start-shell.settings-expanded .cc-start-hero .start-logo{width:clamp(150px,18vw,255px)!important;max-height:none!important;object-position:center!important;margin-bottom:14px!important}
+      #start-menu .start-content.cc-start-shell.settings-expanded .cc-start-hero h1{font-size:clamp(1.35rem,3vw,2rem)!important;letter-spacing:5px!important}
+      #start-menu .start-content.cc-start-shell.settings-expanded .cc-start-hero>p{margin:6px auto 0!important;font-size:.62rem!important;line-height:1.55!important;letter-spacing:2px!important;text-transform:uppercase!important}
+      @media(max-width:900px){
+        #start-menu .start-content.cc-start-shell:not(.settings-expanded){grid-template-columns:minmax(0,.8fr) minmax(390px,1.2fr)}
+        #start-menu .cc-start-hero{padding:35px!important}.cc-start-features span:last-child{display:none}
+      }
+      @media(max-width:700px){
+        #start-menu.cc-start-screen{padding:6px!important}
+        #start-menu .start-content.cc-start-shell:not(.settings-expanded){width:100%!important;height:calc(100dvh - 12px)!important;max-height:none!important;grid-template-columns:1fr;grid-template-rows:minmax(170px,34%) minmax(0,66%);border-radius:19px!important}
+        #start-menu .cc-start-hero{padding:22px 24px!important;justify-content:center!important;border-right:0!important;border-bottom:1px solid rgba(224,190,119,.14)!important;overflow:hidden}
+        #start-menu .cc-start-kicker{margin-bottom:10px;font-size:6.5px}
+        #start-menu .cc-start-hero .start-logo{width:min(230px,72vw)!important;max-height:105px;margin:0 0 8px!important}
+        #start-menu .cc-start-hero h1{font-size:clamp(24px,8vw,36px)!important;margin-bottom:6px!important}
+        #start-menu .cc-start-hero>p{font-size:8.5px!important;line-height:1.45!important}
+        #start-menu .cc-start-features{margin-top:11px}.cc-start-features span{padding:5px 7px!important;font-size:5.8px!important}
+        #start-menu .start-config-col.cc-start-config{overflow:hidden!important;padding:0!important}
+        #start-menu .cc-start-actions{height:100%!important;min-height:0!important;padding:clamp(18px,4vw,26px)!important;overflow:hidden!important}
+        #start-menu .cc-start-actions .cc-start-actions-head h2{font-size:24px}.cc-start-actions .cc-start-actions-head p{display:none}
+        #start-menu .cc-start-summary{margin:2px 0 7px}.cc-start-summary div{padding:7px 8px!important}
+        #start-menu .cc-start-actions>.btn{min-height:39px!important;padding:9px 12px!important}
+        #start-menu .cc-start-actions>.cc-start-primary{min-height:56px!important}
+        #start-menu .cc-start-hint{display:none}
+      }
+      @media(max-height:620px) and (max-width:700px){
+        #start-menu .start-content.cc-start-shell:not(.settings-expanded){grid-template-rows:125px minmax(0,1fr)}
+        #start-menu .cc-start-kicker,#start-menu .cc-start-hero>p,#start-menu .cc-start-features{display:none}
+        #start-menu .cc-start-hero .start-logo{max-height:62px;margin-bottom:4px!important}
+        #start-menu .cc-start-hero h1{font-size:22px!important;margin:0!important}
+        #start-menu .cc-start-actions{padding:14px 18px!important;gap:6px}
+        #start-menu .cc-start-actions .cc-start-actions-head{margin-bottom:2px}.cc-start-actions .cc-start-actions-head h2{font-size:21px;margin:3px 0!important}
+        #start-menu .cc-start-summary{display:none}
+        #start-menu .cc-start-actions>.btn{min-height:36px!important}.cc-start-actions>.cc-start-primary{min-height:49px!important}
+      }
+
+      /* Barra de comando da partida */
+      #dashboard.cc-game-navbar{min-height:76px!important;padding:9px 14px!important;display:grid!important;grid-template-columns:minmax(185px,1fr) auto minmax(390px,1fr);align-items:center;gap:12px;background:linear-gradient(180deg,rgba(15,15,19,.94),rgba(8,8,12,.94))!important;border-bottom:1px solid rgba(224,190,119,.17)!important;box-shadow:0 10px 38px rgba(0,0,0,.34)!important;backdrop-filter:blur(18px) saturate(130%)!important}
+      #dashboard.cc-game-navbar .brand,#dashboard.cc-game-navbar .dashboard-controls-left,#dashboard.cc-game-navbar .dashboard-battle-right{position:relative!important;inset:auto!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;transform:none!important}
+      #dashboard.cc-game-navbar .brand{min-width:0;gap:10px;justify-self:start}
+      #dashboard.cc-game-navbar #menu-toggle{flex:0 0 auto;width:38px;height:38px;display:grid;place-items:center;border:1px solid rgba(224,190,119,.2);border-radius:10px;background:rgba(224,190,119,.055);color:#d6b36d;transition:.2s ease}
+      #dashboard.cc-game-navbar #menu-toggle:hover{border-color:rgba(224,190,119,.5);background:rgba(224,190,119,.11);box-shadow:0 0 22px rgba(224,190,119,.08)}
+      #dashboard.cc-game-navbar .cc-brand-copy{min-width:0;display:flex;flex-direction:column;gap:2px}
+      #dashboard.cc-game-navbar .brand-title{overflow:hidden;color:#f2dfb7!important;font-family:Georgia,serif;font-size:14px!important;font-weight:600!important;letter-spacing:1.4px!important;text-overflow:ellipsis;white-space:nowrap}
+      #dashboard.cc-game-navbar .cc-nav-phase{display:flex;align-items:center;gap:6px;color:#68616b;font-size:6.5px;font-weight:900;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
+      #dashboard.cc-game-navbar .cc-nav-phase i{width:6px;height:6px;border-radius:50%;background:#706873;box-shadow:0 0 0 3px rgba(112,104,115,.08)}
+      #dashboard.cc-game-navbar.is-live .cc-nav-phase{color:#8f8269}#dashboard.cc-game-navbar.is-live .cc-nav-phase i{background:#e0b761;box-shadow:0 0 12px rgba(224,183,97,.72);animation:ccNavPulse 1.8s ease-in-out infinite}
+      @keyframes ccNavPulse{50%{opacity:.45;transform:scale(.72)}}
+      #dashboard.cc-game-navbar .dashboard-controls-left{justify-self:center;gap:7px;flex-wrap:nowrap}
+      #dashboard.cc-game-navbar .dash-controls{min-height:38px;padding:5px 8px!important;gap:8px!important;border:1px solid rgba(255,255,255,.065)!important;border-radius:11px!important;background:rgba(255,255,255,.022)!important}
+      #dashboard.cc-game-navbar .ctrl-group{gap:6px!important}
+      #dashboard.cc-game-navbar .ctrl-label{color:#756b78!important;font-size:6px!important;letter-spacing:.8px!important}
+      #dashboard.cc-game-navbar .dash-btn{width:27px;height:27px;border-radius:7px!important;background:#121219!important;border-color:#282832!important;font-size:8px!important}
+      #dashboard.cc-game-navbar .cc-nav-menu-btn{width:auto!important;min-width:51px;margin-left:2px!important;padding:0 8px!important;border-color:rgba(224,190,119,.25)!important;color:#d2ad66!important}
+      #dashboard.cc-game-navbar .dash-controls input[type=range]{width:50px}
+      #dashboard.cc-game-navbar .dashboard-battle-right{min-width:0;justify-self:end;gap:6px;padding:4px;border:1px solid rgba(255,255,255,.06);border-radius:14px;background:rgba(255,255,255,.018)}
+      #dashboard.cc-game-navbar .player-card{min-width:0;gap:7px;padding:4px 7px!important;border-width:1px!important;border-radius:10px!important}
+      #dashboard.cc-game-navbar .player-card.active-B{border-color:rgba(218,235,245,.24)!important;background:rgba(218,235,245,.045)!important}
+      #dashboard.cc-game-navbar .player-card.active-P{border-color:rgba(255,82,119,.27)!important;background:rgba(255,82,119,.045)!important}
+      #dashboard.cc-game-navbar .p-img{width:37px;height:37px;flex:0 0 auto;border-width:1px!important;border-color:rgba(255,255,255,.16)!important;box-shadow:0 5px 15px rgba(0,0,0,.34)}
+      #dashboard.cc-game-navbar .player-name-input{width:clamp(72px,8vw,116px)!important;padding:0!important;font-size:10px!important;letter-spacing:.2px}
+      #dashboard.cc-game-navbar .p-score{min-width:27px;height:27px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.08);border-radius:8px;background:#0c0c11;font-size:15px!important}
+      #dashboard.cc-game-navbar .vs-text{min-width:42px;padding:0 3px!important;display:flex!important;flex-direction:column;justify-content:center;gap:2px;color:#4e4851!important;text-align:center;letter-spacing:1px!important}
+      #dashboard.cc-game-navbar .vs-text>span{font-family:Georgia,serif;font-size:11px}
+      #dashboard.cc-game-navbar .cc-nav-turn{max-width:56px;color:#bd9854;font-size:5.5px;font-weight:1000;line-height:1.25;letter-spacing:.7px;text-transform:uppercase}
+      @media(max-width:1100px){
+        #dashboard.cc-game-navbar{grid-template-columns:minmax(145px,.7fr) auto minmax(350px,1fr)}
+        #dashboard.cc-game-navbar .cc-nav-phase{display:none}
+        #dashboard.cc-game-navbar .dashboard-controls-left>.dash-controls:last-child{display:none}
+      }
+      @media(max-width:768px){
+        #dashboard.cc-game-navbar{min-height:0!important;height:auto!important;padding:7px 8px!important;grid-template-columns:auto minmax(0,1fr)!important;grid-template-rows:auto auto;gap:6px!important}
+        #dashboard.cc-game-navbar .brand{grid-column:1;grid-row:1;width:auto!important;justify-content:flex-start!important}
+        #dashboard.cc-game-navbar #menu-toggle{width:34px;height:34px}
+        #dashboard.cc-game-navbar .brand-title{font-size:11px!important}
+        #dashboard.cc-game-navbar .dashboard-battle-right{grid-column:2;grid-row:1;width:auto!important;max-width:100%;justify-self:end!important;justify-content:flex-end!important;gap:3px}
+        #dashboard.cc-game-navbar .dashboard-controls-left{grid-column:1/-1;grid-row:2;width:100%!important;justify-self:stretch!important;justify-content:center!important}
+        #dashboard.cc-game-navbar .dashboard-controls-left>.dash-controls:first-child{width:100%;justify-content:center}
+        #dashboard.cc-game-navbar .dashboard-controls-left>.dash-controls:last-child{display:none}
+        #dashboard.cc-game-navbar .player-card{gap:4px;padding:3px 4px!important}
+        #dashboard.cc-game-navbar .p-img{width:31px;height:31px}
+        #dashboard.cc-game-navbar .player-name-input{width:clamp(56px,15vw,82px)!important;font-size:8px!important}
+        #dashboard.cc-game-navbar .p-score{min-width:22px;width:22px;height:22px;font-size:12px!important}
+        #dashboard.cc-game-navbar .vs-text{min-width:31px}.cc-nav-turn{max-width:38px!important;font-size:4.8px!important}
+        #move-name-banner{top:112px}
+      }
+      @media(max-width:480px){
+        #dashboard.cc-game-navbar .cc-brand-copy{display:none}
+        #dashboard.cc-game-navbar .player-name-input{width:54px!important}
+        #dashboard.cc-game-navbar .p-img{width:29px;height:29px}
+        #dashboard.cc-game-navbar .vs-text{min-width:24px;padding:0!important}.vs-text>span{font-size:9px!important}.cc-nav-turn{font-size:4.2px!important}
+        #dashboard.cc-game-navbar .dash-controls{min-height:34px;padding:3px 5px!important}
+        #dashboard.cc-game-navbar .dash-btn{width:25px;height:25px}.cc-nav-menu-btn{min-width:45px!important;padding:0 5px!important}
+      }
+
       #sidebar.cc-settings-drawer{left:0!important;width:min(600px,96vw)!important;height:100vh;height:100dvh!important;transform:translateX(-102%);transition:transform .34s cubic-bezier(.16,1,.3,1)!important;border-right:1px solid rgba(224,190,119,.34)!important;background:linear-gradient(165deg,rgba(15,14,19,.985),rgba(6,7,10,.995))!important;box-shadow:34px 0 100px rgba(0,0,0,.72);overflow:hidden}
       #sidebar.cc-settings-drawer.open{left:0!important;transform:translateX(0)}
       #sidebar .cc-control-header{position:relative;padding:22px 24px 18px!important;border-bottom:1px solid rgba(255,255,255,.075)!important;background:radial-gradient(circle at 8% 0,rgba(224,190,119,.12),transparent 38%)}
@@ -1263,17 +1395,191 @@
     }
   }
 
+  function getStartScreenSnapshot() {
+    let lineup = 0;
+    let roster = 0;
+    let mode = 'LOCAL';
+    try {
+      lineup = Array.isArray(store?.board) ? store.board.filter(Boolean).length : 0;
+      roster = Object.values(store?.p || {}).filter(piece => piece && (piece.img || piece.participantRealName || piece.participantName)).length;
+      mode = document.getElementById('opponent-select')?.value || store?.g?.mode || 'LOCAL';
+    } catch (_) {}
+    return {
+      lineup: lineup ? `${lineup}/32` : '0/32',
+      roster: roster ? String(roster) : 'PADRÃO',
+      mode: String(mode).toUpperCase() === 'AI' ? 'VS MÁQUINA' : '2 JOGADORES'
+    };
+  }
+
+  function refreshStartScreenSummary() {
+    const summary = document.querySelector('.cc-start-summary');
+    if (!summary) return;
+    const snapshot = getStartScreenSnapshot();
+    const lineup = summary.querySelector('[data-start-stat="lineup"]');
+    const roster = summary.querySelector('[data-start-stat="roster"]');
+    const mode = summary.querySelector('[data-start-stat="mode"]');
+    if (lineup) lineup.textContent = snapshot.lineup;
+    if (roster) roster.textContent = snapshot.roster;
+    if (mode) mode.textContent = snapshot.mode;
+  }
+
+  function decorateStartScreen() {
+    const overlay = document.getElementById('start-menu');
+    const shell = overlay?.querySelector('.start-content');
+    const hero = shell?.querySelector('.start-info-col');
+    const config = shell?.querySelector('.start-config-col');
+    const actions = document.getElementById('main-start-options');
+    if (!overlay || !shell || !hero || !config || !actions) return;
+
+    overlay.classList.add('cc-start-screen');
+    shell.classList.add('cc-start-shell');
+    hero.classList.add('cc-start-hero');
+    config.classList.add('cc-start-config');
+    actions.classList.add('cc-start-actions');
+
+    if (!hero.querySelector('.cc-start-kicker')) {
+      const kicker = document.createElement('div');
+      kicker.className = 'cc-start-kicker';
+      kicker.textContent = 'RUBRA STUDIOS · EXPERIÊNCIA INTERATIVA';
+      hero.prepend(kicker);
+    }
+    if (!hero.querySelector('.cc-start-features')) {
+      const features = document.createElement('div');
+      features.className = 'cc-start-features';
+      features.innerHTML = '<span>Xadrez humano</span><span>Elenco cosplay</span><span>Duelo ao vivo</span>';
+      hero.appendChild(features);
+    }
+
+    if (!actions.querySelector('.cc-start-actions-head')) {
+      const heading = document.createElement('div');
+      heading.className = 'cc-start-actions-head';
+      heading.innerHTML = '<small>CENTRAL DA PARTIDA</small><h2>Preparar o tabuleiro</h2><p>Confira o elenco e escolha como a próxima batalha será conduzida.</p>';
+      actions.prepend(heading);
+    }
+    if (!actions.querySelector('.cc-start-summary')) {
+      const summary = document.createElement('div');
+      summary.className = 'cc-start-summary';
+      summary.innerHTML = `
+        <div><span>FORMAÇÃO</span><b data-start-stat="lineup">—</b></div>
+        <div><span>ELENCO</span><b data-start-stat="roster">—</b></div>
+        <div><span>MODO</span><b data-start-stat="mode">—</b></div>`;
+      actions.querySelector('.cc-start-actions-head')?.insertAdjacentElement('afterend', summary);
+    }
+
+    const battleButton = Array.from(actions.querySelectorAll('button')).find(button => /startBattle/i.test(button.getAttribute('onclick') || ''));
+    if (battleButton && battleButton.dataset.ccStartDecorated !== '1') {
+      battleButton.dataset.ccStartDecorated = '1';
+      battleButton.classList.add('cc-start-primary');
+      battleButton.removeAttribute('style');
+      battleButton.innerHTML = '<strong>INICIAR BATALHA</strong><small>Entrar na arena com a formação atual</small>';
+    }
+    const settingsButton = Array.from(actions.querySelectorAll('button')).find(button => /openStartMenuSettings/i.test(button.getAttribute('onclick') || ''));
+    if (settingsButton) {
+      settingsButton.classList.add('cc-start-settings');
+      settingsButton.removeAttribute('style');
+      settingsButton.textContent = '⚙  CONFIGURAÇÕES DA PARTIDA';
+    }
+    const exitButton = document.getElementById('game-exit-btn-start');
+    if (exitButton) exitButton.removeAttribute('style');
+
+    if (!actions.querySelector('.cc-start-hint')) {
+      const hint = document.createElement('div');
+      hint.className = 'cc-start-hint';
+      hint.textContent = 'Dica: ajuste fotos, peças, áudio e tempos em Configurações.';
+      actions.appendChild(hint);
+    }
+    refreshStartScreenSummary();
+  }
+
+  function gameIsLive() {
+    try { return typeof isLive !== 'undefined' && !!isLive; } catch (_) { return false; }
+  }
+
+  function syncGameNavbar() {
+    const dashboard = document.getElementById('dashboard');
+    if (!dashboard) return;
+    const live = gameIsLive();
+    const startMenu = document.getElementById('start-menu');
+    const menuVisible = !!startMenu && (startMenu.classList.contains('show') || startMenu.style.display === 'flex');
+    let side = 'B';
+    try { side = turn === 'P' ? 'P' : 'B'; } catch (_) {
+      side = document.getElementById('card-P')?.classList.contains('active-P') ? 'P' : 'B';
+    }
+    dashboard.classList.toggle('is-live', live && !menuVisible);
+    dashboard.classList.toggle('is-paused', live && menuVisible);
+
+    const phase = dashboard.querySelector('.cc-nav-phase span');
+    if (phase) phase.textContent = live ? (menuVisible ? 'PARTIDA PAUSADA' : 'PARTIDA EM ANDAMENTO') : 'PRONTO PARA JOGAR';
+    const turnLabel = dashboard.querySelector('.cc-nav-turn');
+    if (turnLabel) turnLabel.textContent = live ? `VEZ ${side === 'B' ? 'BRANCAS' : 'PRETAS'}` : 'AGUARDANDO';
+    refreshStartScreenSummary();
+  }
+
+  function decorateGameNavbar() {
+    const dashboard = document.getElementById('dashboard');
+    const brand = dashboard?.querySelector('.brand');
+    const title = brand?.querySelector('.brand-title');
+    const versus = dashboard?.querySelector('.vs-text');
+    if (!dashboard || !brand || !title || !versus) return;
+    dashboard.classList.add('cc-game-navbar');
+
+    if (!brand.querySelector('.cc-brand-copy')) {
+      const copy = document.createElement('div');
+      copy.className = 'cc-brand-copy';
+      title.insertAdjacentElement('beforebegin', copy);
+      copy.appendChild(title);
+      const phase = document.createElement('div');
+      phase.className = 'cc-nav-phase';
+      phase.innerHTML = '<i></i><span>PRONTO PARA JOGAR</span>';
+      copy.appendChild(phase);
+    }
+
+    if (!versus.querySelector('.cc-nav-turn')) {
+      versus.innerHTML = '<span>VS</span><small class="cc-nav-turn">AGUARDANDO</small>';
+    }
+    const menuButton = Array.from(dashboard.querySelectorAll('.dash-btn')).find(button => /pauseGame/i.test(button.getAttribute('onclick') || ''));
+    if (menuButton) {
+      menuButton.classList.add('cc-nav-menu-btn');
+      menuButton.removeAttribute('style');
+      menuButton.textContent = '☰ MENU';
+      menuButton.title = 'Pausar partida e abrir o menu';
+    }
+    const whiteName = document.getElementById('name-B');
+    const blackName = document.getElementById('name-P');
+    if (whiteName) whiteName.setAttribute('aria-label', 'Nome do jogador das peças brancas');
+    if (blackName) blackName.setAttribute('aria-label', 'Nome do jogador das peças pretas');
+    document.getElementById('img-B')?.setAttribute('title', 'Alterar avatar das brancas');
+    document.getElementById('img-P')?.setAttribute('title', 'Alterar avatar das pretas');
+
+    if (dashboard.dataset.ccNavbarObserved !== '1') {
+      dashboard.dataset.ccNavbarObserved = '1';
+      const observer = new MutationObserver(syncGameNavbar);
+      ['card-B', 'card-P'].forEach(id => {
+        const card = document.getElementById(id);
+        if (card) observer.observe(card, { attributes: true, attributeFilter: ['class'] });
+      });
+      const startMenu = document.getElementById('start-menu');
+      if (startMenu) observer.observe(startMenu, { attributes: true, attributeFilter: ['class', 'style'] });
+      document.getElementById('opponent-select')?.addEventListener('change', refreshStartScreenSummary);
+    }
+    syncGameNavbar();
+  }
+
   installStyles();
   installMoveNaming();
   installArenaUpgrade();
   installDuelTimingSettings();
   installSettingsWorkspace();
   installExitButtons();
+  decorateStartScreen();
+  decorateGameNavbar();
 
   setTimeout(() => {
     installDuelTimingSettings();
     installSettingsWorkspace();
     installExitButtons();
+    decorateStartScreen();
+    decorateGameNavbar();
     try {
       const last = store?.g?.lastMoveDisplay;
       if (last?.label && last?.notation) {
