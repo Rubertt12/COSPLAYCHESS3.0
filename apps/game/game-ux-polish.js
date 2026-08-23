@@ -162,6 +162,52 @@
       #arena .arena-audio-btns{margin-top:4px!important}
       #arena .arena-sound-label{min-height:20px;margin-bottom:8px;color:#7f7783!important}
       #arena .duel-shortcut{display:block;margin-top:5px;color:#675f69;font-size:7px;text-align:center;letter-spacing:.6px}
+      #arena{background:radial-gradient(circle at 50% 42%,rgba(208,156,65,.12),rgba(2,2,5,.93) 52%,rgba(0,0,0,.98))!important;perspective:1200px}
+      #arena .arena-content.duel-v2::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.2;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:32px 32px;mask-image:linear-gradient(to bottom,black,transparent 82%)}
+      #arena .arena-content.duel-v2::after{content:'';position:absolute;inset:-35% 24%;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(226,177,87,.055),transparent);transform:rotate(14deg);animation:duelAmbientSweep 5s linear infinite}
+      #arena .duel-arena-header,#arena .arena-fighters,#arena .duel-cancel-row{position:relative;z-index:2}
+      #arena .duel-live-status{display:inline-flex;align-items:center;gap:7px;margin-top:10px;padding:6px 10px;border-radius:999px;border:1px solid rgba(224,190,119,.2);background:rgba(224,190,119,.055);color:#b8a27d;font-size:8px;font-weight:900;letter-spacing:1.2px}
+      #arena .duel-live-status i{width:6px;height:6px;border-radius:50%;background:#f2c76e;box-shadow:0 0 12px #e7b751;animation:duelStatusPulse 1.1s ease-in-out infinite alternate}
+      #arena .fighter::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.7;background:radial-gradient(circle at 50% 0,rgba(255,255,255,.09),transparent 34%)}
+      #arena .fighter::after{content:'';position:absolute;left:15%;right:15%;bottom:-26px;height:34px;border-radius:50%;background:rgba(0,0,0,.72);filter:blur(13px);pointer-events:none}
+      #arena .fighter>*{position:relative;z-index:1}
+      #arena .duel-energy{height:3px;margin:2px 2px 11px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden}
+      #arena .duel-energy i{display:block;width:100%;height:100%;border-radius:inherit;transform-origin:left;animation:duelEnergyReady 1.8s ease-in-out infinite alternate}
+      #arena .fighter.duel-side-B .duel-energy i{background:linear-gradient(90deg,#8dcce5,#f1fbff);box-shadow:0 0 12px #a8e4fb}
+      #arena .fighter.duel-side-P .duel-energy i{background:linear-gradient(90deg,#9e253d,#ff6a84);box-shadow:0 0 12px #ff526f}
+      #arena .duel-versus-core span{animation:duelWeaponFloat 1.4s ease-in-out infinite alternate}
+      #arena .duel-impact-layer{position:absolute;inset:0;z-index:20;display:grid;place-items:center;pointer-events:none;opacity:0;overflow:hidden}
+      #arena .duel-impact-layer.active{opacity:1;animation:duelImpactFlash .78s ease-out both}
+      #arena .duel-impact-ring{position:absolute;width:130px;height:130px;border:3px solid rgba(255,224,149,.9);border-radius:50%;box-shadow:0 0 25px rgba(255,188,75,.9),inset 0 0 25px rgba(255,188,75,.48);opacity:0}
+      #arena .duel-impact-layer.active .duel-impact-ring{animation:duelImpactRing .7s cubic-bezier(.12,.72,.22,1) both}
+      #arena .duel-impact-slash{width:12px;height:210px;border-radius:99px;background:linear-gradient(to bottom,transparent,#fff8d9 20%,#f7b93d 52%,#fff 76%,transparent);box-shadow:0 0 18px #fff,0 0 44px #f0a82e;transform:rotate(42deg) scaleY(0);opacity:0}
+      #arena .duel-impact-layer.active .duel-impact-slash{animation:duelSlash .55s cubic-bezier(.15,.8,.2,1) .12s both}
+      #arena .duel-spark{position:absolute;width:5px;height:42px;border-radius:99px;background:linear-gradient(#fff7d5,#f4a92e,transparent);box-shadow:0 0 10px #ffcc6b;transform-origin:50% 100%;opacity:0}
+      #arena .duel-impact-layer.active .duel-spark{animation:duelSpark .64s ease-out var(--delay,0s) both;transform:rotate(var(--angle)) translateY(-24px)}
+      #arena .fighter.duel-enter-left{animation:duelEnterLeft .62s cubic-bezier(.16,.8,.25,1) both}
+      #arena .fighter.duel-enter-right{animation:duelEnterRight .62s cubic-bezier(.16,.8,.25,1) both}
+      #arena.duel-resolving .duel-victory-btn,#arena.duel-resolving .arena-audio-btns,#arena.duel-resolving .duel-cancel-row{pointer-events:none;filter:saturate(.35);opacity:.55}
+      #arena .fighter.duel-attack-left{z-index:8;animation:duelAttackLeft .82s cubic-bezier(.18,.78,.2,1) both}
+      #arena .fighter.duel-attack-right{z-index:8;animation:duelAttackRight .82s cubic-bezier(.18,.78,.2,1) both}
+      #arena .fighter.duel-hit-left{animation:duelHitLeft .82s ease-out both}
+      #arena .fighter.duel-hit-right{animation:duelHitRight .82s ease-out both}
+      #arena.duel-resolving .duel-live-status{border-color:rgba(255,205,104,.5);background:rgba(255,188,64,.12);color:#ffe4aa}
+      #arena.duel-resolving .duel-live-status i{background:#fff;box-shadow:0 0 18px #ffbd3b}
+
+      @keyframes duelAmbientSweep{from{transform:translateX(-30%) rotate(14deg)}to{transform:translateX(30%) rotate(14deg)}}
+      @keyframes duelStatusPulse{from{opacity:.45;transform:scale(.8)}to{opacity:1;transform:scale(1.25)}}
+      @keyframes duelEnergyReady{from{opacity:.58;transform:scaleX(.72)}to{opacity:1;transform:scaleX(1)}}
+      @keyframes duelWeaponFloat{from{transform:translateY(-3px) rotate(-4deg)}to{transform:translateY(3px) rotate(4deg)}}
+      @keyframes duelEnterLeft{from{opacity:0;transform:translate3d(-70px,18px,-90px) rotateY(12deg)}to{opacity:1;transform:none}}
+      @keyframes duelEnterRight{from{opacity:0;transform:translate3d(70px,18px,-90px) rotateY(-12deg)}to{opacity:1;transform:none}}
+      @keyframes duelAttackLeft{0%,22%{transform:translateX(0) scale(1)}38%{transform:translateX(-16px) scale(.99)}58%{transform:translateX(62px) scale(1.045)}72%{transform:translateX(42px) scale(1.025)}100%{transform:translateX(0) scale(1)}}
+      @keyframes duelAttackRight{0%,22%{transform:translateX(0) scale(1)}38%{transform:translateX(16px) scale(.99)}58%{transform:translateX(-62px) scale(1.045)}72%{transform:translateX(-42px) scale(1.025)}100%{transform:translateX(0) scale(1)}}
+      @keyframes duelHitLeft{0%,48%{transform:translateX(0);filter:none}57%{transform:translateX(-18px) rotate(-1.8deg);filter:brightness(2.2) saturate(.2)}68%{transform:translateX(10px) rotate(1deg);filter:brightness(.75) saturate(.65)}82%{transform:translateX(-4px)}100%{transform:none;filter:none}}
+      @keyframes duelHitRight{0%,48%{transform:translateX(0);filter:none}57%{transform:translateX(18px) rotate(1.8deg);filter:brightness(2.2) saturate(.2)}68%{transform:translateX(-10px) rotate(-1deg);filter:brightness(.75) saturate(.65)}82%{transform:translateX(4px)}100%{transform:none;filter:none}}
+      @keyframes duelImpactFlash{0%,43%{background:rgba(255,255,255,0);opacity:0}52%{background:rgba(255,240,194,.22);opacity:1}100%{background:transparent;opacity:0}}
+      @keyframes duelImpactRing{0%,43%{opacity:0;transform:scale(.18)}52%{opacity:1}100%{opacity:0;transform:scale(3.3)}}
+      @keyframes duelSlash{0%,35%{opacity:0;transform:rotate(42deg) scaleY(0)}55%{opacity:1;transform:rotate(42deg) scaleY(1.2)}100%{opacity:0;transform:rotate(42deg) scaleY(.3) translateY(-80px)}}
+      @keyframes duelSpark{0%,46%{opacity:0}53%{opacity:1}100%{opacity:0;transform:rotate(var(--angle)) translateY(-180px) scaleY(.3)}}
 
       @media(max-width:760px){
         #move-name-banner{top:72px}
@@ -169,7 +215,14 @@
         #arena .arena-fighters{grid-template-columns:1fr!important}
         #arena .duel-versus-core{min-height:62px!important}
         #arena .arena-box{min-height:220px!important;aspect-ratio:16/10!important}
+        #arena .fighter.duel-attack-left{animation-name:duelAttackDown}
+        #arena .fighter.duel-attack-right{animation-name:duelAttackUp}
+        #arena .fighter.duel-hit-left,#arena .fighter.duel-hit-right{animation-name:duelHitMobile}
       }
+      @keyframes duelAttackDown{0%,25%{transform:translateY(0)}42%{transform:translateY(-10px)}62%{transform:translateY(34px) scale(1.025)}100%{transform:none}}
+      @keyframes duelAttackUp{0%,25%{transform:translateY(0)}42%{transform:translateY(10px)}62%{transform:translateY(-34px) scale(1.025)}100%{transform:none}}
+      @keyframes duelHitMobile{0%,48%{transform:translateX(0);filter:none}58%{transform:translateX(14px);filter:brightness(2.2) saturate(.2)}69%{transform:translateX(-9px);filter:brightness(.75)}100%{transform:none;filter:none}}
+      @media(prefers-reduced-motion:reduce){#arena .fighter,#arena .duel-impact-layer,#arena .duel-impact-ring,#arena .duel-impact-slash,#arena .duel-spark,#arena .duel-versus-core span,#arena .duel-live-status i,#arena .duel-energy i{animation-duration:.01ms!important;animation-delay:0ms!important;animation-iteration-count:1!important}}
     `;
     document.head.appendChild(style);
   }
@@ -288,7 +341,8 @@
       <div class="duel-role"><span>${esc(info.role)}</span><b>${esc(info.player)} · ${esc(info.sideLabel)}</b></div>
       <h3>${esc(info.character)}</h3>
       <div class="duel-piece-line">${esc(info.piece)} · ${esc(info.id)}</div>
-      ${info.cosplayer ? `<div class="duel-cosplayer">Cosplayer: <b>${esc(info.cosplayer)}</b></div>` : ''}`;
+      ${info.cosplayer ? `<div class="duel-cosplayer">Cosplayer: <b>${esc(info.cosplayer)}</b></div>` : ''}
+      <div class="duel-energy" aria-hidden="true"><i></i></div>`;
 
     const victoryButton = Array.from(fighter.querySelectorAll('button')).find(button => /VITÓRIA/i.test(button.textContent || ''));
     if (victoryButton) {
@@ -305,6 +359,69 @@
       }
       shortcut.textContent = `ATALHO: TECLA ${info.shortcut}`;
     }
+  }
+
+  function ensureDuelEffects(content) {
+    let layer = content.querySelector('.duel-impact-layer');
+    if (layer) return layer;
+    layer = document.createElement('div');
+    layer.className = 'duel-impact-layer';
+    layer.setAttribute('aria-hidden', 'true');
+    layer.innerHTML = `
+      <i class="duel-impact-ring"></i>
+      <i class="duel-impact-slash"></i>
+      ${[-72, -38, -8, 24, 58, 92, 126, 160].map((angle, index) => `<i class="duel-spark" style="--angle:${angle}deg;--delay:${(index % 3) * .025}s"></i>`).join('')}`;
+    content.appendChild(layer);
+    return layer;
+  }
+
+  function prepareDuelAnimation(arena, content, fighterA, fighterD) {
+    arena.classList.remove('duel-resolving');
+    [fighterA, fighterD].forEach(fighter => {
+      fighter.classList.remove('duel-enter-left', 'duel-enter-right', 'duel-attack-left', 'duel-attack-right', 'duel-hit-left', 'duel-hit-right');
+      fighter.querySelectorAll('button').forEach(button => { button.disabled = false; });
+    });
+    const layer = ensureDuelEffects(content);
+    layer.classList.remove('active');
+    const status = content.querySelector('.duel-live-status span');
+    if (status) status.textContent = 'AGUARDANDO RESULTADO';
+    void content.offsetWidth;
+    fighterA.classList.add('duel-enter-left');
+    fighterD.classList.add('duel-enter-right');
+    setTimeout(() => {
+      fighterA.classList.remove('duel-enter-left');
+      fighterD.classList.remove('duel-enter-right');
+    }, 700);
+  }
+
+  function animateDuelOutcome(side, done) {
+    const arena = document.getElementById('arena');
+    const content = arena?.querySelector('.arena-content');
+    const imageA = document.getElementById('a-img');
+    const imageD = document.getElementById('d-img');
+    const fighterA = imageA?.closest('.fighter');
+    const fighterD = imageD?.closest('.fighter');
+    if (!arena || !content || !fighterA || !fighterD) return false;
+    if (arena.classList.contains('duel-resolving')) return true;
+
+    const leftWon = side === arena.dataset.leftSide;
+    const winner = leftWon ? fighterA : fighterD;
+    const loser = leftWon ? fighterD : fighterA;
+    arena.classList.add('duel-resolving');
+    content.querySelectorAll('button').forEach(button => { button.disabled = true; });
+    const status = content.querySelector('.duel-live-status span');
+    if (status) status.textContent = leftWon ? 'ATAQUE DECISIVO' : 'CONTRA-ATAQUE DECISIVO';
+
+    winner.classList.add(leftWon ? 'duel-attack-left' : 'duel-attack-right');
+    loser.classList.add(leftWon ? 'duel-hit-right' : 'duel-hit-left');
+    const layer = ensureDuelEffects(content);
+    layer.classList.remove('active');
+    void layer.offsetWidth;
+    layer.classList.add('active');
+    try { playUISound('click'); } catch (_) {}
+    const duration = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 80 : 840;
+    setTimeout(done, duration);
+    return true;
   }
 
   function decorateArena() {
@@ -331,6 +448,8 @@
     if (!arena || !content || !fighters || !fighterA || !fighterD) return;
 
     content.classList.add('duel-v2');
+    const cancelRow = Array.from(content.children).find(child => child !== fighters && child.matches?.('div') && child.querySelector?.('button[onclick*="closeArena"]'));
+    cancelRow?.classList.add('duel-cancel-row');
     const attack = fighterInfo(idA, 'ATACANTE', '1');
     const defense = fighterInfo(idD, 'DEFENSOR', '2');
     renderFighter(fighterA, imageA, attack);
@@ -345,7 +464,8 @@
     header.innerHTML = `
       <small>DUELO DE CAPTURA</small>
       <h2>${esc(attack.character)} <span style="color:#6e6671">vs</span> ${esc(defense.character)}</h2>
-      <p>${esc(attack.player)} · ${esc(attack.sideLabel)} ataca de <b>${coord(from)}</b> para <b>${coord(to)}</b>. Escolha o vencedor real do confronto.</p>`;
+      <p>${esc(attack.player)} · ${esc(attack.sideLabel)} ataca de <b>${coord(from)}</b> para <b>${coord(to)}</b>. Escolha o vencedor real do confronto.</p>
+      <div class="duel-live-status"><i></i><span>AGUARDANDO RESULTADO</span></div>`;
 
     const center = fighters.children[1];
     if (center) {
@@ -357,6 +477,7 @@
     arena.dataset.leftSide = attack.side;
     arena.dataset.rightSide = defense.side;
     arena.setAttribute('aria-label', `Duelo entre ${attack.character}, ${attack.sideLabel}, e ${defense.character}, ${defense.sideLabel}`);
+    prepareDuelAnimation(arena, content, fighterA, fighterD);
   }
 
   function installArenaUpgrade() {
@@ -381,17 +502,23 @@
           defender = pieceInfo(store?.board?.[pending?.t]);
         } catch (_) {}
         const defenderWon = attacker && defender && side === defender.side;
-        const result = baseFinishDuel.call(this, side);
-        if (defenderWon) {
-          const meta = {
-            ...defender,
-            label: 'DEFESA BEM-SUCEDIDA',
-            notation: `${coord(pending?.t)} defendeu ${coord(pending?.f)}`
-          };
-          persistLastMove(meta);
-          showMoveBanner(meta);
-        }
-        return result;
+        const from = pending?.f;
+        const to = pending?.t;
+        const finish = () => {
+          const result = baseFinishDuel.call(this, side);
+          if (defenderWon) {
+            const meta = {
+              ...defender,
+              label: 'DEFESA BEM-SUCEDIDA',
+              notation: `${coord(to)} defendeu ${coord(from)}`
+            };
+            persistLastMove(meta);
+            showMoveBanner(meta);
+          }
+          return result;
+        };
+        if (!animateDuelOutcome(side, finish)) return finish();
+        return undefined;
       };
       wrappedFinishDuel.__cosplayDuelWrapped = true;
       window.finishDuel = wrappedFinishDuel;
@@ -400,6 +527,12 @@
     window.addEventListener('keydown', event => {
       const arena = document.getElementById('arena');
       if (!arena || getComputedStyle(arena).display === 'none') return;
+      if (arena.classList.contains('duel-resolving')) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        return;
+      }
       if (!['1', '2'].includes(event.key)) return;
       const side = event.key === '1' ? arena.dataset.leftSide : arena.dataset.rightSide;
       if (!side) return;
