@@ -43,9 +43,14 @@
         "nsis",
         "portable"
       ],
-      "icon": "img/favicon/web-app-manifest-512x512.png",
-      "signAndEditExecutable": false,
+      "icon": "img/favicon/cosplaychess-app.ico",
       "forceCodeSigning": false
+    },
+    "mac": {
+      "icon": "img/favicon/cosplaychess-app.png"
+    },
+    "linux": {
+      "icon": "img/favicon/cosplaychess-app.png"
     },
     "nsis": {
       "oneClick": false,

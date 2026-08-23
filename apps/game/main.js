@@ -3,6 +3,13 @@ const path = require('path');
 const fs = require('fs');
 const { autoUpdater } = require('electron-updater');
 
+const APP_ICON_PATH = path.join(
+  __dirname,
+  'img',
+  'favicon',
+  process.platform === 'win32' ? 'cosplaychess-app.ico' : 'cosplaychess-app.png'
+);
+
 let mainWindow = null;
 let updateTimer = null;
 let promptedAvailableVersion = null;
@@ -441,7 +448,7 @@ function createWindow() {
     minHeight: 600,
     show: false,
     backgroundColor: '#050508',
-    icon: path.join(__dirname, 'img/favicon-Photoroom.png'),
+    icon: APP_ICON_PATH,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
@@ -498,6 +505,8 @@ ipcMain.handle('updates:install', () => {
 });
 
 app.whenReady().then(() => {
+  if (process.platform === 'win32') app.setAppUserModelId('com.rubra.cosplaychess');
+  if (process.platform === 'darwin' && app.dock) app.dock.setIcon(APP_ICON_PATH);
   updateState.currentVersion = app.getVersion();
   updateState.supported = isAutoUpdateSupported();
   configureAutoUpdater();
