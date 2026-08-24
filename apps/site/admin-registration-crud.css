@@ -1,0 +1,33 @@
+.registration-photo-upload-btn,.registration-edit-btn,.registration-delete-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:32px;padding:7px 10px;border:1px solid rgba(255,255,255,.08);border-radius:9px;background:rgba(255,255,255,.035);color:#cbd3df;font:inherit;font-size:9px;font-weight:800;letter-spacing:.25px;cursor:pointer;transition:.18s ease}
+.registration-photo-upload-btn:hover,.registration-edit-btn:hover{border-color:rgba(212,170,92,.34);background:rgba(212,170,92,.08);color:#efd28f}
+.registration-delete-btn{border-color:rgba(255,91,111,.16);color:#d98b97;background:rgba(255,91,111,.035)}
+.registration-delete-btn:hover{border-color:rgba(255,91,111,.38);background:rgba(255,91,111,.08);color:#ffb6c1}
+.registration-photo-upload-btn:disabled,.registration-edit-btn:disabled,.registration-delete-btn:disabled{opacity:.55;cursor:wait}
+.cc-registration-edit-modal{position:fixed;inset:0;z-index:5200;display:grid;place-items:center;padding:24px;background:rgba(5,7,12,.76);backdrop-filter:blur(10px)}
+.cc-registration-edit-modal[hidden]{display:none!important}
+.cc-registration-edit-card{position:relative;width:min(900px,calc(100vw - 32px));max-height:min(900px,calc(100vh - 32px));overflow:auto;padding:26px;border:1px solid rgba(212,170,92,.25);border-radius:20px;background:linear-gradient(180deg,#111722,#0b1019);box-shadow:0 30px 90px rgba(0,0,0,.52)}
+.cc-registration-edit-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.035);color:#d8dce6;font-size:22px;line-height:1;cursor:pointer}
+.cc-registration-edit-head{padding-right:54px;margin-bottom:22px}
+.cc-registration-edit-head>span{display:block;margin-bottom:8px;color:#d4aa5c;font-size:9px;font-weight:900;letter-spacing:1.5px}
+.cc-registration-edit-head h2{margin:0 0 8px;color:#f5f7fb;font-size:24px;line-height:1.2}
+.cc-registration-edit-head p{margin:0;max-width:650px;color:#8d97a8;font-size:11px;line-height:1.65}
+.cc-registration-edit-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.cc-registration-edit-form label{display:grid;gap:7px;min-width:0}
+.cc-registration-edit-form label>span{color:#aeb7c6;font-size:9px;font-weight:800;letter-spacing:.45px}
+.cc-registration-edit-form input,.cc-registration-edit-form select,.cc-registration-edit-form textarea{width:100%;min-width:0;border:1px solid rgba(255,255,255,.09);border-radius:11px;background:#0a0f17;color:#f4f6fa;padding:11px 12px;font:inherit;font-size:11px;outline:none;transition:border-color .18s ease,box-shadow .18s ease}
+.cc-registration-edit-form input:focus,.cc-registration-edit-form select:focus,.cc-registration-edit-form textarea:focus{border-color:rgba(212,170,92,.52);box-shadow:0 0 0 3px rgba(212,170,92,.08)}
+.cc-registration-edit-form textarea{resize:vertical;min-height:84px}
+.cc-registration-edit-form .wide{grid-column:1/-1}
+.cc-registration-edit-actions{display:flex;justify-content:flex-end;gap:10px;padding-top:4px}
+body.cc-registration-edit-opened{overflow:hidden}
+@media(max-width:700px){
+  .cc-registration-edit-modal{padding:10px;align-items:end}
+  .cc-registration-edit-card{width:100%;max-height:92vh;padding:20px 16px 16px;border-radius:18px 18px 10px 10px}
+  .cc-registration-edit-head{padding-right:42px;margin-bottom:18px}
+  .cc-registration-edit-head h2{font-size:20px}
+  .cc-registration-edit-form{grid-template-columns:1fr;gap:12px}
+  .cc-registration-edit-form .wide{grid-column:auto}
+  .cc-registration-edit-actions{display:grid;grid-template-columns:1fr 1fr}
+  .cc-registration-edit-actions .v5-btn{width:100%;justify-content:center}
+}
+@media(max-width:430px){.cc-registration-edit-actions{grid-template-columns:1fr}.cc-registration-edit-head h2{font-size:18px}}
