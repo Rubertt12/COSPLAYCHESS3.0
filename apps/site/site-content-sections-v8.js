@@ -2,13 +2,32 @@
   if(window.__COSPLAYCHESS_PUBLIC_CONTENT_V8__)return;
   window.__COSPLAYCHESS_PUBLIC_CONTENT_V8__=true;
   const $=(s,r=document)=>r.querySelector(s);
-  const esc=(v='')=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const esc=(v='')=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
   const getDb=()=>window.COSPLAYCHESS_DB||window.getCosplayChessDb?.()||window.supabase?.createClient?.(window.COSPLAYCHESS_CONFIG?.supabaseUrl,window.COSPLAYCHESS_CONFIG?.supabaseKey);
   const enabled=value=>Array.isArray(value)?value.filter(item=>item&&item.enabled!==false):[];
   const safeUrl=(value,fallback='#')=>{const url=String(value||'').trim();if(!url)return fallback;if(url.startsWith('#')||url.startsWith('./')||url.startsWith('../')||(url.startsWith('/')&&!url.startsWith('//')))return url;try{const parsed=new URL(url,location.origin);return ['http:','https:'].includes(parsed.protocol)?url:fallback;}catch{return fallback;}};
   const safeImage=value=>{const url=safeUrl(value,'');return url?`url('${url.replace(/['"\\]/g,'')}')`:'none';};
   const MONTHS=['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
   const eventDateParts=value=>{const match=String(value||'').trim().match(/^(\d{4})-(\d{2})-(\d{2})$/);if(!match)return null;const month=Number(match[2]);if(month<1||month>12)return null;return{day:match[3],month:MONTHS[month-1],year:match[1]};};
+  const daysUntilEvent=value=>{
+    const match=String(value||'').trim().match(/^(\d{4})-(\d{2})-(\d{2})$/);if(!match)return null;
+    const target=Date.UTC(Number(match[1]),Number(match[2])-1,Number(match[3]));
+    const now=new Date();const today=Date.UTC(now.getFullYear(),now.getMonth(),now.getDate());
+    return Math.round((target-today)/86400000);
+  };
+  const countdownPhrase=(days,withOnly=false)=>{
+    if(days<=0)return 'não falta mais nenhum dia';
+    if(days===1)return `falta${withOnly?' só':''} 1 dia`;
+    return `faltam${withOnly?' só':''} ${days} dias`;
+  };
+  const formatBannerText=(value,eventDate)=>{
+    let text=String(value||'');const days=daysUntilEvent(eventDate);if(days===null)return text;
+    text=text.replace(/\{dias\}/giu,String(Math.max(0,days)));
+    text=text.replace(/\{contagem\}/giu,countdownPhrase(days,true));
+    text=text.replace(/\bfaltam\s+(só\s+)?\d+\s+dias\b/giu,(_,only)=>countdownPhrase(days,Boolean(only)));
+    text=text.replace(/\bfalta\s+(só\s+)?1\s+dia\b/giu,(_,only)=>countdownPhrase(days,Boolean(only)));
+    return text;
+  };
 
   function renderBanners(items){
     const banners=enabled(items).filter(item=>item.title||item.text||item.imageUrl||item.eventDate);if(!banners.length)return;
@@ -16,8 +35,9 @@
     const wrap=document.createElement('section');wrap.id='ccAnnouncements';wrap.className='cc-announcements shell';
     wrap.innerHTML=`<article class="cc-banner"><div class="cc-banner-body"><span class="cc-banner-kicker">DESTAQUE COSPLAYCHESS</span><h2></h2><p></p><a class="btn gold" hidden></a></div><div class="cc-banner-date" hidden aria-label="Data do evento"><span>DATA DO EVENTO</span><strong data-banner-day></strong><b data-banner-month></b><small data-banner-year></small></div>${banners.length>1?'<div class="cc-banner-nav"><button type="button" data-banner-prev aria-label="Banner anterior">‹</button><button type="button" data-banner-next aria-label="Próximo banner">›</button></div>':''}</article>`;
     main.insertBefore(wrap,main.firstChild);let index=0,timer;
-    const show=next=>{index=(next+banners.length)%banners.length;const item=banners[index],card=$('.cc-banner',wrap),title=$('h2',card),text=$('p',card),link=$('a',card),dateBox=$('.cc-banner-date',card);card.style.setProperty('--cc-banner-image',safeImage(item.imageUrl));title.textContent=item.title||'';title.hidden=!item.title;text.textContent=item.text||'';text.hidden=!item.text;const href=safeUrl(item.url,'');link.hidden=!href||!item.buttonText;if(!link.hidden){link.href=href;link.textContent=item.buttonText;}const date=eventDateParts(item.eventDate);card.classList.toggle('has-date',!!date);dateBox.hidden=!date;if(date){$('[data-banner-day]',dateBox).textContent=date.day;$('[data-banner-month]',dateBox).textContent=date.month;$('[data-banner-year]',dateBox).textContent=date.year;dateBox.setAttribute('aria-label',`Data do evento: ${date.day} de ${date.month} de ${date.year}`);}if(banners.length>1){clearInterval(timer);timer=setInterval(()=>show(index+1),7000);}};
+    const show=next=>{index=(next+banners.length)%banners.length;const item=banners[index],card=$('.cc-banner',wrap),title=$('h2',card),text=$('p',card),link=$('a',card),dateBox=$('.cc-banner-date',card);card.style.setProperty('--cc-banner-image',safeImage(item.imageUrl));title.textContent=item.title||'';title.hidden=!item.title;text.textContent=formatBannerText(item.text||'',item.eventDate);text.hidden=!item.text;const href=safeUrl(item.url,'');link.hidden=!href||!item.buttonText;if(!link.hidden){link.href=href;link.textContent=item.buttonText;}const date=eventDateParts(item.eventDate);card.classList.toggle('has-date',!!date);dateBox.hidden=!date;if(date){$('[data-banner-day]',dateBox).textContent=date.day;$('[data-banner-month]',dateBox).textContent=date.month;$('[data-banner-year]',dateBox).textContent=date.year;dateBox.setAttribute('aria-label',`Data do evento: ${date.day} de ${date.month} de ${date.year}`);}if(banners.length>1){clearInterval(timer);timer=setInterval(()=>show(index+1),7000);}};
     wrap.addEventListener('click',event=>{if(event.target.closest('[data-banner-prev]'))show(index-1);if(event.target.closest('[data-banner-next]'))show(index+1);});show(0);
+    setInterval(()=>{const item=banners[index],text=$('.cc-banner p',wrap);if(item&&text)text.textContent=formatBannerText(item.text||'',item.eventDate);},60000);
   }
   function sectionIntro(kicker,titleMain,titleAccent){return `<div class="cc-section-intro"><span class="kicker">${esc(kicker)}</span><h2>${esc(titleMain)} <i>${esc(titleAccent)}</i></h2></div>`;}
   function renderTestimonials(items){
