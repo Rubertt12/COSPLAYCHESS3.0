@@ -46,6 +46,13 @@
     return `<a class="registration-list-music" href="${safe(music.url)}" target="_blank" rel="noopener noreferrer" title="${safe(music.name||'Abrir música')}">♫ Música</a>`;
   }
 
+  function emailStatusText(row={}){
+    if(row.email_status==='sent')return 'E-mail enviado';
+    if(row.email_status==='failed')return 'Falha no e-mail';
+    if(row.email_status==='pending_provider')return 'Aguardando envio';
+    return 'E-mail não enviado';
+  }
+
   function pageButton(page,label=String(page),extra=''){
     return `<button type="button" class="registration-page-btn ${extra}" data-registration-page="${page}">${label}</button>`;
   }
@@ -95,6 +102,44 @@
     status.className='form-status';status.textContent='';
     modal.hidden=false;
     setTimeout(()=>document.getElementById('contactUnlockPassword')?.focus(),30);
+  };
+
+  window.resendRegistrationEmail=async(id,button=null)=>{
+    const row=(Array.isArray(registrations)?registrations:[]).find(r=>String(r.id)===String(id));
+    const name=row?.full_name||row?.character_name||'este inscrito';
+    const email=row?.email||'';
+    if(row?.status!=='confirmed'){
+      alert('O reenvio está disponível apenas para inscrições confirmadas.');
+      return;
+    }
+    if(!email){alert('Este inscrito não possui e-mail cadastrado.');return;}
+    if(!confirm(`Reenviar o e-mail de confirmação para ${name}?\n\nDestino: ${email}`))return;
+
+    const oldText=button?.textContent||'Reenviar e-mail';
+    if(button){button.disabled=true;button.textContent='Enviando...';}
+    try{
+      const {data:{session}}=await db.auth.getSession();
+      if(!session?.access_token)throw new Error('Sua sessão administrativa expirou. Entre novamente no painel.');
+      const cfg=window.COSPLAYCHESS_CONFIG;
+      if(!cfg?.functionsBase)throw new Error('Configuração das funções não encontrada.');
+      const response=await fetch(`${cfg.functionsBase}/cosplaychess-resend-confirmation`,{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'apikey':cfg.supabaseKey,
+          'Authorization':`Bearer ${session.access_token}`
+        },
+        body:JSON.stringify({registrationId:id})
+      });
+      const result=await response.json().catch(()=>({}));
+      if(!response.ok)throw new Error(result.error||result.detail||'Não foi possível reenviar o e-mail.');
+      if(row){row.email_status='sent';row.email_error=null;}
+      alert(result.message||`E-mail reenviado para ${email}.`);
+      window.renderRegistrations();
+    }catch(err){
+      alert(`Não foi possível reenviar o e-mail: ${err.message||err}`);
+      if(button){button.disabled=false;button.textContent=oldText;}
+    }
   };
 
   window.deleteRegistration=async(id,name='este inscrito')=>{
@@ -151,24 +196,26 @@
   }
 
   function renderCard(r,unlocked){
+    const resendDisabled=r.status!=='confirmed'||!r.email;
     return `<article class="registration-card">
       <div class="registration-card-head">
         <div class="registration-card-avatar" style="${r.character_photo_url?`background-image:url('${safe(r.character_photo_url)}')`:''}">${r.character_photo_url?'':'<span>♟</span>'}</div>
         <div class="registration-card-title"><span class="registration-event-name">${safe(r.cosplay_events?.title||'Evento')}</span><h3>${safe(r.character_name||'Personagem')}</h3><p>${safe(r.full_name||'')}</p></div>
       </div>
       <div class="registration-card-details">
-        <div><span>E-mail</span><b class="protected-contact">${unlocked?safe(r.email||'—'):hiddenContact('email')}</b></div>
+        <div><span>E-mail</span><b class="protected-contact">${unlocked?safe(r.email||'—'):hiddenContact('email')}</b><small>${safe(emailStatusText(r))}</small></div>
         <div><span>WhatsApp</span><b class="protected-contact">${unlocked?safe(r.whatsapp||'—'):hiddenContact('phone')}</b></div>
         <div><span>Lado</span><b>${safe(r.side_preference||'Sem preferência')}</b></div>
         <div><span>Peça</span><b>${safe(r.piece_preference||'Sem preferência')}</b></div>
         <div class="registration-detail-wide"><span>2ª preferência</span><b>${safe(r.second_piece_preference||'Sem segunda preferência')}</b></div>
       </div>
       ${renderMusic(r)}
-      <div class="registration-card-footer"><label><span>Status</span><select onchange="updateRegistrationStatus('${safe(r.id)}',this.value)"><option value="confirmed" ${r.status==='confirmed'?'selected':''}>Confirmado</option><option value="waitlist" ${r.status==='waitlist'?'selected':''}>Lista de espera</option><option value="cancelled" ${r.status==='cancelled'?'selected':''}>Cancelado</option></select></label><button type="button" class="mini-btn danger registration-delete-btn" onclick="deleteRegistration('${safe(r.id)}','${safe((r.full_name||r.character_name||'este inscrito').replace(/'/g,"&#39;"))}')">Excluir inscrito</button></div>
+      <div class="registration-card-footer"><label><span>Status</span><select onchange="updateRegistrationStatus('${safe(r.id)}',this.value)"><option value="confirmed" ${r.status==='confirmed'?'selected':''}>Confirmado</option><option value="waitlist" ${r.status==='waitlist'?'selected':''}>Lista de espera</option><option value="cancelled" ${r.status==='cancelled'?'selected':''}>Cancelado</option></select></label><button type="button" class="mini-btn registration-email-resend-btn" ${resendDisabled?'disabled':''} onclick="resendRegistrationEmail('${safe(r.id)}',this)">Reenviar e-mail</button><button type="button" class="mini-btn danger registration-delete-btn" onclick="deleteRegistration('${safe(r.id)}','${safe((r.full_name||r.character_name||'este inscrito').replace(/'/g,"&#39;"))}')">Excluir inscrito</button></div>
     </article>`;
   }
 
   function renderListRow(r,unlocked){
+    const resendDisabled=r.status!=='confirmed'||!r.email;
     return `<article class="registration-list-row">
       <div class="registration-list-person">
         <div class="registration-list-avatar" style="${r.character_photo_url?`background-image:url('${safe(r.character_photo_url)}')`:''}">${r.character_photo_url?'':'♟'}</div>
@@ -176,10 +223,10 @@
       </div>
       <div class="registration-list-field"><span>Lado</span><b>${safe(r.side_preference||'Sem preferência')}</b></div>
       <div class="registration-list-field"><span>Peça</span><b>${safe(r.piece_preference||'Sem preferência')}</b><small>2ª: ${safe(r.second_piece_preference||'—')}</small></div>
-      <div class="registration-list-field registration-list-contact"><span>Contato</span><b>${unlocked?safe(r.email||'—'):hiddenContact('email')}</b><small>${unlocked?safe(r.whatsapp||'—'):hiddenContact('phone')}</small></div>
+      <div class="registration-list-field registration-list-contact"><span>Contato</span><b>${unlocked?safe(r.email||'—'):hiddenContact('email')}</b><small>${unlocked?safe(r.whatsapp||'—'):hiddenContact('phone')}</small><small>${safe(emailStatusText(r))}</small></div>
       <div class="registration-list-field"><span>Trilha</span>${renderListMusic(r)}</div>
       <div class="registration-list-status"><span>Status</span><select onchange="updateRegistrationStatus('${safe(r.id)}',this.value)"><option value="confirmed" ${r.status==='confirmed'?'selected':''}>Confirmado</option><option value="waitlist" ${r.status==='waitlist'?'selected':''}>Espera</option><option value="cancelled" ${r.status==='cancelled'?'selected':''}>Cancelado</option></select></div>
-      <div class="registration-list-actions"><button type="button" class="mini-btn danger" onclick="deleteRegistration('${safe(r.id)}','${safe((r.full_name||r.character_name||'este inscrito').replace(/'/g,"&#39;"))}')">Excluir</button></div>
+      <div class="registration-list-actions"><button type="button" class="mini-btn registration-email-resend-btn" ${resendDisabled?'disabled':''} onclick="resendRegistrationEmail('${safe(r.id)}',this)">Reenviar e-mail</button><button type="button" class="mini-btn danger" onclick="deleteRegistration('${safe(r.id)}','${safe((r.full_name||r.character_name||'este inscrito').replace(/'/g,"&#39;"))}')">Excluir</button></div>
     </article>`;
   }
 
