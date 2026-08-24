@@ -24,8 +24,8 @@
     let text=String(value||'');const days=daysUntilEvent(eventDate);if(days===null)return text;
     text=text.replace(/\{dias\}/giu,String(Math.max(0,days)));
     text=text.replace(/\{contagem\}/giu,countdownPhrase(days,true));
-    text=text.replace(/\bfaltam\s+(só\s+)?\d+\s+dias\b/giu,(_,only)=>countdownPhrase(days,Boolean(only)));
-    text=text.replace(/\bfalta\s+(só\s+)?1\s+dia\b/giu,(_,only)=>countdownPhrase(days,Boolean(only)));
+    text=text.replace(/\bfaltam\s+(só\s+)?(?:\d+\s+)?dias\b/giu,(_,only)=>countdownPhrase(days,Boolean(only)));
+    text=text.replace(/\bfalta\s+(só\s+)?(?:1\s+)?dia\b/giu,(_,only)=>countdownPhrase(days,Boolean(only)));
     return text;
   };
 
