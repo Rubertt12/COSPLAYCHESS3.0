@@ -151,9 +151,9 @@
   if(window.__COSPLAYCHESS_REGISTRATION_CRUD_ASSET_LOADER__)return;
   window.__COSPLAYCHESS_REGISTRATION_CRUD_ASSET_LOADER__=true;
   const css=document.createElement('link');
-  css.rel='stylesheet';css.href='./admin-registration-crud.css?v=20260824-crud1';css.dataset.registrationCrud='true';
+  css.rel='stylesheet';css.href='./admin-registration-crud.css?v=20260824-crud2';css.dataset.registrationCrud='true';
   document.head.appendChild(css);
   const script=document.createElement('script');
-  script.src='./admin-registration-crud.js?v=20260824-crud1';script.async=false;script.dataset.registrationCrud='true';
+  script.src='./admin-registration-crud.js?v=20260824-crud2';script.async=false;script.dataset.registrationCrud='true';
   document.body.appendChild(script);
 })();
