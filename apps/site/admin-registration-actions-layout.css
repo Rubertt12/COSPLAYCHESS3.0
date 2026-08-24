@@ -1,3 +1,5 @@
+@import url('./admin-spacing-polish.css?v=20260824-spacing1');
+
 /* CosplayChess — barra de ações dos cards de inscrições */
 #registrations .registration-row{
   align-items:start!important;
