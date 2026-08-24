@@ -7,6 +7,7 @@
   const AUX={
     pages:{title:'Páginas',desc:'Edite as páginas públicas do CosplayChess.',icon:'□',actions:[['Abrir CMS Visual','./cms.html'],['Ver site publicado','./index.html']]},
     blog:{title:'Blog / Notícias',desc:'Gerencie notícias, comunicados e novidades do projeto.',icon:'▤',actions:[['Gerenciar no CMS','./cms.html'],['Ver site','./index.html']]},
+    rules:{title:'Regras',desc:'Edite as regras públicas para participantes e público.',icon:'§',actions:[['Ver página pública','./regras.html']]},
     banners:{title:'Banners',desc:'Organize chamadas, banners e destaques visuais.',icon:'⚑',actions:[['Editar banners no CMS','./cms.html'],['Prévia pública','./index.html']]},
     testimonials:{title:'Depoimentos',desc:'Gerencie depoimentos e conteúdo social exibido no site.',icon:'〽',actions:[['Editar no CMS','./cms.html']]},
     faq:{title:'FAQ',desc:'Edite perguntas frequentes e respostas do projeto.',icon:'?',actions:[['Editar FAQ no CMS','./cms.html']]},
@@ -17,13 +18,15 @@
     logs:{title:'Logs de Atividade',desc:'Acompanhe alterações recentes registradas pelo painel.',icon:'☷',actions:[['Voltar ao Dashboard','#overview']]}
   };
 
+  if(!document.querySelector('script[data-admin-rules-loader]')){const s=document.createElement('script');s.src='./admin-rules.js?v=20260824-rules1';s.async=false;s.dataset.adminRulesLoader='1';document.body.appendChild(s);}
+
   function getEvents(){try{return Array.isArray(currentEvents)?currentEvents:[]}catch{return[]}}
   function getRegs(){try{return Array.isArray(registrations)?registrations:[]}catch{return[]}}
   function syncAuthLayout(){const dash=$('#dashboardPanel');document.body.classList.toggle('admin-authenticated',!!dash&&!dash.hidden);}
 
   function createAuxViews(){
     const main=$('.v6-main'); if(!main)return;
-    const linkMap={'Páginas':'pages','Blog / Notícias':'blog','Banners':'banners','Depoimentos':'testimonials','FAQ':'faq','Configurações Gerais':'settings','Redes Sociais':'social','Usuários':'users','Backup & Exportar':'backup','Logs de Atividade':'logs'};
+    const linkMap={'Páginas':'pages','Blog / Notícias':'blog','Regras':'rules','Banners':'banners','Depoimentos':'testimonials','FAQ':'faq','Configurações Gerais':'settings','Redes Sociais':'social','Usuários':'users','Backup & Exportar':'backup','Logs de Atividade':'logs'};
     Object.entries(linkMap).forEach(([label,id])=>{const a=$$('.v6-nav a').find(x=>x.textContent.trim().includes(label));if(a)a.setAttribute('href','#'+id);});
     Object.entries(AUX).forEach(([id,cfg])=>{
       if($('#'+id))return;
