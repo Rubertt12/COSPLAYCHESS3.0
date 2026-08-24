@@ -142,6 +142,8 @@ window.COSPLAYCHESS_CONFIG = {
       loadStyle('./admin-announcement.css?v=20260824-ann1');
       loadStyle('./admin-registration-status-compact.css?v=20260824-status3');
       loadStyle('./admin-registration-actions-layout.css?v=20260824-actions1');
+      loadStyle('./admin-event-readmore-settings.css?v=20260824-eventread2');
+      loadScript('./admin-event-readmore-settings.js?v=20260824-eventread2');
       loadScript('./admin-visitor-metric.js?v=20260822-anon1');
       loadScript('./admin-search-v2.js?v=20260822-search2');
       loadScript('./admin-content-manager-v8.js?v=20260824-bannercount2', () => {
@@ -180,8 +182,9 @@ window.COSPLAYCHESS_CONFIG = {
     if (page === 'resultados-admin.html') { loadScript('./resultados-team-media.js'); return; }
 
     if (page === 'index.html' || page === '') {
-      loadStyle('./event-description-collapse.css?v=20260824-eventread1');
+      loadStyle('./event-description-collapse.css?v=20260824-eventread2');
       loadScript('./event-description-collapse.js?v=20260824-eventread1');
+      loadScript('./event-readmore-settings-public.js?v=20260824-eventread2');
       loadStyle('./site-announcement-modal.css?v=20260824-ann1');
       if (!previewMode) loadScript('./site-announcement-modal.js?v=20260824-ann1');
       loadStyle('./hero-instagram.css');
