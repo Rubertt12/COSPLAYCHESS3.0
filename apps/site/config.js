@@ -170,6 +170,8 @@ window.COSPLAYCHESS_CONFIG = {
     if (page === 'resultados-admin.html') { loadScript('./resultados-team-media.js'); return; }
 
     if (page === 'index.html' || page === '') {
+      loadStyle('./event-description-collapse.css?v=20260824-eventread1');
+      loadScript('./event-description-collapse.js?v=20260824-eventread1');
       loadStyle('./site-announcement-modal.css?v=20260824-ann1');
       if (!previewMode) loadScript('./site-announcement-modal.js?v=20260824-ann1');
       loadStyle('./hero-instagram.css');
