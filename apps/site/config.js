@@ -141,7 +141,7 @@ window.COSPLAYCHESS_CONFIG = {
       loadStyle('./admin-blog.css?v=20260824-blog1');
       loadStyle('./admin-announcement.css?v=20260824-ann1');
       loadStyle('./admin-registration-status-compact.css?v=20260824-status3');
-      loadStyle('./admin-registration-actions-layout.css?v=20260824-actions1');
+      loadStyle('./admin-registration-actions-layout.css?v=20260824-actions2');
       loadStyle('./admin-event-readmore-settings.css?v=20260824-eventread2');
       loadScript('./admin-event-readmore-settings.js?v=20260824-eventread2');
       loadScript('./admin-visitor-metric.js?v=20260822-anon1');
@@ -170,7 +170,7 @@ window.COSPLAYCHESS_CONFIG = {
           actions.insertBefore(link, actions.querySelector('.btn.dark'));
         }
         loadScript('./admin-privacy.js', () => {
-          loadScript('./admin-registration-actions-layout.js?v=20260824-actions1');
+          loadScript('./admin-registration-actions-layout.js?v=20260824-actions2');
           loadScript('./admin-private-groups.js');
           loadScript('./admin-game-link.js');
           loadScript('./admin-partners.js', () => loadScript('./admin-partners-layout-fix.js?v=20260822-fix2'));
