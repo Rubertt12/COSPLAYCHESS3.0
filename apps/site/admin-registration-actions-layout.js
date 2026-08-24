@@ -83,3 +83,22 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});
   else boot();
 })();
+
+(()=>{
+  if(window.__COSPLAYCHESS_MANUAL_REGISTRATION_LOADER__)return;
+  window.__COSPLAYCHESS_MANUAL_REGISTRATION_LOADER__=true;
+  if(!document.querySelector('link[data-manual-registration]')){
+    const link=document.createElement('link');
+    link.rel='stylesheet';
+    link.href='./admin-registration-manual.css?v=20260824-manual1';
+    link.dataset.manualRegistration='true';
+    document.head.appendChild(link);
+  }
+  if(!document.querySelector('script[data-manual-registration]')){
+    const script=document.createElement('script');
+    script.src='./admin-registration-manual.js?v=20260824-manual1';
+    script.async=false;
+    script.dataset.manualRegistration='true';
+    document.body.appendChild(script);
+  }
+})();
