@@ -18,6 +18,10 @@
 
   function extractId(item){
     if(item?.dataset?.registrationId)return item.dataset.registrationId;
+    const status=item?.querySelector('select[onchange*="updateRegistrationStatus"]');
+    const statusSource=status?.getAttribute('onchange')||'';
+    const statusMatch=statusSource.match(/updateRegistrationStatus\('([^']+)'/);
+    if(statusMatch?.[1])return statusMatch[1];
     const button=item?.querySelector('[onclick*="deleteRegistration("]');
     const source=button?.getAttribute('onclick')||'';
     const match=source.match(/deleteRegistration\('([^']+)'/);
@@ -40,21 +44,36 @@
     return null;
   }
 
+  function registrationName(item){
+    return item.querySelector('.registration-main b,.registration-card-title h3,.registration-list-person b')?.textContent?.trim()||'este inscrito';
+  }
+
   function ensureButtons(){
     const root=document.getElementById('registrationsList');
     if(!root)return;
     root.querySelectorAll('.registration-row[data-registration-id],.registration-card,.registration-list-row').forEach(item=>{
-      if(item.querySelector('.registration-photo-upload-btn'))return;
       const id=extractId(item);
       const target=targetFor(item);
       if(!id||!target)return;
-      const button=document.createElement('button');
-      button.type='button';
-      button.className='mini-btn registration-photo-upload-btn';
-      button.textContent=hasPhoto(item)?'▣ Trocar foto':'▣ Adicionar foto';
-      button.addEventListener('click',()=>choosePhoto(id,button));
-      const deleteButton=target.querySelector('.registration-delete-btn,[onclick*="deleteRegistration("]');
-      target.insertBefore(button,deleteButton||null);
+
+      if(!item.querySelector('.registration-photo-upload-btn')){
+        const photo=document.createElement('button');
+        photo.type='button';
+        photo.className='mini-btn registration-photo-upload-btn';
+        photo.textContent=hasPhoto(item)?'▣ Trocar foto':'▣ Adicionar foto';
+        photo.addEventListener('click',()=>choosePhoto(id,photo));
+        const deleteButton=target.querySelector('.registration-delete-btn,[onclick*="deleteRegistration("]');
+        target.insertBefore(photo,deleteButton||null);
+      }
+
+      if(!item.querySelector('.registration-delete-btn,[onclick*="deleteRegistration("]')){
+        const del=document.createElement('button');
+        del.type='button';
+        del.className='mini-btn danger registration-delete-btn';
+        del.textContent='Excluir';
+        del.addEventListener('click',()=>window.deleteRegistration(id,registrationName(item)));
+        target.appendChild(del);
+      }
     });
   }
 
@@ -70,6 +89,21 @@
     if(error)throw error;
     return data;
   }
+
+  window.deleteRegistration=async(id,name='este inscrito')=>{
+    if(!id)return;
+    if(!confirm(`Excluir definitivamente ${name||'este inscrito'}?\n\nEssa ação não pode ser desfeita.`))return;
+    const client=db();
+    if(!client){alert('Conexão com o banco indisponível.');return;}
+    try{
+      const{data,error}=await client.from('cosplay_registrations').delete().eq('id',id).select('id');
+      if(error)throw error;
+      if(!data?.length)throw new Error('A inscrição não foi excluída. Atualize a página e tente novamente.');
+      await refreshRegistrations();
+    }catch(error){
+      alert(`Não foi possível excluir o inscrito: ${error.message||error}`);
+    }
+  };
 
   function fileExt(file){
     const byType={'image/jpeg':'jpg','image/png':'png','image/webp':'webp'};
