@@ -9,6 +9,26 @@
   min-width:0;
 }
 
+/* Cada rota recebe um ícone vetorial consistente. */
+.v6-nav a[href="#overview"]{--cc-nav-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m3 11 9-8 9 8M5 10v11h14V10M9 21v-7h6v7' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.v6-nav a[href="#events"]{--cc-nav-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='5' width='18' height='16' rx='2' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='M16 3v4M8 3v4M3 10h18' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")}
+.v6-nav a[href="#registrations"]{--cc-nav-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 3h8l-1 4 2 3-2 3 3 7H6l3-7-2-3 2-3zM7 20h10' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.v6-nav a[href="#eventGalleryPanel"]{--cc-nav-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' fill='none' stroke='black' stroke-width='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='m21 15-5-5L5 21' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.v6-nav a[href="#pages"]{--cc-nav-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.v6-nav a[href="#blog"]{--cc-nav-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 5h16v14H4zM7 8h5v4H7zM14 8h3M14 11h3M7 15h10' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.v6-nav a[href="#rules"]{--cc-nav-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 3h12a2 2 0 0 1 2 2v16H8a4 4 0 0 1-4-4V5a2 2 0 0 1 2-2zM8 3v18M11 8h6M11 12h6M11 16h4' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.v6-nav a[href="#announcement"]{--cc-nav-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m3 11 18-5v12L3 13zM11.5 15.5 13 21H7l-1.5-7' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.v6-nav a[href="#banners"]{--cc-nav-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 22V4M5 5h11l-2 4 2 4H5' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.v6-nav a[href="#testimonials"]{--cc-nav-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 17H3v-4a6 6 0 0 1 6-6v3a3 3 0 0 0-3 3h1zM18 17h-4v-4a6 6 0 0 1 6-6v3a3 3 0 0 0-3 3h1z' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.v6-nav a[href="#faq"]{--cc-nav-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='M9.5 9a2.8 2.8 0 1 1 4.9 1.9c-1.4 1.3-2.4 1.7-2.4 3.1M12 18h.01' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")}
+.v6-nav a[href*="google" i],.v6-nav a[href="#googleDrive"]{--cc-nav-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M17.5 19H7a5 5 0 0 1-.8-9.9A7 7 0 0 1 19.7 11 4 4 0 0 1 17.5 19z' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.v6-nav a[href="#settings"]{--cc-nav-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='3' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21h-4a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14v-4a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3h4a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9A1.7 1.7 0 0 0 21 10v4a1.7 1.7 0 0 0-1.6 1z' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.v6-nav a[href="#social"]{--cc-nav-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='18' cy='5' r='3' fill='none' stroke='black' stroke-width='2'/%3E%3Ccircle cx='6' cy='12' r='3' fill='none' stroke='black' stroke-width='2'/%3E%3Ccircle cx='18' cy='19' r='3' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='m8.6 10.5 6.8-4M8.6 13.5l6.8 4' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")}
+.v6-nav a[href="#users"]{--cc-nav-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M22 21v-2a4 4 0 0 0-3-3.9' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='9' cy='7' r='4' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='M16 3.1a4 4 0 0 1 0 7.8' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")}
+.v6-nav a[href="#partners"]{--cc-nav-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 12l3 3a2 2 0 0 0 3 0l2-2M3 10l4-4 4 1 2-2 8 8-4 4-2-2M3 10l5 5' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.v6-nav a[href="#backup"]{--cc-nav-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 7h16v13H4zM7 4h10v3M8 11h8M8 15h6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.v6-nav a[href="#logs"]{--cc-nav-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")}
+
 .v6-nav a>i{
   flex:0 0 var(--cc-side-cell)!important;
   width:var(--cc-side-cell)!important;
@@ -19,19 +39,19 @@
   margin:0!important;
   border-radius:8px!important;
   line-height:1!important;
+  font-size:0!important;
 }
 
-.v6-nav a>i>.cc-svg-icon{
-  width:var(--cc-side-icon)!important;
-  height:var(--cc-side-icon)!important;
-  margin:0!important;
-  display:grid!important;
-  place-items:center!important;
-}
-
-.v6-nav a>i>.cc-svg-icon svg{
-  width:100%!important;
-  height:100%!important;
+/* Esconde qualquer símbolo antigo e desenha sempre o SVG da rota. */
+.v6-nav a>i>*{display:none!important}
+.v6-nav a>i::before{
+  content:"";
+  width:var(--cc-side-icon);
+  height:var(--cc-side-icon);
+  display:block;
+  background:currentColor;
+  -webkit-mask:var(--cc-nav-icon) center/contain no-repeat;
+  mask:var(--cc-nav-icon) center/contain no-repeat;
 }
 
 .v6-nav a>span{
@@ -45,30 +65,26 @@
 .v6-shell.collapsed{
   grid-template-columns:72px minmax(0,1fr)!important;
 }
-
 .v6-shell.collapsed .v6-sidebar{
   padding:14px 9px 10px!important;
   align-items:stretch!important;
 }
-
 .v6-shell.collapsed .v6-brand{
   min-height:58px!important;
   padding:0 0 12px!important;
   margin:0 0 7px!important;
   justify-content:center!important;
 }
-
 .v6-shell.collapsed .v6-brand img{
   width:40px!important;
   height:40px!important;
   margin:0!important;
 }
-
 .v6-shell.collapsed .v6-nav{
   align-items:stretch!important;
   gap:3px!important;
 }
-
+.v6-shell.collapsed .v6-nav-title{display:none!important}
 .v6-shell.collapsed .v6-nav a{
   width:48px!important;
   min-width:48px!important;
@@ -80,32 +96,31 @@
   gap:0!important;
   overflow:visible!important;
 }
-
 .v6-shell.collapsed .v6-nav a>i{
   flex:0 0 34px!important;
   width:34px!important;
   height:34px!important;
   border-radius:9px!important;
 }
-
-.v6-shell.collapsed .v6-nav a>i>.cc-svg-icon{
+.v6-shell.collapsed .v6-nav a>i::before{
   width:19px!important;
   height:19px!important;
 }
-
 .v6-shell.collapsed .v6-nav a.active:before{
   left:-3px!important;
   top:9px!important;
   bottom:9px!important;
 }
 
-/* Tooltip com o nome do item quando a sidebar está fechada. */
-.v6-shell.collapsed .v6-nav a[data-sidebar-label]:after{
-  content:attr(data-sidebar-label);
-  position:absolute;
+/* O próprio texto vira tooltip no modo recolhido. */
+.v6-shell.collapsed .v6-nav a>span{
+  display:block!important;
+  position:absolute!important;
   z-index:3000;
   left:calc(100% + 11px);
   top:50%;
+  width:max-content!important;
+  max-width:220px!important;
   transform:translate(4px,-50%);
   padding:7px 10px;
   border:1px solid rgba(148,163,184,.20);
@@ -113,18 +128,19 @@
   background:#101b29;
   color:#edf3f9;
   box-shadow:0 12px 35px rgba(0,0,0,.35);
-  font-size:10px;
-  font-weight:700;
-  line-height:1.2;
-  white-space:nowrap;
+  font-size:10px!important;
+  font-weight:700!important;
+  line-height:1.2!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
   opacity:0;
   visibility:hidden;
   pointer-events:none;
   transition:opacity .14s ease,transform .14s ease,visibility .14s ease;
 }
-
-.v6-shell.collapsed .v6-nav a[data-sidebar-label]:hover:after,
-.v6-shell.collapsed .v6-nav a[data-sidebar-label]:focus-visible:after{
+.v6-shell.collapsed .v6-nav a:hover>span,
+.v6-shell.collapsed .v6-nav a:focus-visible>span{
   opacity:1;
   visibility:visible;
   transform:translate(0,-50%);
@@ -142,13 +158,11 @@
   place-items:center!important;
   border-radius:12px!important;
 }
-
 .v6-shell.collapsed .v6-user-avatar{
   width:34px!important;
   height:34px!important;
   margin:0!important;
 }
-
 .v6-shell.collapsed .v6-collapse{
   width:48px!important;
   min-width:48px!important;
@@ -159,14 +173,12 @@
   place-items:center!important;
   font-size:0!important;
 }
-
 .v6-shell.collapsed .v6-collapse>.cc-svg-icon{
   width:18px!important;
   height:18px!important;
   margin:0!important;
   transform:rotate(180deg);
 }
-
 .v6-collapse>.cc-svg-icon{
   width:15px!important;
   height:15px!important;
@@ -174,48 +186,29 @@
   transition:transform .18s ease;
 }
 
-/* Remove qualquer caixa residual de caracteres antigos. */
-.v6-nav a>i{
-  font-size:0!important;
-}
-
 /* Sidebar aberta: iconografia mais equilibrada. */
-.v6-shell:not(.collapsed) .v6-nav a{
-  gap:9px!important;
-}
-
-.v6-shell:not(.collapsed) .v6-nav a>i{
-  background:rgba(255,255,255,.022)!important;
-}
-
-.v6-shell:not(.collapsed) .v6-nav a:hover>i{
-  background:rgba(124,58,237,.10)!important;
-}
-
-.v6-shell:not(.collapsed) .v6-nav a.active>i{
-  background:rgba(124,58,237,.17)!important;
-}
+.v6-shell:not(.collapsed) .v6-nav a{gap:9px!important}
+.v6-shell:not(.collapsed) .v6-nav a>i{background:rgba(255,255,255,.022)!important}
+.v6-shell:not(.collapsed) .v6-nav a:hover>i{background:rgba(124,58,237,.10)!important}
+.v6-shell:not(.collapsed) .v6-nav a.active>i{background:rgba(124,58,237,.17)!important}
 
 @media(max-height:780px) and (min-width:1001px){
-  .v6-shell.collapsed .v6-nav a{
-    height:36px!important;
-    min-height:36px!important;
-  }
-  .v6-shell.collapsed .v6-nav a>i{
-    width:30px!important;
-    height:30px!important;
-  }
-  .v6-shell.collapsed .v6-nav a>i>.cc-svg-icon{
-    width:17px!important;
-    height:17px!important;
-  }
+  .v6-shell.collapsed .v6-nav a{height:36px!important;min-height:36px!important}
+  .v6-shell.collapsed .v6-nav a>i{width:30px!important;height:30px!important}
+  .v6-shell.collapsed .v6-nav a>i::before{width:17px!important;height:17px!important}
 }
 
 @media(max-width:1000px){
-  .v6-shell.collapsed{
-    grid-template-columns:1fr!important;
-  }
-  .v6-shell.collapsed .v6-nav a[data-sidebar-label]:after{
-    display:none!important;
+  .v6-shell.collapsed{grid-template-columns:1fr!important}
+  .v6-shell.collapsed .v6-nav a>span{
+    position:static!important;
+    opacity:1!important;
+    visibility:visible!important;
+    transform:none!important;
+    padding:0!important;
+    border:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    color:inherit!important;
   }
 }
