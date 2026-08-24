@@ -8,7 +8,7 @@
     return 'Peça humana';
   }
 
-  function buildPresentation(participant,event){
+  function buildPresentation(participant,event,result){
     const lines=[];
     const displayName=(participant?.nick||participant?.fullName||'').trim();
     lines.push('♟️ *Apresentação CosplayChess*');
@@ -21,9 +21,10 @@
       lines.push(`🎮 Função: *${roleLabel(role)}*`);
     }else{
       if(participant?.characterName) lines.push(`🎭 Personagem: *${participant.characterName}*`);
-      if(participant?.piecePreference) lines.push(`♟️ Peça desejada: *${participant.piecePreference}*`);
-      if(participant?.secondPiecePreference && participant.secondPiecePreference!=='Sem segunda preferência'){
-        lines.push(`♙ 2ª preferência: *${participant.secondPiecePreference}*`);
+      const assignedPiece=result?.assignedPiece||participant?.piecePreference;
+      if(assignedPiece) lines.push(`♟️ Peça confirmada: *${assignedPiece}*`);
+      if(result?.pieceFallback){
+        lines.push(`↪️ A 1ª preferência (*${result.requestedPiece}*) estava lotada; foi usada a 2ª preferência.`);
       }
     }
     if(participant?.city) lines.push(`📍 Cidade: *${participant.city}*`);
@@ -65,7 +66,7 @@
     if(!groupUrl) return;
 
     removeOldCard();
-    const presentation=buildPresentation(detail.participant||{},detail.event||{});
+    const presentation=buildPresentation(detail.participant||{},detail.event||{},detail.result||{});
     const status=document.getElementById('formStatus');
     const form=document.getElementById('signupForm');
     if(!form) return;
