@@ -5,6 +5,7 @@
   const $=(s,r=document)=>r.querySelector(s);
   const $$=(s,r=document)=>[...r.querySelectorAll(s)];
   const slugify=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,90);
+  const NOTE='Feed / Story envia só a imagem. Instagram Messages envia a imagem junto com título, resumo, link e hashtags.';
   const status=(text,type='')=>{
     const el=$('#blog .cc-blog-status');
     if(!el)return;
@@ -53,7 +54,6 @@
     c.width=1080;c.height=1350;
     const ctx=c.getContext('2d');
     ctx.fillStyle='#09070d';ctx.fillRect(0,0,c.width,c.height);
-
     if(p.coverUrl){
       try{
         const img=await loadImage(p.coverUrl);
@@ -62,7 +62,6 @@
         ctx.drawImage(img,(c.width-w)/2,(c.height-h)/2,w,h);
       }catch{}
     }
-
     const grad=ctx.createLinearGradient(0,120,0,1350);
     grad.addColorStop(0,'rgba(5,3,8,.08)');
     grad.addColorStop(.48,'rgba(7,4,11,.42)');
@@ -76,7 +75,6 @@
     ctx.font='900 68px Arial';ctx.fillStyle='#fff';wrap(ctx,p.title||'CosplayChess',72,1048,920,78,3);
     ctx.font='700 27px Arial';ctx.fillStyle='#e8cf91';ctx.fillText('@fergorverse',72,1285);
     ctx.textAlign='right';ctx.fillStyle='rgba(255,255,255,.75)';ctx.fillText('cosplaychess',1008,1285);ctx.textAlign='left';
-
     const blob=await new Promise(r=>c.toBlob(r,'image/png',.96));
     return new File([blob],`cosplaychess-${p.slug||'noticia'}.png`,{type:'image/png'});
   }
@@ -102,6 +100,7 @@
   }
 
   function inject(){
+    let changed=false;
     $$('#blog .cc-blog-card').forEach(card=>{
       const actions=$('.cc-social-actions',card);
       if(!actions||actions.querySelector('[data-social-messages]'))return;
@@ -112,10 +111,15 @@
       btn.textContent='Instagram Messages';
       const copy=actions.querySelector('[data-copy-caption]');
       actions.insertBefore(btn,copy||null);
+      changed=true;
     });
     $$('#blog .cc-social-note').forEach(note=>{
-      note.textContent='Feed / Story envia só a imagem. Instagram Messages envia a imagem junto com título, resumo, link e hashtags.';
+      if(note.textContent!==NOTE){
+        note.textContent=NOTE;
+        changed=true;
+      }
     });
+    return changed;
   }
 
   document.addEventListener('click',e=>{
@@ -127,7 +131,15 @@
     if(card)shareMessages(card);
   },true);
 
-  const obs=new MutationObserver(inject);
+  let scheduled=false;
+  const obs=new MutationObserver(()=>{
+    if(scheduled)return;
+    scheduled=true;
+    requestAnimationFrame(()=>{
+      scheduled=false;
+      inject();
+    });
+  });
   obs.observe(document.body,{childList:true,subtree:true});
   inject();
 })();
