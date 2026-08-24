@@ -1,0 +1,183 @@
+/* CosplayChess — acabamento de espaçamentos do Admin */
+
+/* Cabeçalhos das telas: título, descrição e ações com ritmo consistente. */
+.v6-management-head,
+.cc-blog-admin-head,
+.cc-rules-admin-head,
+.cc-ann-head,
+.v6-card-head{
+  min-width:0;
+}
+
+.v6-management-head{
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:space-between!important;
+  gap:18px!important;
+  margin-bottom:18px!important;
+}
+
+.v6-management-head>div:first-child{
+  display:grid!important;
+  align-content:start!important;
+  gap:7px!important;
+  min-width:0!important;
+}
+
+.v6-management-head h2,
+.cc-blog-admin-head h2,
+.cc-rules-admin-head h2,
+.cc-ann-head h2{
+  margin:0!important;
+  line-height:1.14!important;
+}
+
+.v6-management-head p,
+.cc-blog-admin-head p,
+.cc-rules-admin-head p,
+.cc-ann-head p{
+  margin:0!important;
+  line-height:1.5!important;
+}
+
+/* Painéis e cards: evita títulos grudados no conteúdo. */
+.v6-card-head{
+  margin-bottom:14px!important;
+}
+
+.v6-card-head h2{
+  margin:0!important;
+  line-height:1.18!important;
+}
+
+.v6-card>h2,
+.v6-card>h3,
+.v6-aux-view>h2,
+.v6-aux-view>h3{
+  margin-top:0!important;
+  margin-bottom:10px!important;
+}
+
+/* Ações de topo. */
+.v6-management-head .panel-actions,
+.v6-management-head>.panel-actions{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  flex-wrap:wrap!important;
+  gap:8px!important;
+  margin:0!important;
+}
+
+/* Inscrições: compacta status e botões relacionados. */
+#registrations .registration-row{
+  row-gap:9px!important;
+}
+
+#registrations .registration-actions-bar{
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr)!important;
+  align-items:center!important;
+  column-gap:10px!important;
+  row-gap:8px!important;
+  margin-top:6px!important;
+  padding-top:8px!important;
+}
+
+#registrations .registration-actions-status{
+  margin:0!important;
+  padding:0!important;
+  align-self:center!important;
+}
+
+#registrations .registration-actions-status select{
+  margin:0!important;
+}
+
+#registrations .registration-actions-buttons{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  flex-wrap:wrap!important;
+  gap:6px!important;
+  margin:0!important;
+  padding:0!important;
+}
+
+#registrations .registration-actions-buttons .registration-card-action{
+  margin:0!important;
+}
+
+/* Remove margens herdadas que criavam buracos entre controles. */
+#registrations .registration-row button,
+#registrations .registration-row select,
+#registrations .registration-row .privacy-reveal-btn,
+#registrations .registration-row .registration-photo-edit-btn{
+  margin-top:0!important;
+  margin-bottom:0!important;
+}
+
+/* Cards em grade: mantém conteúdo visualmente unido. */
+#registrations .registration-grid-mode .registration-main{
+  display:grid!important;
+  align-content:start!important;
+  gap:4px!important;
+}
+
+#registrations .registration-grid-mode .registration-main>span,
+#registrations .registration-grid-mode .registration-main>small{
+  margin-top:0!important;
+}
+
+/* Formulários e editores administrativos. */
+.cc-blog-admin-head,
+.cc-rules-admin-head,
+.cc-ann-head{
+  display:grid!important;
+  gap:7px!important;
+  margin-bottom:18px!important;
+}
+
+.cc-blog-card h3,
+.cc-rule-editor h3,
+.cc-ann-card h3{
+  margin-top:0!important;
+  margin-bottom:9px!important;
+}
+
+@media(max-width:900px){
+  .v6-management-head{
+    gap:14px!important;
+  }
+}
+
+@media(max-width:700px){
+  .v6-management-head{
+    flex-direction:column!important;
+    align-items:stretch!important;
+    margin-bottom:15px!important;
+  }
+
+  .v6-management-head .panel-actions,
+  .v6-management-head>.panel-actions{
+    justify-content:flex-start!important;
+  }
+
+  #registrations .registration-actions-bar{
+    grid-template-columns:1fr!important;
+    gap:7px!important;
+  }
+
+  #registrations .registration-actions-buttons{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:7px!important;
+  }
+}
+
+@media(max-width:430px){
+  #registrations .registration-actions-buttons{
+    grid-template-columns:1fr!important;
+  }
+}
