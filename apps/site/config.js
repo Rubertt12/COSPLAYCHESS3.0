@@ -108,7 +108,7 @@ window.COSPLAYCHESS_CONFIG = {
     if (globalCmsPages.includes(page)) {
       loadScript('./site-global-cms.js?v=20260819-global1');
       loadStyle('./site-content-sections-v8.css?v=20260824-bannerdate1');
-      loadScript('./site-content-sections-v8.js?v=20260824-bannerdate1');
+      loadScript('./site-content-sections-v8.js?v=20260824-bannercount1');
       loadStyle('./site-blog.css?v=20260824-blog1');
       loadScript('./site-blog.js?v=20260824-blog1');
     }
