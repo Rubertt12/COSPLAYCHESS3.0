@@ -26,3 +26,28 @@
 #registrationPhotoStatus{min-height:19px;margin:0}
 @media(max-width:760px){.registration-photo-modal-card{padding:20px}.registration-photo-editor-grid{grid-template-columns:1fr;gap:16px}.registration-photo-preview{max-width:430px;margin:auto}.registration-photo-controls{padding:15px}}
 @media(max-width:480px){.registration-photo-modal{padding:7px}.registration-photo-modal-card{padding:18px 14px;border-radius:14px}.registration-photo-modal-card h2{font-size:20px}.registration-photo-description{font-size:11.5px}.registration-photo-preview>span{font-size:9px}.registration-photo-actions{grid-template-columns:1fr}.registration-photo-controls{gap:15px}.registration-main .registration-photo-edit-btn{width:100%;justify-content:center}}
+
+/* Sidebar admin — cabeçalho limpo e rodapé sem sobreposição */
+body.admin-v6 .v6-version{display:none!important}
+body.admin-v6 .v6-sidebar{min-height:0!important;overflow:hidden!important}
+body.admin-v6 .v6-brand{flex:0 0 auto!important;min-width:0!important;padding-right:54px!important;position:relative!important}
+body.admin-v6 .v6-nav{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;overflow-x:visible!important;scrollbar-width:none!important;padding-bottom:8px!important;overscroll-behavior:contain}
+body.admin-v6 .v6-nav::-webkit-scrollbar{display:none!important}
+body.admin-v6 .v6-user-card,body.admin-v6 .v6-collapse{flex:0 0 auto!important;position:relative!important;z-index:4;background-clip:padding-box}
+body.admin-v6 .v6-user-card{margin-top:8px!important}
+body.admin-v6 .v6-collapse{margin-top:6px!important}
+body.admin-v6 .v6-sidebar-spacer{display:none!important}
+
+@media(min-width:1001px){
+  body.admin-v6 .v6-menu{position:absolute!important;left:184px!important;top:35px!important;z-index:30!important}
+  body.admin-v6 .v6-shell.collapsed .v6-menu{left:15px!important;top:72px!important}
+  body.admin-v6 .v6-shell.collapsed .v6-brand{padding-right:0!important}
+}
+
+@media(max-width:1000px){
+  body.admin-v6 .v6-brand{padding-right:0!important}
+  body.admin-v6.admin-authenticated .v6-version{display:none!important}
+  body.admin-v6.admin-authenticated .v6-sidebar{overflow-y:hidden!important}
+  body.admin-v6.admin-authenticated .v6-nav{overflow-y:auto!important}
+  body.admin-v6.admin-authenticated .v6-user-card{margin-top:8px!important}
+}
