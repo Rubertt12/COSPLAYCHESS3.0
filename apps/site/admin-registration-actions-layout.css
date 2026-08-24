@@ -1,0 +1,102 @@
+/* CosplayChess — barra de ações dos cards de inscrições */
+#registrations .registration-row{
+  align-items:start!important;
+}
+#registrations .registration-actions-bar{
+  grid-column:1/-1!important;
+  width:100%!important;
+  min-width:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  margin-top:10px!important;
+  padding-top:12px!important;
+  border-top:1px solid rgba(255,255,255,.07)!important;
+}
+#registrations .registration-actions-status{
+  display:flex!important;
+  align-items:center!important;
+  flex:0 0 auto!important;
+  min-width:0!important;
+}
+#registrations .registration-actions-buttons{
+  min-width:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:8px!important;
+  flex:1 1 auto!important;
+  flex-wrap:wrap!important;
+}
+#registrations .registration-actions-buttons .registration-card-action{
+  width:auto!important;
+  min-width:0!important;
+  min-height:32px!important;
+  height:32px!important;
+  margin:0!important;
+  padding:0 11px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  white-space:nowrap!important;
+  font-size:10px!important;
+  line-height:1!important;
+}
+#registrations .registration-actions-buttons .registration-card-action-delete{
+  margin-left:2px!important;
+}
+#registrations .registration-actions-status>select{
+  margin:0!important;
+}
+
+/* Grid: mantém as ações na base e reduz o vazio entre os controles. */
+#registrations .registration-grid-mode .registration-row{
+  align-content:start!important;
+}
+#registrations .registration-grid-mode .registration-actions-bar{
+  margin-top:12px!important;
+}
+
+/* Lista: barra mais enxuta para não aumentar demais cada linha. */
+#registrations .registration-list-mode .registration-actions-bar{
+  margin-top:7px!important;
+  padding-top:9px!important;
+}
+#registrations .registration-list-mode .registration-actions-buttons .registration-card-action{
+  min-height:30px!important;
+  height:30px!important;
+  font-size:9px!important;
+}
+
+@media(max-width:700px){
+  #registrations .registration-actions-bar{
+    align-items:stretch!important;
+    flex-direction:column!important;
+    gap:9px!important;
+  }
+  #registrations .registration-actions-status{
+    width:100%!important;
+  }
+  #registrations .registration-actions-buttons{
+    width:100%!important;
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+  }
+  #registrations .registration-actions-buttons .registration-card-action{
+    width:100%!important;
+    min-height:38px!important;
+    height:38px!important;
+    padding:0 9px!important;
+    font-size:10px!important;
+  }
+  #registrations .registration-actions-buttons .registration-card-action-delete{
+    margin-left:0!important;
+  }
+}
+@media(max-width:420px){
+  #registrations .registration-actions-buttons{
+    grid-template-columns:1fr!important;
+  }
+}
