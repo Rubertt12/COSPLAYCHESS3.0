@@ -13,7 +13,7 @@
     try{
       footer.querySelectorAll('.cc-social-links').forEach(node=>node.remove());
 
-      const canonical=footer.querySelector('a.footer-social')||footer.querySelector('a[data-fergorverse-instagram]');
+      const canonical=footer.querySelector('a.footer-social')||footer.querySelector('a[href*="instagram.com"]');
       if(!canonical)return;
 
       footer.querySelectorAll('a[href*="instagram.com"],a[data-fergorverse-instagram]').forEach(link=>{
@@ -21,13 +21,17 @@
       });
 
       canonical.classList.add('footer-social-clean');
-      canonical.href=canonical.getAttribute('href')||'https://www.instagram.com/fergorverse/';
+      canonical.removeAttribute('data-fergorverse-instagram');
+      canonical.removeAttribute('data-cms-global-role');
+      canonical.href='https://www.instagram.com/fergorverse/';
       canonical.target='_blank';
       canonical.rel='noopener noreferrer';
       canonical.setAttribute('aria-label','Instagram @fergorverse');
       canonical.setAttribute('title','Instagram @fergorverse');
 
-      const ready=canonical.children.length===2&&canonical.querySelector(':scope > .cc-footer-instagram-icon')&&canonical.querySelector(':scope > .cc-footer-instagram-handle')?.textContent==='@fergorverse';
+      const icon=canonical.querySelector(':scope > .cc-footer-instagram-icon');
+      const handle=canonical.querySelector(':scope > .cc-footer-instagram-handle');
+      const ready=canonical.children.length===2&&icon?.querySelector('svg')&&handle?.textContent==='@fergorverse';
       if(!ready)canonical.innerHTML=ICON;
     }finally{
       applying=false;
@@ -39,7 +43,7 @@
     const footer=document.querySelector('.site-footer');
     if(!footer){setTimeout(start,180);return;}
     const observer=new MutationObserver(clean);
-    observer.observe(footer,{childList:true,subtree:true,characterData:true});
+    observer.observe(footer,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['data-fergorverse-instagram','data-cms-global-role']});
     [250,700,1400,2800].forEach(delay=>setTimeout(clean,delay));
   }
 
