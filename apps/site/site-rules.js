@@ -1,0 +1,20 @@
+(()=>{
+  if(window.__COSPLAYCHESS_SITE_RULES__)return;
+  window.__COSPLAYCHESS_SITE_RULES__=true;
+  const $=(s,r=document)=>r.querySelector(s);
+  const esc=(v='')=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const client=()=>window.COSPLAYCHESS_DB||window.getCosplayChessDb?.();
+  const defaults={title:'Regras do CosplayChess',intro:'Tudo que participantes e público precisam saber para que a partida seja divertida, organizada e segura.',items:[
+    {id:'como-funciona',icon:'♜',title:'Como funciona',body:'O CosplayChess transforma uma partida de xadrez em espetáculo. Cada peça é representada por uma pessoa caracterizada e segue os movimentos definidos pela partida.',published:true},
+    {id:'participacao',icon:'♙',title:'Participação',body:'A participação depende de inscrição e confirmação da organização. Chegue no horário informado, siga as orientações da equipe e mantenha seus dados de inscrição atualizados.',published:true},
+    {id:'personagens',icon:'♛',title:'Personagens e cosplay',body:'O personagem inscrito deve corresponder ao apresentado no evento. A organização pode orientar ajustes quando houver conflito de personagens, segurança ou composição do elenco.',published:true},
+    {id:'conduta',icon:'♡',title:'Conduta e respeito',body:'Respeito é obrigatório. Não são permitidos assédio, discriminação, agressões, intimidação ou comportamento que prejudique participantes, equipe ou público.',published:true},
+    {id:'partida',icon:'♟',title:'Durante a partida',body:'Os participantes devem aguardar as instruções do operador e da produção antes de se mover. Em caso de dúvida, permaneça na posição e aguarde orientação.',published:true},
+    {id:'seguranca',icon:'⚑',title:'Segurança',body:'Acessórios, réplicas e elementos do cosplay precisam respeitar as regras do evento anfitrião. A organização pode impedir o uso de qualquer item considerado inseguro.',published:true}
+  ]};
+  const paragraphs=text=>String(text||'').split(/\n\s*\n/).map(x=>x.trim()).filter(Boolean).map(x=>`<p>${esc(x).replace(/\n/g,'<br>')}</p>`).join('');
+  function normalize(content){const c=content&&typeof content==='object'?content:{};return {title:c.title||defaults.title,intro:c.intro||defaults.intro,items:Array.isArray(c.items)&&c.items.length?c.items:defaults.items};}
+  function render(content){const root=$('#rulesRoot');if(!root)return;const doc=normalize(content);const items=doc.items.filter(x=>x&&x.published!==false&&x.title);const title=$('#rulesPageTitle'),intro=$('#rulesPageIntro');if(title)title.innerHTML=esc(doc.title).replace(/CosplayChess/i,'<i>CosplayChess</i>');if(intro)intro.textContent=doc.intro;root.innerHTML=items.length?`<div class="rules-summary"><article><span>TÓPICOS</span><b>${items.length} regras principais</b></article><article><span>OBJETIVO</span><b>Organização e diversão</b></article><article><span>PRINCÍPIO</span><b>Respeito sempre</b></article></div><div class="rules-grid">${items.map((item,i)=>`<article class="rule-card"><div class="rule-card-head"><div class="rule-card-icon">${esc(item.icon||String(i+1).padStart(2,'0'))}</div><h2>${esc(item.title)}</h2></div><div class="rule-card-body">${paragraphs(item.body)}</div></article>`).join('')}</div><div class="rules-note">As regras podem ser atualizadas pela organização conforme o evento, local ou formato da partida. Orientações específicas divulgadas para uma edição têm prioridade para aquela atividade.</div>`:'<div class="rules-empty">As regras serão publicadas em breve.</div>';}
+  async function start(){const d=client();if(!d){render(defaults);return;}try{const {data,error}=await d.from('cosplay_site_content').select('content').eq('key','rules').maybeSingle();if(error)throw error;render(data?.content||defaults);}catch(e){console.error('[Site Rules]',e);render(defaults);}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+})();
