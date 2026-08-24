@@ -1,0 +1,78 @@
+/* CosplayChess — descrições de eventos compactas com expansão sob demanda */
+.event-description-wrap{
+  margin-top:0;
+}
+
+.event-description-wrap .event-description{
+  margin-bottom:0;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:4;
+  overflow:hidden;
+}
+
+.event-description-wrap.is-expanded .event-description{
+  display:block;
+  overflow:visible;
+  -webkit-line-clamp:unset;
+}
+
+.event-description-toggle{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-top:8px;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#d9b86b;
+  font:inherit;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.65px;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:color .18s ease,opacity .18s ease;
+}
+
+.event-description-toggle:hover,
+.event-description-toggle:focus-visible{
+  color:#f5d992;
+}
+
+.event-description-toggle:focus-visible{
+  outline:2px solid rgba(212,170,92,.45);
+  outline-offset:4px;
+  border-radius:4px;
+}
+
+.event-description-toggle::after{
+  content:'+';
+  display:grid;
+  place-items:center;
+  width:16px;
+  height:16px;
+  border:1px solid rgba(212,170,92,.34);
+  border-radius:50%;
+  font-size:12px;
+  line-height:1;
+}
+
+.event-description-wrap.is-expanded .event-description-toggle::after{
+  content:'−';
+}
+
+.event-description-toggle[hidden]{
+  display:none!important;
+}
+
+@media(max-width:760px){
+  .event-description-wrap .event-description{
+    -webkit-line-clamp:3;
+  }
+  .event-description-toggle{
+    margin-top:7px;
+    min-height:32px;
+    font-size:9px;
+  }
+}
