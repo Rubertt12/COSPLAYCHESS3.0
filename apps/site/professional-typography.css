@@ -11,6 +11,8 @@
   --cc-text-gap-sm:.6rem;
   --cc-text-gap-md:.9rem;
   --cc-text-gap-lg:1.35rem;
+  --cc-title-subtitle-gap:clamp(10px,.75vw,14px);
+  --cc-subtitle-content-gap:clamp(16px,1.2vw,22px);
 }
 
 html{
@@ -23,7 +25,7 @@ body{
   line-height:var(--cc-text-leading);
 }
 
-/* Títulos: menos “apertados” e com quebras mais naturais. */
+/* Títulos: menos apertados e com quebras mais naturais. */
 :where(h1,h2,h3,h4,h5,h6){
   text-wrap:balance;
   overflow-wrap:normal;
@@ -59,20 +61,75 @@ body{
   line-height:1.5;
 }
 
-/* Hierarquia vertical sem zerar margens próprias dos componentes. */
-:where(main,.main,.content,.view,.admin-main,.cc-blog-admin,.cc-rules-admin,.cc-ann-admin) :where(h1,h2,h3,h4,h5,h6) + :where(p,.subtitle,.description,.muted){
-  margin-top:max(var(--cc-text-gap-sm), .5em);
+/* Regra central: título -> subtítulo precisa sempre de respiro perceptível. */
+:where(main,.main,.content,.view,.admin-main,.cc-blog-admin,.cc-rules-admin,.cc-ann-admin)
+:where(h1,h2,h3,h4,h5,h6) + :where(p,.subtitle,.description,.muted,.lead){
+  margin-top:var(--cc-title-subtitle-gap);
+}
+
+/* Blocos públicos mais comuns: reforça hierarquia mesmo quando CSS antigo zera margens. */
+:where(
+  .hero-copy,
+  .section-head,
+  .community-hero,
+  .about-hero,
+  .archive-hero,
+  .album-head,
+  .universe-intro,
+  .about-section-head,
+  .cc-news-hero,
+  .cc-blog-hero,
+  .cc-rules-hero,
+  .rules-hero,
+  .news-hero,
+  .final-cta,
+  .content-head,
+  .page-head
+) > :where(h1,h2,h3) + :where(p,.subtitle,.description,.lead){
+  margin-top:var(--cc-title-subtitle-gap)!important;
+}
+
+/* Depois do subtítulo vem um respiro maior antes de ações/cards/conteúdo. */
+:where(
+  .hero-copy,
+  .section-head,
+  .community-hero,
+  .about-hero,
+  .archive-hero,
+  .album-head,
+  .cc-news-hero,
+  .cc-blog-hero,
+  .cc-rules-hero,
+  .rules-hero,
+  .news-hero,
+  .content-head,
+  .page-head
+) > :where(p,.subtitle,.description,.lead) + :where(
+  .hero-actions,
+  .actions,
+  .buttons,
+  .meta,
+  .hero-meta,
+  .cards,
+  .grid,
+  [class*="actions"],
+  [class*="grid"]
+){
+  margin-top:var(--cc-subtitle-content-gap)!important;
 }
 
 :where(main,.main,.content,.view,.admin-main) :where(p) + :where(p){
   margin-top:var(--cc-text-gap-md);
 }
 
-:where(article,.card,.panel,.box,[class*="-card"],[class*="-panel"]) :where(h2,h3,h4) + :where(p,.description,.meta){
+/* Cards: título, descrição e metadados nunca ficam grudados. */
+:where(article,.card,.panel,.box,[class*="-card"],[class*="-panel"])
+:where(h2,h3,h4) + :where(p,.description,.meta){
   margin-top:var(--cc-text-gap-sm);
 }
 
-:where(article,.card,.panel,.box,[class*="-card"],[class*="-panel"]) :where(p,.description) + :where(.meta,.actions,[class*="actions"],button,a.btn){
+:where(article,.card,.panel,.box,[class*="-card"],[class*="-panel"])
+:where(p,.description) + :where(.meta,.actions,[class*="actions"],button,a.btn){
   margin-top:var(--cc-text-gap-md);
 }
 
@@ -125,8 +182,14 @@ body{
   line-height:1.68;
 }
 
-:where(.cc-news-card,.cc-news-featured,.cc-rules-card,.cc-rule-card,.news-card,.rules-card) :where(h2,h3) + :where(p){
-  margin-top:.65rem;
+:where(.cc-news-card,.cc-news-featured,.cc-rules-card,.cc-rule-card,.news-card,.rules-card)
+:where(h2,h3) + :where(p){
+  margin-top:.7rem!important;
+}
+
+:where(.cc-news-card,.cc-news-featured,.cc-rules-card,.cc-rule-card,.news-card,.rules-card)
+:where(p) + :where(a,.btn,.meta,[class*="actions"]){
+  margin-top:.9rem!important;
 }
 
 /* Evita blocos muito largos de texto em telas grandes. */
@@ -174,6 +237,8 @@ body{
     --cc-copy-leading:1.66;
     --cc-text-gap-md:.8rem;
     --cc-text-gap-lg:1.15rem;
+    --cc-title-subtitle-gap:9px;
+    --cc-subtitle-content-gap:15px;
   }
 
   :where(h1){
