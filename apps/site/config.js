@@ -107,10 +107,12 @@ window.COSPLAYCHESS_CONFIG = {
       loadStyle('./admin-google-drive.css?v=20260822-gd2');
       loadStyle('./admin-content-manager-v8.css?v=20260823-content1');
       loadStyle('./admin-blog.css?v=20260824-blog1');
+      loadStyle('./admin-announcement.css?v=20260824-ann1');
       loadScript('./admin-visitor-metric.js?v=20260822-anon1');
       loadScript('./admin-search-v2.js?v=20260822-search2');
       loadScript('./admin-content-manager-v8.js?v=20260823-content1', () => loadScript('./admin-banner-upload.js?v=20260824-banner1'));
       loadScript('./admin-blog.js?v=20260824-blog2', () => loadScript('./admin-blog-messages.js?v=20260824-messages2'));
+      loadScript('./admin-announcement.js?v=20260824-ann1');
       loadScript('./admin-google-drive-session.js?v=20260822-gd-session1', () => {
         loadScript('./admin-google-drive-db-compat.js?v=20260822-gd-db1', () => {
           loadScript('./admin-google-drive-safe-loader.js?v=20260822-gd-safe2');
@@ -140,6 +142,8 @@ window.COSPLAYCHESS_CONFIG = {
     if (page === 'resultados-admin.html') { loadScript('./resultados-team-media.js'); return; }
 
     if (page === 'index.html' || page === '') {
+      loadStyle('./site-announcement-modal.css?v=20260824-ann1');
+      if (!previewMode) loadScript('./site-announcement-modal.js?v=20260824-ann1');
       loadStyle('./hero-instagram.css');
       loadStyle('./readability.css');
       loadStyle('./partners.css');
