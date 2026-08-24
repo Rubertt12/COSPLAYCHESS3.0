@@ -17,7 +17,7 @@
 
   const schemas={
     banners:{title:'Banners',description:'Crie avisos e destaques que aparecem no início da página principal.',singular:'Banner',add:'Adicionar banner',fields:[
-      ['title','Título','text','Ex.: Inscrições abertas'],['text','Texto','textarea','Mensagem do banner'],['imageUrl','Imagem de fundo','url','https://...'],['buttonText','Texto do botão','text','Saiba mais'],['url','Link do botão','url','./cadastro.html']
+      ['title','Título','text','Ex.: Inscrições abertas'],['text','Texto','textarea','Mensagem do banner'],['eventDate','Data do evento','date',''],['imageUrl','Imagem de fundo','url','https://...'],['buttonText','Texto do botão','text','Saiba mais'],['url','Link do botão','url','./cadastro.html']
     ]},
     testimonials:{title:'Depoimentos',description:'Publique relatos de participantes e pessoas que já viveram o CosplayChess.',singular:'Depoimento',add:'Adicionar depoimento',fields:[
       ['name','Nome','text','Nome da pessoa'],['role','Personagem / identificação','text','Ex.: Cosplayer da Rainha'],['quote','Depoimento','textarea','Escreva o relato'],['imageUrl','Foto','url','https://...']
@@ -96,7 +96,7 @@
     const item=state.landing[collectionFor(view)]?.[index];if(!item)return;item[field]=target.type==='checkbox'?target.checked:target.value;
   }
   function addItem(view){
-    const key=collectionFor(view),base=view==='banners'?{title:'',text:'',imageUrl:'',buttonText:'Saiba mais',url:'',enabled:true}:view==='faq'?{question:'',answer:'',enabled:true}:{name:'',role:'',quote:'',imageUrl:'',enabled:true};
+    const key=collectionFor(view),base=view==='banners'?{title:'',text:'',eventDate:'',imageUrl:'',buttonText:'Saiba mais',url:'',enabled:true}:view==='faq'?{question:'',answer:'',enabled:true}:{name:'',role:'',quote:'',imageUrl:'',enabled:true};
     state.landing[key].push({id:uid(),...base});renderCollectionView(view);$(`#${view} .v8-editor-card:last-child input, #${view} .v8-editor-card:last-child textarea`)?.focus();
   }
   function removeItem(view,index){state.landing[collectionFor(view)].splice(index,1);renderCollectionView(view);setStatus(view,'Alteração ainda não salva.');}
