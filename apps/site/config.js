@@ -108,7 +108,7 @@ window.COSPLAYCHESS_CONFIG = {
       loadStyle('./admin-content-manager-v8.css?v=20260823-content1');
       loadStyle('./admin-blog.css?v=20260824-blog1');
       loadStyle('./admin-announcement.css?v=20260824-ann1');
-      loadStyle('./admin-registration-status-compact.css?v=20260824-status2');
+      loadStyle('./admin-registration-status-compact.css?v=20260824-status3');
       loadScript('./admin-visitor-metric.js?v=20260822-anon1');
       loadScript('./admin-search-v2.js?v=20260822-search2');
       loadScript('./admin-content-manager-v8.js?v=20260823-content1', () => loadScript('./admin-banner-upload.js?v=20260824-banner1'));
