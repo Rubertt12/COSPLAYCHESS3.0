@@ -38,13 +38,46 @@
     }
   }
 
+  async function applyFooterChibi(){
+    const footer=document.querySelector('.site-footer');
+    if(!footer)return;
+    let chibi=footer.querySelector('.footer-chibi');
+    if(!chibi){
+      chibi=document.createElement('img');
+      chibi.className='footer-chibi';
+      chibi.alt='';
+      chibi.setAttribute('aria-hidden','true');
+      chibi.decoding='async';
+      chibi.loading='eager';
+      footer.appendChild(chibi);
+    }
+    try{
+      const db=typeof window.getCosplayChessDb==='function'?window.getCosplayChessDb():window.COSPLAYCHESS_DB;
+      if(!db)return;
+      const {data,error}=await db.from('cosplay_site_content').select('content').eq('key','landing').eq('published',true).maybeSingle();
+      if(error)throw error;
+      const c=data?.content||{};
+      const enabled=c.footerChibiEnabled!==false;
+      const url=String(c.footerChibiImageUrl||chibi.getAttribute('src')||'').trim();
+      const size=Math.max(120,Math.min(420,Number(c.footerChibiSize)||240));
+      if(url)chibi.src=url;
+      chibi.style.setProperty('width',`${size}px`,'important');
+      chibi.style.setProperty('display',enabled&&url?'block':'none','important');
+      chibi.dataset.cmsFooterChibi='1';
+    }catch(err){
+      console.warn('[CosplayChess] Não foi possível carregar a chibi da footer:',err);
+    }
+  }
+
   function start(){
     clean();
+    applyFooterChibi();
     const footer=document.querySelector('.site-footer');
     if(!footer){setTimeout(start,180);return;}
     const observer=new MutationObserver(clean);
     observer.observe(footer,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['data-fergorverse-instagram','data-cms-global-role']});
     [250,700,1400,2800].forEach(delay=>setTimeout(clean,delay));
+    [350,1000,2500].forEach(delay=>setTimeout(applyFooterChibi,delay));
   }
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
