@@ -28,12 +28,20 @@ window.COSPLAYCHESS_CONFIG = {
 (() => {
   const page = location.pathname.split('/').pop() || 'index.html';
   if (page === 'admin.html' || page === 'cms.html') return;
-  if (document.querySelector('link[data-site-wide]')) return;
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = './site-wide.css?v=20260822-mobile1';
-  link.dataset.siteWide = 'true';
-  document.head.appendChild(link);
+  if (!document.querySelector('link[data-site-wide]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = './site-wide.css?v=20260824-mobile2';
+    link.dataset.siteWide = 'true';
+    document.head.appendChild(link);
+  }
+  if (!document.querySelector('link[data-footer-mobile-fix]')) {
+    const footerFix = document.createElement('link');
+    footerFix.rel = 'stylesheet';
+    footerFix.href = './footer-mobile-fix.css?v=20260824-footer1';
+    footerFix.dataset.footerMobileFix = 'true';
+    document.head.appendChild(footerFix);
+  }
 })();
 
 (() => {
