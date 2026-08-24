@@ -155,3 +155,75 @@
     justify-self: start;
   }
 }
+
+/* O footer já possui um acesso oficial ao Instagram. Links sociais injetados
+   em paralelo são ocultados para não duplicar nem esmagar o texto no mobile. */
+.site-footer .cc-social-links {
+  display: none !important;
+}
+
+.site-footer .footer-column a.footer-social.footer-social-clean {
+  width: max-content !important;
+  max-width: 100% !important;
+  min-height: 38px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: nowrap !important;
+  gap: 8px !important;
+  padding: 7px 10px !important;
+  border: 1px solid rgba(224,190,119,.16);
+  border-radius: 10px;
+  background: rgba(212,170,92,.055);
+  color: #e8c579 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.site-footer .footer-column a.footer-social.footer-social-clean:hover {
+  border-color: rgba(224,190,119,.34);
+  background: rgba(212,170,92,.1);
+  transform: none !important;
+}
+
+.site-footer .cc-footer-instagram-icon {
+  width: 17px;
+  height: 17px;
+  min-width: 17px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 17px;
+  color: currentColor;
+}
+
+.site-footer .cc-footer-instagram-icon svg {
+  display: block;
+  width: 17px;
+  height: 17px;
+  max-width: none;
+  overflow: visible;
+}
+
+.site-footer .cc-footer-instagram-handle {
+  display: block;
+  min-width: 0;
+  color: inherit;
+  font-size: 10px;
+  font-weight: 850;
+  line-height: 1.15;
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+@media (max-width: 720px) {
+  .site-footer .footer-column a.footer-social.footer-social-clean {
+    width: max-content !important;
+    max-width: 100% !important;
+    min-height: 40px !important;
+    padding: 8px 10px !important;
+  }
+}
