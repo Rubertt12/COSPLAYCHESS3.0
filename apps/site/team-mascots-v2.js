@@ -2,6 +2,7 @@
   const cfg=window.COSPLAYCHESS_CONFIG;
   const db=window.COSPLAYCHESS_DB||window.getCosplayChessDb?.()||window.supabase?.createClient?.(cfg?.supabaseUrl,cfg?.supabaseKey);
   if(!cfg||!db)return;
+  document.documentElement.dataset.teamMascotsVersion='20260824-team2';
   const style=document.createElement('style');
   style.id='teamMascotCardStyles';
   style.textContent=`
