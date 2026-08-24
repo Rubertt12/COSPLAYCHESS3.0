@@ -48,6 +48,40 @@
     return item.querySelector('.registration-main b,.registration-card-title h3,.registration-list-person b')?.textContent?.trim()||'este inscrito';
   }
 
+  function isDeleteButton(button){
+    if(!button||button.tagName!=='BUTTON')return false;
+    const label=(button.textContent||'')
+      .replace(/[×✕✖]/g,'')
+      .replace(/\s+/g,' ')
+      .trim()
+      .toLowerCase();
+    return label==='excluir';
+  }
+
+  function bindSingleDelete(item,id){
+    const buttons=[...item.querySelectorAll('button')].filter(isDeleteButton);
+    if(!buttons.length)return null;
+
+    let keep=buttons[0];
+    buttons.slice(1).forEach(button=>button.remove());
+
+    if(keep.dataset.ccDeleteBound==='1'&&keep.dataset.ccRegistrationId===String(id))return keep;
+
+    const clean=keep.cloneNode(true);
+    clean.removeAttribute('onclick');
+    clean.dataset.ccDeleteBound='1';
+    clean.dataset.ccRegistrationId=String(id);
+    clean.classList.add('registration-delete-btn');
+    clean.addEventListener('click',event=>{
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      window.deleteRegistration(id,registrationName(item));
+    });
+    keep.replaceWith(clean);
+    return clean;
+  }
+
   function ensureButtons(){
     const root=document.getElementById('registrationsList');
     if(!root)return;
@@ -56,23 +90,15 @@
       const target=targetFor(item);
       if(!id||!target)return;
 
+      const deleteButton=bindSingleDelete(item,id);
+
       if(!item.querySelector('.registration-photo-upload-btn')){
         const photo=document.createElement('button');
         photo.type='button';
         photo.className='mini-btn registration-photo-upload-btn';
         photo.textContent=hasPhoto(item)?'▣ Trocar foto':'▣ Adicionar foto';
         photo.addEventListener('click',()=>choosePhoto(id,photo));
-        const deleteButton=target.querySelector('.registration-delete-btn,[onclick*="deleteRegistration("]');
-        target.insertBefore(photo,deleteButton||null);
-      }
-
-      if(!item.querySelector('.registration-delete-btn,[onclick*="deleteRegistration("]')){
-        const del=document.createElement('button');
-        del.type='button';
-        del.className='mini-btn danger registration-delete-btn';
-        del.textContent='Excluir';
-        del.addEventListener('click',()=>window.deleteRegistration(id,registrationName(item)));
-        target.appendChild(del);
+        target.insertBefore(photo,deleteButton&&deleteButton.parentElement===target?deleteButton:null);
       }
     });
   }
@@ -173,6 +199,7 @@
     ensureButtons();
     setTimeout(ensureButtons,250);
     setTimeout(ensureButtons,800);
+    setTimeout(ensureButtons,1600);
   }
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});
