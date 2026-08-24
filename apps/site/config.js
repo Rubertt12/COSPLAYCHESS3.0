@@ -110,7 +110,7 @@ window.COSPLAYCHESS_CONFIG = {
       loadScript('./admin-visitor-metric.js?v=20260822-anon1');
       loadScript('./admin-search-v2.js?v=20260822-search2');
       loadScript('./admin-content-manager-v8.js?v=20260823-content1', () => loadScript('./admin-banner-upload.js?v=20260824-banner1'));
-      loadScript('./admin-blog.js?v=20260824-blog1');
+      loadScript('./admin-blog.js?v=20260824-blog2', () => loadScript('./admin-blog-messages.js?v=20260824-messages1'));
       loadScript('./admin-google-drive-session.js?v=20260822-gd-session1', () => {
         loadScript('./admin-google-drive-db-compat.js?v=20260822-gd-db1', () => {
           loadScript('./admin-google-drive-safe-loader.js?v=20260822-gd-safe2');
@@ -163,7 +163,7 @@ window.COSPLAYCHESS_CONFIG = {
     }
 
     if (page === 'sobre.html') return;
-    if (['universo.html','hall-da-fama.html','ranking.html','conquistas.html','noticias.html'].includes(page)) return;
+    if (['universo.html','hall-da-fama.html','ranking.html','conquistas.html'].includes(page)) return;
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once:true });
