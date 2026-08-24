@@ -1,0 +1,95 @@
+/* CosplayChess — status compacto na aba de Inscrições */
+#registrations .status-legend{
+  display:flex!important;
+  align-items:center!important;
+  flex-wrap:wrap!important;
+  gap:8px!important;
+  padding:0!important;
+  margin:10px 0 14px!important;
+  background:transparent!important;
+  border:0!important;
+}
+#registrations .status-legend>span{
+  display:inline-flex!important;
+  align-items:center!important;
+  flex:0 0 auto!important;
+  width:auto!important;
+  min-width:0!important;
+  min-height:0!important;
+  padding:5px 9px!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  border-radius:999px!important;
+  background:rgba(255,255,255,.035)!important;
+  font-size:10px!important;
+  line-height:1!important;
+}
+#registrations .status-legend .dot{
+  width:7px!important;
+  height:7px!important;
+  flex:0 0 7px!important;
+  margin-right:6px!important;
+  border-radius:50%!important;
+}
+
+/* O status deixa de ser uma faixa larga e passa a funcionar como badge/editável. */
+#registrations .registration-list-status{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  min-width:0!important;
+}
+#registrations .registration-list-status select,
+#registrations .registration-card-footer select,
+#registrations .registration-row>select{
+  width:auto!important;
+  min-width:104px!important;
+  max-width:132px!important;
+  min-height:30px!important;
+  height:30px!important;
+  padding:4px 26px 4px 9px!important;
+  border-radius:999px!important;
+  font-size:10px!important;
+  font-weight:800!important;
+  line-height:1!important;
+  box-shadow:none!important;
+  cursor:pointer!important;
+}
+#registrations .registration-card-footer label{
+  align-items:flex-start!important;
+}
+
+/* Chrome/Edge atuais: cor acompanha o valor selecionado sem transformar o status em uma faixa. */
+#registrations select:has(option[value="confirmed"]:checked){
+  color:#86efac!important;
+  background:rgba(34,197,94,.10)!important;
+  border-color:rgba(34,197,94,.28)!important;
+}
+#registrations select:has(option[value="waitlist"]:checked){
+  color:#f6d68a!important;
+  background:rgba(234,179,8,.09)!important;
+  border-color:rgba(234,179,8,.26)!important;
+}
+#registrations select:has(option[value="cancelled"]:checked){
+  color:#fca5a5!important;
+  background:rgba(239,68,68,.09)!important;
+  border-color:rgba(239,68,68,.25)!important;
+}
+
+@media(max-width:1000px){
+  #registrations .registration-row>select{
+    grid-column:auto!important;
+    width:auto!important;
+    min-height:32px!important;
+    height:32px!important;
+    font-size:11px!important;
+    justify-self:start!important;
+  }
+}
+@media(max-width:520px){
+  #registrations .status-legend{gap:6px!important}
+  #registrations .status-legend>span{padding:5px 8px!important;font-size:9px!important}
+  #registrations .registration-list-status select,
+  #registrations .registration-card-footer select,
+  #registrations .registration-row>select{max-width:124px!important}
+}
