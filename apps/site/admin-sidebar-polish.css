@@ -1,0 +1,221 @@
+/* CosplayChess — acabamento profissional da sidebar */
+.v6-sidebar{
+  --cc-side-icon:20px;
+  --cc-side-cell:30px;
+}
+
+.v6-nav a{
+  position:relative;
+  min-width:0;
+}
+
+.v6-nav a>i{
+  flex:0 0 var(--cc-side-cell)!important;
+  width:var(--cc-side-cell)!important;
+  height:var(--cc-side-cell)!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  margin:0!important;
+  border-radius:8px!important;
+  line-height:1!important;
+}
+
+.v6-nav a>i>.cc-svg-icon{
+  width:var(--cc-side-icon)!important;
+  height:var(--cc-side-icon)!important;
+  margin:0!important;
+  display:grid!important;
+  place-items:center!important;
+}
+
+.v6-nav a>i>.cc-svg-icon svg{
+  width:100%!important;
+  height:100%!important;
+}
+
+.v6-nav a>span{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+/* Estado recolhido: uma barra de ícones realmente centralizada. */
+.v6-shell.collapsed{
+  grid-template-columns:72px minmax(0,1fr)!important;
+}
+
+.v6-shell.collapsed .v6-sidebar{
+  padding:14px 9px 10px!important;
+  align-items:stretch!important;
+}
+
+.v6-shell.collapsed .v6-brand{
+  min-height:58px!important;
+  padding:0 0 12px!important;
+  margin:0 0 7px!important;
+  justify-content:center!important;
+}
+
+.v6-shell.collapsed .v6-brand img{
+  width:40px!important;
+  height:40px!important;
+  margin:0!important;
+}
+
+.v6-shell.collapsed .v6-nav{
+  align-items:stretch!important;
+  gap:3px!important;
+}
+
+.v6-shell.collapsed .v6-nav a{
+  width:48px!important;
+  min-width:48px!important;
+  height:42px!important;
+  min-height:42px!important;
+  margin:0 auto!important;
+  padding:0!important;
+  justify-content:center!important;
+  gap:0!important;
+  overflow:visible!important;
+}
+
+.v6-shell.collapsed .v6-nav a>i{
+  flex:0 0 34px!important;
+  width:34px!important;
+  height:34px!important;
+  border-radius:9px!important;
+}
+
+.v6-shell.collapsed .v6-nav a>i>.cc-svg-icon{
+  width:19px!important;
+  height:19px!important;
+}
+
+.v6-shell.collapsed .v6-nav a.active:before{
+  left:-3px!important;
+  top:9px!important;
+  bottom:9px!important;
+}
+
+/* Tooltip com o nome do item quando a sidebar está fechada. */
+.v6-shell.collapsed .v6-nav a[data-sidebar-label]:after{
+  content:attr(data-sidebar-label);
+  position:absolute;
+  z-index:3000;
+  left:calc(100% + 11px);
+  top:50%;
+  transform:translate(4px,-50%);
+  padding:7px 10px;
+  border:1px solid rgba(148,163,184,.20);
+  border-radius:8px;
+  background:#101b29;
+  color:#edf3f9;
+  box-shadow:0 12px 35px rgba(0,0,0,.35);
+  font-size:10px;
+  font-weight:700;
+  line-height:1.2;
+  white-space:nowrap;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity .14s ease,transform .14s ease,visibility .14s ease;
+}
+
+.v6-shell.collapsed .v6-nav a[data-sidebar-label]:hover:after,
+.v6-shell.collapsed .v6-nav a[data-sidebar-label]:focus-visible:after{
+  opacity:1;
+  visibility:visible;
+  transform:translate(0,-50%);
+}
+
+/* Rodapé da sidebar recolhida. */
+.v6-shell.collapsed .v6-user-card{
+  width:48px!important;
+  min-width:48px!important;
+  min-height:48px!important;
+  margin:9px auto 0!important;
+  padding:6px!important;
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  place-items:center!important;
+  border-radius:12px!important;
+}
+
+.v6-shell.collapsed .v6-user-avatar{
+  width:34px!important;
+  height:34px!important;
+  margin:0!important;
+}
+
+.v6-shell.collapsed .v6-collapse{
+  width:48px!important;
+  min-width:48px!important;
+  min-height:38px!important;
+  margin:7px auto 0!important;
+  padding:0!important;
+  display:grid!important;
+  place-items:center!important;
+  font-size:0!important;
+}
+
+.v6-shell.collapsed .v6-collapse>.cc-svg-icon{
+  width:18px!important;
+  height:18px!important;
+  margin:0!important;
+  transform:rotate(180deg);
+}
+
+.v6-collapse>.cc-svg-icon{
+  width:15px!important;
+  height:15px!important;
+  margin-right:6px!important;
+  transition:transform .18s ease;
+}
+
+/* Remove qualquer caixa residual de caracteres antigos. */
+.v6-nav a>i{
+  font-size:0!important;
+}
+
+/* Sidebar aberta: iconografia mais equilibrada. */
+.v6-shell:not(.collapsed) .v6-nav a{
+  gap:9px!important;
+}
+
+.v6-shell:not(.collapsed) .v6-nav a>i{
+  background:rgba(255,255,255,.022)!important;
+}
+
+.v6-shell:not(.collapsed) .v6-nav a:hover>i{
+  background:rgba(124,58,237,.10)!important;
+}
+
+.v6-shell:not(.collapsed) .v6-nav a.active>i{
+  background:rgba(124,58,237,.17)!important;
+}
+
+@media(max-height:780px) and (min-width:1001px){
+  .v6-shell.collapsed .v6-nav a{
+    height:36px!important;
+    min-height:36px!important;
+  }
+  .v6-shell.collapsed .v6-nav a>i{
+    width:30px!important;
+    height:30px!important;
+  }
+  .v6-shell.collapsed .v6-nav a>i>.cc-svg-icon{
+    width:17px!important;
+    height:17px!important;
+  }
+}
+
+@media(max-width:1000px){
+  .v6-shell.collapsed{
+    grid-template-columns:1fr!important;
+  }
+  .v6-shell.collapsed .v6-nav a[data-sidebar-label]:after{
+    display:none!important;
+  }
+}
