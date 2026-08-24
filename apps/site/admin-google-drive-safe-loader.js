@@ -5,6 +5,23 @@
   const css=[...document.querySelectorAll('link[rel="stylesheet"]')].find(l=>(l.getAttribute('href')||'').includes('admin-google-drive.css'));
   if(css)css.href='./admin-google-drive.css?v=20260822-gd-screen2';
 
+  // Sidebar icon hotfix: one renderer only. Prevents gray mask blocks on
+  // dynamically-added routes and duplicated icons in the mobile drawer.
+  if(!document.querySelector('link[data-sidebar-icon-fix]')){
+    const link=document.createElement('link');
+    link.rel='stylesheet';
+    link.href='./admin-sidebar-icon-fix.css?v=20260824-iconfix1';
+    link.dataset.sidebarIconFix='1';
+    document.head.appendChild(link);
+  }
+  if(!document.querySelector('script[data-sidebar-icon-fix]')){
+    const sidebarScript=document.createElement('script');
+    sidebarScript.src='./admin-sidebar-icon-fix.js?v=20260824-iconfix1';
+    sidebarScript.async=false;
+    sidebarScript.dataset.sidebarIconFix='1';
+    document.body.appendChild(sidebarScript);
+  }
+
   const RealMutationObserver = window.MutationObserver;
   if (!RealMutationObserver) return;
 
