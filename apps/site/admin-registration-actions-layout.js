@@ -4,9 +4,15 @@
 
   function buttonKind(button){
     if(!button)return '';
+    if(button.classList.contains('registration-photo-upload-btn'))return 'photo-upload';
     if(button.classList.contains('registration-photo-edit-btn'))return 'photo';
     if(button.classList.contains('privacy-reveal-btn'))return 'contact';
-    const text=(button.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
+    if(button.classList.contains('registration-edit-btn'))return 'edit';
+    if(button.classList.contains('registration-delete-btn'))return 'delete';
+    const text=(button.textContent||'').replace(/[×✕✖✎▣]/g,'').replace(/\s+/g,' ').trim().toLowerCase();
+    if(/^trocar foto|^adicionar foto/.test(text))return 'photo-upload';
+    if(/^ajustar foto/.test(text))return 'photo';
+    if(/^ver contato|^ocultar contato/.test(text))return 'contact';
     if(/^editar(?:\s|$)/.test(text))return 'edit';
     if(/^excluir(?:\s|$)/.test(text))return 'delete';
     return '';
@@ -20,6 +26,11 @@
     bar.innerHTML='<div class="registration-actions-status"></div><div class="registration-actions-buttons"></div>';
     row.appendChild(bar);
     return bar;
+  }
+
+  function sameOrder(container,desired){
+    const current=[...container.children].filter(node=>desired.includes(node));
+    return current.length===desired.length&&desired.every((node,index)=>current[index]===node);
   }
 
   function organizeRow(row){
@@ -41,19 +52,21 @@
       changed=true;
     }
 
-    const priority={photo:10,contact:20,edit:30,delete:40};
+    const priority={'photo-upload':5,photo:10,contact:20,edit:30,delete:40};
     actionButtons.sort((a,b)=>(priority[a.kind]||99)-(priority[b.kind]||99));
+    const desired=actionButtons.map(item=>item.button);
+
     actionButtons.forEach(({button,kind})=>{
       button.classList.add('registration-card-action',`registration-card-action-${kind}`);
-      if(button.parentElement!==buttonsBox){
-        buttonsBox.appendChild(button);
-        changed=true;
-      }else{
-        buttonsBox.appendChild(button);
-      }
     });
 
-    bar.hidden=!status&&!actionButtons.length;
+    if(desired.some(button=>button.parentElement!==buttonsBox)||!sameOrder(buttonsBox,desired)){
+      desired.forEach(button=>buttonsBox.appendChild(button));
+      changed=true;
+    }
+
+    const shouldHide=!status&&!actionButtons.length;
+    if(bar.hidden!==shouldHide)bar.hidden=shouldHide;
     return changed;
   }
 
@@ -90,13 +103,13 @@
   if(!document.querySelector('link[data-manual-registration]')){
     const link=document.createElement('link');
     link.rel='stylesheet';
-    link.href='./admin-registration-manual.css?v=20260824-manual2';
+    link.href='./admin-registration-manual.css?v=20260824-manual3';
     link.dataset.manualRegistration='true';
     document.head.appendChild(link);
   }
   if(!document.querySelector('script[data-manual-registration]')){
     const script=document.createElement('script');
-    script.src='./admin-registration-manual.js?v=20260824-manual2';
+    script.src='./admin-registration-manual.js?v=20260824-manual3';
     script.async=false;
     script.dataset.manualRegistration='true';
     document.body.appendChild(script);
