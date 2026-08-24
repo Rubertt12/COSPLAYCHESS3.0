@@ -1,0 +1,161 @@
+/* CosplayChess — ritmo tipográfico global
+   Mantém os layouts existentes, mas normaliza leitura, respiro e alinhamento textual. */
+
+:root{
+  --cc-text-leading:1.62;
+  --cc-copy-leading:1.72;
+  --cc-label-leading:1.35;
+  --cc-heading-tight:1.08;
+  --cc-heading-normal:1.18;
+  --cc-text-gap-xs:.35rem;
+  --cc-text-gap-sm:.6rem;
+  --cc-text-gap-md:.9rem;
+  --cc-text-gap-lg:1.35rem;
+}
+
+html{
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+body{
+  line-height:var(--cc-text-leading);
+}
+
+/* Títulos: menos “apertados” e com quebras mais naturais. */
+:where(h1,h2,h3,h4,h5,h6){
+  text-wrap:balance;
+  overflow-wrap:normal;
+  word-break:normal;
+}
+
+:where(h1){
+  line-height:var(--cc-heading-tight);
+  letter-spacing:-.025em;
+}
+
+:where(h2){
+  line-height:1.12;
+  letter-spacing:-.018em;
+}
+
+:where(h3,h4){
+  line-height:var(--cc-heading-normal);
+  letter-spacing:-.01em;
+}
+
+:where(h5,h6){
+  line-height:1.25;
+}
+
+/* Texto corrido. */
+:where(p,li,dd,blockquote){
+  line-height:var(--cc-copy-leading);
+  text-wrap:pretty;
+}
+
+:where(small,.small,.muted,.subtitle,.description,.helper,.hint,.meta){
+  line-height:1.5;
+}
+
+/* Hierarquia vertical sem zerar margens próprias dos componentes. */
+:where(main,.main,.content,.view,.admin-main,.cc-blog-admin,.cc-rules-admin,.cc-ann-admin) :where(h1,h2,h3,h4,h5,h6) + :where(p,.subtitle,.description,.muted){
+  margin-top:max(var(--cc-text-gap-sm), .5em);
+}
+
+:where(main,.main,.content,.view,.admin-main) :where(p) + :where(p){
+  margin-top:var(--cc-text-gap-md);
+}
+
+:where(article,.card,.panel,.box,[class*="-card"],[class*="-panel"]) :where(h2,h3,h4) + :where(p,.description,.meta){
+  margin-top:var(--cc-text-gap-sm);
+}
+
+:where(article,.card,.panel,.box,[class*="-card"],[class*="-panel"]) :where(p,.description) + :where(.meta,.actions,[class*="actions"],button,a.btn){
+  margin-top:var(--cc-text-gap-md);
+}
+
+/* Formulários: labels e textos auxiliares ficam visualmente separados. */
+:where(label){
+  line-height:var(--cc-label-leading);
+}
+
+:where(label) > :where(input,select,textarea){
+  margin-top:var(--cc-text-gap-xs);
+}
+
+:where(input,select,textarea,button){
+  font:inherit;
+}
+
+:where(input,select,textarea){
+  line-height:1.35;
+}
+
+:where(textarea){
+  line-height:1.55;
+}
+
+:where(button,.btn,[role="button"]){
+  line-height:1.2;
+}
+
+/* Ícone + texto: respiro consistente em toda a interface. */
+:where(button,.btn,a,[role="button"]) > .cc-svg-icon{
+  margin-right:.42em;
+  flex:0 0 auto;
+}
+
+:where(button,.btn,a,[role="button"]).cc-icon-only > .cc-svg-icon{
+  margin-right:0;
+}
+
+/* Navegação e chips: evita textos colados ou com altura irregular. */
+:where(nav,.nav,.sidebar,.topbar,.footer) :where(a,button){
+  line-height:1.3;
+}
+
+:where(.badge,.chip,.pill,.tag,[class*="badge"],[class*="chip"],[class*="pill"]){
+  line-height:1.25;
+}
+
+/* Notícias / regras / conteúdo editorial. */
+:where(.cc-news-card,.cc-news-featured,.cc-rules-card,.cc-rule-card,.news-card,.rules-card) :where(p){
+  line-height:1.68;
+}
+
+:where(.cc-news-card,.cc-news-featured,.cc-rules-card,.cc-rule-card,.news-card,.rules-card) :where(h2,h3) + :where(p){
+  margin-top:.65rem;
+}
+
+/* Evita blocos muito largos de texto em telas grandes. */
+:where(.article-body,.post-body,.news-body,.rule-body,.content-copy,.prose) :where(p,li){
+  max-width:78ch;
+}
+
+@media (max-width:720px){
+  :root{
+    --cc-text-leading:1.58;
+    --cc-copy-leading:1.66;
+    --cc-text-gap-md:.8rem;
+    --cc-text-gap-lg:1.15rem;
+  }
+
+  :where(h1){
+    line-height:1.02;
+    letter-spacing:-.02em;
+  }
+
+  :where(h2){
+    line-height:1.08;
+  }
+
+  :where(p,li,dd,blockquote){
+    line-height:var(--cc-copy-leading);
+  }
+
+  :where(button,.btn,[role="button"]){
+    line-height:1.25;
+  }
+}
