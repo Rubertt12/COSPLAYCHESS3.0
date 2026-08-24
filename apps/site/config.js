@@ -38,9 +38,16 @@ window.COSPLAYCHESS_CONFIG = {
   if (!document.querySelector('link[data-footer-mobile-fix]')) {
     const footerFix = document.createElement('link');
     footerFix.rel = 'stylesheet';
-    footerFix.href = './footer-mobile-fix.css?v=20260824-footer1';
+    footerFix.href = './footer-mobile-fix.css?v=20260824-footer2';
     footerFix.dataset.footerMobileFix = 'true';
     document.head.appendChild(footerFix);
+  }
+  if (!document.querySelector('script[data-footer-social-cleanup]')) {
+    const footerSocial = document.createElement('script');
+    footerSocial.src = './footer-social-cleanup.js?v=20260824-footer2';
+    footerSocial.async = false;
+    footerSocial.dataset.footerSocialCleanup = 'true';
+    document.head.appendChild(footerSocial);
   }
 })();
 
