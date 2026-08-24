@@ -31,42 +31,11 @@
   border-radius:50%!important;
 }
 
-/* Corrige o badge extra criado pelo Admin v6.3.
-   Uma regra antiga de .registration-main span o transformava em bloco de largura total. */
+/* O seletor já informa o status e permite alterá-lo; o badge duplicado fica oculto. */
 #registrations .registration-main .a63-badge{
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  width:max-content!important;
-  max-width:140px!important;
-  min-width:0!important;
-  min-height:0!important;
-  margin:7px 0 0!important;
-  padding:4px 9px!important;
-  border-radius:999px!important;
-  font-size:9px!important;
-  font-weight:800!important;
-  line-height:1.15!important;
-  align-self:flex-start!important;
-  justify-self:start!important;
-}
-#registrations .registration-main .a63-badge.confirmed{
-  background:rgba(39,214,155,.11)!important;
-  color:#60e7ba!important;
-  border:1px solid rgba(39,214,155,.22)!important;
-}
-#registrations .registration-main .a63-badge.waitlist{
-  background:rgba(243,189,75,.11)!important;
-  color:#f5c863!important;
-  border:1px solid rgba(243,189,75,.22)!important;
-}
-#registrations .registration-main .a63-badge.cancelled{
-  background:rgba(239,92,103,.11)!important;
-  color:#ff8a93!important;
-  border:1px solid rgba(239,92,103,.22)!important;
+  display:none!important;
 }
 
-/* O seletor de status também permanece compacto e editável. */
 #registrations .registration-list-status{
   display:flex!important;
   flex-direction:column!important;
@@ -94,7 +63,6 @@
   align-items:flex-start!important;
 }
 
-/* Chrome/Edge atuais: cor acompanha o valor selecionado sem transformar o status em uma faixa. */
 #registrations select:has(option[value="confirmed"]:checked){
   color:#86efac!important;
   background:rgba(34,197,94,.10)!important;
@@ -124,7 +92,6 @@
 @media(max-width:520px){
   #registrations .status-legend{gap:6px!important}
   #registrations .status-legend>span{padding:5px 8px!important;font-size:9px!important}
-  #registrations .registration-main .a63-badge{padding:4px 8px!important;font-size:8.5px!important}
   #registrations .registration-list-status select,
   #registrations .registration-card-footer select,
   #registrations .registration-row>select{max-width:124px!important}
