@@ -20,6 +20,7 @@
     chess:'<path d="M8 3h8l-1 4 2 3-2 3 3 7H6l3-7-2-3 2-3z"/><path d="M7 20h10"/>',
     trophy:'<path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0z"/><path d="M7 6H4v2a4 4 0 0 0 4 4M17 6h3v2a4 4 0 0 1-4 4"/>',
     heart:'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/>',
+    star:'<path d="m12 2 3.1 6.3 6.9 1-5 4.8 1.2 6.9-6.2-3.3L5.8 21 7 14.1l-5-4.8 6.9-1z"/>',
     database:'<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>',
     lock:'<rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
     clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
@@ -46,21 +47,30 @@
     download:'<path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/>',
     save:'<path d="M5 3h12l4 4v14H3V3z"/><path d="M7 3v6h8V3M7 21v-8h10v8"/>',
     info:'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
-    pin:'<path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="2.5"/>'
+    pin:'<path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="2.5"/>',
+    refresh:'<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>',
+    copy:'<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+    globe:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>',
+    game:'<rect x="2" y="7" width="20" height="12" rx="4"/><path d="M7 13h4M9 11v4M16 12h.01M18 14h.01"/>',
+    chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+    folder:'<path d="M3 5h7l2 2h9v12H3z"/>'
   };
 
   const MAP=new Map([
-    ['🙈','eyeOff'],['🐵','eye'],['👁️','eye'],['👁','eye'],['◉','eye'],
+    ['🙈','eyeOff'],['🐵','eye'],['👁️','eye'],['👁','eye'],
     ['📷','camera'],['📸','camera'],['✏️','edit'],['✏','edit'],['🗑️','trash'],['🗑','trash'],
     ['🔍','search'],['🔎','search'],['⌕','search'],['📱','phone'],['☎️','phone'],['☎','phone'],['💬','message'],['💭','message'],['📧','mail'],['✉️','mail'],['✉','mail'],['🔗','link'],
     ['⚙️','settings'],['⚙','settings'],['🛠️','settings'],['🛠','settings'],['✅','check'],['☑️','check'],['☑','check'],['❌','x'],['✖️','x'],['✖','x'],['×','x'],
     ['🏆','trophy'],['🥇','trophy'],['👑','crown'],['♛','crown'],['♚','crown'],['♜','chess'],['♟️','chess'],['♟','chess'],['♙','chess'],
-    ['🎭','users'],['👥','users'],['♧','users'],['👤','user'],['🧑','user'],
+    ['🎭','users'],['👥','users'],['👤','user'],['🧑','user'],
     ['📢','flag'],['📣','flag'],['⚑','flag'],['📄','file'],['📝','file'],['▤','news'],['□','file'],['☷','list'],
     ['🖼️','image'],['🖼','image'],['▧','image'],['▣','calendar'],['📅','calendar'],['🗓️','calendar'],['🗓','calendar'],
-    ['〽','quote'],['?','question'],['⌘','share'],['💾','save'],['📂','backup'],['📁','backup'],
+    ['〽','quote'],['⌘','share'],['💾','save'],['📂','folder'],['📁','folder'],['📋','copy'],
     ['🔒','lock'],['🔓','lock'],['♢','lock'],['◎','database'],['◷','clock'],['🕒','clock'],['⏰','clock'],['🔔','bell'],
-    ['❤️','heart'],['❤','heart'],['💜','heart'],['🏠','home'],['🏡','home'],['⌂','home'],
+    ['❤️','heart'],['❤','heart'],['♡','heart'],['💜','heart'],['⭐','star'],['🌟','star'],['✦','star'],
+    ['🏠','home'],['🏡','home'],['⌂','home'],['🌐','globe'],['🌎','globe'],['📍','pin'],
+    ['🎮','game'],['🕹️','game'],['🕹','game'],['📊','chart'],['📈','chart'],['📉','chart'],['🔄','refresh'],['↻','refresh'],
+    ['ℹ️','info'],['ℹ','info'],['⚠️','alert'],['⚠','alert'],
     ['➕','plus'],['＋','plus'],['⬆️','upload'],['⬆','upload'],['📤','upload'],['⬇️','download'],['⬇','download'],['📥','download'],
     ['☰','menu'],['↗️','external'],['↗','external'],['→','arrowRight'],['↑','arrowUp'],['‹','chevronLeft'],['›','chevronRight']
   ]);
@@ -90,9 +100,7 @@
     let pos=0,changed=false;
     while(pos<text.length){
       let hit=null;
-      for(const token of TOKENS){
-        if(text.startsWith(token,pos)){ hit=token; break; }
-      }
+      for(const token of TOKENS){ if(text.startsWith(token,pos)){ hit=token; break; } }
       if(hit){
         frag.appendChild(icon(MAP.get(hit)));
         pos+=hit.length;
@@ -125,10 +133,26 @@
     nodes.forEach(replaceTextNode);
   }
 
+  function forceIcon(el,name){
+    if(!el) return;
+    if(el.querySelector(':scope > .cc-svg-icon')) return;
+    [...el.childNodes].forEach(n=>{ if(n.nodeType===Node.TEXT_NODE) n.remove(); });
+    el.prepend(icon(name));
+  }
+
   function decorateKnownControls(){
     document.querySelectorAll('.footer-admin').forEach(el=>{
-      if(!el.querySelector('.cc-svg-icon')) el.prepend(icon('settings'));
+      if(!el.querySelector(':scope > .cc-svg-icon')) el.prepend(icon('settings'));
     });
+    document.querySelectorAll('.password-toggle').forEach(el=>forceIcon(el,'eye'));
+    document.querySelectorAll('.v6-nav a[href="#faq"] i').forEach(el=>forceIcon(el,'question'));
+    document.querySelectorAll('.v6-nav a[href="#users"] i').forEach(el=>forceIcon(el,'users'));
+    document.querySelectorAll('.v6-nav a[href="#backup"] i').forEach(el=>forceIcon(el,'backup'));
+    document.querySelectorAll('.v6-icon-btn[aria-label="Alertas"]').forEach(el=>{
+      [...el.childNodes].filter(n=>n.nodeType===Node.TEXT_NODE).forEach(n=>n.remove());
+      if(!el.querySelector(':scope > .cc-svg-icon')) el.prepend(icon('bell'));
+    });
+    document.querySelectorAll('.v6-metric-icon.violet').forEach(el=>forceIcon(el,'calendar'));
   }
 
   function boot(){
