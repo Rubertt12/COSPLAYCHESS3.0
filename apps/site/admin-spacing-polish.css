@@ -1,5 +1,12 @@
 /* CosplayChess — acabamento de espaçamentos do Admin */
 
+:root{
+  --cc-admin-title-subtitle-gap:9px;
+  --cc-admin-subtitle-content-gap:16px;
+  --cc-admin-section-gap:22px;
+  --cc-admin-card-heading-gap:11px;
+}
+
 /* Cabeçalhos das telas: título, descrição e ações com ritmo consistente. */
 .v6-management-head,
 .cc-blog-admin-head,
@@ -13,49 +20,142 @@
   display:flex!important;
   align-items:flex-start!important;
   justify-content:space-between!important;
-  gap:18px!important;
-  margin-bottom:18px!important;
+  gap:20px!important;
+  margin-bottom:var(--cc-admin-section-gap)!important;
 }
 
 .v6-management-head>div:first-child{
-  display:grid!important;
-  align-content:start!important;
-  gap:7px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
   min-width:0!important;
 }
 
+.v6-management-head h1,
 .v6-management-head h2,
+.v6-management-head h3,
+.cc-blog-admin-head h1,
 .cc-blog-admin-head h2,
+.cc-rules-admin-head h1,
 .cc-rules-admin-head h2,
+.cc-ann-head h1,
 .cc-ann-head h2{
   margin:0!important;
   line-height:1.14!important;
+}
+
+.v6-management-head h1 + p,
+.v6-management-head h2 + p,
+.v6-management-head h3 + p,
+.cc-blog-admin-head h1 + p,
+.cc-blog-admin-head h2 + p,
+.cc-rules-admin-head h1 + p,
+.cc-rules-admin-head h2 + p,
+.cc-ann-head h1 + p,
+.cc-ann-head h2 + p{
+  margin-top:var(--cc-admin-title-subtitle-gap)!important;
 }
 
 .v6-management-head p,
 .cc-blog-admin-head p,
 .cc-rules-admin-head p,
 .cc-ann-head p{
+  margin-bottom:0!important;
+  line-height:1.55!important;
+}
+
+/* Cabeçalhos especiais que possuem título + subtítulo + ações no mesmo bloco. */
+.cc-blog-admin-head,
+.cc-rules-admin-head,
+.cc-ann-head{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  gap:0!important;
+  margin-bottom:var(--cc-admin-section-gap)!important;
+}
+
+.cc-blog-admin-head p + *,
+.cc-rules-admin-head p + *,
+.cc-ann-head p + *,
+.cc-blog-admin-head .cc-blog-actions,
+.cc-rules-admin-head .cc-rules-actions,
+.cc-ann-head .cc-ann-actions{
+  margin-top:var(--cc-admin-subtitle-content-gap)!important;
+}
+
+.cc-ann-actions,
+.cc-blog-actions,
+.cc-rules-actions{
+  display:flex!important;
+  align-items:center!important;
+  flex-wrap:wrap!important;
+  gap:9px!important;
+}
+
+/* Saudação superior: também separa título e texto auxiliar. */
+.v6-greeting{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+}
+
+.v6-greeting h1{
   margin:0!important;
-  line-height:1.5!important;
+  line-height:1.12!important;
+}
+
+.v6-greeting h1 + p{
+  margin-top:7px!important;
+}
+
+.v6-greeting p{
+  margin-bottom:0!important;
+  line-height:1.45!important;
 }
 
 /* Painéis e cards: evita títulos grudados no conteúdo. */
 .v6-card-head{
-  margin-bottom:14px!important;
+  margin-bottom:15px!important;
 }
 
-.v6-card-head h2{
+.v6-card-head h2,
+.v6-card-head h3{
   margin:0!important;
   line-height:1.18!important;
 }
 
+.v6-card>h1,
 .v6-card>h2,
 .v6-card>h3,
+.v6-aux-view>h1,
 .v6-aux-view>h2,
 .v6-aux-view>h3{
   margin-top:0!important;
-  margin-bottom:10px!important;
+  margin-bottom:var(--cc-admin-card-heading-gap)!important;
+}
+
+.v6-card>h1 + p,
+.v6-card>h2 + p,
+.v6-card>h3 + p,
+.v6-aux-view>h1 + p,
+.v6-aux-view>h2 + p,
+.v6-aux-view>h3 + p{
+  margin-top:0!important;
+  margin-bottom:14px!important;
+}
+
+/* Títulos de painéis internos. */
+.cc-ann-panel-title,
+.cc-blog-panel-title,
+.cc-rules-panel-title{
+  min-height:52px;
+}
+
+.cc-ann-panel-title b,
+.cc-blog-panel-title b,
+.cc-rules-panel-title b{
+  line-height:1.3!important;
 }
 
 /* Ações de topo. */
@@ -67,6 +167,45 @@
   flex-wrap:wrap!important;
   gap:8px!important;
   margin:0!important;
+}
+
+/* Se as ações estiverem dentro do bloco textual, ganha respiro do subtítulo. */
+.v6-management-head>div:first-child>.panel-actions,
+.v6-management-head>div:first-child>.actions{
+  margin-top:var(--cc-admin-subtitle-content-gap)!important;
+}
+
+/* Formulários: label não cola no campo seguinte e grupos mantêm ritmo uniforme. */
+.cc-ann-form label,
+.cc-blog-admin label,
+.cc-rules-admin label,
+.signup-form label{
+  align-content:start;
+}
+
+.cc-ann-form label>span,
+.cc-blog-admin label>span,
+.cc-rules-admin label>span,
+.signup-form label>span{
+  display:block;
+  margin-bottom:2px;
+  line-height:1.35!important;
+}
+
+/* Títulos de cards de editores. */
+.cc-blog-card h3,
+.cc-rule-editor h3,
+.cc-ann-card h3{
+  margin-top:0!important;
+  margin-bottom:var(--cc-admin-card-heading-gap)!important;
+  line-height:1.2!important;
+}
+
+.cc-blog-card h3 + p,
+.cc-rule-editor h3 + p,
+.cc-ann-card h3 + p{
+  margin-top:0!important;
+  margin-bottom:13px!important;
 }
 
 /* Inscrições: compacta status e botões relacionados. */
@@ -130,38 +269,48 @@
   margin-top:0!important;
 }
 
-/* Formulários e editores administrativos. */
-.cc-blog-admin-head,
-.cc-rules-admin-head,
-.cc-ann-head{
-  display:grid!important;
-  gap:7px!important;
-  margin-bottom:18px!important;
+/* Regra genérica para views administrativas criadas dinamicamente. */
+.v6-view>section>h1 + p,
+.v6-view>section>h2 + p,
+.v6-view>section>h3 + p,
+.v6-view>.v6-aux-view>h1 + p,
+.v6-view>.v6-aux-view>h2 + p{
+  margin-top:var(--cc-admin-title-subtitle-gap)!important;
 }
 
-.cc-blog-card h3,
-.cc-rule-editor h3,
-.cc-ann-card h3{
-  margin-top:0!important;
-  margin-bottom:9px!important;
+.v6-view>section>p + :is(.panel-actions,.actions,form,.v6-card,[class*="-panel"],[class*="-card"]),
+.v6-view>.v6-aux-view>p + :is(.panel-actions,.actions,form,.v6-card,[class*="-panel"],[class*="-card"]){
+  margin-top:var(--cc-admin-subtitle-content-gap)!important;
 }
 
 @media(max-width:900px){
   .v6-management-head{
-    gap:14px!important;
+    gap:16px!important;
   }
 }
 
 @media(max-width:700px){
+  :root{
+    --cc-admin-title-subtitle-gap:8px;
+    --cc-admin-subtitle-content-gap:14px;
+    --cc-admin-section-gap:18px;
+  }
+
   .v6-management-head{
     flex-direction:column!important;
     align-items:stretch!important;
-    margin-bottom:15px!important;
+    margin-bottom:var(--cc-admin-section-gap)!important;
   }
 
   .v6-management-head .panel-actions,
   .v6-management-head>.panel-actions{
     justify-content:flex-start!important;
+  }
+
+  .cc-ann-actions,
+  .cc-blog-actions,
+  .cc-rules-actions{
+    width:100%;
   }
 
   #registrations .registration-actions-bar{
