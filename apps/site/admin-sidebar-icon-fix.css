@@ -1,0 +1,80 @@
+/* CosplayChess — sidebar icon renderer fix
+   Single source of truth: explicit SVG inserted by admin-sidebar-icon-fix.js. */
+.v6-sidebar .v6-nav a > i::before,
+.v6-sidebar .v6-nav a > i::after{
+  content:none!important;
+  display:none!important;
+  -webkit-mask:none!important;
+  mask:none!important;
+  background:none!important;
+}
+
+.v6-sidebar .v6-nav a > i{
+  flex:0 0 30px!important;
+  width:30px!important;
+  height:30px!important;
+  min-width:30px!important;
+  min-height:30px!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  margin:0!important;
+  border-radius:8px!important;
+  font-size:0!important;
+  line-height:1!important;
+  color:#8493a8!important;
+  background:rgba(255,255,255,.025)!important;
+  overflow:hidden!important;
+}
+
+.v6-sidebar .v6-nav a > i > *{
+  display:none!important;
+}
+
+.v6-sidebar .v6-nav a > i > .cc-sidebar-svg{
+  display:block!important;
+  width:19px!important;
+  height:19px!important;
+  margin:0!important;
+  flex:none!important;
+  color:currentColor!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:2!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+  pointer-events:none!important;
+}
+
+.v6-sidebar .v6-nav a:hover > i{
+  color:#bca8ff!important;
+  background:rgba(124,58,237,.10)!important;
+}
+.v6-sidebar .v6-nav a.active > i{
+  color:#d8ceff!important;
+  background:rgba(124,58,237,.18)!important;
+}
+
+@media(max-width:1000px){
+  body.admin-v6.admin-authenticated .v6-sidebar .v6-nav a > i{
+    flex:0 0 28px!important;
+    width:28px!important;
+    height:28px!important;
+    min-width:28px!important;
+    min-height:28px!important;
+  }
+  body.admin-v6.admin-authenticated .v6-sidebar .v6-nav a > i > .cc-sidebar-svg{
+    width:18px!important;
+    height:18px!important;
+  }
+}
+
+.v6-shell.collapsed .v6-sidebar .v6-nav a > i{
+  flex:0 0 34px!important;
+  width:34px!important;
+  height:34px!important;
+}
+.v6-shell.collapsed .v6-sidebar .v6-nav a > i > .cc-sidebar-svg{
+  width:19px!important;
+  height:19px!important;
+}
