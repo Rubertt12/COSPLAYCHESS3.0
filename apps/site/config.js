@@ -40,13 +40,13 @@ window.COSPLAYCHESS_CONFIG = {
   if (!document.querySelector('link[data-cc-ui-icons]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = './ui-icons.css?v=20260824-icons1';
+    link.href = './ui-icons.css?v=20260824-icons2';
     link.dataset.ccUiIcons = 'true';
     document.head.appendChild(link);
   }
   if (!document.querySelector('script[data-cc-ui-icons]')) {
     const script = document.createElement('script');
-    script.src = './ui-icons.js?v=20260824-icons1';
+    script.src = './ui-icons.js?v=20260824-icons2';
     script.async = false;
     script.dataset.ccUiIcons = 'true';
     document.head.appendChild(script);
