@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b0710">
+  <meta name="description" content="Regras oficiais do CosplayChess para participantes e público.">
+  <title>Regras — CosplayChess</title>
+  <link rel="icon" type="image/png" href="./img/logofergoverse.png">
+  <link rel="stylesheet" href="./landing.css">
+  <link rel="stylesheet" href="./community.css">
+  <link rel="stylesheet" href="./site-rules.css?v=20260824-rules1">
+</head>
+<body>
+<div class="grain"></div>
+<header class="topbar">
+  <a class="brand" href="./index.html"><img src="./img/logofergoverse.png" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a>
+  <nav><a href="./index.html#eventos">Eventos</a><a href="./index.html#experiencia">Experiência</a><a href="./galeria-eventos.html">Galeria</a><a href="./universo.html">Universo</a><a href="./ranking.html">Ranking</a><a href="./noticias.html">Notícias</a><a href="./regras.html">Regras</a><a href="./sobre.html">Sobre</a><a href="https://www.instagram.com/fergorverse/" target="_blank" rel="noopener noreferrer">Instagram ↗</a></nav>
+  <div class="top-actions"><a class="btn gold" href="./cadastro.html">Faça parte do Espetáculo!</a></div>
+  <button class="mobile-menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
+  <div class="mobile-menu-panel" id="mobileMenu" data-open="false"><a href="./index.html#eventos">Eventos</a><a href="./index.html#experiencia">Experiência</a><a href="./galeria-eventos.html">Galeria</a><a href="./universo.html">Universo</a><a href="./ranking.html">Ranking</a><a href="./noticias.html">Notícias</a><a href="./regras.html">Regras</a><a href="./sobre.html">Sobre</a><a href="https://www.instagram.com/fergorverse/" target="_blank" rel="noopener noreferrer">Instagram @fergorverse</a><div class="mobile-menu-divider"></div><a class="btn gold" href="./cadastro.html">Faça parte do Espetáculo!</a></div>
+</header>
+<main>
+  <section class="shell rules-page-shell">
+    <div class="rules-page-intro"><span class="kicker">GUIA OFICIAL DO TABULEIRO</span><h1 id="rulesPageTitle">Regras do <i>CosplayChess</i></h1><p id="rulesPageIntro">Carregando orientações...</p></div>
+    <div id="rulesRoot"><div class="rules-empty">Carregando regras...</div></div>
+  </section>
+</main>
+<footer class="footer shell"><a class="brand mini" href="./index.html"><img src="./img/logofergoverse.png" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a><span>Regras oficiais do espetáculo.</span><a href="./noticias.html">Notícias</a><a href="./admin.html">Admin</a></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./config.js?v=20260824-rules1"></script>
+<script src="./site-rules.js?v=20260824-rules1"></script>
+<script>document.querySelector('.mobile-menu-toggle')?.addEventListener('click',e=>{const b=e.currentTarget,m=document.getElementById('mobileMenu'),open=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',String(!open));m.dataset.open=String(!open);document.body.classList.toggle('mobile-menu-open',!open);});</script>
+</body>
+</html>
