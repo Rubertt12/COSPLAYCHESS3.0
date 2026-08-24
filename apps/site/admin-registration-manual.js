@@ -146,3 +146,14 @@
   function boot(){ensureButton();ensureModal();new MutationObserver(ensureButton).observe(document.body,{childList:true,subtree:true});}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
+
+(()=>{
+  if(window.__COSPLAYCHESS_REGISTRATION_CRUD_ASSET_LOADER__)return;
+  window.__COSPLAYCHESS_REGISTRATION_CRUD_ASSET_LOADER__=true;
+  const css=document.createElement('link');
+  css.rel='stylesheet';css.href='./admin-registration-crud.css?v=20260824-crud1';css.dataset.registrationCrud='true';
+  document.head.appendChild(css);
+  const script=document.createElement('script');
+  script.src='./admin-registration-crud.js?v=20260824-crud1';script.async=false;script.dataset.registrationCrud='true';
+  document.body.appendChild(script);
+})();
