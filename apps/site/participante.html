@@ -8,7 +8,7 @@
   <title>Área do Participante — CosplayChess</title>
   <link rel="icon" type="image/png" href="./img/logofergoverse.png">
   <link rel="stylesheet" href="./landing.css">
-  <link rel="stylesheet" href="./participante.css?v=20260828-2">
+  <link rel="stylesheet" href="./participante.css?v=20260828-3">
 </head>
 <body class="participant-page">
   <div class="grain"></div>
@@ -45,6 +45,18 @@
           <button class="participant-link-button" type="button" id="participantForgotPassword">Esqueci minha senha</button>
           <div id="participantLoginStatus" class="participant-status" aria-live="polite"></div>
           <div class="participant-help">A conta só é vinculada depois que o e-mail estiver confirmado e corresponder a uma inscrição existente. Ranking, resultados, status e conquistas continuam protegidos.</div>
+        </form>
+      </section>
+
+      <section class="participant-card participant-recovery" data-participant-recovery hidden>
+        <span class="kicker">RECUPERAÇÃO DE CONTA</span>
+        <h2>Escolha uma nova senha</h2>
+        <p>O link de recuperação foi validado. Defina uma nova senha para continuar.</p>
+        <form id="participantRecoveryForm" class="participant-form">
+          <label><span>Nova senha</span><input type="password" name="newPassword" autocomplete="new-password" required minlength="6" placeholder="mínimo 6 caracteres"></label>
+          <label><span>Confirmar nova senha</span><input type="password" name="confirmPassword" autocomplete="new-password" required minlength="6" placeholder="repita a nova senha"></label>
+          <button class="btn gold big" type="submit">Atualizar senha</button>
+          <div id="participantRecoveryStatus" class="participant-status" aria-live="polite"></div>
         </form>
       </section>
 
@@ -107,6 +119,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
-  <script src="./participante.js?v=20260828-2"></script>
+  <script src="./participante.js?v=20260828-3"></script>
 </body>
 </html>
