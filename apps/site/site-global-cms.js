@@ -3,6 +3,11 @@
   window.__COSPLAYCHESS_GLOBAL_CMS_BOOTED__=true;
   const cfg=window.COSPLAYCHESS_CONFIG;
   if(!cfg) return;
+  const ensureParticipantAccess=()=>{
+    if(!document.querySelector('link[data-participant-nav]')){const link=document.createElement('link');link.rel='stylesheet';link.href='./participant-nav.css?v=20260828-1';link.dataset.participantNav='true';document.head.appendChild(link);}
+    if(!document.querySelector('script[data-participant-nav]')){const script=document.createElement('script');script.src='./participant-nav.js?v=20260828-1';script.async=false;script.dataset.participantNav='true';document.head.appendChild(script);}
+  };
+  ensureParticipantAccess();
   const previewMode=new URLSearchParams(location.search).get('cmsPreview')==='1';
   const q=s=>document.querySelector(s), qa=s=>[...document.querySelectorAll(s)];
   const db=()=>window.COSPLAYCHESS_DB||window.getCosplayChessDb?.()||window.supabase?.createClient?.(cfg.supabaseUrl,cfg.supabaseKey);
