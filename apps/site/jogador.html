@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0710">
+  <meta name="description" content="Perfil público de participante do CosplayChess — cosplay e conquistas.">
+  <title>Participante — CosplayChess</title>
+  <link rel="icon" type="image/png" href="./img/logofergoverse.png">
+  <link rel="stylesheet" href="./landing.css">
+  <link rel="stylesheet" href="./jogador.css?v=20260828-1">
+</head>
+<body class="public-player-page">
+  <div class="grain"></div>
+  <header class="topbar">
+    <a class="brand" href="./index.html"><img src="./img/logofergoverse.png" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a>
+    <div class="top-actions">
+      <a class="btn participant-profile-login" href="./participante.html">👤 Área do Participante</a>
+      <a class="btn ghost" href="./index.html">Voltar ao site</a>
+    </div>
+  </header>
+
+  <main class="player-public-shell">
+    <section id="playerLoading" class="player-state-card">
+      <span class="player-state-icon">♜</span>
+      <h1>Carregando perfil...</h1>
+    </section>
+
+    <section id="playerNotFound" class="player-state-card" hidden>
+      <span class="player-state-icon">♟</span>
+      <h1>Perfil indisponível</h1>
+      <p>Este perfil não existe, foi ocultado pelo participante ou o evento ainda não está publicado.</p>
+      <a class="btn gold" href="./index.html">Voltar ao CosplayChess</a>
+    </section>
+
+    <div id="playerContent" hidden>
+      <section class="player-hero-card">
+        <div class="player-photo" id="playerPhoto"><span>♜</span></div>
+        <div class="player-identity">
+          <span class="kicker">PARTICIPANTE COSPLAYCHESS</span>
+          <h1 id="playerName">Participante</h1>
+          <p class="player-character"><span>🎭</span><b id="playerCharacter">Personagem</b></p>
+          <p class="player-nick" id="playerNick" hidden></p>
+          <p class="player-bio" id="playerBio" hidden></p>
+          <div id="playerSocials" class="player-socials"></div>
+          <div class="player-actions">
+            <button class="btn gold" id="playerShare" type="button">Compartilhar perfil</button>
+            <a class="btn dark" href="./conquistas.html">Ver todas as conquistas</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="player-achievements-section">
+        <div class="section-head compact">
+          <div><span class="kicker">TROFÉUS DESBLOQUEADOS</span><h2>Conquistas de <i id="playerAchievementName">participante</i></h2></div>
+          <span class="player-achievement-counter" id="playerAchievementCount">0</span>
+        </div>
+        <div id="playerAchievements" class="player-achievements-grid"><div class="player-empty">Carregando conquistas...</div></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script src="./jogador.js?v=20260828-1"></script>
+</body>
+</html>
