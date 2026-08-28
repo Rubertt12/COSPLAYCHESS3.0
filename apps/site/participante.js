@@ -1,35 +1,39 @@
 (() => {
-  const cfg = window.COSPLAYCHESS_CONFIG;
   const db = window.getCosplayChessDb ? window.getCosplayChessDb() : window.COSPLAYCHESS_DB;
+  const $ = (id) => document.getElementById(id);
   const loginView = document.querySelector('[data-participant-login]');
+  const recoveryView = document.querySelector('[data-participant-recovery]');
   const dashboardView = document.querySelector('[data-participant-dashboard]');
-  const loginForm = document.getElementById('participantLoginForm');
-  const loginStatus = document.getElementById('participantLoginStatus');
-  const createAccountBtn = document.getElementById('participantCreateAccount');
-  const forgotPasswordBtn = document.getElementById('participantForgotPassword');
-  const accountStatus = document.getElementById('participantAccountStatus');
-  const dashboardContent = document.getElementById('participantDashboardContent');
-  const profileForm = document.getElementById('participantProfileForm');
-  const profilePicker = document.getElementById('participantProfilePicker');
-  const profilePickerWrap = document.getElementById('participantProfilePickerWrap');
-  const achievementsEl = document.getElementById('participantAchievements');
-  const achievementCountEl = document.getElementById('participantAchievementCount');
-  const nameEl = document.getElementById('participantName');
-  const greetingEl = document.getElementById('participantGreeting');
-  const emailEl = document.getElementById('participantEmail');
-  const logoutBtn = document.getElementById('participantLogout');
-  const saveStatus = document.getElementById('participantSaveStatus');
-  const photoPreview = document.getElementById('participantPhotoPreview');
-  const photoFile = document.getElementById('participantPhotoFile');
-  const publicLink = document.getElementById('participantPublicLink');
-  const publicHint = document.getElementById('participantPublicHint');
-  const shareProfileBtn = document.getElementById('participantShareProfile');
+  const loginForm = $('participantLoginForm');
+  const recoveryForm = $('participantRecoveryForm');
+  const profileForm = $('participantProfileForm');
+  const loginStatus = $('participantLoginStatus');
+  const recoveryStatus = $('participantRecoveryStatus');
+  const accountStatus = $('participantAccountStatus');
+  const saveStatus = $('participantSaveStatus');
+  const dashboardContent = $('participantDashboardContent');
+  const createAccountBtn = $('participantCreateAccount');
+  const forgotPasswordBtn = $('participantForgotPassword');
+  const logoutBtn = $('participantLogout');
+  const nameEl = $('participantName');
+  const greetingEl = $('participantGreeting');
+  const emailEl = $('participantEmail');
+  const profilePicker = $('participantProfilePicker');
+  const profilePickerWrap = $('participantProfilePickerWrap');
+  const photoPreview = $('participantPhotoPreview');
+  const photoFile = $('participantPhotoFile');
+  const achievementsEl = $('participantAchievements');
+  const achievementCountEl = $('participantAchievementCount');
+  const publicLink = $('participantPublicLink');
+  const publicHint = $('participantPublicHint');
+  const shareProfileBtn = $('participantShareProfile');
 
   let currentUser = null;
   let profiles = [];
   let currentProfile = null;
   let eventNames = new Map();
   let handlingSession = false;
+  let recoveryMode = new URLSearchParams(location.hash.replace(/^#/, '')).get('type') === 'recovery';
 
   const setStatus = (el, message = '', kind = '') => {
     if (!el) return;
@@ -44,17 +48,23 @@
     if (msg.includes('user already registered')) return 'Este e-mail já possui uma conta. Use Entrar ou Esqueci minha senha.';
     if (msg.includes('password should be')) return 'A senha precisa ter pelo menos 6 caracteres.';
     if (msg.includes('rate limit')) return 'Muitas tentativas em pouco tempo. Tente novamente mais tarde.';
+    if (msg.includes('nenhuma inscrição confirmada')) return 'Não encontramos uma inscrição ativa com este e-mail.';
     return fallback;
   };
 
-  const escapeCss = (value) => window.CSS?.escape ? CSS.escape(String(value)) : String(value).replace(/[^a-zA-Z0-9_-]/g, '');
+  const setViews = (session) => {
+    const logged = !!session?.user;
+    if (recoveryView) recoveryView.hidden = !recoveryMode;
+    if (loginView) loginView.hidden = recoveryMode || logged;
+    if (dashboardView) dashboardView.hidden = recoveryMode || !logged;
+  };
 
   const profileUrl = (profile = currentProfile) => {
     if (!profile?.public_slug) return '';
     return new URL(`./jogador.html?slug=${encodeURIComponent(profile.public_slug)}`, location.href).href;
   };
 
-  const safeUrl = (raw, network = '') => {
+  const normalizeSocialUrl = (raw, network = '') => {
     let value = String(raw || '').trim();
     if (!value) return null;
     if (value.startsWith('@')) {
@@ -68,8 +78,7 @@
     }
     try {
       const url = new URL(value);
-      if (!['http:', 'https:'].includes(url.protocol)) return null;
-      return url.href;
+      return ['http:', 'https:'].includes(url.protocol) ? url.href : null;
     } catch {
       return null;
     }
@@ -99,13 +108,13 @@
 
   const renderPublicActions = () => {
     const url = profileUrl();
-    const visible = !!currentProfile?.profile_visible && !!url;
+    const enabled = !!currentProfile?.profile_visible && !!url;
     if (publicLink) {
-      publicLink.href = visible ? url : '#';
-      publicLink.setAttribute('aria-disabled', visible ? 'false' : 'true');
+      publicLink.href = enabled ? url : '#';
+      publicLink.setAttribute('aria-disabled', enabled ? 'false' : 'true');
     }
-    if (shareProfileBtn) shareProfileBtn.disabled = !visible;
-    if (publicHint) publicHint.textContent = visible
+    if (shareProfileBtn) shareProfileBtn.disabled = !enabled;
+    if (publicHint) publicHint.textContent = enabled
       ? 'Sua página está pública. Você pode abrir ou compartilhar o link agora.'
       : 'Ative a visibilidade do perfil e salve para liberar o link público.';
   };
@@ -113,8 +122,7 @@
   const fillProfileForm = (profile) => {
     currentProfile = profile || null;
     if (!profileForm || !profile) return;
-    const fields = ['display_name','nick','character_name','bio','instagram_url','tiktok_url','facebook_url','youtube_url'];
-    fields.forEach((field) => {
+    ['display_name','nick','character_name','bio','instagram_url','tiktok_url','facebook_url','youtube_url'].forEach((field) => {
       const input = profileForm.elements.namedItem(field);
       if (input) input.value = profile[field] || '';
     });
@@ -123,15 +131,16 @@
     if (photoFile) photoFile.value = '';
     renderPhoto(profile.character_photo_url);
     renderPublicActions();
-    if (nameEl) nameEl.textContent = profile.display_name || profile.nick || 'Participante';
-    if (greetingEl) greetingEl.textContent = `Olá, ${profile.display_name || profile.nick || 'Participante'}`;
+    const displayName = profile.display_name || profile.nick || 'Participante';
+    if (nameEl) nameEl.textContent = displayName;
+    if (greetingEl) greetingEl.textContent = `Olá, ${displayName}`;
   };
 
   const loadEvents = async (rows) => {
-    const ids = [...new Set(rows.map((p) => p.event_id).filter(Boolean))];
+    const ids = [...new Set(rows.map((profile) => profile.event_id).filter(Boolean))];
     eventNames = new Map();
     if (!ids.length) return;
-    const { data } = await db.from('cosplay_events').select('id,title,start_at').in('id', ids);
+    const { data } = await db.from('cosplay_events').select('id,title').in('id', ids);
     (data || []).forEach((event) => eventNames.set(event.id, event.title || 'Evento CosplayChess'));
   };
 
@@ -141,8 +150,7 @@
     profiles.forEach((profile) => {
       const option = document.createElement('option');
       option.value = profile.id;
-      const eventName = eventNames.get(profile.event_id) || 'Participação CosplayChess';
-      option.textContent = `${eventName} — ${profile.character_name || 'Personagem'}`;
+      option.textContent = `${eventNames.get(profile.event_id) || 'Participação CosplayChess'} — ${profile.character_name || 'Personagem'}`;
       profilePicker.appendChild(option);
     });
     profilePickerWrap.hidden = profiles.length < 2;
@@ -168,10 +176,10 @@
       return;
     }
     const ids = [...new Set(awards.map((award) => award.achievement_id).filter(Boolean))];
-    const { data: defs } = ids.length
+    const { data: definitionsData } = ids.length
       ? await db.from('cosplay_achievements').select('id,title,description,icon,tier').in('id', ids)
       : { data:[] };
-    const definitions = new Map((defs || []).map((item) => [item.id, item]));
+    const definitions = new Map((definitionsData || []).map((item) => [item.id, item]));
     achievementsEl.replaceChildren();
     awards.forEach((award) => {
       const def = definitions.get(award.achievement_id);
@@ -210,7 +218,7 @@
     renderProfilePicker();
     if (!currentProfile) {
       if (dashboardContent) dashboardContent.hidden = true;
-      setStatus(accountStatus, 'Nenhuma inscrição foi vinculada a esta conta. Confirme se você usou exatamente o mesmo e-mail informado na inscrição.', 'error');
+      setStatus(accountStatus, 'Nenhuma inscrição foi vinculada a esta conta. Use exatamente o mesmo e-mail informado na inscrição.', 'error');
       return;
     }
     setStatus(accountStatus, 'Conta vinculada com segurança à sua inscrição.', 'success');
@@ -221,18 +229,17 @@
 
   const claimProfiles = async () => {
     const { error } = await db.rpc('claim_cosplay_participant_profiles');
-    if (error && !String(error.message || '').includes('Nenhuma inscrição confirmada')) throw error;
+    if (error) throw error;
   };
 
   const handleSession = async (session) => {
+    setViews(session);
+    if (recoveryMode) return;
     if (handlingSession) return;
     handlingSession = true;
     try {
       currentUser = session?.user || null;
-      const logged = !!currentUser;
-      if (loginView) loginView.hidden = logged;
-      if (dashboardView) dashboardView.hidden = !logged;
-      if (!logged) {
+      if (!currentUser) {
         profiles = [];
         currentProfile = null;
         if (dashboardContent) dashboardContent.hidden = true;
@@ -240,9 +247,11 @@
       }
       if (emailEl) emailEl.textContent = currentUser.email || '';
       setStatus(accountStatus, 'Verificando sua inscrição...');
-      try { await claimProfiles(); }
-      catch (error) {
-        setStatus(accountStatus, friendlyError(error, 'Não foi possível vincular sua inscrição automaticamente.'), 'error');
+      try {
+        await claimProfiles();
+      } catch (error) {
+        const msg = friendlyError(error, 'Não foi possível vincular sua inscrição automaticamente.');
+        setStatus(accountStatus, msg, 'error');
       }
       await loadProfiles();
     } catch (error) {
@@ -268,8 +277,8 @@
       const { data, error } = await db.auth.signInWithPassword({ email, password });
       if (error) throw error;
       setStatus(loginStatus, 'Acesso liberado.', 'success');
-      await handleSession(data?.session || null);
       loginForm.reset();
+      await handleSession(data?.session || null);
     } catch (error) {
       setStatus(loginStatus, friendlyError(error, 'Não foi possível entrar. Confira seus dados e tente novamente.'), 'error');
     } finally {
@@ -309,6 +318,7 @@
       return;
     }
     forgotPasswordBtn.disabled = true;
+    setStatus(loginStatus, 'Enviando recuperação...');
     try {
       const redirect = new URL('./participante.html', location.href).href;
       const { error } = await db.auth.resetPasswordForEmail(email, { redirectTo:redirect });
@@ -321,6 +331,38 @@
     }
   });
 
+  recoveryForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const formData = new FormData(recoveryForm);
+    const password = String(formData.get('newPassword') || '');
+    const confirmation = String(formData.get('confirmPassword') || '');
+    const submit = recoveryForm.querySelector('button[type="submit"]');
+    if (password.length < 6) {
+      setStatus(recoveryStatus, 'A senha precisa ter pelo menos 6 caracteres.', 'error');
+      return;
+    }
+    if (password !== confirmation) {
+      setStatus(recoveryStatus, 'As duas senhas precisam ser iguais.', 'error');
+      return;
+    }
+    if (submit) submit.disabled = true;
+    setStatus(recoveryStatus, 'Atualizando senha...');
+    try {
+      const { error } = await db.auth.updateUser({ password });
+      if (error) throw error;
+      recoveryMode = false;
+      recoveryForm.reset();
+      history.replaceState({}, document.title, `${location.pathname}${location.search}`);
+      setStatus(recoveryStatus, 'Senha atualizada.', 'success');
+      const { data } = await db.auth.getSession();
+      await handleSession(data?.session || null);
+    } catch (error) {
+      setStatus(recoveryStatus, friendlyError(error, 'Não foi possível atualizar sua senha.'), 'error');
+    } finally {
+      if (submit) submit.disabled = false;
+    }
+  });
+
   profilePicker?.addEventListener('change', async () => {
     const selected = profiles.find((profile) => profile.id === profilePicker.value);
     if (!selected) return;
@@ -330,8 +372,15 @@
 
   photoFile?.addEventListener('change', () => {
     const file = photoFile.files?.[0];
-    if (!file) return renderPhoto(currentProfile?.character_photo_url);
-    if (!file.type.startsWith('image/')) return;
+    if (!file) {
+      renderPhoto(currentProfile?.character_photo_url);
+      return;
+    }
+    if (!['image/jpeg','image/png','image/webp'].includes(file.type)) {
+      setStatus(saveStatus, 'Use uma imagem JPG, PNG ou WebP.', 'error');
+      photoFile.value = '';
+      return;
+    }
     const objectUrl = URL.createObjectURL(file);
     renderPhoto(objectUrl);
     setTimeout(() => URL.revokeObjectURL(objectUrl), 30000);
@@ -353,20 +402,24 @@
 
   profileForm?.addEventListener('submit', async (event) => {
     event.preventDefault();
-    if (!currentProfile) return;
-    const saveBtn = document.getElementById('participantSaveProfile');
+    if (!currentProfile || !currentUser) return;
+    const saveBtn = $('participantSaveProfile');
     if (saveBtn) saveBtn.disabled = true;
     setStatus(saveStatus, 'Salvando...');
     try {
       const data = new FormData(profileForm);
       const file = photoFile?.files?.[0] || null;
       const photoUrl = file ? await uploadPhoto(file) : currentProfile.character_photo_url;
-      const instagram = safeUrl(data.get('instagram_url'), 'instagram');
-      const tiktok = safeUrl(data.get('tiktok_url'), 'tiktok');
+      const instagramRaw = String(data.get('instagram_url') || '').trim();
+      const tiktokRaw = String(data.get('tiktok_url') || '').trim();
       const facebookRaw = String(data.get('facebook_url') || '').trim();
       const youtubeRaw = String(data.get('youtube_url') || '').trim();
-      const facebook = facebookRaw ? safeUrl(facebookRaw) : null;
-      const youtube = youtubeRaw ? safeUrl(youtubeRaw) : null;
+      const instagram = instagramRaw ? normalizeSocialUrl(instagramRaw, 'instagram') : null;
+      const tiktok = tiktokRaw ? normalizeSocialUrl(tiktokRaw, 'tiktok') : null;
+      const facebook = facebookRaw ? normalizeSocialUrl(facebookRaw) : null;
+      const youtube = youtubeRaw ? normalizeSocialUrl(youtubeRaw) : null;
+      if (instagramRaw && !instagram) throw new Error('Instagram inválido.');
+      if (tiktokRaw && !tiktok) throw new Error('TikTok inválido.');
       if (facebookRaw && !facebook) throw new Error('Link do Facebook inválido.');
       if (youtubeRaw && !youtube) throw new Error('Link do YouTube inválido.');
       const updates = {
@@ -394,7 +447,7 @@
       if (index >= 0) profiles[index] = saved;
       fillProfileForm(saved);
       renderProfilePicker();
-      setStatus(saveStatus, 'Alterações salvas. Seu cosplay foi sincronizado com a inscrição do evento.', 'success');
+      setStatus(saveStatus, 'Alterações salvas. O cosplay foi sincronizado com a inscrição do evento.', 'success');
     } catch (error) {
       setStatus(saveStatus, String(error?.message || 'Não foi possível salvar as alterações.'), 'error');
       renderPhoto(currentProfile?.character_photo_url);
@@ -407,7 +460,7 @@
     const url = profileUrl();
     if (!url || !currentProfile?.profile_visible) return;
     const title = `${currentProfile.display_name || currentProfile.nick || 'Participante'} no CosplayChess`;
-    const text = `Veja meu perfil e minhas conquistas no CosplayChess! 🎭♜`;
+    const text = 'Veja meu perfil e minhas conquistas no CosplayChess! 🎭♜';
     try {
       if (navigator.share) await navigator.share({ title, text, url });
       else {
@@ -427,15 +480,17 @@
   });
 
   const init = async () => {
-    if (!cfg || !db?.auth) {
+    if (!db?.auth) {
       setStatus(loginStatus, 'Não foi possível iniciar o acesso agora.', 'error');
       return;
     }
-    const { data } = await db.auth.getSession();
-    await handleSession(data?.session || null);
-    db.auth.onAuthStateChange((_event, session) => {
+    setViews(null);
+    db.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') recoveryMode = true;
       setTimeout(() => handleSession(session), 0);
     });
+    const { data } = await db.auth.getSession();
+    await handleSession(data?.session || null);
   };
 
   init();
