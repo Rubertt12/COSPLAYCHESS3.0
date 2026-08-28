@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0710">
+  <meta name="description" content="Área do Participante CosplayChess — perfil, cosplay, conquistas e histórico.">
+  <title>Área do Participante — CosplayChess</title>
+  <link rel="icon" type="image/png" href="./img/logofergoverse.png">
+  <link rel="stylesheet" href="./landing.css">
+  <link rel="stylesheet" href="./participante.css?v=20260828-1">
+</head>
+<body class="participant-page">
+  <div class="grain"></div>
+  <header class="topbar">
+    <a class="brand" href="./index.html"><img src="./img/logofergoverse.png" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a>
+    <div class="top-actions"><a class="btn ghost" href="./index.html">Voltar ao site</a></div>
+  </header>
+
+  <main class="participant-shell">
+    <section class="participant-hero">
+      <div class="participant-copy">
+        <span class="kicker">♜ SUA HISTÓRIA NO TABULEIRO</span>
+        <h1>Área do<br><i>Participante.</i></h1>
+        <p>Acesse seu espaço no CosplayChess para acompanhar seu personagem, suas conquistas e, nas próximas etapas, solicitar alterações no cosplay usado nos eventos.</p>
+        <div class="participant-points">
+          <div class="participant-point"><b>🎭 Meu cosplay</b><span>Confira o personagem vinculado ao seu perfil e solicite alterações.</span></div>
+          <div class="participant-point"><b>🏆 Conquistas</b><span>Veja os achievements conquistados no CosplayChess.</span></div>
+          <div class="participant-point"><b>♜ Histórico</b><span>Partidas, vitórias e participação nos eventos.</span></div>
+          <div class="participant-point"><b>📤 Compartilhar</b><span>Perfil e conquistas preparados para redes sociais.</span></div>
+        </div>
+      </div>
+
+      <section class="participant-card participant-login" data-participant-login>
+        <span class="kicker">ACESSO RESTRITO</span>
+        <h2>Entrar na minha área</h2>
+        <p>Use o e-mail vinculado à sua inscrição e a senha da sua conta de participante.</p>
+        <form id="participantLoginForm" class="participant-form">
+          <label><span>E-mail</span><input type="email" name="email" autocomplete="email" required placeholder="seuemail@exemplo.com"></label>
+          <label><span>Senha</span><input type="password" name="password" autocomplete="current-password" required minlength="6" placeholder="••••••••"></label>
+          <button class="btn gold big" type="submit">Entrar</button>
+          <div id="participantLoginStatus" class="participant-status" aria-live="polite"></div>
+          <div class="participant-help">As contas serão vinculadas aos participantes aprovados pela organização. O acesso não dá permissão para editar ranking, resultados ou conquistas.</div>
+        </form>
+      </section>
+
+      <section class="participant-card participant-dashboard" data-participant-dashboard hidden>
+        <span class="kicker">MINHA CONTA</span>
+        <h2>Bem-vindo ao tabuleiro</h2>
+        <p>Essa é a base da nova área do participante. Os módulos abaixo serão conectados aos dados da inscrição e das conquistas.</p>
+        <div class="participant-userbar">
+          <span class="participant-avatar" aria-hidden="true">♜</span>
+          <div><b id="participantName">Participante</b><span id="participantEmail"></span></div>
+        </div>
+        <div class="participant-grid">
+          <article class="participant-module"><span class="icon">👤</span><h3>Meu perfil</h3><p>Nome artístico, bio e redes sociais.</p><small>Próxima etapa</small></article>
+          <article class="participant-module"><span class="icon">🎭</span><h3>Meu cosplay</h3><p>Personagem atual e solicitação de troca para o próximo evento.</p><small>Próxima etapa</small></article>
+          <article class="participant-module"><span class="icon">🏆</span><h3>Conquistas</h3><p>Achievements concedidos pela organização.</p><small>Próxima etapa</small></article>
+          <article class="participant-module"><span class="icon">📤</span><h3>Página pública</h3><p>Perfil compartilhável com histórico e conquistas.</p><small>Próxima etapa</small></article>
+        </div>
+        <button class="btn dark participant-logout" id="participantLogout" type="button">Sair da conta</button>
+      </section>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script src="./participante.js?v=20260828-1"></script>
+</body>
+</html>
