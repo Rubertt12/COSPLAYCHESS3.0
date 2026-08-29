@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0710">
+  <meta name="description" content="Comunidade criada por participantes do CosplayChess.">
+  <title>Comunidade — CosplayChess</title>
+  <link rel="icon" type="image/png" href="./img/logofergoverse.png">
+  <link rel="stylesheet" href="./landing.css">
+  <link rel="stylesheet" href="./comunidade-grupo.css?v=20260829-1">
+</head>
+<body class="community-group-page">
+  <div class="grain"></div>
+  <header class="topbar community-topbar">
+    <a class="brand" href="./index.html"><img src="./img/logofergoverse.png" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a>
+    <div class="top-actions"><a class="btn dark" href="./comunidade.html">← Comunidade</a><a class="btn ghost" href="./participante.html">Meu painel</a></div>
+  </header>
+
+  <main class="community-group-shell" id="groupContent" hidden>
+    <aside class="group-side">
+      <section class="group-card">
+        <div class="group-cover"></div><div class="group-avatar" id="groupAvatar">C</div>
+        <div class="group-copy"><span class="kicker">COMUNIDADE</span><h1 id="groupName">Comunidade</h1><p id="groupDescription"></p><div class="group-meta"><span id="groupCategory">Geral</span><span><b id="groupMemberCount">0</b> membros</span></div><div class="group-actions"><button class="btn gold" id="groupJoinButton" type="button">Entrar</button><button class="btn dark" id="groupShareButton" type="button">Compartilhar</button></div></div>
+      </section>
+      <nav class="group-card group-nav">
+        <button class="active" type="button" data-group-view="topics"><span>✦</span>Tópicos</button>
+        <button type="button" data-group-view="polls"><span>☷</span>Enquetes</button>
+        <button type="button" data-group-view="members"><span>♟</span>Membros</button>
+      </nav>
+    </aside>
+
+    <section class="group-main">
+      <section class="group-main-card group-panel" data-group-panel="topics">
+        <div class="group-panel-head"><div><span class="kicker">FÓRUM DA COMUNIDADE</span><h2>Tópicos & <i>conversas.</i></h2></div><button class="btn gold" id="groupNewTopicToggle" type="button">＋ Novo tópico</button></div>
+        <form class="group-form" id="groupTopicForm" hidden><input id="groupTopicTitle" maxlength="120" required placeholder="Título do tópico"><textarea id="groupTopicBody" maxlength="5000" placeholder="Comece a conversa..."></textarea><div class="group-form-actions"><span id="groupTopicStatus" class="group-status"></span><button class="btn gold" type="submit">Publicar tópico</button></div></form>
+        <div class="topic-list" id="groupTopics"><div class="group-empty">Carregando tópicos...</div></div>
+      </section>
+
+      <section class="group-main-card group-panel" data-group-panel="polls" hidden>
+        <div class="group-panel-head"><div><span class="kicker">VOTAÇÃO DA GALERA</span><h2>Enquetes.</h2></div><button class="btn gold" id="groupNewPollToggle" type="button">＋ Nova enquete</button></div>
+        <form class="group-form" id="groupPollForm" hidden><input id="groupPollQuestion" maxlength="240" required placeholder="Pergunta da enquete"><div class="poll-create-options"><input class="groupPollOption" maxlength="160" required placeholder="Opção 1"><input class="groupPollOption" maxlength="160" required placeholder="Opção 2"><input class="groupPollOption" maxlength="160" placeholder="Opção 3"><input class="groupPollOption" maxlength="160" placeholder="Opção 4"></div><div class="group-form-actions"><span id="groupPollStatus" class="group-status"></span><button class="btn gold" type="submit">Criar enquete</button></div></form>
+        <div class="poll-list" id="groupPolls"><div class="group-empty">Carregando enquetes...</div></div>
+      </section>
+
+      <section class="group-main-card group-panel" data-group-panel="members" hidden>
+        <div class="group-panel-head"><div><span class="kicker">PESSOAS DA COMUNIDADE</span><h2>Membros.</h2></div></div>
+        <div class="member-list" id="groupMembersMain"><div class="group-empty">Carregando membros...</div></div>
+      </section>
+    </section>
+
+    <aside class="group-right">
+      <section class="group-card"><div class="group-panel-head" style="margin:0;padding:11px 12px"><div><span class="kicker">MEMBROS</span><h2 style="font-size:15px">Na comunidade</h2></div></div><div class="member-list" id="groupMembersRail"><div class="group-empty">Carregando...</div></div></section>
+      <section class="group-card"><div class="group-copy"><span class="kicker">CRIADA POR</span><div id="groupOwner"></div></div></section>
+    </aside>
+  </main>
+
+  <div class="group-auth" id="groupAuth"><div><span style="font-size:38px;color:#b7c8ff">◉</span><h1>Carregando comunidade...</h1><p>Entre na Área do Participante para acessar comunidades, tópicos e enquetes.</p><a class="btn gold" href="./participante.html">Entrar</a></div></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script src="./comunidade-grupo.js?v=20260829-1"></script>
+</body>
+</html>
