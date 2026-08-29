@@ -1,5 +1,5 @@
 Production redeploy trigger.
-Source: main @ 3dd8b79856050466b8503a0326201d2317c53c43
-Reason: publish PR #42 — Conquistas na Comunidade e painel social
-Validation target: /conquistas-social.html
-Redeploy retry: 2026-08-29 17:50 -03:00
+Source: main @ 5bb2a7cc2fcae67145f6df1ed79b46d8435b8494
+Reason: publish PR #43 — Card social 1080x1350 para compartilhar conquistas
+Validation targets: /conquistas-social.html and /achievement-social-card.js
+Redeploy requested: 2026-08-29
