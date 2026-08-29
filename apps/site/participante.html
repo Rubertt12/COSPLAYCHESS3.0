@@ -8,7 +8,7 @@
   <title>Área do Participante — CosplayChess</title>
   <link rel="icon" type="image/png" href="./img/logofergoverse.png">
   <link rel="stylesheet" href="./landing.css">
-  <link rel="stylesheet" href="./participante.css?v=20260828-1">
+  <link rel="stylesheet" href="./participante.css?v=20260828-2">
 </head>
 <body class="participant-page">
   <div class="grain"></div>
@@ -22,41 +22,55 @@
       <div class="participant-copy">
         <span class="kicker">♜ SUA HISTÓRIA NO TABULEIRO</span>
         <h1>Área do<br><i>Participante.</i></h1>
-        <p>Acesse seu espaço no CosplayChess para acompanhar seu personagem, suas conquistas e, nas próximas etapas, solicitar alterações no cosplay usado nos eventos.</p>
+        <p>Seu espaço no CosplayChess para acompanhar o personagem, editar as informações permitidas do perfil e reunir conquistas e histórico.</p>
         <div class="participant-points">
-          <div class="participant-point"><b>🎭 Meu cosplay</b><span>Confira o personagem vinculado ao seu perfil e solicite alterações.</span></div>
+          <div class="participant-point"><b>🎭 Meu cosplay</b><span>Confira o personagem vinculado ao seu perfil e as opções liberadas pela organização.</span></div>
           <div class="participant-point"><b>🏆 Conquistas</b><span>Veja os achievements conquistados no CosplayChess.</span></div>
-          <div class="participant-point"><b>♜ Histórico</b><span>Partidas, vitórias e participação nos eventos.</span></div>
+          <div class="participant-point"><b>♜ Histórico</b><span>Partidas, vitórias e participações nos eventos.</span></div>
           <div class="participant-point"><b>📤 Compartilhar</b><span>Perfil e conquistas preparados para redes sociais.</span></div>
         </div>
       </div>
 
       <section class="participant-card participant-login" data-participant-login>
-        <span class="kicker">ACESSO RESTRITO</span>
+        <span class="kicker">ACESSO DO PARTICIPANTE</span>
         <h2>Entrar na minha área</h2>
-        <p>Use o e-mail vinculado à sua inscrição e a senha da sua conta de participante.</p>
+        <p>Use o e-mail da sua inscrição e a senha que você criou no convite enviado pela organização.</p>
         <form id="participantLoginForm" class="participant-form">
           <label><span>E-mail</span><input type="email" name="email" autocomplete="email" required placeholder="seuemail@exemplo.com"></label>
-          <label><span>Senha</span><input type="password" name="password" autocomplete="current-password" required minlength="6" placeholder="••••••••"></label>
+          <label><span>Senha</span><input type="password" name="password" autocomplete="current-password" required minlength="8" placeholder="••••••••"></label>
           <button class="btn gold big" type="submit">Entrar</button>
+          <button class="participant-link-button" id="participantForgotPassword" type="button">Esqueci minha senha</button>
           <div id="participantLoginStatus" class="participant-status" aria-live="polite"></div>
-          <div class="participant-help">As contas serão vinculadas aos participantes aprovados pela organização. O acesso não dá permissão para editar ranking, resultados ou conquistas.</div>
+          <div class="participant-help">O cadastro no evento continua público. O acesso a esta área é liberado pela organização após a confirmação da inscrição. Ranking, resultados, pontos e conquistas não podem ser alterados pelo participante.</div>
+        </form>
+      </section>
+
+      <section class="participant-card participant-activation" data-participant-activation hidden>
+        <span class="kicker">PRIMEIRO ACESSO</span>
+        <h2>Crie sua senha</h2>
+        <p>Este link foi liberado pela organização para o e-mail da sua inscrição. Defina uma senha pessoal para concluir o acesso.</p>
+        <form id="participantActivationForm" class="participant-form">
+          <label><span>Nova senha</span><input type="password" name="password" autocomplete="new-password" minlength="8" required placeholder="Mínimo de 8 caracteres"></label>
+          <label><span>Confirmar senha</span><input type="password" name="confirmPassword" autocomplete="new-password" minlength="8" required placeholder="Repita a nova senha"></label>
+          <button class="btn gold big" type="submit">Criar minha senha</button>
+          <div id="participantActivationStatus" class="participant-status" aria-live="polite"></div>
+          <div class="participant-help">Sua senha é gravada pelo sistema de autenticação do Supabase. A organização não recebe nem visualiza sua senha.</div>
         </form>
       </section>
 
       <section class="participant-card participant-dashboard" data-participant-dashboard hidden>
         <span class="kicker">MINHA CONTA</span>
         <h2>Bem-vindo ao tabuleiro</h2>
-        <p>Essa é a base da nova área do participante. Os módulos abaixo serão conectados aos dados da inscrição e das conquistas.</p>
+        <p>Seu acesso está vinculado à inscrição aprovada pela organização.</p>
         <div class="participant-userbar">
           <span class="participant-avatar" aria-hidden="true">♜</span>
           <div><b id="participantName">Participante</b><span id="participantEmail"></span></div>
         </div>
         <div class="participant-grid">
-          <article class="participant-module"><span class="icon">👤</span><h3>Meu perfil</h3><p>Nome artístico, bio e redes sociais.</p><small>Próxima etapa</small></article>
-          <article class="participant-module"><span class="icon">🎭</span><h3>Meu cosplay</h3><p>Personagem atual e solicitação de troca para o próximo evento.</p><small>Próxima etapa</small></article>
-          <article class="participant-module"><span class="icon">🏆</span><h3>Conquistas</h3><p>Achievements concedidos pela organização.</p><small>Próxima etapa</small></article>
-          <article class="participant-module"><span class="icon">📤</span><h3>Página pública</h3><p>Perfil compartilhável com histórico e conquistas.</p><small>Próxima etapa</small></article>
+          <article class="participant-module"><span class="icon">👤</span><h3>Meu perfil</h3><p>Nome artístico, bio e redes sociais.</p><small>Somente seus dados permitidos</small></article>
+          <article class="participant-module"><span class="icon">🎭</span><h3>Meu cosplay</h3><p>Personagem e informações do cosplay vinculadas ao seu perfil.</p><small>Área do participante</small></article>
+          <article class="participant-module"><span class="icon">🏆</span><h3>Conquistas</h3><p>Achievements concedidos pela organização.</p><small>Somente leitura</small></article>
+          <article class="participant-module"><span class="icon">📤</span><h3>Página pública</h3><p>Perfil compartilhável com histórico e conquistas.</p><small>Compartilhar</small></article>
         </div>
         <button class="btn dark participant-logout" id="participantLogout" type="button">Sair da conta</button>
       </section>
@@ -65,6 +79,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
-  <script src="./participante.js?v=20260828-1"></script>
+  <script src="./participante.js?v=20260828-2"></script>
 </body>
 </html>
