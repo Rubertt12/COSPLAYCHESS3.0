@@ -2,10 +2,13 @@
   let lastNavSignature='';
 
   const ensureCss=(href,id)=>{if(document.getElementById(id))return;const l=document.createElement('link');l.id=id;l.rel='stylesheet';l.href=href;document.head.appendChild(l);};
-  const ensureScript=(src,id)=>{if(document.getElementById(id)||window.__COSPLAY_PHOTO_LIGHTBOX__)return;const s=document.createElement('script');s.id=id;s.src=src;s.defer=true;document.head.appendChild(s);};
+  const ensureScript=(src,id,flag)=>{if(document.getElementById(id)||(flag&&window[flag]))return;const s=document.createElement('script');s.id=id;s.src=src;s.defer=true;document.head.appendChild(s);};
   ensureCss('./community-photo-experience.css?v=20260829-1','communityPhotoExperienceCss');
   ensureCss('./social-photo-lightbox.css?v=20260829-1','socialPhotoLightboxCss');
-  ensureScript('./social-photo-lightbox.js?v=20260829-1','socialPhotoLightboxJs');
+  ensureCss('./community-rail-polish.css?v=20260829-1','communityRailPolishCss');
+  ensureCss('./community-featured-carousel.css?v=20260829-1','communityFeaturedCarouselCss');
+  ensureScript('./social-photo-lightbox.js?v=20260829-1','socialPhotoLightboxJs','__COSPLAY_PHOTO_LIGHTBOX__');
+  ensureScript('./community-featured-carousel.js?v=20260829-1','communityFeaturedCarouselJs','__COSPLAY_FEATURED_CAROUSEL__');
 
   const setLabel=(button,html,key)=>{
     if(!button)return;
