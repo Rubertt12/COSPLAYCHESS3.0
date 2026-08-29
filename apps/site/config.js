@@ -13,12 +13,26 @@ window.COSPLAYCHESS_CONFIG = {
   if (!cfg || !sdk || typeof sdk.createClient !== 'function') return;
   if (sdk.__cosplayChessSingletonInstalled) return;
   const originalCreateClient = sdk.createClient.bind(sdk);
-  const sharedClient = originalCreateClient(cfg.supabaseUrl, cfg.supabaseKey);
+  const page = location.pathname.split('/').pop() || 'index.html';
+  const participantPage = page === 'participante.html';
+  const sharedClient = originalCreateClient(cfg.supabaseUrl, cfg.supabaseKey, participantPage ? { auth:{ detectSessionInUrl:false } } : undefined);
+  const participantClient = originalCreateClient(cfg.supabaseUrl, cfg.supabaseKey, {
+    auth:{
+      storageKey:'cosplaychess-participant-auth',
+      persistSession:true,
+      autoRefreshToken:true,
+      detectSessionInUrl:participantPage
+    }
+  });
   window.COSPLAYCHESS_DB = sharedClient;
   window.getCosplayChessDb = () => sharedClient;
+  window.COSPLAYCHESS_PARTICIPANT_DB = participantClient;
+  window.getCosplayChessParticipantDb = () => participantClient;
   sdk.createClient = function(url, key, options) {
     const sameProject = String(url || '') === String(cfg.supabaseUrl || '');
     const sameKey = String(key || '') === String(cfg.supabaseKey || '');
+    const participantStorage = options?.auth?.storageKey === 'cosplaychess-participant-auth';
+    if (sameProject && sameKey && participantStorage) return participantClient;
     if (sameProject && sameKey) return sharedClient;
     return originalCreateClient(url, key, options);
   };
@@ -142,6 +156,7 @@ window.COSPLAYCHESS_CONFIG = {
       loadStyle('./admin-announcement.css?v=20260824-ann1');
       loadStyle('./admin-registration-status-compact.css?v=20260824-status3');
       loadStyle('./admin-registration-actions-layout.css?v=20260824-actions2');
+      loadStyle('./admin-participant-access.css?v=20260828-access1');
       loadStyle('./admin-event-readmore-settings.css?v=20260824-eventread2');
       loadScript('./admin-event-readmore-settings.js?v=20260824-eventread2');
       loadScript('./admin-visitor-metric.js?v=20260822-anon1');
@@ -170,7 +185,7 @@ window.COSPLAYCHESS_CONFIG = {
           actions.insertBefore(link, actions.querySelector('.btn.dark'));
         }
         loadScript('./admin-privacy.js', () => {
-          loadScript('./admin-registration-actions-layout.js?v=20260824-actions2');
+          loadScript('./admin-registration-actions-layout.js?v=20260824-actions2', () => loadScript('./admin-participant-access.js?v=20260828-access1'));
           loadScript('./admin-private-groups.js');
           loadScript('./admin-game-link.js');
           loadScript('./admin-partners.js', () => loadScript('./admin-partners-layout-fix.js?v=20260822-fix2'));
