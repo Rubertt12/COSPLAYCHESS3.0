@@ -2,7 +2,14 @@
   const loginForm = document.getElementById('loginForm');
   const forgotBtn = document.getElementById('forgotPasswordBtn');
   const authStatus = document.getElementById('authStatus');
+  const recoveryForm = document.getElementById('recoveryForm');
   if (!loginForm || !forgotBtn || !authStatus) return;
+
+  const cfg = window.COSPLAYCHESS_CONFIG;
+  const db = window.getCosplayChessDb ? window.getCosplayChessDb() : window.COSPLAYCHESS_DB;
+  const params = new URLSearchParams(location.search);
+  const recoveryToken = String(params.get('token_hash') || '').trim();
+  const controlledRecovery = params.get('recovery') === '1' && params.get('type') === 'recovery' && !!recoveryToken;
 
   /* Restaura o visual clássico do login sem mexer no dashboard V6.3. */
   const authCard = document.querySelector('.auth-card');
@@ -47,6 +54,74 @@
     button.addEventListener('click', () => requestAnimationFrame(syncMonkey));
   });
 
+  function setStatus(text, type = '') {
+    authStatus.className = `form-status ${type}`;
+    authStatus.textContent = text;
+  }
+
+  /* O reset por e-mail não usa mais o redirect padrão do Supabase. */
+  forgotBtn.addEventListener('click', async (event) => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    const email = String(loginForm.elements.email?.value || '').trim();
+    if (!email) {
+      setStatus('Informe o e-mail administrativo antes de solicitar a recuperação.', 'error');
+      loginForm.elements.email?.focus();
+      return;
+    }
+    forgotBtn.disabled = true;
+    setStatus('Enviando link seguro de recuperação...');
+    try {
+      const response = await fetch(`${cfg.functionsBase}/cosplaychess-admin-reset-request`, {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json', 'apikey':cfg.supabaseKey },
+        body: JSON.stringify({ email })
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || 'Não foi possível enviar a recuperação agora.');
+      setStatus(result.message || 'Se o e-mail for administrativo, o link de recuperação será enviado.', 'success');
+    } catch (error) {
+      setStatus(error.message || 'Não foi possível enviar a recuperação agora.', 'error');
+    } finally {
+      forgotBtn.disabled = false;
+    }
+  }, true);
+
+  /* Link novo: valida token só quando a nova senha for realmente enviada. */
+  if (controlledRecovery && recoveryForm && db) {
+    const hint = recoveryForm.querySelector('.hint');
+    if (hint) hint.textContent = 'Defina a nova senha do painel administrativo. Este link é temporário e de uso único.';
+    setStatus('Link de recuperação reconhecido. Crie sua nova senha.');
+    recoveryForm.onsubmit = async (event) => {
+      event.preventDefault();
+      const data = Object.fromEntries(new FormData(recoveryForm));
+      if (data.password !== data.confirmPassword) return setStatus('As senhas não coincidem.', 'error');
+      if (String(data.password || '').length < 8) return setStatus('A senha precisa ter pelo menos 8 caracteres.', 'error');
+      const submit = recoveryForm.querySelector('button[type="submit"]');
+      if (submit) submit.disabled = true;
+      setStatus('Validando link e salvando nova senha...');
+      try {
+        const { error:verifyError } = await db.auth.verifyOtp({ token_hash:recoveryToken, type:'recovery' });
+        if (verifyError) throw new Error('Este link de recuperação é inválido, expirou ou já foi utilizado. Solicite um novo link.');
+        const { error:updateError } = await db.auth.updateUser({ password:String(data.password) });
+        if (updateError) throw updateError;
+        await db.auth.signOut().catch(() => {});
+        history.replaceState({}, '', location.pathname);
+        recoveryForm.hidden = true;
+        loginForm.hidden = false;
+        document.querySelectorAll('[data-auth-tab]').forEach(button => button.classList.toggle('active', button.dataset.authTab === 'login'));
+        loginForm.elements.password.value = '';
+        setStatus('Senha alterada com sucesso. Entre com a nova senha.', 'success');
+        loginForm.elements.password.focus();
+      } catch (error) {
+        setStatus(error.message || 'Não foi possível alterar a senha.', 'error');
+      } finally {
+        if (submit) submit.disabled = false;
+      }
+    };
+  }
+
+  /* Fallback existente por código de emergência. */
   const emergencyBtn = document.createElement('button');
   emergencyBtn.id = 'emergencyResetBtn';
   emergencyBtn.className = 'btn ghost';
@@ -61,31 +136,14 @@
   form.autocomplete = 'off';
   form.innerHTML = `
     <p class="hint">Use o código temporário fornecido para esta recuperação. Ele expira e só funciona uma vez.</p>
-    <label>
-      <span>E-mail administrativo</span>
-      <input type="email" name="email" required value="cosplaychess@outlook.com" autocomplete="email">
-    </label>
-    <label>
-      <span>Código de emergência</span>
-      <input name="code" required autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="CC-XXXXXXXXXXXX">
-    </label>
-    <label>
-      <span>Nova senha</span>
-      <input type="password" name="password" minlength="8" required autocomplete="new-password" placeholder="Mínimo de 8 caracteres">
-    </label>
-    <label>
-      <span>Confirmar nova senha</span>
-      <input type="password" name="confirmPassword" minlength="8" required autocomplete="new-password" placeholder="Repita a nova senha">
-    </label>
+    <label><span>E-mail administrativo</span><input type="email" name="email" required value="cosplaychess@outlook.com" autocomplete="email"></label>
+    <label><span>Código de emergência</span><input name="code" required autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="CC-XXXXXXXXXXXX"></label>
+    <label><span>Nova senha</span><input type="password" name="password" minlength="8" required autocomplete="new-password" placeholder="Mínimo de 8 caracteres"></label>
+    <label><span>Confirmar nova senha</span><input type="password" name="confirmPassword" minlength="8" required autocomplete="new-password" placeholder="Repita a nova senha"></label>
     <button class="btn gold" type="submit">Alterar senha agora</button>
     <button id="cancelEmergencyReset" class="btn ghost" type="button">Voltar ao login</button>
   `;
   loginForm.insertAdjacentElement('afterend', form);
-
-  function setStatus(text, type = '') {
-    authStatus.className = `form-status ${type}`;
-    authStatus.textContent = text;
-  }
 
   function showEmergency() {
     document.getElementById('bootstrapForm')?.setAttribute('hidden', '');
@@ -112,37 +170,24 @@
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const data = Object.fromEntries(new FormData(form));
-    if (data.password !== data.confirmPassword) {
-      setStatus('As senhas não coincidem.', 'error');
-      return;
-    }
-    if (String(data.password || '').length < 8) {
-      setStatus('A senha precisa ter pelo menos 8 caracteres.', 'error');
-      return;
-    }
-
+    if (data.password !== data.confirmPassword) return setStatus('As senhas não coincidem.', 'error');
+    if (String(data.password || '').length < 8) return setStatus('A senha precisa ter pelo menos 8 caracteres.', 'error');
     const submit = form.querySelector('button[type="submit"]');
     submit.disabled = true;
     submit.textContent = 'Alterando senha...';
     setStatus('Validando o código de emergência...');
-
     try {
-      const cfg = window.COSPLAYCHESS_CONFIG;
       const response = await fetch(`${cfg.functionsBase}/cosplaychess-admin-password-reset`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': cfg.supabaseKey,
-        },
-        body: JSON.stringify({
-          email: String(data.email || '').trim(),
-          code: String(data.code || '').trim(),
-          newPassword: String(data.password || ''),
-        }),
+        method:'POST',
+        headers:{ 'Content-Type':'application/json', 'apikey':cfg.supabaseKey },
+        body:JSON.stringify({
+          email:String(data.email || '').trim(),
+          code:String(data.code || '').trim(),
+          newPassword:String(data.password || '')
+        })
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(result.error || 'Não foi possível alterar a senha.');
-
       form.reset();
       form.elements.email.value = 'cosplaychess@outlook.com';
       showLogin('Senha alterada com sucesso. Entre com a nova senha.');
