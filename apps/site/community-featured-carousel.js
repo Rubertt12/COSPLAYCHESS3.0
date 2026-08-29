@@ -69,11 +69,15 @@
     if (!hero || hero.dataset.carouselReady === '1') return;
 
     const [profile, events] = await Promise.all([loadProfile(), loadEvents()]);
-    if (!events.length) return;
+    let dots = hero.querySelector('.premium-event-dots');
+    if (!events.length) {
+      if (dots) { dots.replaceChildren(); dots.hidden = true; }
+      hero.dataset.carouselReady = '1';
+      return;
+    }
 
     const copy = hero.querySelector('.premium-event-copy');
     const art = hero.querySelector('.premium-event-art');
-    let dots = hero.querySelector('.premium-event-dots');
     if (!copy || !art) return;
 
     if (!dots) {
@@ -81,6 +85,7 @@
       dots.className = 'premium-event-dots';
       hero.appendChild(dots);
     }
+    dots.hidden = false;
 
     let index = 0;
     let timer = 0;
