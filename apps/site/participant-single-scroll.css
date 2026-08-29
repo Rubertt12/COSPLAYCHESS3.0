@@ -1,0 +1,52 @@
+/* Guarantee a single vertical scrollbar in the authenticated participant area. */
+@media (min-width:821px){
+  html:has(body.participant-page .participant-dashboard:not([hidden])){
+    height:100dvh!important;
+    min-height:100dvh!important;
+    overflow:hidden!important;
+  }
+
+  body.participant-page:has(.participant-dashboard:not([hidden])){
+    height:100dvh!important;
+    min-height:100dvh!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    overscroll-behavior-y:contain;
+  }
+
+  body.participant-page:has(.participant-dashboard:not([hidden])) .participant-shell{
+    height:auto!important;
+    min-height:calc(100dvh - 68px)!important;
+    overflow:visible!important;
+  }
+
+  body.participant-page:has(.participant-dashboard:not([hidden])) .participant-hero,
+  body.participant-page:has(.participant-dashboard:not([hidden])) .participant-dashboard,
+  body.participant-page:has(.participant-dashboard:not([hidden])) .participant-premium-content,
+  body.participant-page:has(.participant-dashboard:not([hidden])) .premium-main-grid,
+  body.participant-page:has(.participant-dashboard:not([hidden])) .premium-bottom-grid,
+  body.participant-page:has(.participant-dashboard:not([hidden])) .premium-profile-card,
+  body.participant-page:has(.participant-dashboard:not([hidden])) .premium-achievements-card,
+  body.participant-page:has(.participant-dashboard:not([hidden])) .participant-achievements,
+  body.participant-page:has(.participant-dashboard:not([hidden])) .premium-community-card,
+  body.participant-page:has(.participant-dashboard:not([hidden])) .premium-share-card{
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+
+  body.participant-page:has(.participant-dashboard:not([hidden])) .participant-dashboard{
+    min-height:0!important;
+    flex:initial!important;
+  }
+
+  body.participant-page:has(.participant-dashboard:not([hidden])) .participant-achievements{
+    overflow-y:visible!important;
+    overflow-x:visible!important;
+  }
+
+  body.participant-page:has(.participant-dashboard:not([hidden])) .premium-photo-drop,
+  body.participant-page:has(.participant-dashboard:not([hidden])) .premium-hero-card{
+    overflow:hidden!important;
+  }
+}
