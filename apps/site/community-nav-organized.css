@@ -1,55 +1,83 @@
 /* CosplayChess Community — compact, grouped navigation */
 body.community-page .community-nav{
   display:grid!important;
-  grid-template-columns:repeat(2,minmax(0,1fr))!important;
-  gap:4px 6px!important;
+  grid-template-columns:1fr!important;
+  gap:4px!important;
+  width:100%!important;
+  min-width:0!important;
   padding:10px!important;
+  overflow:hidden!important;
 }
+
 body.community-page .community-nav>button,
 body.community-page .community-nav>a{
-  grid-column:1/-1;
+  grid-column:1/-1!important;
+  width:100%!important;
   min-width:0!important;
-  min-height:38px!important;
+  min-height:40px!important;
   margin:0!important;
   padding:8px 10px!important;
   border-radius:9px!important;
   display:flex!important;
   align-items:center!important;
+  justify-content:flex-start!important;
+  flex-direction:row!important;
   gap:9px!important;
   box-sizing:border-box!important;
+  overflow:hidden!important;
+  white-space:nowrap!important;
+  text-align:left!important;
 }
+
 body.community-page .community-nav>button>span:first-child,
 body.community-page .community-nav>a>span:first-child{
-  width:18px!important;
-  flex:0 0 18px!important;
+  width:20px!important;
+  min-width:20px!important;
+  flex:0 0 20px!important;
   display:grid!important;
   place-items:center!important;
   font-size:15px!important;
   line-height:1!important;
 }
-body.community-page .community-nav .community-nav-text{
-  min-width:0;
-  overflow:hidden;
-  white-space:nowrap;
-  text-overflow:ellipsis;
+
+/* Never allow the label to collapse into two or three visible letters. */
+body.community-page .community-nav .community-nav-text,
+body.community-page .community-nav .community-nav-more-toggle>span:nth-child(2){
+  display:block!important;
+  flex:1 1 auto!important;
+  width:auto!important;
+  min-width:0!important;
+  max-width:none!important;
+  overflow:hidden!important;
+  white-space:nowrap!important;
+  text-overflow:ellipsis!important;
+  word-break:normal!important;
+  overflow-wrap:normal!important;
+  line-height:1.2!important;
 }
+
 body.community-page .community-nav-section-label{
-  grid-column:1/-1;
-  margin:8px 4px 2px;
+  grid-column:1/-1!important;
+  width:100%!important;
+  margin:9px 4px 3px!important;
   color:#68758a;
   font-size:7px;
   font-weight:800;
   letter-spacing:1.8px;
   line-height:1;
+  white-space:nowrap!important;
   pointer-events:none;
 }
-body.community-page .community-nav-section-label[data-nav-section="social"]{margin-top:2px}
+body.community-page .community-nav-section-label[data-nav-section="social"]{margin-top:2px!important}
+
 body.community-page .community-nav>[data-nav-secondary="1"]{display:none!important}
 body.community-page .community-nav[data-more-open="1"]>[data-nav-secondary="1"]{display:flex!important}
 body.community-page .community-nav>[data-nav-hidden="1"],
 body.community-page .community-nav[data-more-open="1"]>[data-nav-hidden="1"]{display:none!important}
+
 body.community-page .community-nav .community-nav-more-toggle{
   grid-column:1/-1!important;
+  width:100%!important;
   order:30;
   margin-top:4px!important;
   border:1px dashed rgba(130,151,190,.18)!important;
@@ -62,38 +90,45 @@ body.community-page .community-nav .community-nav-more-toggle:hover{
   background:rgba(226,173,73,.04)!important;
 }
 body.community-page .community-nav .community-nav-more-toggle small{
-  margin-left:auto;
+  margin-left:auto!important;
+  flex:0 0 auto!important;
   color:#59677e;
   font-size:7px;
   font-weight:700;
   letter-spacing:.2px;
+  white-space:nowrap!important;
 }
+
+/* Journey links stay full width on desktop: no tiny two-column cards and no broken words. */
 body.community-page .community-nav>[data-nav-journey="1"]{
-  grid-column:auto!important;
-  min-height:52px!important;
-  padding:8px!important;
-  flex-direction:column!important;
-  justify-content:center!important;
-  gap:5px!important;
-  text-align:center!important;
+  grid-column:1/-1!important;
+  width:100%!important;
+  min-height:42px!important;
+  padding:8px 10px!important;
+  flex-direction:row!important;
+  justify-content:flex-start!important;
+  gap:9px!important;
+  text-align:left!important;
   border:1px solid rgba(226,173,73,.11)!important;
-  background:linear-gradient(180deg,rgba(226,173,73,.045),rgba(255,255,255,.014))!important;
+  background:linear-gradient(90deg,rgba(226,173,73,.045),rgba(255,255,255,.014))!important;
   color:#dfe7f3!important;
 }
 body.community-page .community-nav>[data-nav-journey="1"]>span:first-child{
-  width:auto!important;
-  flex:0 0 auto!important;
+  width:20px!important;
+  min-width:20px!important;
+  flex:0 0 20px!important;
   color:#e2ad49!important;
-  font-size:16px!important;
+  font-size:15px!important;
 }
 body.community-page .community-nav>[data-nav-journey="1"] .community-nav-text{
-  font-size:8px!important;
+  font-size:10px!important;
   font-weight:800!important;
 }
 body.community-page .community-nav>[data-nav-journey="1"]:hover{
   border-color:rgba(226,173,73,.3)!important;
   background:rgba(226,173,73,.07)!important;
 }
+
 body.community-page .premium-sidebar-foot{display:none!important}
 
 /* Keep badges compact and aligned after relabeling. */
@@ -102,11 +137,33 @@ body.community-page .community-nav b{
   flex:0 0 auto!important;
 }
 
-@media (max-width:780px){
+/* The dedicated mobile shell turns navigation into a horizontal scroller. */
+@media (max-width:820px){
   body.community-page .community-nav{
-    grid-template-columns:repeat(2,minmax(0,1fr))!important;
-    padding:8px!important;
+    display:flex!important;
+    grid-template-columns:none!important;
+    width:100%!important;
+    padding:7px!important;
+    gap:6px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
   }
+  body.community-page .community-nav-section-label{display:none!important}
   body.community-page .community-nav>button,
-  body.community-page .community-nav>a{min-height:40px!important}
+  body.community-page .community-nav>a,
+  body.community-page .community-nav .community-nav-more-toggle,
+  body.community-page .community-nav>[data-nav-journey="1"]{
+    width:auto!important;
+    min-width:max-content!important;
+    min-height:38px!important;
+    flex:0 0 auto!important;
+    padding:7px 10px!important;
+  }
+  body.community-page .community-nav .community-nav-text,
+  body.community-page .community-nav .community-nav-more-toggle>span:nth-child(2){
+    flex:0 0 auto!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+  }
+  body.community-page .community-nav .community-nav-more-toggle small{display:none!important}
 }
