@@ -48,12 +48,42 @@
     return root;
   };
 
-  const visibleItems = () => [...document.querySelectorAll(selector)].filter((el) => {
+  const visible = (el) => {
     const src = el.currentSrc || el.src;
     if (!src) return false;
     const rect = el.getBoundingClientRect();
     return rect.width > 0 && rect.height > 0;
-  });
+  };
+
+  const groupFor = (el) => {
+    const explicit = String(el?.dataset?.lightboxGroup || '').trim();
+    if (explicit) return explicit;
+
+    const post = el.closest?.('.community-post');
+    if (post) {
+      const author = post.querySelector('.community-post-author');
+      const avatar = post.querySelector('.community-person-avatar img');
+      const avatarKey = avatar?.currentSrc || avatar?.src || '';
+      const authorKey = String(author?.textContent || '').trim().replace(/\s+/g, ' ');
+      return `feed-profile:${avatarKey}|${authorKey}`;
+    }
+
+    if (el.closest?.('#communityPhotos')) return 'community-own-photos';
+    if (el.matches?.('.album-photo-image img')) return `album:${location.pathname}${location.search}`;
+    if (el.matches?.('.player-social-post-image img,.player-photo-tile img,.player-photo img,.player-official-image img,.player-public-cover img')) return `player-profile:${location.pathname}${location.search}`;
+    if (el.matches?.('.premium-album-thumb img')) return 'community-album-thumbs';
+    if (el.matches?.('.participant-photo-preview img')) return 'participant-profile-photo';
+    if (el.matches?.('.participant-cover-preview img')) return 'participant-cover-photo';
+    return '';
+  };
+
+  const visibleItems = (target) => {
+    const group = groupFor(target);
+    const all = [...document.querySelectorAll(selector)].filter(visible);
+    if (!group) return [target];
+    const grouped = all.filter((el) => groupFor(el) === group);
+    return grouped.length ? grouped : [target];
+  };
 
   const paint = () => {
     if (!items.length) return;
@@ -69,7 +99,7 @@
 
   const open = (target) => {
     ensure();
-    items = visibleItems();
+    items = visibleItems(target);
     index = Math.max(0, items.indexOf(target));
     if (!items.length) items = [target];
     paint();
