@@ -2,7 +2,7 @@
   let lastNavSignature='';
 
   const ensureCss=(href,id)=>{if(document.getElementById(id))return;const l=document.createElement('link');l.id=id;l.rel='stylesheet';l.href=href;document.head.appendChild(l);};
-  const ensureScript=(src,id,flag)=>{if(document.getElementById(id)||(flag&&window[flag]))return;const s=document.createElement('script');s.id=id;s.src=src;s.defer=true;document.head.appendChild(s);};
+  const ensureScript=(src,id,flag)=>{if(document.getElementById(id)||(flag&&window[flag]))return;const s=document.createElement('script');s.id=id;s.src=src;s.async=false;s.defer=true;document.head.appendChild(s);};
   ensureCss('./community-photo-experience.css?v=20260829-1','communityPhotoExperienceCss');
   ensureCss('./social-photo-lightbox.css?v=20260829-1','socialPhotoLightboxCss');
   ensureCss('./community-rail-polish.css?v=20260829-1','communityRailPolishCss');
@@ -11,7 +11,8 @@
   ensureScript('./social-photo-lightbox.js?v=20260829-1','socialPhotoLightboxJs','__COSPLAY_PHOTO_LIGHTBOX__');
   ensureScript('./community-featured-carousel.js?v=20260829-1','communityFeaturedCarouselJs','__COSPLAY_FEATURED_CAROUSEL__');
   ensureScript('./community-settings-save-fix.js?v=20260829-1','communitySettingsSaveFixJs','__COSPLAY_SETTINGS_SAVE_FIX__');
-  ensureScript('./community-event-calendar.js?v=20260829-1','communityEventCalendarJs','__COSPLAY_EVENT_CALENDAR__');
+  ensureScript('./community-events-router-fix.js?v=20260829-1','communityEventsRouterFixJs','__COSPLAY_EVENTS_ROUTER_FIX__');
+  ensureScript('./community-event-calendar.js?v=20260829-2','communityEventCalendarJs','__COSPLAY_EVENT_CALENDAR__');
 
   const setLabel=(button,html,key)=>{
     if(!button)return;
