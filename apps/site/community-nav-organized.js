@@ -95,7 +95,7 @@
 
     ensureLabel('journey', 'JORNADA', 40);
     configure(link('./passaporte.html'), { order: 41, group: 'journey', icon: '▣', label: 'Passaporte', journey: true });
-    configure(link('./conquistas.html'), { order: 42, group: 'journey', icon: '♕', label: 'Conquistas', journey: true });
+    configure(link('./conquistas-social.html'), { order: 42, group: 'journey', icon: '♕', label: 'Conquistas', journey: true });
 
     if (!nav.dataset.moreOpen) {
       nav.dataset.moreOpen = sessionStorage.getItem('cosplay-community-more-open') === '1' ? '1' : '0';
