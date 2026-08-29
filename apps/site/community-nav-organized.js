@@ -1,4 +1,32 @@
 (() => {
+  const ensureEdgeLayout = () => {
+    if (document.getElementById('cosplay-community-edge-layout')) return;
+    const style = document.createElement('style');
+    style.id = 'cosplay-community-edge-layout';
+    style.textContent = `
+      @media (min-width:1321px){
+        body.community-page .community-shell{
+          width:calc(100% - 16px)!important;
+          max-width:1920px!important;
+          grid-template-columns:minmax(230px,260px) minmax(0,1fr) minmax(280px,310px)!important;
+          gap:12px!important;
+          margin-left:auto!important;
+          margin-right:auto!important;
+        }
+      }
+      @media (min-width:1081px) and (max-width:1320px){
+        body.community-page .community-shell{
+          width:calc(100% - 12px)!important;
+          max-width:none!important;
+          gap:8px!important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  };
+
+  ensureEdgeLayout();
+
   const nav = document.querySelector('.community-nav');
   if (!nav) return;
 
