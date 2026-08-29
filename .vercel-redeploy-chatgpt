@@ -1,3 +1,4 @@
 Force production redeploy from ChatGPT.
-Date: 2026-08-21T21:08:00-03:00
-Target admin redesign commit: 9f772b3dd62a1005a5e40c9d417f1f85089934a6
+Date: 2026-08-29T08:20:00-03:00
+Target community performance hotfix: 8116c4af18f9cab6d577cf1f1e68db5bc6a49d35
+Reason: publish full-width 100% zoom layout and remove global MutationObserver performance loop.
