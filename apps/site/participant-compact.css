@@ -1,0 +1,80 @@
+/* Compact desktop layout for the participant area.
+   Keeps the login/activation screen inside the viewport and removes the
+   marketing hero once the authenticated dashboard is visible. */
+
+@media (min-width:821px){
+  body.participant-page{min-height:100dvh}
+  .participant-shell{width:min(1240px,calc(100% - 36px));padding:18px 0 26px}
+  .participant-hero{gap:26px;align-items:center}
+  .participant-copy{padding:0}
+  .participant-copy h1{margin:8px 0 12px;font-size:clamp(38px,4.7vw,60px);line-height:.94}
+  .participant-copy>p{margin:0;line-height:1.5;font-size:11px}
+  .participant-points{gap:8px;margin-top:16px}
+  .participant-point{padding:10px 12px;border-radius:11px}
+  .participant-point b{margin-bottom:3px}
+  .participant-point span{line-height:1.35}
+  .participant-card{padding:20px;border-radius:18px}
+  .participant-card>p{margin-bottom:14px;line-height:1.45}
+  .participant-form{gap:10px}
+  .participant-form label{gap:5px}
+  .participant-form input,.participant-form textarea,.participant-profile-picker select{padding:10px 12px;border-radius:9px}
+  .participant-help{padding-top:10px;line-height:1.45}
+  .participant-login,.participant-activation{top:12px}
+
+  /* Logged-in state: the dashboard becomes the main screen immediately. */
+  .participant-hero:has(.participant-dashboard:not([hidden])){display:block}
+  .participant-hero:has(.participant-dashboard:not([hidden]))>.participant-copy{display:none}
+  .participant-hero:has(.participant-dashboard:not([hidden]))>.participant-login,
+  .participant-hero:has(.participant-dashboard:not([hidden]))>.participant-activation{display:none!important}
+  .participant-hero:has(.participant-dashboard:not([hidden])) .participant-dashboard{width:100%}
+
+  .participant-dashboard{padding:16px 18px 18px}
+  .participant-dashboard-head{align-items:center}
+  .participant-dashboard-head h2{margin:4px 0 0;font-size:20px}
+  .participant-userbar{gap:10px;margin:10px 0 7px;padding:9px 11px;border-radius:11px}
+  .participant-avatar{width:34px;height:34px;font-size:15px}
+  .participant-profile-picker{margin:8px 0}
+  .participant-dashboard-grid{grid-template-columns:minmax(0,1.42fr) minmax(280px,.58fr);gap:10px;margin-top:10px}
+  .participant-panel{padding:13px 14px;border-radius:13px}
+  .participant-panel-title{align-items:center;margin-bottom:10px}
+  .participant-panel-title h3,.participant-public-panel h3{margin-top:3px;font-size:14px}
+  .participant-panel-title>b{min-width:30px;height:30px;font-size:11px}
+
+  /* Wide profile form: use horizontal space instead of page height. */
+  .participant-profile-form{grid-template-columns:126px minmax(0,1fr) minmax(0,1fr);column-gap:10px;row-gap:8px;align-items:start}
+  .participant-profile-form>.participant-photo-row{grid-column:1;grid-row:1 / span 5;display:flex;flex-direction:column;gap:8px;align-items:stretch}
+  .participant-photo-preview{width:100%;max-width:126px;border-radius:12px}
+  .participant-upload{gap:4px!important}
+  .participant-profile-form>.participant-two{display:contents}
+  .participant-profile-form>label:not(.participant-toggle){min-width:0}
+  .participant-profile-form>label:has(textarea){grid-column:2 / -1}
+  .participant-profile-form textarea{min-height:58px;height:58px;resize:none}
+  .participant-toggle{grid-column:2 / -1;padding:8px 10px}
+  .participant-form-actions{grid-column:1 / -1;gap:9px;margin-top:1px}
+  .participant-form-actions .participant-status{min-height:0}
+
+  .participant-achievements{gap:7px;max-height:335px;overflow:auto;padding-right:2px}
+  .participant-achievement{grid-template-columns:36px 1fr;gap:9px;padding:9px}
+  .participant-achievement-icon{width:36px;height:36px;font-size:17px}
+  .participant-empty{padding:16px}
+  .participant-public-panel{padding:11px 14px;min-height:58px;gap:12px}
+  .participant-public-panel p{margin-top:3px}
+  .participant-public-actions .btn{padding-top:9px;padding-bottom:9px}
+}
+
+@media (min-width:821px) and (max-height:760px){
+  .participant-shell{padding-top:10px;padding-bottom:14px}
+  .participant-copy h1{font-size:44px}
+  .participant-points{margin-top:10px}
+  .participant-point{padding:8px 10px}
+  .participant-card{padding:16px}
+  .participant-dashboard{padding:12px 14px 14px}
+  .participant-userbar{margin:7px 0 5px;padding:7px 9px}
+  .participant-dashboard-grid{margin-top:7px}
+  .participant-panel{padding:10px 12px}
+  .participant-panel-title{margin-bottom:7px}
+  .participant-profile-form{row-gap:6px}
+  .participant-profile-form textarea{min-height:48px;height:48px}
+  .participant-photo-preview{max-width:110px}
+  .participant-achievements{max-height:270px}
+}
