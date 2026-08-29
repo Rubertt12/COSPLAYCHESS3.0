@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" href="./img/logofergoverse.png">
   <link rel="stylesheet" href="./landing.css">
   <link rel="stylesheet" href="./comunidade.css?v=20260829-1">
-  <link rel="stylesheet" href="./community-orkut.css?v=20260829-1">
+  <link rel="stylesheet" href="./community-orkut.css?v=20260829-2">
 </head>
 <body class="community-page">
   <div class="grain"></div>
@@ -102,13 +102,21 @@
         <div class="orkut-module-body"><div class="orkut-friend-grid" id="communityOrkutFriends"><div class="orkut-empty-mini">Carregando sua rede...</div></div></div>
       </section>
 
-      <section class="orkut-module">
-        <div class="orkut-module-head"><h3>comunidades & interesses</h3><button type="button" data-orkut-open="discover">explorar</button></div>
-        <div class="orkut-module-body orkut-community-list">
-          <button class="orkut-community-chip" type="button" data-orkut-open="discover"><span class="orkut-community-icon">🎭</span><span><b>Cosplayers</b><span>encontre novos participantes</span></span></button>
-          <button class="orkut-community-chip" type="button" data-orkut-open="photos"><span class="orkut-community-icon">📷</span><span><b>Álbuns & momentos</b><span>fotos da sua jornada</span></span></button>
-          <button class="orkut-community-chip" type="button" data-orkut-open="feed"><span class="orkut-community-icon">✦</span><span><b>Scraps do tabuleiro</b><span>recados da comunidade</span></span></button>
-          <button class="orkut-community-chip" type="button" data-orkut-open="friends"><span class="orkut-community-icon">♟</span><span><b>Amizades</b><span>sua rede CosplayChess</span></span></button>
+      <section class="orkut-module orkut-social-module">
+        <div class="orkut-module-head"><h3>comunidades</h3><button type="button" data-orkut-open="discover">explorar</button></div>
+        <div class="orkut-module-body">
+          <div class="orkut-featured-community" role="button" tabindex="0" data-orkut-open="feed">
+            <div class="orkut-featured-community-icon">♜</div>
+            <div class="orkut-featured-community-copy"><div><b>CosplayChess Oficial</b><span class="orkut-official-badge">oficial</span></div><span>Scraps, fotos e momentos do tabuleiro.</span><small>Comunidade principal</small></div>
+          </div>
+          <div class="orkut-community-mini-grid">
+            <button type="button" data-orkut-open="discover"><span class="mini-icon">🎭</span><b>Cosplayers</b><small>conheça pessoas</small></button>
+            <button type="button" data-orkut-open="photos"><span class="mini-icon">📷</span><b>Álbuns</b><small>fotos & momentos</small></button>
+          </div>
+          <div class="orkut-interest-divider"><span>interesses populares</span></div>
+          <div class="orkut-interest-tags" aria-label="Interesses populares da comunidade">
+            <span>Cosplay</span><span>Anime & Mangá</span><span>Xadrez</span><span>Games</span><span>Fotografia</span><span>Eventos</span>
+          </div>
         </div>
       </section>
 
