@@ -13,6 +13,7 @@ const json = (body: unknown, status = 200) => new Response(JSON.stringify(body),
 
 const LOGO_URL = 'https://cosplaychess-nine.vercel.app/img/logofergoverse.png';
 const DEFAULT_REDIRECT = 'https://cosplaychess-nine.vercel.app/participante.html?activate=1';
+const ACTIVATION_PAGE = 'https://cosplaychess-nine.vercel.app/participante.html';
 const escapeHtml = (value: unknown) => String(value ?? '').replace(/[&<>"']/g, char => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
 }[char] || char));
@@ -110,10 +111,26 @@ Deno.serve(async (req) => {
       }
     }
 
-    const actionUrl = linkResult?.properties?.action_link;
-    if (linkError || !actionUrl) {
+    const generatedActionUrl = linkResult?.properties?.action_link;
+    if (linkError || !generatedActionUrl) {
       console.error('participant generate link failed', linkError?.message || 'no action link');
       return json({ error: 'Não foi possível gerar o link seguro de acesso.' }, 502);
+    }
+
+    let actionUrl = generatedActionUrl;
+    try {
+      const verifyUrl = new URL(generatedActionUrl);
+      const tokenHash = String(verifyUrl.searchParams.get('token') || '').trim();
+      const verificationType = String(verifyUrl.searchParams.get('type') || (existing ? 'recovery' : 'invite')).trim().toLowerCase();
+      if (tokenHash && ['invite', 'recovery'].includes(verificationType)) {
+        const appUrl = new URL(ACTIVATION_PAGE);
+        appUrl.searchParams.set('activate', '1');
+        appUrl.searchParams.set('token_hash', tokenHash);
+        appUrl.searchParams.set('type', verificationType);
+        actionUrl = appUrl.toString();
+      }
+    } catch (error) {
+      console.warn('participant custom action link fallback', error instanceof Error ? error.message : String(error));
     }
 
     const brevoKey = Deno.env.get('BREVO_API_KEY');
