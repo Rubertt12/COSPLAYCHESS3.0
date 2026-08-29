@@ -8,12 +8,18 @@
   ensureCss('./community-rail-polish.css?v=20260829-1','communityRailPolishCss');
   ensureCss('./community-featured-carousel.css?v=20260829-1','communityFeaturedCarouselCss');
   ensureCss('./community-event-calendar.css?v=20260829-1','communityEventCalendarCss');
+  ensureCss('./community-appearance.css?v=20260829-1','communityAppearanceCss');
+  ensureCss('./community-discovery-pagination.css?v=20260829-1','communityDiscoveryPaginationCss');
   ensureScript('./social-photo-lightbox.js?v=20260829-1','socialPhotoLightboxJs','__COSPLAY_PHOTO_LIGHTBOX__');
   ensureScript('./community-featured-carousel.js?v=20260829-1','communityFeaturedCarouselJs','__COSPLAY_FEATURED_CAROUSEL__');
-  ensureScript('./community-settings-save-fix.js?v=20260829-1','communitySettingsSaveFixJs','__COSPLAY_SETTINGS_SAVE_FIX__');
+  ensureScript('./community-settings-save-fix.js?v=20260829-2','communitySettingsSaveFixJs','__COSPLAY_SETTINGS_SAVE_FIX__');
   ensureScript('./community-events-router-fix.js?v=20260829-1','communityEventsRouterFixJs','__COSPLAY_EVENTS_ROUTER_FIX__');
   ensureScript('./community-event-calendar.js?v=20260829-2','communityEventCalendarJs','__COSPLAY_EVENT_CALENDAR__');
   ensureScript('./community-profile-cover.js?v=20260829-1','communityProfileCoverJs','__COSPLAY_COMMUNITY_PROFILE_COVER__');
+  ensureScript('./community-appearance.js?v=20260829-1','communityAppearanceJs','__COSPLAY_COMMUNITY_APPEARANCE__');
+  ensureScript('./community-discovery-pagination.js?v=20260829-1','communityDiscoveryPaginationJs','__COSPLAY_DISCOVERY_PAGINATION__');
+  ensureScript('./community-social-profile-links.js?v=20260829-1','communitySocialProfileLinksJs','__COSPLAY_SOCIAL_PROFILE_LINKS__');
+  ensureScript('./community-visitors-rpc.js?v=20260829-1','communityVisitorsRpcJs','__COSPLAY_VISITORS_RPC__');
 
   const setLabel=(button,html,key)=>{
     if(!button)return;

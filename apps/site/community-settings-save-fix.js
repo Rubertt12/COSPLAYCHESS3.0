@@ -6,6 +6,10 @@
   if (!db) return;
   let profileId = '';
 
+  const THEME_CLASSES=['theme-orkut-night','theme-royal-purple','theme-chess-gold','theme-white-mode'];
+  const ACCENT_CLASSES=['accent-blue','accent-pink','accent-purple','accent-gold'];
+  const BG_CLASSES=['community-bg-classic','community-bg-chessboard','community-bg-nebula','community-bg-sakura','community-bg-minimal','community-bg-stars'];
+
   const loadProfileId = async () => {
     if (profileId) return profileId;
     const {data:s}=await db.auth.getSession();
@@ -24,11 +28,12 @@
   };
 
   const applyTheme = (s) => {
-    document.body.classList.remove('theme-orkut-night','theme-royal-purple','theme-chess-gold','accent-blue','accent-pink','accent-purple','accent-gold');
-    const theme=['cosplay-dark','orkut-night','royal-purple','chess-gold'].includes(s?.theme)?s.theme:'cosplay-dark';
+    document.body.classList.remove(...THEME_CLASSES,...ACCENT_CLASSES,...BG_CLASSES);
+    const theme=['cosplay-dark','orkut-night','royal-purple','chess-gold','white-mode'].includes(s?.theme)?s.theme:'cosplay-dark';
     const accent=['gold','blue','pink','purple'].includes(s?.accent)?s.accent:'gold';
+    const background=['classic','chessboard','nebula','sakura','minimal','stars'].includes(s?.community_background)?s.community_background:'classic';
     if(theme!=='cosplay-dark')document.body.classList.add(`theme-${theme}`);
-    document.body.classList.add(`accent-${accent}`);
+    document.body.classList.add(`accent-${accent}`,`community-bg-${background}`);
   };
 
   const booleanValue = (form,name,defaultValue=true) => form.elements[name] ? Boolean(form.elements[name].checked) : defaultValue;
@@ -43,18 +48,19 @@
     if(form.id==='socialExtSettingsForm'){
       statusEl=document.getElementById('socialExtSettingsStatus');
       settings={
-        theme:form.elements.theme.value,
-        accent:form.elements.accent.value,
-        birthday_day:form.elements.birthday_day.value?Number(form.elements.birthday_day.value):null,
-        birthday_month:form.elements.birthday_month.value?Number(form.elements.birthday_month.value):null,
-        show_birthday:Boolean(form.elements.show_birthday.checked)
+        theme:form.elements.theme?.value||'cosplay-dark',
+        accent:form.elements.accent?.value||'gold',
+        community_background:form.elements.community_background?.value||'classic',
+        birthday_day:form.elements.birthday_day?.value?Number(form.elements.birthday_day.value):null,
+        birthday_month:form.elements.birthday_month?.value?Number(form.elements.birthday_month.value):null,
+        show_birthday:Boolean(form.elements.show_birthday?.checked)
       };
       interests={
-        anime:String(form.elements.anime.value||'').trim(),
-        games:String(form.elements.games.value||'').trim(),
-        films_series:String(form.elements.films_series.value||'').trim(),
-        music:String(form.elements.music.value||'').trim(),
-        hobbies:String(form.elements.hobbies.value||'').trim()
+        anime:String(form.elements.anime?.value||'').trim(),
+        games:String(form.elements.games?.value||'').trim(),
+        films_series:String(form.elements.films_series?.value||'').trim(),
+        music:String(form.elements.music?.value||'').trim(),
+        hobbies:String(form.elements.hobbies?.value||'').trim()
       };
     }else{
       statusEl=document.getElementById('socialV2SettingsStatus');
@@ -81,6 +87,7 @@
     }
     if(statusEl)statusEl.textContent='Alterações salvas.';
     if(data?.settings)applyTheme(data.settings);
+    window.dispatchEvent(new CustomEvent('cosplay:social-settings-saved',{detail:data||{}}));
     setTimeout(()=>{if(statusEl?.textContent==='Alterações salvas.')statusEl.textContent='';},2200);
     return data;
   };
