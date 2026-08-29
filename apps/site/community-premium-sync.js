@@ -10,7 +10,7 @@
   ensureCss('./community-event-calendar.css?v=20260829-1','communityEventCalendarCss');
   ensureCss('./community-appearance.css?v=20260829-1','communityAppearanceCss');
   ensureCss('./community-discovery-pagination.css?v=20260829-1','communityDiscoveryPaginationCss');
-  ensureScript('./social-photo-lightbox.js?v=20260829-1','socialPhotoLightboxJs','__COSPLAY_PHOTO_LIGHTBOX__');
+  ensureScript('./social-photo-lightbox.js?v=20260829-2','socialPhotoLightboxJs','__COSPLAY_PHOTO_LIGHTBOX__');
   ensureScript('./community-featured-carousel.js?v=20260829-1','communityFeaturedCarouselJs','__COSPLAY_FEATURED_CAROUSEL__');
   ensureScript('./community-settings-save-fix.js?v=20260829-2','communitySettingsSaveFixJs','__COSPLAY_SETTINGS_SAVE_FIX__');
   ensureScript('./community-events-router-fix.js?v=20260829-1','communityEventsRouterFixJs','__COSPLAY_EVENTS_ROUTER_FIX__');
