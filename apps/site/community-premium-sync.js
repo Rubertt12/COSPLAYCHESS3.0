@@ -1,19 +1,49 @@
 (() => {
+  let lastNavSignature='';
+
+  const setLabel=(button,html,key)=>{
+    if(!button)return;
+    if(button.dataset[key]==='1')return;
+    const badge=button.querySelector('b');
+    button.innerHTML=html;
+    if(badge)button.appendChild(badge);
+    button.dataset[key]='1';
+  };
+
   const normalize=()=>{
     const nav=document.querySelector('.community-nav');
     if(nav){
-      const feed=nav.querySelector('[data-community-view="feed"]');if(feed)feed.innerHTML='<span>⌂</span>Feed';
-      const photos=nav.querySelector('[data-community-view="photos"]');if(photos)photos.innerHTML='<span>▧</span>Fotos';
-      const discover=nav.querySelector('[data-community-view="discover"]');if(discover)discover.innerHTML='<span>⌕</span>Encontrar pessoas';
-      const messages=nav.querySelector('[data-community-view="messages"]');if(messages&&!messages.dataset.premiumLabel){messages.dataset.premiumLabel='1';const badge=messages.querySelector('b');messages.innerHTML='<span>✉</span>Mensagens';if(badge)messages.appendChild(badge);}
-      const notifications=nav.querySelector('[data-community-view="notifications"]');if(notifications)notifications.style.display='none';
-      const settings=nav.querySelector('[data-community-view="social-settings"]');if(settings)settings.innerHTML='<span>⚙</span>Configurações';
-      const add=(href,icon,label)=>{if(nav.querySelector(`a[href="${href}"]`))return;const a=document.createElement('a');a.href=href;a.innerHTML=`<span>${icon}</span>${label}`;nav.appendChild(a);};
-      add('./passaporte.html','▣','Passaporte');add('./conquistas.html','♕','Conquistas');
+      const signature=[...nav.children].map(el=>`${el.tagName}:${el.dataset.communityView||el.getAttribute('href')||''}`).join('|');
+      if(signature!==lastNavSignature){
+        lastNavSignature=signature;
+        setLabel(nav.querySelector('[data-community-view="feed"]'),'<span>⌂</span>Feed','premiumFeedLabel');
+        setLabel(nav.querySelector('[data-community-view="photos"]'),'<span>▧</span>Fotos','premiumPhotosLabel');
+        setLabel(nav.querySelector('[data-community-view="discover"]'),'<span>⌕</span>Encontrar pessoas','premiumDiscoverLabel');
+        setLabel(nav.querySelector('[data-community-view="messages"]'),'<span>✉</span>Mensagens','premiumMessagesLabel');
+        const notifications=nav.querySelector('[data-community-view="notifications"]');
+        if(notifications)notifications.style.display='none';
+        setLabel(nav.querySelector('[data-community-view="social-settings"]'),'<span>⚙</span>Configurações','premiumSettingsLabel');
+        const add=(href,icon,label)=>{
+          if(nav.querySelector(`a[href="${href}"]`))return;
+          const a=document.createElement('a');
+          a.href=href;
+          a.innerHTML=`<span>${icon}</span>${label}`;
+          nav.appendChild(a);
+        };
+        add('./passaporte.html','▣','Passaporte');
+        add('./conquistas.html','♕','Conquistas');
+      }
     }
-    const eventLink=document.querySelector('.premium-event-link');if(eventLink)eventLink.href='./index.html#eventos';
+    const eventLink=document.querySelector('.premium-event-link');
+    if(eventLink&&eventLink.getAttribute('href')!=='./index.html#eventos')eventLink.href='./index.html#eventos';
   };
-  normalize();
-  const observer=new MutationObserver(normalize);observer.observe(document.body,{childList:true,subtree:true});
-  setTimeout(()=>observer.disconnect(),12000);
+
+  const run=()=>requestAnimationFrame(normalize);
+  run();
+  document.addEventListener('DOMContentLoaded',run,{once:true});
+  window.addEventListener('load',run,{once:true});
+  window.addEventListener('cosplay:social-shell-ready',run);
+  setTimeout(run,350);
+  setTimeout(run,1200);
+  setTimeout(run,2800);
 })();
