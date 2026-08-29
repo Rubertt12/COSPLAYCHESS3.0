@@ -13,6 +13,7 @@
   ensureScript('./community-settings-save-fix.js?v=20260829-1','communitySettingsSaveFixJs','__COSPLAY_SETTINGS_SAVE_FIX__');
   ensureScript('./community-events-router-fix.js?v=20260829-1','communityEventsRouterFixJs','__COSPLAY_EVENTS_ROUTER_FIX__');
   ensureScript('./community-event-calendar.js?v=20260829-2','communityEventCalendarJs','__COSPLAY_EVENT_CALENDAR__');
+  ensureScript('./community-profile-cover.js?v=20260829-1','communityProfileCoverJs','__COSPLAY_COMMUNITY_PROFILE_COVER__');
 
   const setLabel=(button,html,key)=>{
     if(!button)return;
