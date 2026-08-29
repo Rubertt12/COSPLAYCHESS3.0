@@ -6,11 +6,14 @@
     '[data-photo-lightbox]',
     '.community-post-image img',
     '.community-photo-card img',
+    '.premium-album-thumb img',
     '.player-social-post-image img',
     '.player-photo-tile img',
+    '.player-photo img',
     '.album-photo-image img',
-    '.player-official-photo img',
+    '.player-official-image img',
     '.player-public-cover img',
+    '.participant-photo-preview img',
     '.participant-cover-preview img'
   ].join(',');
 
@@ -90,8 +93,7 @@
 
   document.addEventListener('click', (event) => {
     const target = event.target.closest?.(selector);
-    if (!target) return;
-    if (!(target instanceof HTMLImageElement)) return;
+    if (!target || !(target instanceof HTMLImageElement)) return;
     event.preventDefault();
     open(target);
   });
