@@ -1,2 +1,3 @@
-deploy 2026-08-29T14:59-03:00
-pr37=8fbc705a15615eebd9403349feb1b2e4ac3850ac
+deploy pr41 production retry
+main=efd20d238e0f077ebb121d6f606ef4927b898a90
+reason=publish-players-modes-and-social-hotfixes
