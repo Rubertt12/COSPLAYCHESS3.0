@@ -20,3 +20,5 @@ npm run game:build
 ```
 
 Depois da validação de Vercel, instalador e atualização automática, a pasta legada poderá ser removida em uma alteração separada.
+
+<!-- production redeploy trigger: 2026-08-29 10:30 BRT -->
