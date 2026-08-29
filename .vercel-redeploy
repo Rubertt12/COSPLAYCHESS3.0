@@ -1,5 +1,5 @@
 Production redeploy trigger.
-Source: main @ 5da283a4299c40bf6456f89aa5d4d9c7124f222e
-Reason: publish PR #44 — Conquistas Social profile resolution + PR #45 — wider Community desktop shell
-Validation targets: /conquistas-social.html, /conquistas-social.js, /comunidade.html and /community-nav-organized.js
-Redeploy retry: 2026-08-29 — requested again after build-rate-limit.
+Source: main @ b55a8c138f089cfa0c9b9f18ddedfb3280cf3ec1
+Reason: publish PR #47 — mobile achievement card overflow hotfix
+Validation targets: /comunidade.html, /community-mobile-hotfix.css
+Redeploy retry: 2026-08-29 20:34 -03:00 — user requested production publish.
