@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#0b0710">
-  <meta name="description" content="Área do Participante CosplayChess — perfil, cosplay, conquistas e histórico.">
+  <meta name="description" content="Área do Participante CosplayChess — perfil, cosplay, conquistas e página pública.">
   <title>Área do Participante — CosplayChess</title>
   <link rel="icon" type="image/png" href="./img/logofergoverse.png">
   <link rel="stylesheet" href="./landing.css">
-  <link rel="stylesheet" href="./participante.css?v=20260828-1">
+  <link rel="stylesheet" href="./participante.css?v=20260828-4">
 </head>
 <body class="participant-page">
   <div class="grain"></div>
@@ -22,49 +22,101 @@
       <div class="participant-copy">
         <span class="kicker">♜ SUA HISTÓRIA NO TABULEIRO</span>
         <h1>Área do<br><i>Participante.</i></h1>
-        <p>Acesse seu espaço no CosplayChess para acompanhar seu personagem, suas conquistas e, nas próximas etapas, solicitar alterações no cosplay usado nos eventos.</p>
+        <p>Seu espaço no CosplayChess para editar os dados públicos permitidos, atualizar seu cosplay, acompanhar conquistas e compartilhar sua página.</p>
         <div class="participant-points">
-          <div class="participant-point"><b>🎭 Meu cosplay</b><span>Confira o personagem vinculado ao seu perfil e solicite alterações.</span></div>
-          <div class="participant-point"><b>🏆 Conquistas</b><span>Veja os achievements conquistados no CosplayChess.</span></div>
-          <div class="participant-point"><b>♜ Histórico</b><span>Partidas, vitórias e participação nos eventos.</span></div>
-          <div class="participant-point"><b>📤 Compartilhar</b><span>Perfil e conquistas preparados para redes sociais.</span></div>
+          <div class="participant-point"><b>🎭 Meu cosplay</b><span>Atualize personagem e foto sem acessar dados administrativos.</span></div>
+          <div class="participant-point"><b>🏆 Conquistas</b><span>Veja os achievements concedidos pela organização.</span></div>
+          <div class="participant-point"><b>🔐 Acesso isolado</b><span>Sua conta só altera o perfil vinculado ao e-mail aprovado.</span></div>
+          <div class="participant-point"><b>📤 Compartilhar</b><span>Publique seu perfil e conquistas nas redes sociais.</span></div>
         </div>
       </div>
 
       <section class="participant-card participant-login" data-participant-login>
-        <span class="kicker">ACESSO RESTRITO</span>
+        <span class="kicker">ACESSO DO PARTICIPANTE</span>
         <h2>Entrar na minha área</h2>
-        <p>Use o e-mail vinculado à sua inscrição e a senha da sua conta de participante.</p>
+        <p>Use o e-mail da inscrição e a senha criada pelo link que a organização enviou após liberar seu acesso.</p>
         <form id="participantLoginForm" class="participant-form">
-          <label><span>E-mail</span><input type="email" name="email" autocomplete="email" required placeholder="seuemail@exemplo.com"></label>
-          <label><span>Senha</span><input type="password" name="password" autocomplete="current-password" required minlength="6" placeholder="••••••••"></label>
-          <button class="btn gold big" type="submit">Entrar</button>
+          <label><span>E-mail da inscrição</span><input type="email" name="email" autocomplete="email" required placeholder="seuemail@exemplo.com"></label>
+          <label><span>Senha</span><input type="password" name="password" autocomplete="current-password" required minlength="8" placeholder="mínimo 8 caracteres"></label>
+          <button class="btn gold big" type="submit" data-auth-action="login">Entrar</button>
+          <button class="participant-link-button" type="button" id="participantForgotPassword">Esqueci minha senha</button>
           <div id="participantLoginStatus" class="participant-status" aria-live="polite"></div>
-          <div class="participant-help">As contas serão vinculadas aos participantes aprovados pela organização. O acesso não dá permissão para editar ranking, resultados ou conquistas.</div>
+          <div class="participant-help">A inscrição no evento continua normal. Esta conta só é vinculada quando a organização confirma a inscrição e envia o acesso. Ranking, partidas, pontos, status e conquistas continuam protegidos.</div>
+        </form>
+      </section>
+
+      <section class="participant-card participant-activation" data-participant-activation hidden>
+        <span class="kicker">ACESSO LIBERADO</span>
+        <h2>Crie sua senha</h2>
+        <p>Seu link seguro foi validado. Defina uma senha pessoal para concluir a ativação da Área do Participante.</p>
+        <form id="participantActivationForm" class="participant-form">
+          <label><span>Nova senha</span><input type="password" name="password" autocomplete="new-password" minlength="8" required placeholder="Mínimo de 8 caracteres"></label>
+          <label><span>Confirmar senha</span><input type="password" name="confirmPassword" autocomplete="new-password" minlength="8" required placeholder="Repita a nova senha"></label>
+          <button class="btn gold big" type="submit">Criar minha senha</button>
+          <div id="participantActivationStatus" class="participant-status" aria-live="polite"></div>
+          <div class="participant-help">Sua senha é armazenada pelo sistema de autenticação. A organização não recebe nem visualiza sua senha.</div>
         </form>
       </section>
 
       <section class="participant-card participant-dashboard" data-participant-dashboard hidden>
-        <span class="kicker">MINHA CONTA</span>
-        <h2>Bem-vindo ao tabuleiro</h2>
-        <p>Essa é a base da nova área do participante. Os módulos abaixo serão conectados aos dados da inscrição e das conquistas.</p>
+        <div class="participant-dashboard-head">
+          <div><span class="kicker">MINHA CONTA</span><h2 id="participantGreeting">Bem-vindo ao tabuleiro</h2></div>
+          <button class="btn dark participant-logout" id="participantLogout" type="button">Sair</button>
+        </div>
         <div class="participant-userbar">
           <span class="participant-avatar" aria-hidden="true">♜</span>
           <div><b id="participantName">Participante</b><span id="participantEmail"></span></div>
         </div>
-        <div class="participant-grid">
-          <article class="participant-module"><span class="icon">👤</span><h3>Meu perfil</h3><p>Nome artístico, bio e redes sociais.</p><small>Próxima etapa</small></article>
-          <article class="participant-module"><span class="icon">🎭</span><h3>Meu cosplay</h3><p>Personagem atual e solicitação de troca para o próximo evento.</p><small>Próxima etapa</small></article>
-          <article class="participant-module"><span class="icon">🏆</span><h3>Conquistas</h3><p>Achievements concedidos pela organização.</p><small>Próxima etapa</small></article>
-          <article class="participant-module"><span class="icon">📤</span><h3>Página pública</h3><p>Perfil compartilhável com histórico e conquistas.</p><small>Próxima etapa</small></article>
+        <div id="participantAccountStatus" class="participant-status" aria-live="polite"></div>
+
+        <label class="participant-profile-picker" id="participantProfilePickerWrap" hidden>
+          <span>Participação / evento</span>
+          <select id="participantProfilePicker"></select>
+        </label>
+
+        <div class="participant-dashboard-grid" id="participantDashboardContent" hidden>
+          <section class="participant-panel">
+            <div class="participant-panel-title"><div><span class="kicker">PERFIL E COSPLAY</span><h3>O que você pode editar</h3></div><span class="participant-security-badge">🔒 limitado à sua conta</span></div>
+            <form id="participantProfileForm" class="participant-form participant-profile-form">
+              <div class="participant-photo-row">
+                <div class="participant-photo-preview" id="participantPhotoPreview"><span>Sem foto</span></div>
+                <label class="participant-upload"><span>Foto do cosplay</span><input id="participantPhotoFile" type="file" accept="image/jpeg,image/png,image/webp"><small>JPG, PNG ou WebP • até 5 MB</small></label>
+              </div>
+              <div class="participant-two">
+                <label><span>Nome público</span><input name="display_name" maxlength="80"></label>
+                <label><span>Nick</span><input name="nick" maxlength="60"></label>
+              </div>
+              <label><span>Personagem / cosplay</span><input name="character_name" maxlength="120"></label>
+              <label><span>Bio pública</span><textarea name="bio" rows="4" maxlength="600" placeholder="Conte um pouco sobre você e seu cosplay..."></textarea></label>
+              <div class="participant-two">
+                <label><span>Instagram</span><input name="instagram_url" placeholder="@usuario ou https://instagram.com/usuario"></label>
+                <label><span>TikTok</span><input name="tiktok_url" placeholder="@usuario ou https://tiktok.com/@usuario"></label>
+              </div>
+              <div class="participant-two">
+                <label><span>Facebook</span><input name="facebook_url" placeholder="https://facebook.com/..."></label>
+                <label><span>YouTube</span><input name="youtube_url" placeholder="https://youtube.com/@..."></label>
+              </div>
+              <label class="participant-toggle"><input type="checkbox" name="profile_visible"><span><b>Deixar minha página pública visível</b><small>Quando ativado, outras pessoas podem abrir e compartilhar seu perfil.</small></span></label>
+              <div class="participant-form-actions"><button class="btn gold" id="participantSaveProfile" type="submit">Salvar alterações</button><span id="participantSaveStatus" class="participant-status"></span></div>
+            </form>
+          </section>
+
+          <section class="participant-panel">
+            <div class="participant-panel-title"><div><span class="kicker">CONQUISTAS</span><h3>Minha coleção</h3></div><b id="participantAchievementCount">0</b></div>
+            <div id="participantAchievements" class="participant-achievements"><div class="participant-empty">Carregando conquistas...</div></div>
+          </section>
+
+          <section class="participant-panel participant-public-panel">
+            <div><span class="kicker">PÁGINA PÚBLICA</span><h3>Compartilhe sua história</h3><p id="participantPublicHint">Ative a visibilidade do perfil para liberar o link público.</p></div>
+            <div class="participant-public-actions"><a class="btn gold" id="participantPublicLink" href="#" target="_blank" rel="noopener" aria-disabled="true">Abrir meu perfil</a><button class="btn dark" id="participantShareProfile" type="button" disabled>Compartilhar</button></div>
+          </section>
         </div>
-        <button class="btn dark participant-logout" id="participantLogout" type="button">Sair da conta</button>
       </section>
     </section>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
-  <script src="./participante.js?v=20260828-1"></script>
+  <script src="./participante.js?v=20260828-4"></script>
 </body>
 </html>

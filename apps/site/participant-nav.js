@@ -25,17 +25,24 @@
       mobileMenu.insertBefore(link, divider || mobileMenu.lastElementChild || null);
     }
 
-    const db = window.getCosplayChessDb ? window.getCosplayChessDb() : window.COSPLAYCHESS_DB;
+    const db = window.getCosplayChessParticipantDb ? window.getCosplayChessParticipantDb() : window.COSPLAYCHESS_PARTICIPANT_DB;
     if (!db?.auth?.getSession) return;
+
+    const updateLabel = (session) => {
+      const user = session?.user;
+      const displayName = user?.user_metadata?.display_name || user?.user_metadata?.name || user?.user_metadata?.full_name || '';
+      document.querySelectorAll('[data-participant-access] .participant-access-label').forEach(label => {
+        label.textContent = user ? (displayName ? displayName.split(' ')[0] : 'Minha Área') : 'Área do Participante';
+      });
+      document.querySelectorAll('[data-participant-access]').forEach(link => {
+        link.setAttribute('aria-label', user ? 'Abrir minha área de participante' : 'Entrar na Área do Participante');
+      });
+    };
+
     try {
       const { data } = await db.auth.getSession();
-      const user = data?.session?.user;
-      if (!user) return;
-      const displayName = user.user_metadata?.display_name || user.user_metadata?.name || user.user_metadata?.full_name || '';
-      document.querySelectorAll('[data-participant-access] .participant-access-label').forEach(label => {
-        label.textContent = displayName ? displayName.split(' ')[0] : 'Minha Área';
-      });
-      document.querySelectorAll('[data-participant-access]').forEach(link => link.setAttribute('aria-label', 'Abrir minha área de participante'));
+      updateLabel(data?.session || null);
+      db.auth.onAuthStateChange((_event, session) => setTimeout(() => updateLabel(session), 0));
     } catch (_) {}
   };
 
