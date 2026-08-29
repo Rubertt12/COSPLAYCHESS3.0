@@ -18,6 +18,7 @@ body.community-page .community-post-image img{
 }
 body.community-page .community-composer-preview{max-width:200px!important}
 body.community-page .community-composer-preview img{max-height:160px!important;object-fit:cover!important}
+body.community-page .community-composer form:after{content:"CosplayChess é family friendly: publique somente conteúdo apropriado para todas as idades.";display:block;margin-top:7px;color:#657389;font-size:7px;line-height:1.45}
 @media(max-width:780px){
   body.community-page .community-post-image{width:calc(100% - 16px)!important;max-height:320px!important;margin-bottom:8px!important}
   body.community-page .community-post-image img{max-height:320px!important}
