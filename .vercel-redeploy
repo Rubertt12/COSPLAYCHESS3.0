@@ -2,4 +2,4 @@ Production redeploy trigger.
 Source: main @ 5da283a4299c40bf6456f89aa5d4d9c7124f222e
 Reason: publish PR #44 — Conquistas Social profile resolution + PR #45 — wider Community desktop shell
 Validation targets: /conquistas-social.html, /conquistas-social.js, /comunidade.html and /community-nav-organized.js
-Redeploy requested: 2026-08-29 18:58 -03:00
+Redeploy retry: 2026-08-29 — requested again after build-rate-limit.
