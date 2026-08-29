@@ -1,0 +1,4 @@
+body.social-profile-page .social-profile-state[hidden],
+body.social-profile-page #socialProfileContent[hidden]{
+  display:none!important;
+}
