@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0710">
+  <meta name="description" content="Painel de conquistas do participante na Comunidade CosplayChess.">
+  <title>Conquistas do participante — CosplayChess</title>
+  <link rel="icon" type="image/png" href="./img/logofergoverse.png">
+  <link rel="stylesheet" href="./landing.css">
+  <link rel="stylesheet" href="./community-appearance.css?v=20260829-1">
+  <link rel="stylesheet" href="./conquistas-social.css?v=20260829-1">
+</head>
+<body class="social-achievements-page">
+  <div class="grain"></div>
+  <header class="topbar social-achievements-topbar">
+    <a class="brand" href="./index.html"><img src="./img/logofergoverse.png" alt="CosplayChess"><span><b>COSPLAY</b><em>CHESS</em></span></a>
+    <div class="top-actions"><a class="btn dark" href="./comunidade.html">✦ Comunidade</a><a class="btn ghost" href="./participante.html">Minha área</a></div>
+  </header>
+
+  <main class="social-achievements-shell">
+    <section id="achievementsAuth" class="social-achievements-state" hidden>
+      <span>♕</span><h1>Entre na Comunidade</h1><p>O painel de conquistas é exclusivo para participantes com acesso ativo.</p><a class="btn gold" href="./participante.html">Entrar na minha área</a>
+    </section>
+    <section id="achievementsUnavailable" class="social-achievements-state" hidden>
+      <span>♟</span><h1>Coleção indisponível</h1><p>Não foi possível abrir as conquistas deste participante.</p><a class="btn gold" href="./comunidade.html">Voltar à comunidade</a>
+    </section>
+
+    <div id="achievementsContent" hidden>
+      <section class="social-achievements-hero">
+        <div class="social-achievements-avatar" id="achievementOwnerAvatar">♕</div>
+        <div class="social-achievements-copy">
+          <span class="kicker">COLEÇÃO SOCIAL</span>
+          <h1>Conquistas de <i id="achievementOwnerName">Participante</i></h1>
+          <p id="achievementOwnerCharacter">Histórico de troféus desbloqueados em partidas oficiais do CosplayChess.</p>
+        </div>
+        <div class="social-achievements-progress-card">
+          <strong id="achievementProgressText">0 de 0</strong>
+          <span>conquistas desbloqueadas</span>
+          <div class="social-achievements-progress"><i id="achievementProgressBar"></i></div>
+          <small id="achievementProgressPercent">0%</small>
+        </div>
+      </section>
+
+      <section class="social-achievements-toolbar">
+        <div class="social-achievements-summary">
+          <span id="achievementAwardCount">0 desbloqueios</span>
+          <span id="achievementEventCount">0 eventos</span>
+        </div>
+        <div class="social-achievements-filters" role="group" aria-label="Filtrar conquistas">
+          <button type="button" class="active" data-achievement-filter="all">Todas</button>
+          <button type="button" data-achievement-filter="unlocked">Desbloqueadas</button>
+          <button type="button" data-achievement-filter="locked">Bloqueadas</button>
+        </div>
+      </section>
+
+      <section>
+        <div id="socialAchievementsGrid" class="social-achievements-grid"><div class="social-achievements-loading">Carregando coleção...</div></div>
+      </section>
+
+      <p class="social-achievements-family">CosplayChess é family friendly: conquistas e conteúdos sociais devem permanecer apropriados para todas as idades.</p>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script src="./conquistas-social.js?v=20260829-1"></script>
+</body>
+</html>

@@ -10,6 +10,7 @@
   ensureCss('./community-event-calendar.css?v=20260829-1','communityEventCalendarCss');
   ensureCss('./community-appearance.css?v=20260829-1','communityAppearanceCss');
   ensureCss('./community-discovery-pagination.css?v=20260829-1','communityDiscoveryPaginationCss');
+  ensureCss('./social-achievements.css?v=20260829-1','socialAchievementsCss');
   ensureScript('./social-photo-lightbox.js?v=20260829-2','socialPhotoLightboxJs','__COSPLAY_PHOTO_LIGHTBOX__');
   ensureScript('./community-featured-carousel.js?v=20260829-1','communityFeaturedCarouselJs','__COSPLAY_FEATURED_CAROUSEL__');
   ensureScript('./community-settings-save-fix.js?v=20260829-2','communitySettingsSaveFixJs','__COSPLAY_SETTINGS_SAVE_FIX__');
@@ -21,6 +22,7 @@
   ensureScript('./community-social-profile-links.js?v=20260829-1','communitySocialProfileLinksJs','__COSPLAY_SOCIAL_PROFILE_LINKS__');
   ensureScript('./community-visitors-rpc.js?v=20260829-1','communityVisitorsRpcJs','__COSPLAY_VISITORS_RPC__');
   ensureScript('./community-friends-secure.js?v=20260829-1','communityFriendsSecureJs','__COSPLAY_FRIENDS_SECURE__');
+  ensureScript('./social-achievements-preview.js?v=20260829-1','socialAchievementsPreviewJs','__COSPLAY_SOCIAL_ACHIEVEMENTS_PREVIEW__');
 
   const setLabel=(button,html,key)=>{
     if(!button)return;
@@ -52,7 +54,7 @@
           nav.appendChild(a);
         };
         add('./passaporte.html','▣','Passaporte');
-        add('./conquistas.html','♕','Conquistas');
+        add('./conquistas-social.html','♕','Conquistas');
       }
     }
     const eventLink=document.querySelector('.premium-event-link');

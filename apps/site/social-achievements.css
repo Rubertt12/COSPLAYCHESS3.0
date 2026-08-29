@@ -1,0 +1,87 @@
+/* Social achievements preview shared by Comunidade and social profiles. */
+.social-achievement-preview-card,
+.community-achievement-mini{
+  border:1px solid rgba(224,190,119,.18);
+  border-radius:12px;
+  background:linear-gradient(145deg,rgba(224,190,119,.055),rgba(111,143,232,.035));
+  overflow:hidden;
+}
+.social-achievement-preview-card .social-profile-card-head,
+.community-achievement-mini-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.social-achievement-preview-card .social-profile-card-head a,
+.community-achievement-mini-head a{
+  color:#d9bd79;
+  font-size:8px;
+  font-weight:900;
+  text-decoration:none;
+  letter-spacing:.4px;
+  white-space:nowrap;
+}
+.social-achievement-preview-card .social-profile-card-head a:hover,
+.community-achievement-mini-head a:hover{color:#fff1c2}
+.social-achievement-preview-list,
+.community-achievement-mini-list{display:grid;gap:7px}
+.social-achievement-preview-item,
+.community-achievement-mini-item{
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr);
+  align-items:center;
+  gap:9px;
+  min-width:0;
+  padding:8px;
+  border:1px solid rgba(255,255,255,.055);
+  border-radius:9px;
+  background:rgba(255,255,255,.018);
+}
+.social-achievement-preview-icon,
+.community-achievement-mini-icon{
+  display:grid;
+  place-items:center;
+  width:42px;
+  height:42px;
+  border-radius:10px;
+  background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.14),transparent 34%),linear-gradient(145deg,rgba(224,190,119,.19),rgba(224,190,119,.045));
+  border:1px solid rgba(224,190,119,.20);
+  font-size:21px;
+}
+.social-achievement-preview-item[data-tier="silver"] .social-achievement-preview-icon,
+.community-achievement-mini-item[data-tier="silver"] .community-achievement-mini-icon{background:linear-gradient(145deg,rgba(210,220,235,.20),rgba(150,165,185,.05));border-color:rgba(210,220,235,.24)}
+.social-achievement-preview-item[data-tier="gold"] .social-achievement-preview-icon,
+.community-achievement-mini-item[data-tier="gold"] .community-achievement-mini-icon{background:linear-gradient(145deg,rgba(255,211,93,.24),rgba(224,154,43,.06));border-color:rgba(255,211,93,.30)}
+.social-achievement-preview-item[data-tier="platinum"] .social-achievement-preview-icon,
+.community-achievement-mini-item[data-tier="platinum"] .community-achievement-mini-icon{background:linear-gradient(145deg,rgba(140,231,255,.24),rgba(170,132,255,.08));border-color:rgba(140,231,255,.28)}
+.social-achievement-preview-copy,
+.community-achievement-mini-copy{min-width:0}
+.social-achievement-preview-copy b,
+.community-achievement-mini-copy b{display:block;overflow:hidden;color:#f0edf5;font-size:9px;text-overflow:ellipsis;white-space:nowrap}
+.social-achievement-preview-copy span,
+.community-achievement-mini-copy span{display:block;margin-top:3px;overflow:hidden;color:#8e91a3;font-size:7px;line-height:1.35;text-overflow:ellipsis;white-space:nowrap}
+.social-achievement-preview-copy small,
+.community-achievement-mini-copy small{display:block;margin-top:4px;color:#c9a95e;font-size:6px;font-weight:900;letter-spacing:.6px;text-transform:uppercase}
+.social-achievement-preview-empty,
+.community-achievement-mini-empty{padding:12px 8px;color:#777c90;font-size:8px;line-height:1.5;text-align:center}
+.community-achievement-mini{margin:10px 10px 0;padding:10px}
+.community-achievement-mini-head{margin-bottom:8px}
+.community-achievement-mini-head strong{color:#e8e3ef;font-size:9px;letter-spacing:.4px}
+.community-achievement-mini-count{color:#9b9fb0;font-size:7px}
+.social-profile-stats [data-social-achievements-stat] b{color:#e0be77!important}
+body.theme-white-mode .social-achievement-preview-card,
+body.theme-white-mode .community-achievement-mini{background:rgba(255,255,255,.86);border-color:rgba(114,83,23,.16)}
+body.theme-white-mode .social-achievement-preview-item,
+body.theme-white-mode .community-achievement-mini-item{background:rgba(77,58,20,.035);border-color:rgba(77,58,20,.08)}
+body.theme-white-mode .social-achievement-preview-copy b,
+body.theme-white-mode .community-achievement-mini-copy b,
+body.theme-white-mode .community-achievement-mini-head strong{color:#28232d}
+body.theme-white-mode .social-achievement-preview-copy span,
+body.theme-white-mode .community-achievement-mini-copy span,
+body.theme-white-mode .community-achievement-mini-count{color:#6f6876}
+@media(max-width:760px){
+  .community-achievement-mini{margin-inline:8px}
+  .social-achievement-preview-item,.community-achievement-mini-item{grid-template-columns:38px minmax(0,1fr)}
+  .social-achievement-preview-icon,.community-achievement-mini-icon{width:38px;height:38px;font-size:19px}
+}
