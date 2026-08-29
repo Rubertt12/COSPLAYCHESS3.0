@@ -85,3 +85,102 @@ body.theme-white-mode .community-achievement-mini-count{color:#6f6876}
   .social-achievement-preview-item,.community-achievement-mini-item{grid-template-columns:38px minmax(0,1fr)}
   .social-achievement-preview-icon,.community-achievement-mini-icon{width:38px;height:38px;font-size:19px}
 }
+
+/* Mobile fix: the achievement preview is an extra child of .community-me-card.
+   It must occupy a full row instead of creating an implicit narrow grid column. */
+@media(max-width:820px){
+  body.community-page .premium-global-search{
+    display:flex!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+
+  body.community-page .community-me-card{
+    grid-template-columns:54px minmax(0,1fr) auto!important;
+    grid-template-areas:
+      "avatar copy stats"
+      "ach ach ach"!important;
+    grid-auto-rows:auto!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+  }
+
+  body.community-page .community-achievement-mini,
+  body.community-page [data-community-achievements-preview]{
+    grid-area:ach!important;
+    grid-column:1/-1!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    margin:6px 0 0!important;
+    padding:8px!important;
+    overflow:hidden!important;
+  }
+
+  body.community-page .community-achievement-mini-head{
+    width:100%!important;
+    min-width:0!important;
+    margin-bottom:7px!important;
+  }
+
+  body.community-page .community-achievement-mini-list{
+    display:flex!important;
+    width:100%!important;
+    min-width:0!important;
+    gap:7px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    padding-bottom:2px!important;
+    scrollbar-width:none!important;
+    scroll-snap-type:x proximity!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  body.community-page .community-achievement-mini-list::-webkit-scrollbar{display:none!important}
+
+  body.community-page .community-achievement-mini-item{
+    display:grid!important;
+    grid-template-columns:36px minmax(0,1fr)!important;
+    flex:0 0 min(220px,calc(100vw - 54px))!important;
+    width:auto!important;
+    min-width:0!important;
+    min-height:52px!important;
+    height:auto!important;
+    gap:7px!important;
+    padding:7px!important;
+    scroll-snap-align:start!important;
+  }
+
+  body.community-page .community-achievement-mini-icon{
+    width:36px!important;
+    height:36px!important;
+    font-size:18px!important;
+  }
+}
+
+@media(max-width:520px){
+  body.community-page .community-me-card{
+    grid-template-columns:48px minmax(0,1fr)!important;
+    grid-template-areas:
+      "avatar copy"
+      "ach ach"!important;
+  }
+
+  body.community-page .community-achievement-mini-item{
+    flex-basis:min(168px,calc(100vw - 52px))!important;
+    grid-template-columns:32px minmax(0,1fr)!important;
+    min-height:46px!important;
+    padding:6px!important;
+  }
+
+  body.community-page .community-achievement-mini-icon{
+    width:32px!important;
+    height:32px!important;
+    font-size:16px!important;
+  }
+
+  body.community-page .community-achievement-mini-copy span,
+  body.community-page .community-achievement-mini-copy small{display:none!important}
+}
