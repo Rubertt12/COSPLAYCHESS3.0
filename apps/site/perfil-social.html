@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0710">
+  <meta name="description" content="Perfil social de participante na Comunidade CosplayChess.">
+  <title>Comunidade do participante — CosplayChess</title>
+  <link rel="icon" type="image/png" href="./img/logofergoverse.png">
+  <link rel="stylesheet" href="./landing.css">
+  <link rel="stylesheet" href="./perfil-social.css?v=20260829-1">
+  <link rel="stylesheet" href="./social-photo-lightbox.css?v=20260829-1">
+</head>
+<body class="social-profile-page">
+  <div class="grain"></div>
+  <header class="topbar social-profile-topbar">
+    <a class="brand" href="./index.html"><img src="./img/logofergoverse.png" alt="CosplayChess"><span><b>COSPLAY</b><em>CHESS</em></span></a>
+    <div class="top-actions"><a class="btn dark" href="./comunidade.html">✦ Voltar à comunidade</a><a class="btn ghost" href="./index.html">Voltar ao site</a></div>
+  </header>
+
+  <main class="social-profile-shell">
+    <section id="socialProfileAuth" class="social-profile-state" hidden><span>♜</span><h1>Entre na Comunidade</h1><p>Este perfil social é exclusivo para participantes com acesso ativo.</p><a class="btn gold" href="./participante.html">Entrar na minha área</a></section>
+    <section id="socialProfileNotFound" class="social-profile-state" hidden><span>♟</span><h1>Comunidade indisponível</h1><p>Este participante não está com o perfil social visível.</p><a class="btn gold" href="./comunidade.html">Voltar à comunidade</a></section>
+
+    <div id="socialProfileContent" hidden>
+      <section class="social-profile-hero">
+        <div class="social-profile-cover" id="socialProfileCover"></div>
+        <div class="social-profile-identity">
+          <div class="social-profile-avatar" id="socialProfileAvatar">♜</div>
+          <div class="social-profile-copy">
+            <span class="kicker">PERFIL NA COMUNIDADE</span>
+            <h1 id="socialProfileName">Participante</h1>
+            <p id="socialProfileCharacter">CosplayChess</p>
+            <small id="socialProfileNick"></small>
+            <blockquote id="socialProfileStatus" hidden></blockquote>
+          </div>
+          <div class="social-profile-actions" id="socialProfileActions">
+            <a class="btn dark" id="socialProfilePublicLink" href="#">Ver perfil cosplay</a>
+            <button class="btn gold" id="socialProfileFriendAction" type="button">Adicionar amigo</button>
+          </div>
+        </div>
+        <div class="social-profile-stats" id="socialProfileStats"><div><b>0</b><span>amigos</span></div><div><b>0</b><span>posts</span></div><div><b>0</b><span>fotos</span></div></div>
+      </section>
+
+      <div class="social-profile-layout">
+        <section class="social-profile-card social-profile-main-card">
+          <div class="social-profile-card-head"><div><span class="kicker">MURAL</span><h2>Publicações</h2></div><small>Somente o que sua relação e a privacidade permitem.</small></div>
+          <div id="socialProfilePosts" class="social-profile-posts"><div class="social-profile-empty">Carregando publicações...</div></div>
+        </section>
+
+        <aside class="social-profile-side">
+          <section class="social-profile-card">
+            <div class="social-profile-card-head"><div><span class="kicker">COMUNIDADES</span><h2>Participa</h2></div></div>
+            <div id="socialProfileCommunities" class="social-profile-communities"><div class="social-profile-empty">Carregando comunidades...</div></div>
+          </section>
+          <section class="social-profile-card">
+            <div class="social-profile-card-head"><div><span class="kicker">ÁLBUNS</span><h2>Fotos</h2></div></div>
+            <div id="socialProfileAlbums" class="social-profile-albums"><div class="social-profile-empty">Carregando álbuns...</div></div>
+          </section>
+        </aside>
+      </div>
+      <p class="social-profile-family">CosplayChess é family friendly: conteúdos públicos devem ser apropriados para todas as idades.</p>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script src="./perfil-social.js?v=20260829-1"></script>
+  <script src="./social-photo-lightbox.js?v=20260829-1"></script>
+</body>
+</html>
