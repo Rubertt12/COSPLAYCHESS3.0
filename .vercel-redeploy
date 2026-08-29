@@ -1,5 +1,5 @@
 Production redeploy trigger.
-Source: main @ 5bb2a7cc2fcae67145f6df1ed79b46d8435b8494
-Reason: publish PR #43 — Card social 1080x1350 para compartilhar conquistas
-Validation targets: /conquistas-social.html and /achievement-social-card.js
-Redeploy requested: 2026-08-29
+Source: main @ 5da283a4299c40bf6456f89aa5d4d9c7124f222e
+Reason: publish PR #44 — Conquistas Social profile resolution + PR #45 — wider Community desktop shell
+Validation targets: /conquistas-social.html, /conquistas-social.js, /comunidade.html and /community-nav-organized.js
+Redeploy requested: 2026-08-29 18:58 -03:00
