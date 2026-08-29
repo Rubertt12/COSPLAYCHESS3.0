@@ -4,18 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#0b0710">
-  <meta name="description" content="Perfil público de participante do CosplayChess — cosplay e conquistas.">
+  <meta name="description" content="Perfil público de participante do CosplayChess — cosplay, conquistas, amigos e momentos.">
   <title>Participante — CosplayChess</title>
   <link rel="icon" type="image/png" href="./img/logofergoverse.png">
   <link rel="stylesheet" href="./landing.css">
   <link rel="stylesheet" href="./jogador.css?v=20260828-1">
+  <link rel="stylesheet" href="./jogador-social.css?v=20260829-1">
 </head>
 <body class="public-player-page">
   <div class="grain"></div>
   <header class="topbar">
     <a class="brand" href="./index.html"><img src="./img/logofergoverse.png" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a>
     <div class="top-actions">
-      <a class="btn participant-profile-login" href="./participante.html">👤 Área do Participante</a>
+      <a class="btn participant-profile-login" href="./comunidade.html">✦ Comunidade</a>
+      <a class="btn participant-profile-login" href="./participante.html">👤 Minha Área</a>
       <a class="btn ghost" href="./index.html">Voltar ao site</a>
     </div>
   </header>
@@ -34,7 +36,7 @@
           <p class="player-nick" id="playerNick" hidden></p>
           <p class="player-bio" id="playerBio" hidden></p>
           <div id="playerSocials" class="player-socials"></div>
-          <div class="player-actions"><button class="btn gold" id="playerShare" type="button">Compartilhar perfil</button><a class="btn dark" href="./conquistas.html">Ver todas as conquistas</a></div>
+          <div class="player-actions"><button class="btn gold" id="playerShare" type="button">Compartilhar perfil</button><a class="btn dark" href="./conquistas.html">Ver conquistas</a></div>
         </div>
       </section>
 
@@ -48,5 +50,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
   <script src="./jogador.js?v=20260828-1"></script>
+  <script src="./jogador-social.js?v=20260829-1"></script>
 </body>
 </html>
