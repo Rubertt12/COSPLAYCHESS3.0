@@ -1,10 +1,11 @@
-/* Compact desktop layout for the participant area.
-   Keeps the login/activation screen inside the viewport and removes the
-   marketing hero once the authenticated dashboard is visible. */
+/* Full-screen desktop layout for the participant area.
+   Login/activation stay compact; once authenticated, the participant dashboard
+   uses the full browser workspace instead of a centered landing-page column. */
 
 @media (min-width:821px){
+  html,body.participant-page{min-height:100%;height:100%}
   body.participant-page{min-height:100dvh}
-  .participant-shell{width:min(1240px,calc(100% - 36px));padding:18px 0 26px}
+  .participant-shell{width:100%;max-width:none;margin:0;padding:10px 12px 12px;box-sizing:border-box}
   .participant-hero{gap:26px;align-items:center}
   .participant-copy{padding:0}
   .participant-copy h1{margin:8px 0 12px;font-size:clamp(38px,4.7vw,60px);line-height:.94}
@@ -13,7 +14,7 @@
   .participant-point{padding:10px 12px;border-radius:11px}
   .participant-point b{margin-bottom:3px}
   .participant-point span{line-height:1.35}
-  .participant-card{padding:20px;border-radius:18px}
+  .participant-card{padding:20px;border-radius:16px}
   .participant-card>p{margin-bottom:14px;line-height:1.45}
   .participant-form{gap:10px}
   .participant-form label{gap:5px}
@@ -21,60 +22,94 @@
   .participant-help{padding-top:10px;line-height:1.45}
   .participant-login,.participant-activation{top:12px}
 
-  /* Logged-in state: the dashboard becomes the main screen immediately. */
-  .participant-hero:has(.participant-dashboard:not([hidden])){display:block}
+  /* Logged-in state: use the entire browser workspace. */
+  body.participant-page:has(.participant-dashboard:not([hidden])){overflow:hidden}
+  body.participant-page:has(.participant-dashboard:not([hidden])) .topbar{min-height:54px;padding-top:7px;padding-bottom:7px}
+  body.participant-page:has(.participant-dashboard:not([hidden])) .participant-shell{
+    height:calc(100dvh - 54px);
+    padding:6px 8px 8px;
+    overflow:hidden;
+  }
+  .participant-hero:has(.participant-dashboard:not([hidden])){
+    display:block;
+    width:100%;
+    height:100%;
+  }
   .participant-hero:has(.participant-dashboard:not([hidden]))>.participant-copy{display:none}
   .participant-hero:has(.participant-dashboard:not([hidden]))>.participant-login,
   .participant-hero:has(.participant-dashboard:not([hidden]))>.participant-activation{display:none!important}
-  .participant-hero:has(.participant-dashboard:not([hidden])) .participant-dashboard{width:100%}
+  .participant-hero:has(.participant-dashboard:not([hidden])) .participant-dashboard{
+    width:100%;
+    height:100%;
+    min-height:0;
+    box-sizing:border-box;
+  }
 
-  .participant-dashboard{padding:16px 18px 18px}
-  .participant-dashboard-head{align-items:center}
-  .participant-dashboard-head h2{margin:4px 0 0;font-size:20px}
-  .participant-userbar{gap:10px;margin:10px 0 7px;padding:9px 11px;border-radius:11px}
-  .participant-avatar{width:34px;height:34px;font-size:15px}
-  .participant-profile-picker{margin:8px 0}
-  .participant-dashboard-grid{grid-template-columns:minmax(0,1.42fr) minmax(280px,.58fr);gap:10px;margin-top:10px}
-  .participant-panel{padding:13px 14px;border-radius:13px}
-  .participant-panel-title{align-items:center;margin-bottom:10px}
-  .participant-panel-title h3,.participant-public-panel h3{margin-top:3px;font-size:14px}
-  .participant-panel-title>b{min-width:30px;height:30px;font-size:11px}
+  .participant-dashboard{
+    padding:12px 14px;
+    border-radius:14px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+  .participant-dashboard-head{align-items:center;flex:0 0 auto}
+  .participant-dashboard-head h2{margin:3px 0 0;font-size:19px}
+  .participant-userbar{gap:9px;margin:7px 0 5px;padding:7px 10px;border-radius:10px;flex:0 0 auto}
+  .participant-avatar{width:32px;height:32px;font-size:14px}
+  #participantAccountStatus{min-height:0;margin:0;flex:0 0 auto}
+  .participant-profile-picker{margin:5px 0;flex:0 0 auto}
+  .participant-profile-picker select{padding-top:7px;padding-bottom:7px}
+  .participant-dashboard-grid{
+    grid-template-columns:minmax(0,1.55fr) minmax(300px,.62fr);
+    grid-template-rows:minmax(0,1fr) auto;
+    gap:8px;
+    margin-top:7px;
+    min-height:0;
+    flex:1 1 auto;
+    overflow:hidden;
+  }
+  .participant-panel{padding:10px 12px;border-radius:11px;min-height:0;overflow:hidden}
+  .participant-dashboard-grid>.participant-panel:first-child{overflow:auto}
+  .participant-dashboard-grid>.participant-panel:nth-child(2){display:flex;flex-direction:column}
+  .participant-panel-title{align-items:center;margin-bottom:7px;flex:0 0 auto}
+  .participant-panel-title h3,.participant-public-panel h3{margin-top:2px;font-size:13px}
+  .participant-panel-title>b{min-width:28px;height:28px;font-size:10px}
 
   /* Wide profile form: use horizontal space instead of page height. */
-  .participant-profile-form{grid-template-columns:126px minmax(0,1fr) minmax(0,1fr);column-gap:10px;row-gap:8px;align-items:start}
-  .participant-profile-form>.participant-photo-row{grid-column:1;grid-row:1 / span 5;display:flex;flex-direction:column;gap:8px;align-items:stretch}
-  .participant-photo-preview{width:100%;max-width:126px;border-radius:12px}
-  .participant-upload{gap:4px!important}
+  .participant-profile-form{grid-template-columns:118px minmax(0,1fr) minmax(0,1fr);column-gap:9px;row-gap:6px;align-items:start}
+  .participant-profile-form>.participant-photo-row{grid-column:1;grid-row:1 / span 5;display:flex;flex-direction:column;gap:6px;align-items:stretch}
+  .participant-photo-preview{width:100%;max-width:118px;border-radius:10px}
+  .participant-upload{gap:3px!important}
   .participant-profile-form>.participant-two{display:contents}
   .participant-profile-form>label:not(.participant-toggle){min-width:0}
   .participant-profile-form>label:has(textarea){grid-column:2 / -1}
-  .participant-profile-form textarea{min-height:58px;height:58px;resize:none}
-  .participant-toggle{grid-column:2 / -1;padding:8px 10px}
-  .participant-form-actions{grid-column:1 / -1;gap:9px;margin-top:1px}
+  .participant-profile-form textarea{min-height:46px;height:46px;resize:none}
+  .participant-toggle{grid-column:2 / -1;padding:6px 9px}
+  .participant-form-actions{grid-column:1 / -1;gap:8px;margin-top:0}
   .participant-form-actions .participant-status{min-height:0}
 
-  .participant-achievements{gap:7px;max-height:335px;overflow:auto;padding-right:2px}
-  .participant-achievement{grid-template-columns:36px 1fr;gap:9px;padding:9px}
-  .participant-achievement-icon{width:36px;height:36px;font-size:17px}
-  .participant-empty{padding:16px}
-  .participant-public-panel{padding:11px 14px;min-height:58px;gap:12px}
-  .participant-public-panel p{margin-top:3px}
-  .participant-public-actions .btn{padding-top:9px;padding-bottom:9px}
+  .participant-achievements{gap:6px;min-height:0;max-height:none;overflow:auto;padding-right:2px;flex:1 1 auto}
+  .participant-achievement{grid-template-columns:34px 1fr;gap:8px;padding:7px 8px}
+  .participant-achievement-icon{width:34px;height:34px;font-size:16px}
+  .participant-empty{padding:14px}
+  .participant-public-panel{grid-column:1/-1;padding:8px 12px;min-height:50px;gap:10px;overflow:visible}
+  .participant-public-panel p{margin-top:2px}
+  .participant-public-actions .btn{padding-top:8px;padding-bottom:8px}
 }
 
 @media (min-width:821px) and (max-height:760px){
-  .participant-shell{padding-top:10px;padding-bottom:14px}
-  .participant-copy h1{font-size:44px}
-  .participant-points{margin-top:10px}
-  .participant-point{padding:8px 10px}
-  .participant-card{padding:16px}
-  .participant-dashboard{padding:12px 14px 14px}
-  .participant-userbar{margin:7px 0 5px;padding:7px 9px}
-  .participant-dashboard-grid{margin-top:7px}
-  .participant-panel{padding:10px 12px}
-  .participant-panel-title{margin-bottom:7px}
-  .participant-profile-form{row-gap:6px}
-  .participant-profile-form textarea{min-height:48px;height:48px}
-  .participant-photo-preview{max-width:110px}
-  .participant-achievements{max-height:270px}
+  body.participant-page:has(.participant-dashboard:not([hidden])) .topbar{min-height:48px}
+  body.participant-page:has(.participant-dashboard:not([hidden])) .participant-shell{height:calc(100dvh - 48px);padding:4px 6px 6px}
+  .participant-dashboard{padding:8px 10px}
+  .participant-dashboard-head h2{font-size:17px}
+  .participant-userbar{margin:4px 0 3px;padding:5px 8px}
+  .participant-dashboard-grid{margin-top:4px;gap:6px}
+  .participant-panel{padding:8px 10px}
+  .participant-panel-title{margin-bottom:5px}
+  .participant-profile-form{grid-template-columns:104px minmax(0,1fr) minmax(0,1fr);row-gap:4px}
+  .participant-profile-form textarea{min-height:38px;height:38px}
+  .participant-photo-preview{max-width:104px}
+  .participant-toggle{padding:5px 8px}
+  .participant-achievement{padding:6px 7px}
+  .participant-public-panel{min-height:44px;padding:6px 10px}
 }
