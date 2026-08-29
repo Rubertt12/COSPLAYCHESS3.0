@@ -15,6 +15,9 @@
   <link rel="stylesheet" href="./community-social-extended.css?v=20260829-2">
   <link rel="stylesheet" href="./community-following.css?v=20260829-1">
   <link rel="stylesheet" href="./community-event-photo-tags.css?v=20260829-1">
+  <link rel="stylesheet" href="./community-group-avatar.css?v=20260829-1">
+  <link rel="stylesheet" href="./community-premium-dashboard.css?v=20260829-1">
+  <link rel="stylesheet" href="./community-premium-dashboard-patch.css?v=20260829-1">
 </head>
 <body class="community-page">
   <div class="grain"></div>
@@ -98,6 +101,10 @@
         </div>
         <form class="community-group-create" id="communityGroupCreateForm" hidden>
           <div class="community-group-create-head"><div><b>Crie sua comunidade</b><span>Escolha um tema para reunir outros participantes, como no Orkut.</span></div><button type="button" id="communityGroupCreateClose">×</button></div>
+          <div class="community-group-avatar-field">
+            <div class="community-group-avatar-preview" id="communityGroupAvatarPreview">◉</div>
+            <div class="community-group-avatar-picker"><b>Foto de perfil da comunidade</b><span>JPG, PNG ou WebP · até 5 MB. A imagem aparecerá nos cards, listas e na página da comunidade.</span><label>Escolher foto<input id="communityGroupAvatar" type="file" accept="image/jpeg,image/png,image/webp"></label></div>
+          </div>
           <div class="community-group-fields">
             <label><span>Nome da comunidade</span><input id="communityGroupName" maxlength="80" required placeholder="Ex.: Cosplayers de Naruto"></label>
             <label><span>Categoria</span><select id="communityGroupCategory"><option>Anime & Mangá</option><option>Cosplay</option><option>Games</option><option>Xadrez</option><option>Fotografia</option><option>Eventos</option><option>Filmes & Séries</option><option>Outros</option></select></label>
@@ -161,7 +168,7 @@
   <script src="./config.js"></script>
   <script src="./comunidade.js?v=20260829-1"></script>
   <script src="./community-orkut.js?v=20260829-1"></script>
-  <script src="./community-groups.js?v=20260829-1"></script>
+  <script src="./community-groups.js?v=20260829-2"></script>
   <script src="./community-groups-links.js?v=20260829-1"></script>
   <script src="./community-social-v2.js?v=20260829-2"></script>
   <script src="./community-social-extended.js?v=20260829-2"></script>
@@ -170,5 +177,7 @@
   <script src="./community-following.js?v=20260829-1"></script>
   <script src="./community-album-browser.js?v=20260829-1"></script>
   <script src="./community-event-photo-tags.js?v=20260829-1"></script>
+  <script src="./community-premium-dashboard.js?v=20260829-1"></script>
+  <script src="./community-premium-sync.js?v=20260829-1"></script>
 </body>
 </html>

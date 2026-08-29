@@ -9,6 +9,7 @@
   <link rel="icon" type="image/png" href="./img/logofergoverse.png">
   <link rel="stylesheet" href="./landing.css">
   <link rel="stylesheet" href="./comunidade-grupo.css?v=20260829-1">
+  <link rel="stylesheet" href="./community-group-avatar.css?v=20260829-1">
 </head>
 <body class="community-group-page">
   <div class="grain"></div>
@@ -21,13 +22,25 @@
     <aside class="group-side">
       <section class="group-card">
         <div class="group-cover"></div><div class="group-avatar" id="groupAvatar">C</div>
-        <div class="group-copy"><span class="kicker">COMUNIDADE</span><h1 id="groupName">Comunidade</h1><p id="groupDescription"></p><div class="group-meta"><span id="groupCategory">Geral</span><span><b id="groupMemberCount">0</b> membros</span></div><div class="group-actions"><button class="btn gold" id="groupJoinButton" type="button">Entrar</button><button class="btn dark" id="groupShareButton" type="button">Compartilhar</button></div></div>
+        <div class="group-copy"><span class="kicker">COMUNIDADE</span><h1 id="groupName">Comunidade</h1><p id="groupDescription"></p><div class="group-meta"><span id="groupCategory">Geral</span><span><b id="groupMemberCount">0</b> membros</span></div><div class="group-actions"><button class="btn gold" id="groupJoinButton" type="button">Entrar</button><button class="btn dark" id="groupShareButton" type="button">Compartilhar</button><button class="btn dark" id="groupEditToggle" type="button" hidden>Editar comunidade</button></div></div>
       </section>
       <nav class="group-card group-nav">
         <button class="active" type="button" data-group-view="topics"><span>✦</span>Tópicos</button>
         <button type="button" data-group-view="polls"><span>☷</span>Enquetes</button>
         <button type="button" data-group-view="members"><span>♟</span>Membros</button>
       </nav>
+      <section class="group-card group-edit-card" id="groupEditCard" hidden>
+        <div class="group-copy"><span class="kicker">EDITAR COMUNIDADE</span></div>
+        <form id="groupEditForm" class="group-edit-form">
+          <div class="group-edit-avatar"><div class="community-group-avatar-preview" id="groupEditAvatarPreview">C</div><div class="community-group-avatar-picker"><b>Foto de perfil</b><span>JPG, PNG ou WebP · até 5 MB.</span><label>Trocar foto<input id="groupEditAvatar" type="file" accept="image/jpeg,image/png,image/webp"></label></div></div>
+          <div class="group-edit-fields">
+            <label><span>Nome</span><input id="groupEditName" maxlength="80" required></label>
+            <label><span>Categoria</span><select id="groupEditCategory"><option>Anime & Mangá</option><option>Cosplay</option><option>Games</option><option>Xadrez</option><option>Fotografia</option><option>Eventos</option><option>Filmes & Séries</option><option>Outros</option></select></label>
+            <label class="wide"><span>Descrição</span><textarea id="groupEditDescription" maxlength="600"></textarea></label>
+          </div>
+          <div class="group-edit-actions"><span id="groupEditStatus" class="group-status"></span><button class="btn gold" type="submit">Salvar alterações</button></div>
+        </form>
+      </section>
     </aside>
 
     <section class="group-main">
@@ -59,6 +72,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
-  <script src="./comunidade-grupo.js?v=20260829-1"></script>
+  <script src="./comunidade-grupo.js?v=20260829-2"></script>
+  <script src="./community-group-avatar-edit.js?v=20260829-1"></script>
 </body>
 </html>
