@@ -129,13 +129,19 @@
     await loadProfile();
   };
 
+  const refreshAfterProfileChange = () => {
+    setTimeout(refresh,220);
+    setTimeout(async()=>{await loadProfile();applyBackdrop();},560);
+    setTimeout(applyBackdrop,900);
+  };
+
   const bind = () => {
     ensureEditor();
-    $('participantProfilePicker')?.addEventListener('change',()=>setTimeout(refresh,220));
+    $('participantProfilePicker')?.addEventListener('change',refreshAfterProfileChange);
     const dashboard=document.querySelector('[data-participant-dashboard]');
-    if (dashboard) new MutationObserver(()=>{ if(!dashboard.hidden) setTimeout(refresh,220); }).observe(dashboard,{attributes:true,attributeFilter:['hidden']});
+    if (dashboard) new MutationObserver(()=>{ if(!dashboard.hidden) refreshAfterProfileChange(); }).observe(dashboard,{attributes:true,attributeFilter:['hidden']});
     const avatarPreview=$('participantPhotoPreview');
-    if (avatarPreview) new MutationObserver(()=>{ if(profile?.cover_photo_url) setTimeout(applyBackdrop,50); }).observe(avatarPreview,{childList:true,subtree:true,attributes:true,attributeFilter:['src']});
+    if (avatarPreview) new MutationObserver(()=>{ if(profile?.cover_photo_url) setTimeout(applyBackdrop,60); }).observe(avatarPreview,{childList:true,subtree:true,attributes:true,attributeFilter:['src']});
     setTimeout(refresh,700);
     setTimeout(refresh,1800);
   };
