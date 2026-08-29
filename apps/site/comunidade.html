@@ -4,12 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#0b0710">
-  <meta name="description" content="Comunidade CosplayChess — amigos, scraps, mural e fotos dos participantes.">
+  <meta name="description" content="Comunidade CosplayChess — amigos, scraps, comunidades e fotos dos participantes.">
   <title>Comunidade — CosplayChess</title>
   <link rel="icon" type="image/png" href="./img/logofergoverse.png">
   <link rel="stylesheet" href="./landing.css">
   <link rel="stylesheet" href="./comunidade.css?v=20260829-1">
   <link rel="stylesheet" href="./community-orkut.css?v=20260829-2">
+  <link rel="stylesheet" href="./community-groups.css?v=20260829-1">
 </head>
 <body class="community-page">
   <div class="grain"></div>
@@ -41,6 +42,7 @@
       <nav class="community-nav" aria-label="Comunidade">
         <button class="active" type="button" data-community-view="feed"><span>✦</span>Scraps</button>
         <button type="button" data-community-view="friends"><span>♟</span>Amigos <b id="communityRequestBadge" hidden>0</b></button>
+        <button type="button" data-community-view="communities"><span>◉</span>Comunidades</button>
         <button type="button" data-community-view="discover"><span>⌕</span>Encontrar pessoas</button>
         <button type="button" data-community-view="photos"><span>▧</span>Meu álbum</button>
       </nav>
@@ -84,6 +86,27 @@
         </section>
       </section>
 
+      <section class="community-view" data-community-panel="communities" hidden>
+        <div class="community-section-head">
+          <div><span class="kicker">GRUPOS CRIADOS PELOS PARTICIPANTES</span><h2>Comunidades.</h2></div>
+          <button class="btn gold" id="communityCreateGroupToggle" type="button">＋ Criar comunidade</button>
+        </div>
+        <form class="community-group-create" id="communityGroupCreateForm" hidden>
+          <div class="community-group-create-head"><div><b>Crie sua comunidade</b><span>Escolha um tema para reunir outros participantes, como no Orkut.</span></div><button type="button" id="communityGroupCreateClose">×</button></div>
+          <div class="community-group-fields">
+            <label><span>Nome da comunidade</span><input id="communityGroupName" maxlength="80" required placeholder="Ex.: Cosplayers de Naruto"></label>
+            <label><span>Categoria</span><select id="communityGroupCategory"><option>Anime & Mangá</option><option>Cosplay</option><option>Games</option><option>Xadrez</option><option>Fotografia</option><option>Eventos</option><option>Filmes & Séries</option><option>Outros</option></select></label>
+            <label class="wide"><span>Descrição</span><textarea id="communityGroupDescription" maxlength="600" rows="4" placeholder="Sobre o que é esta comunidade?"></textarea></label>
+          </div>
+          <div class="community-group-create-actions"><span id="communityGroupStatus" class="community-status" aria-live="polite"></span><button class="btn gold" type="submit">Criar comunidade</button></div>
+        </form>
+        <div class="community-group-toolbar">
+          <label class="community-search"><span>⌕</span><input id="communityGroupSearch" type="search" placeholder="Buscar comunidades por nome ou categoria..."></label>
+          <label class="community-group-filter"><span>Mostrar</span><select id="communityGroupFilter"><option value="all">Todas</option><option value="mine">Minhas comunidades</option><option value="owned">Criadas por mim</option></select></label>
+        </div>
+        <div id="communityGroups" class="community-group-grid"><div class="community-empty">Carregando comunidades...</div></div>
+      </section>
+
       <section class="community-view" data-community-panel="discover" hidden>
         <div class="community-section-head"><div><span class="kicker">ENCONTRE O ELENCO</span><h2>Novas <i>conexões.</i></h2></div></div>
         <label class="community-search"><span>⌕</span><input id="communityPeopleSearch" type="search" placeholder="Buscar por nome, nick ou personagem..."></label>
@@ -103,20 +126,12 @@
       </section>
 
       <section class="orkut-module orkut-social-module">
-        <div class="orkut-module-head"><h3>comunidades</h3><button type="button" data-orkut-open="discover">explorar</button></div>
+        <div class="orkut-module-head"><h3>comunidades <span class="orkut-friend-count">(<span id="communityGroupCount">0</span>)</span></h3><button type="button" data-orkut-open="communities">ver todas</button></div>
         <div class="orkut-module-body">
-          <div class="orkut-featured-community" role="button" tabindex="0" data-orkut-open="feed">
-            <div class="orkut-featured-community-icon">♜</div>
-            <div class="orkut-featured-community-copy"><div><b>CosplayChess Oficial</b><span class="orkut-official-badge">oficial</span></div><span>Scraps, fotos e momentos do tabuleiro.</span><small>Comunidade principal</small></div>
-          </div>
-          <div class="orkut-community-mini-grid">
-            <button type="button" data-orkut-open="discover"><span class="mini-icon">🎭</span><b>Cosplayers</b><small>conheça pessoas</small></button>
-            <button type="button" data-orkut-open="photos"><span class="mini-icon">📷</span><b>Álbuns</b><small>fotos & momentos</small></button>
-          </div>
-          <div class="orkut-interest-divider"><span>interesses populares</span></div>
-          <div class="orkut-interest-tags" aria-label="Interesses populares da comunidade">
-            <span>Cosplay</span><span>Anime & Mangá</span><span>Xadrez</span><span>Games</span><span>Fotografia</span><span>Eventos</span>
-          </div>
+          <div id="communityGroupRail" class="community-group-rail"><div class="orkut-empty-mini">As comunidades criadas pelos participantes aparecerão aqui.</div></div>
+          <div class="orkut-interest-divider"><span>interesses em alta</span></div>
+          <div class="orkut-interest-tags" id="communityInterestTags"><span>Nenhum interesse ainda</span></div>
+          <button class="community-group-create-mini" type="button" id="communityCreateGroupMini">＋ criar comunidade</button>
         </div>
       </section>
 
@@ -141,5 +156,6 @@
   <script src="./config.js"></script>
   <script src="./comunidade.js?v=20260829-1"></script>
   <script src="./community-orkut.js?v=20260829-1"></script>
+  <script src="./community-groups.js?v=20260829-1"></script>
 </body>
 </html>
