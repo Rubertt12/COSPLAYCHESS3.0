@@ -10,12 +10,13 @@
   <link rel="stylesheet" href="./landing.css">
   <link rel="stylesheet" href="./participante.css?v=20260828-4">
   <link rel="stylesheet" href="./participant-compact.css?v=20260829-2">
+  <link rel="stylesheet" href="./participant-premium.css?v=20260829-1">
 </head>
 <body class="participant-page">
   <div class="grain"></div>
   <header class="topbar">
     <a class="brand" href="./index.html"><img src="./img/logofergoverse.png" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a>
-    <div class="top-actions"><a class="btn ghost" href="./index.html">Voltar ao site</a></div>
+    <div class="top-actions"><a class="btn ghost" href="./index.html">◉ Voltar ao site</a></div>
   </header>
 
   <main class="participant-shell">
@@ -60,57 +61,115 @@
       </section>
 
       <section class="participant-card participant-dashboard" data-participant-dashboard hidden>
-        <div class="participant-dashboard-head">
-          <div><span class="kicker">MINHA CONTA</span><h2 id="participantGreeting">Bem-vindo ao tabuleiro</h2></div>
-          <button class="btn dark participant-logout" id="participantLogout" type="button">Sair</button>
-        </div>
-        <div class="participant-userbar">
-          <span class="participant-avatar" aria-hidden="true">♜</span>
-          <div><b id="participantName">Participante</b><span id="participantEmail"></span></div>
-        </div>
-        <div id="participantAccountStatus" class="participant-status" aria-live="polite"></div>
+        <div id="participantDashboardContent" class="participant-premium-content" hidden>
+          <section class="premium-card premium-hero-card">
+            <div class="premium-hero-backdrop" id="participantHeroBackdrop" aria-hidden="true"></div>
+            <button class="btn dark participant-logout premium-logout" id="participantLogout" type="button">⇥ Sair</button>
 
-        <label class="participant-profile-picker" id="participantProfilePickerWrap" hidden>
-          <span>Participação / evento</span>
-          <select id="participantProfilePicker"></select>
-        </label>
+            <div class="premium-identity">
+              <div class="premium-avatar-wrap">
+                <div class="premium-avatar" id="participantHeroAvatar" aria-hidden="true">♜</div>
+                <span class="premium-avatar-camera">⌁</span>
+              </div>
+              <div class="premium-greeting">
+                <h2 id="participantGreeting">Olá, <strong>Participante</strong></h2>
+                <div class="premium-mini-account">
+                  <b id="participantName">Participante</b>
+                  <span id="participantEmail"></span>
+                </div>
+                <div id="participantAccountStatus" class="participant-status premium-account-status" aria-live="polite"></div>
+              </div>
+            </div>
 
-        <div class="participant-dashboard-grid" id="participantDashboardContent" hidden>
-          <section class="participant-panel">
-            <div class="participant-panel-title"><div><span class="kicker">PERFIL E COSPLAY</span><h3>O que você pode editar</h3></div><span class="participant-security-badge">🔒 limitado à sua conta</span></div>
-            <form id="participantProfileForm" class="participant-form participant-profile-form">
-              <div class="participant-photo-row">
-                <div class="participant-photo-preview" id="participantPhotoPreview"><span>Sem foto</span></div>
-                <label class="participant-upload"><span>Foto do cosplay</span><input id="participantPhotoFile" type="file" accept="image/jpeg,image/png,image/webp"><small>JPG, PNG ou WebP • até 5 MB</small></label>
+            <div class="premium-hero-divider" aria-hidden="true"></div>
+
+            <div class="premium-event">
+              <span class="premium-label">Evento</span>
+              <h3 id="participantHeroEvent">Evento CosplayChess</h3>
+              <div class="premium-character-line">
+                <span class="premium-character-emblem">L</span>
+                <div><span class="premium-label">Categoria / personagem</span><b id="participantHeroCharacter">Personagem</b></div>
               </div>
-              <div class="participant-two">
-                <label><span>Nome público</span><input name="display_name" maxlength="80"></label>
-                <label><span>Nick</span><input name="nick" maxlength="60"></label>
-              </div>
-              <label><span>Personagem / cosplay</span><input name="character_name" maxlength="120"></label>
-              <label><span>Bio pública</span><textarea name="bio" rows="4" maxlength="600" placeholder="Conte um pouco sobre você e seu cosplay..."></textarea></label>
-              <div class="participant-two">
-                <label><span>Instagram</span><input name="instagram_url" placeholder="@usuario ou https://instagram.com/usuario"></label>
-                <label><span>TikTok</span><input name="tiktok_url" placeholder="@usuario ou https://tiktok.com/@usuario"></label>
-              </div>
-              <div class="participant-two">
-                <label><span>Facebook</span><input name="facebook_url" placeholder="https://facebook.com/..."></label>
-                <label><span>YouTube</span><input name="youtube_url" placeholder="https://youtube.com/@..."></label>
-              </div>
-              <label class="participant-toggle"><input type="checkbox" name="profile_visible"><span><b>Deixar minha página pública visível</b><small>Quando ativado, outras pessoas podem abrir e compartilhar seu perfil.</small></span></label>
-              <div class="participant-form-actions"><button class="btn gold" id="participantSaveProfile" type="submit">Salvar alterações</button><span id="participantSaveStatus" class="participant-status"></span></div>
-            </form>
+            </div>
+
+            <label class="participant-profile-picker premium-profile-picker" id="participantProfilePickerWrap" hidden>
+              <span>Participação / evento</span>
+              <select id="participantProfilePicker"></select>
+            </label>
           </section>
 
-          <section class="participant-panel">
-            <div class="participant-panel-title"><div><span class="kicker">CONQUISTAS</span><h3>Minha coleção</h3></div><b id="participantAchievementCount">0</b></div>
-            <div id="participantAchievements" class="participant-achievements"><div class="participant-empty">Carregando conquistas...</div></div>
-          </section>
+          <div class="premium-main-grid">
+            <section class="premium-card premium-profile-card">
+              <h3 class="premium-section-title"><span class="icon">♙</span> Meu perfil público</h3>
+              <form id="participantProfileForm" class="participant-form premium-profile-form">
+                <label class="premium-field-display"><span>Nome público</span><input name="display_name" maxlength="80"></label>
+                <label class="premium-field-nick"><span>Nick</span><input name="nick" maxlength="60"></label>
+                <label class="premium-field-character"><span>Nome do personagem</span><input name="character_name" maxlength="120"></label>
+                <label class="premium-field-bio"><span>Bio pública</span><textarea name="bio" maxlength="600" placeholder="Conte um pouco sobre você e seu cosplay..."></textarea></label>
+                <label class="premium-field-instagram"><span>Instagram</span><input name="instagram_url" placeholder="@usuario ou https://instagram.com/usuario"></label>
+                <label class="premium-field-tiktok"><span>TikTok</span><input name="tiktok_url" placeholder="@usuario ou https://tiktok.com/@usuario"></label>
+                <label class="premium-field-facebook"><span>Facebook</span><input name="facebook_url" placeholder="https://facebook.com/..."></label>
+                <label class="premium-field-youtube"><span>YouTube</span><input name="youtube_url" placeholder="https://youtube.com/@..."></label>
 
-          <section class="participant-panel participant-public-panel">
-            <div><span class="kicker">PERFIL & COMUNIDADE</span><h3>Compartilhe e encontre seus amigos</h3><p id="participantPublicHint">Ative a visibilidade do perfil para liberar o link público.</p></div>
-            <div class="participant-public-actions"><a class="btn dark" href="./comunidade.html">✦ Comunidade & Amigos</a><a class="btn gold" id="participantPublicLink" href="#" target="_blank" rel="noopener" aria-disabled="true">Abrir meu perfil</a><button class="btn dark" id="participantShareProfile" type="button" disabled>Compartilhar</button></div>
-          </section>
+                <div class="premium-photo-box">
+                  <span>Foto do cosplay</span>
+                  <label class="premium-photo-drop" for="participantPhotoFile">
+                    <div class="participant-photo-preview" id="participantPhotoPreview"><span>Sem foto</span></div>
+                    <div class="premium-upload-overlay"><span class="cloud">⇧</span><b>Clique ou arraste para enviar</b><small>JPG, PNG ou WebP • até 5 MB</small></div>
+                    <input id="participantPhotoFile" type="file" accept="image/jpeg,image/png,image/webp">
+                  </label>
+                </div>
+
+                <label class="participant-toggle premium-toggle-row"><input type="checkbox" name="profile_visible"><span><b>Deixar minha página pública visível</b><small>Quando ativado, outras pessoas podem abrir e compartilhar seu perfil.</small></span></label>
+                <div class="premium-save-row"><button class="btn gold" id="participantSaveProfile" type="submit">▣ Salvar alterações</button><span id="participantSaveStatus" class="participant-status"></span></div>
+              </form>
+            </section>
+
+            <section class="premium-card premium-achievements-card">
+              <div class="premium-achievements-head">
+                <h3 class="premium-section-title"><span class="icon">🏆</span> Conquistas</h3>
+                <span class="premium-count-pill"><b id="participantAchievementCount">0</b> conquistas</span>
+              </div>
+              <div id="participantAchievements" class="participant-achievements"><div class="participant-empty">Carregando conquistas...</div></div>
+              <div class="premium-progress-label">Sua progressão</div>
+              <div class="premium-progress">
+                <div class="premium-stat"><i>☆</i><b id="participantProgressAchievements">0</b><span>Conquistas</span></div>
+                <div class="premium-stat"><i>◎</i><b>0</b><span>Desafios</span></div>
+                <div class="premium-stat"><i>♙</i><b id="participantProgressEvents">0</b><span>Eventos</span></div>
+                <div class="premium-stat"><i>♛</i><b>0</b><span>Top 10</span></div>
+              </div>
+            </section>
+          </div>
+
+          <div class="premium-bottom-grid">
+            <section class="premium-card premium-community-card">
+              <h3 class="premium-section-title"><span class="icon">♧</span> Comunidade & amigos</h3>
+              <div class="premium-community-toolbar">
+                <input id="participantFriendSearch" type="search" placeholder="Buscar amigos..." aria-label="Buscar amigos">
+                <button class="btn gold" id="participantAddFriend" type="button">＋ Adicionar amigo</button>
+                <button class="btn dark" id="participantInviteFriends" type="button">✉ Convidar amigos</button>
+              </div>
+              <div class="premium-community-info">
+                <div><small><span class="premium-online-dot"></span> AMIGOS ONLINE</small><b>0 online agora</b></div>
+                <div><small>SEUS AMIGOS (<span id="participantFriendCount">0</span>)</small><b id="participantFriendPending">Nenhuma solicitação pendente</b></div>
+                <button class="btn dark" id="participantExploreCommunity" type="button">♧ Explorar comunidade</button>
+              </div>
+            </section>
+
+            <section class="premium-card premium-share-card">
+              <h3 class="premium-section-title"><span class="icon">➤</span> Compartilhe sua jornada</h3>
+              <div class="premium-share-body">
+                <div class="premium-share-drop"><div><i>⇧</i><b>Compartilhe uma foto do seu cosplay!</b><button class="btn dark" id="participantShareJourney" type="button">Enviar imagem</button></div></div>
+                <div class="premium-latest-post" id="participantLatestPost"><div><b>Nenhuma publicação ainda.</b><br><span>Mostre seu trabalho e inspire a comunidade!</span></div></div>
+              </div>
+            </section>
+          </div>
+
+          <div class="premium-bottom-actions">
+            <a class="btn dark" id="participantPublicLink" href="#" target="_blank" rel="noopener" aria-disabled="true">♙ Abrir meu perfil</a>
+            <button class="btn gold" id="participantShareProfile" type="button" disabled>⌯ Compartilhar</button>
+            <p id="participantPublicHint" class="premium-public-hint">Ative a visibilidade do perfil para liberar o link público.</p>
+          </div>
         </div>
       </section>
     </section>
@@ -121,5 +180,6 @@
   <script src="./participant-auth-callback.js?v=20260829-invitefix1"></script>
   <script src="./participante.js?v=20260828-4"></script>
   <script src="./participant-reset.js?v=20260829-reset1"></script>
+  <script src="./participant-premium.js?v=20260829-1"></script>
 </body>
 </html>
