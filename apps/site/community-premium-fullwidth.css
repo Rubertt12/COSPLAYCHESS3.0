@@ -1,0 +1,137 @@
+/* CosplayChess Social — full-width desktop layout tuned for browser zoom 100% */
+html,body.community-page{width:100%;max-width:none!important;overflow-x:hidden!important}
+body.community-page{margin:0!important}
+
+/* Use the whole viewport instead of centering a fixed 1500px dashboard. */
+body.community-page .community-shell{
+  display:grid!important;
+  grid-template-columns:clamp(205px,15vw,270px) minmax(0,1fr) clamp(260px,19vw,330px)!important;
+  justify-content:stretch!important;
+  align-items:start!important;
+  gap:clamp(8px,.75vw,14px)!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:12px clamp(10px,1vw,18px) 42px!important;
+  box-sizing:border-box!important;
+}
+body.community-page .community-sidebar,
+body.community-page .community-main,
+body.community-page .community-orkut-rail{min-width:0!important;width:auto!important;max-width:none!important}
+
+/* One page scrollbar only. Side rails participate in normal document flow. */
+body.community-page .community-sidebar,
+body.community-page .community-orkut-rail{
+  position:static!important;
+  top:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  overscroll-behavior:auto!important;
+}
+body.community-page .community-main,
+body.community-page .community-view,
+body.community-page .community-feed,
+body.community-page .premium-feed-bottom{
+  overflow:visible!important;
+  max-height:none!important;
+}
+
+/* Header also becomes fluid and stops reserving huge fixed columns. */
+body.community-page .community-premium-topbar{
+  grid-template-columns:auto minmax(260px,1fr) auto!important;
+  gap:clamp(8px,1vw,16px)!important;
+  width:100%!important;
+  max-width:none!important;
+  padding:0 clamp(10px,1.15vw,20px)!important;
+  box-sizing:border-box!important;
+}
+body.community-page .premium-brand-zone,
+body.community-page .premium-top-actions,
+body.community-page .premium-global-search{min-width:0!important}
+body.community-page .premium-brand-zone{gap:10px!important}
+body.community-page .premium-top-actions{gap:6px!important}
+body.community-page .premium-create{padding-inline:13px!important}
+body.community-page .premium-user-menu b{max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Let the center column really grow. */
+body.community-page .community-main{justify-self:stretch!important}
+body.community-page .premium-featured-event,
+body.community-page .community-composer,
+body.community-page .premium-feed-toolbar,
+body.community-page .community-feed,
+body.community-page .premium-feed-bottom,
+body.community-page .community-group-create,
+body.community-page .community-group-toolbar,
+body.community-page .community-group-grid,
+body.community-page .community-people-grid,
+body.community-page .community-photo-grid{width:100%!important;max-width:none!important;box-sizing:border-box!important}
+
+/* Keep side content useful without stealing too much room at 100% zoom. */
+body.community-page .community-me-card{padding-left:14px!important;padding-right:14px!important}
+body.community-page .community-me-cover{margin-left:-14px!important;margin-right:-14px!important}
+body.community-page .community-nav button,
+body.community-page .community-nav>a{padding-inline:9px!important;gap:8px!important}
+body.community-page .premium-rail-card{width:100%!important;max-width:none!important;box-sizing:border-box!important}
+
+/* Standard notebook / smaller desktop: preserve comfortable feed width. */
+@media (max-width:1280px){
+  body.community-page .community-shell{
+    grid-template-columns:clamp(190px,15vw,220px) minmax(0,1fr) clamp(235px,19vw,270px)!important;
+    padding-inline:10px!important;
+    gap:9px!important;
+  }
+  body.community-page .community-premium-topbar{grid-template-columns:auto minmax(220px,1fr) auto!important;padding-inline:10px!important}
+  body.community-page .premium-brand-zone .brand b{font-size:14px!important;letter-spacing:2.6px!important}
+  body.community-page .premium-brand-zone .brand em{font-size:11px!important;letter-spacing:3.2px!important}
+  body.community-page .premium-back{padding-inline:9px!important;font-size:10px!important}
+  body.community-page .premium-user-menu b{display:none!important}
+  body.community-page .premium-event-copy{padding:19px!important}
+  body.community-page .premium-event-copy h2{font-size:20px!important}
+}
+
+/* At this width, forcing 3 columns is what caused the zoom-out problem.
+   Keep profile + feed side-by-side and place the right rail beneath the feed. */
+@media (max-width:1050px){
+  body.community-page .community-shell{
+    grid-template-columns:210px minmax(0,1fr)!important;
+    grid-template-areas:"left main" "left rail"!important;
+    align-items:start!important;
+  }
+  body.community-page .community-sidebar{grid-area:left!important}
+  body.community-page .community-main{grid-area:main!important}
+  body.community-page .community-orkut-rail{
+    grid-area:rail!important;
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+    margin-top:0!important;
+  }
+  body.community-page .community-orkut-rail>.premium-rail-card{margin:0!important}
+  body.community-page .community-premium-topbar{grid-template-columns:auto minmax(180px,1fr) auto!important}
+  body.community-page .premium-back{display:none!important}
+  body.community-page .premium-search-key{display:none!important}
+}
+
+@media (max-width:780px){
+  body.community-page .community-shell{
+    display:block!important;
+    width:100%!important;
+    padding:8px 8px 30px!important;
+  }
+  body.community-page .community-sidebar,
+  body.community-page .community-main,
+  body.community-page .community-orkut-rail{width:100%!important;margin:0 0 9px!important}
+  body.community-page .community-orkut-rail{display:grid!important;grid-template-columns:1fr!important}
+  body.community-page .community-premium-topbar{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    min-height:auto!important;
+    padding:8px!important;
+  }
+  body.community-page .premium-brand-zone{order:1}
+  body.community-page .premium-top-actions{order:2;margin-left:auto}
+  body.community-page .premium-global-search{order:3;flex:1 0 100%;width:100%!important}
+  body.community-page .premium-featured-event{grid-template-columns:1fr!important}
+  body.community-page .premium-event-art{min-height:180px!important}
+}
