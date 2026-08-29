@@ -7,8 +7,11 @@
   ensureCss('./social-photo-lightbox.css?v=20260829-1','socialPhotoLightboxCss');
   ensureCss('./community-rail-polish.css?v=20260829-1','communityRailPolishCss');
   ensureCss('./community-featured-carousel.css?v=20260829-1','communityFeaturedCarouselCss');
+  ensureCss('./community-event-calendar.css?v=20260829-1','communityEventCalendarCss');
   ensureScript('./social-photo-lightbox.js?v=20260829-1','socialPhotoLightboxJs','__COSPLAY_PHOTO_LIGHTBOX__');
   ensureScript('./community-featured-carousel.js?v=20260829-1','communityFeaturedCarouselJs','__COSPLAY_FEATURED_CAROUSEL__');
+  ensureScript('./community-settings-save-fix.js?v=20260829-1','communitySettingsSaveFixJs','__COSPLAY_SETTINGS_SAVE_FIX__');
+  ensureScript('./community-event-calendar.js?v=20260829-1','communityEventCalendarJs','__COSPLAY_EVENT_CALENDAR__');
 
   const setLabel=(button,html,key)=>{
     if(!button)return;

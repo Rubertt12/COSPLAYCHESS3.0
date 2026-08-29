@@ -4,6 +4,7 @@
   const BUCKET='cosplaychess-social-media';
   const $=id=>document.getElementById(id);
   const safe=(value)=>{try{const u=new URL(String(value||''));return ['http:','https:'].includes(u.protocol)?u.href:null;}catch{return null;}};
+  const clamp=(value)=>{const n=Number(value);return Number.isFinite(n)?Math.max(0,Math.min(100,n)):50;};
   const waitFor=(sel,ms=6000)=>new Promise(resolve=>{const found=document.querySelector(sel);if(found)return resolve(found);const obs=new MutationObserver(()=>{const el=document.querySelector(sel);if(el){obs.disconnect();resolve(el);}});obs.observe(document.documentElement,{childList:true,subtree:true});setTimeout(()=>{obs.disconnect();resolve(document.querySelector(sel));},ms);});
   const waitPhotoWallReady=async()=>{const wall=await waitFor('#playerPhotoWall');if(!wall)return null;const loading=()=>wall.querySelector('.player-social-empty')?.textContent?.toLowerCase().includes('carregando');if(!loading())return wall;return new Promise(resolve=>{const obs=new MutationObserver(()=>{if(!loading()){obs.disconnect();resolve(wall);}});obs.observe(wall,{childList:true,subtree:true,characterData:true});setTimeout(()=>{obs.disconnect();resolve(wall);},5000);});};
   const signed=async path=>{const{data,error}=await db.storage.from(BUCKET).createSignedUrl(path,3600);return error?null:data?.signedUrl||null;};
@@ -11,7 +12,7 @@
   const loadProfile=async()=>{
     const slug=String(new URLSearchParams(location.search).get('slug')||'').trim();
     if(!slug)return null;
-    const{data,error}=await db.from('cosplay_participant_profiles').select('id,display_name,nick,cover_photo_url,profile_visible').eq('public_slug',slug).eq('profile_visible',true).maybeSingle();
+    const{data,error}=await db.from('cosplay_participant_profiles').select('id,display_name,nick,cover_photo_url,cover_position_x,cover_position_y,profile_visible').eq('public_slug',slug).eq('profile_visible',true).maybeSingle();
     return error?null:data||null;
   };
 
@@ -22,7 +23,7 @@
     const src=safe(profile.cover_photo_url);if(!src)return;
     hero.classList.add('has-public-cover');
     const cover=document.createElement('div');cover.className='player-public-cover';
-    const img=document.createElement('img');img.src=src;img.alt=`Foto de capa de ${profile.display_name||profile.nick||'participante'}`;img.dataset.lightboxCaption=img.alt;
+    const img=document.createElement('img');img.src=src;img.alt=`Foto de capa de ${profile.display_name||profile.nick||'participante'}`;img.dataset.lightboxCaption=img.alt;img.style.objectPosition=`${clamp(profile.cover_position_x)}% ${clamp(profile.cover_position_y)}%`;
     const label=document.createElement('span');label.className='player-public-cover-label';label.textContent='Foto de capa';
     cover.append(img,label);hero.prepend(cover);
   };
