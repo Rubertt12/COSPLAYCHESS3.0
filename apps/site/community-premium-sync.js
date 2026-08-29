@@ -1,6 +1,12 @@
 (() => {
   let lastNavSignature='';
 
+  const ensureCss=(href,id)=>{if(document.getElementById(id))return;const l=document.createElement('link');l.id=id;l.rel='stylesheet';l.href=href;document.head.appendChild(l);};
+  const ensureScript=(src,id)=>{if(document.getElementById(id)||window.__COSPLAY_PHOTO_LIGHTBOX__)return;const s=document.createElement('script');s.id=id;s.src=src;s.defer=true;document.head.appendChild(s);};
+  ensureCss('./community-photo-experience.css?v=20260829-1','communityPhotoExperienceCss');
+  ensureCss('./social-photo-lightbox.css?v=20260829-1','socialPhotoLightboxCss');
+  ensureScript('./social-photo-lightbox.js?v=20260829-1','socialPhotoLightboxJs');
+
   const setLabel=(button,html,key)=>{
     if(!button)return;
     if(button.dataset[key]==='1')return;
