@@ -102,7 +102,6 @@
 
     ctx.fillStyle = '#e0be77';
     ctx.font = '900 30px Arial, sans-serif';
-    ctx.letterSpacing = '2px';
     ctx.fillText('COSPLAYCHESS', 92, 122);
     ctx.fillStyle = '#8d8fa1';
     ctx.font = '700 18px Arial, sans-serif';
@@ -215,6 +214,15 @@
     setTimeout(() => URL.revokeObjectURL(href), 1500);
   };
 
+  const canShareFile = (file) => {
+    if (!navigator.share || !navigator.canShare) return false;
+    try {
+      return navigator.canShare({ files: [file] });
+    } catch (_) {
+      return false;
+    }
+  };
+
   const shareCard = async (card, button) => {
     const original = button.textContent;
     button.disabled = true;
@@ -227,8 +235,7 @@
       const file = new File([blob], filename, { type: 'image/png' });
       const text = `${data.owner} desbloqueou “${data.title}” no CosplayChess! ${data.icon}`;
 
-      const canShareFile = !!(navigator.share && navigator.canShare && navigator.canShare({ files: [file] }));
-      if (canShareFile) {
+      if (canShareFile(file)) {
         await navigator.share({
           title: `${data.title} — CosplayChess`,
           text,
