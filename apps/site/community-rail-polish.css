@@ -1,0 +1,14 @@
+/* Right rail readability and tighter friend alignment. */
+body.community-page .premium-upcoming,
+body.community-page .premium-upcoming:link,
+body.community-page .premium-upcoming:visited,
+body.community-page .premium-upcoming:hover,
+body.community-page .premium-upcoming:active{color:inherit!important;text-decoration:none!important}
+body.community-page .premium-upcoming-copy b{color:#eef2f8!important;font-size:9px!important;line-height:1.25!important}
+body.community-page .premium-upcoming-copy span{color:#8591a4!important;font-size:7px!important;line-height:1.35!important}
+body.community-page .premium-date-box b{color:#fff!important}
+body.community-page .premium-date-box span{color:#d6ad5b!important}
+body.community-page .orkut-friend-grid{display:grid!important;grid-template-columns:1fr!important;gap:3px!important}
+body.community-page .orkut-friend-preview.premium-friend-preview{display:grid!important;grid-template-columns:34px minmax(0,1fr)!important;align-items:center!important;gap:8px!important;min-height:38px!important;padding:3px 0!important;text-align:left!important}
+body.community-page .orkut-friend-preview.premium-friend-preview .community-person-avatar{width:32px!important;height:32px!important;aspect-ratio:1!important;margin:0!important;border-radius:50%!important}
+body.community-page .orkut-friend-preview.premium-friend-preview>b{display:block!important;min-width:0!important;margin:0!important;color:#e5e9ef!important;font-size:9px!important;line-height:1.2!important;text-align:left!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}

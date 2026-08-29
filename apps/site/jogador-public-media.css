@@ -1,0 +1,12 @@
+/* Public profile cover + public album gallery */
+body.public-player-page .player-hero-card.has-public-cover{padding-top:132px!important}
+body.public-player-page .player-hero-card.has-public-cover:before{opacity:0!important}
+body.public-player-page .player-public-cover{position:absolute;inset:0 0 auto;z-index:0;height:190px;overflow:hidden;background:linear-gradient(120deg,#111c2d,#080d16 65%,#131b29)}
+body.public-player-page .player-public-cover img{display:block;width:100%;height:100%;object-fit:cover}
+body.public-player-page .player-public-cover:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,9,16,.08),rgba(4,9,16,.38) 55%,rgba(4,9,16,.94) 100%),linear-gradient(90deg,rgba(4,9,16,.18),transparent 45%,rgba(4,9,16,.16));pointer-events:none}
+body.public-player-page .player-public-cover-label{position:absolute;right:14px;top:14px;z-index:1;padding:5px 8px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(5,10,17,.62);color:#d8dfea;font-size:7px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;backdrop-filter:blur(8px)}
+body.public-player-page .player-photo-wall .player-photo-tile.public-album-photo{position:relative}
+body.public-player-page .public-album-photo .public-album-label{position:absolute;left:6px;right:6px;bottom:6px;z-index:2;padding:5px 7px;border-radius:7px;background:rgba(4,8,14,.76);color:#edf1f7;font-size:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
+body.public-player-page .public-photo-source{display:flex;align-items:center;gap:6px;margin:9px 0 0;color:#68768a;font-size:7px}
+body.public-player-page .public-photo-source:before{content:"▧";color:#d7aa4d}
+@media(max-width:620px){body.public-player-page .player-hero-card.has-public-cover{padding-top:112px!important}body.public-player-page .player-public-cover{height:155px}}

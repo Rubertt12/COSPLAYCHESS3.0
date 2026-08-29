@@ -1,0 +1,29 @@
+/* Feed media should not dominate the page at 100% zoom. */
+body.community-page .community-post-image{
+  width:min(calc(100% - 24px),680px)!important;
+  max-height:360px!important;
+  margin:0 auto 10px!important;
+  overflow:hidden!important;
+  border:1px solid rgba(255,255,255,.065)!important;
+  border-radius:12px!important;
+  background:#05080d!important;
+}
+body.community-page .community-post-image img{
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  max-height:360px!important;
+  object-fit:contain!important;
+  background:#05080d!important;
+}
+body.community-page .community-composer-preview{max-width:200px!important}
+body.community-page .community-composer-preview img{max-height:160px!important;object-fit:cover!important}
+body.community-page .community-composer form:after{content:"CosplayChess é family friendly: publique somente conteúdo apropriado para todas as idades.";display:block;margin-top:7px;color:#657389;font-size:7px;line-height:1.45}
+@media(max-width:780px){
+  body.community-page .community-post-image{width:calc(100% - 16px)!important;max-height:320px!important;margin-bottom:8px!important}
+  body.community-page .community-post-image img{max-height:320px!important}
+}
+@media(max-width:520px){
+  body.community-page .community-post-image{width:100%!important;max-height:280px!important;border-left:0!important;border-right:0!important;border-radius:0!important}
+  body.community-page .community-post-image img{max-height:280px!important}
+}

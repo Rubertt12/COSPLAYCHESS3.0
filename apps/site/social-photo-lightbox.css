@@ -1,0 +1,13 @@
+body.photo-lightbox-open{overflow:hidden!important}
+.photo-lightbox{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(2,5,10,.92);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+.photo-lightbox.open{display:flex}
+.photo-lightbox-stage{position:relative;display:flex;align-items:center;justify-content:center;width:min(96vw,1500px);height:min(92vh,1000px)}
+.photo-lightbox-image{display:block;max-width:100%;max-height:calc(92vh - 70px);object-fit:contain;border-radius:12px;box-shadow:0 24px 90px rgba(0,0,0,.62);background:#03060b}
+.photo-lightbox-close,.photo-lightbox-nav{position:absolute;z-index:2;display:grid;place-items:center;border:1px solid rgba(255,255,255,.14);background:rgba(7,12,20,.86);color:#f4f6fa;cursor:pointer;box-shadow:0 8px 28px rgba(0,0,0,.3)}
+.photo-lightbox-close{top:0;right:0;width:42px;height:42px;border-radius:50%;font-size:20px}
+.photo-lightbox-nav{top:50%;width:42px;height:54px;margin-top:-27px;border-radius:12px;font-size:24px}
+.photo-lightbox-prev{left:0}.photo-lightbox-next{right:0}
+.photo-lightbox-caption{position:absolute;left:50%;bottom:0;max-width:min(760px,80vw);transform:translateX(-50%);padding:8px 12px;border-radius:999px;background:rgba(7,12,20,.78);color:#c8d0dc;font-size:10px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.photo-lightbox[data-single="1"] .photo-lightbox-nav{display:none}
+.community-post-image img,.community-photo-card img,.premium-album-thumb img,.player-social-post-image img,.player-photo-tile img,.player-photo img,.album-photo-image img,.player-official-image img,.player-public-cover img,.participant-photo-preview img,.participant-cover-preview img,[data-photo-lightbox]{cursor:zoom-in}
+@media(max-width:620px){.photo-lightbox{padding:10px}.photo-lightbox-stage{width:100%;height:94vh}.photo-lightbox-image{max-height:calc(94vh - 58px)}.photo-lightbox-close{top:4px;right:4px}.photo-lightbox-nav{width:38px;height:48px}.photo-lightbox-caption{bottom:2px;max-width:74vw;font-size:9px}}
