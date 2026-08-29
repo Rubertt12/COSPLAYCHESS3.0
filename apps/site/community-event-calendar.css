@@ -1,0 +1,47 @@
+body.community-page .social-calendar{margin:0 0 14px;padding:14px;border:1px solid rgba(255,255,255,.07);border-radius:15px;background:linear-gradient(180deg,rgba(13,24,39,.94),rgba(8,15,25,.96));box-shadow:0 18px 45px rgba(0,0,0,.18)}
+body.community-page .social-calendar-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:12px}
+body.community-page .social-calendar-head>div>span,body.community-page .social-calendar-day-head>span{display:block;color:#d8ad50;font-size:7px;font-weight:900;letter-spacing:1px}
+body.community-page .social-calendar-head h3{margin:4px 0 3px;color:#f5f7fb;font-size:17px}
+body.community-page .social-calendar-head p{max-width:680px;margin:0;color:#75839a;font-size:8px;line-height:1.6}
+body.community-page .social-calendar-layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(270px,.75fr);gap:12px}
+body.community-page .social-calendar-card,body.community-page .social-calendar-day-panel{border:1px solid rgba(255,255,255,.065);border-radius:13px;background:rgba(3,9,17,.5)}
+body.community-page .social-calendar-card{padding:11px}
+body.community-page .social-calendar-toolbar{display:grid;grid-template-columns:34px 1fr 34px;align-items:center;gap:8px;margin-bottom:8px}
+body.community-page .social-calendar-toolbar strong{text-align:center;text-transform:capitalize;color:#eef2f8;font-size:11px}
+body.community-page .social-calendar-toolbar button{height:30px;border:1px solid rgba(255,255,255,.08);border-radius:9px;background:#0e1725;color:#d8ad50;font-size:18px;cursor:pointer}
+body.community-page .social-calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+body.community-page .social-calendar-weekday{padding:4px 2px;text-align:center;color:#66758b;font-size:6px;font-weight:900;letter-spacing:.6px}
+body.community-page .social-calendar-day{position:relative;min-height:55px;padding:7px;border:1px solid rgba(255,255,255,.055);border-radius:9px;background:#09121e;color:#cfd7e4;text-align:left;cursor:pointer;transition:border-color .15s ease,background .15s ease,transform .15s ease}
+body.community-page .social-calendar-day:hover{border-color:rgba(216,173,80,.4);background:#0d1928}
+body.community-page .social-calendar-day.selected{border-color:rgba(216,173,80,.72);box-shadow:inset 0 0 0 1px rgba(216,173,80,.13)}
+body.community-page .social-calendar-day.today b{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:rgba(216,173,80,.18);color:#f5cb6c}
+body.community-page .social-calendar-day.outside{opacity:.38}
+body.community-page .social-calendar-day>b{font-size:8px}
+body.community-page .social-calendar-marks{position:absolute;left:7px;right:7px;bottom:7px;display:flex;gap:4px}
+body.community-page .social-calendar-marks i,body.community-page .social-calendar-legend i{display:block;width:7px;height:7px;border-radius:50%;background:#d8ad50}
+body.community-page .social-calendar-marks i.personal,body.community-page .social-calendar-legend i.personal{background:#a98ae8}
+body.community-page .social-calendar-legend{display:flex;gap:12px;margin-top:8px;color:#68778e;font-size:7px}
+body.community-page .social-calendar-legend span{display:flex;align-items:center;gap:5px}
+body.community-page .social-calendar-day-panel{padding:12px;min-width:0}
+body.community-page .social-calendar-day-head h4{margin:4px 0 10px;color:#edf1f7;font-size:11px;text-transform:capitalize}
+body.community-page .social-calendar-day-list{display:grid;gap:7px}
+body.community-page .social-calendar-empty{padding:14px;border:1px dashed rgba(255,255,255,.08);border-radius:10px;color:#69778c;font-size:8px;text-align:center}
+body.community-page .social-calendar-item{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:start;gap:8px;padding:9px;border:1px solid rgba(255,255,255,.06);border-radius:10px;background:#0a1421}
+body.community-page .social-calendar-item-badge{margin-top:1px;padding:3px 5px;border-radius:999px;background:rgba(216,173,80,.12);color:#d8ad50;font-size:5px;font-weight:900;letter-spacing:.4px;white-space:nowrap}
+body.community-page .social-calendar-item.personal .social-calendar-item-badge{background:rgba(169,138,232,.12);color:#bca5ef}
+body.community-page .social-calendar-item-copy{display:grid;gap:2px;min-width:0}
+body.community-page .social-calendar-item-copy b{color:#edf1f7;font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.community-page .social-calendar-item-copy span,body.community-page .social-calendar-item-copy small{color:#76849a;font-size:7px;line-height:1.45}
+body.community-page .social-calendar-remove{border:0;background:transparent;color:#78859a;font-size:15px;cursor:pointer}
+body.community-page .social-calendar-form{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.07);display:grid;gap:8px}
+body.community-page .social-calendar-form[hidden]{display:none!important}
+body.community-page .social-calendar-form-head{display:flex;justify-content:space-between;align-items:center;color:#e8edf5;font-size:8px}
+body.community-page .social-calendar-form-head button{border:0;background:transparent;color:#7d8a9d;font-size:16px;cursor:pointer}
+body.community-page .social-calendar-form label{display:grid;gap:4px;color:#7e8da3;font-size:7px}
+body.community-page .social-calendar-form input,body.community-page .social-calendar-form textarea{width:100%;box-sizing:border-box;border:1px solid rgba(255,255,255,.08);border-radius:9px;background:#080f1a;color:#e9edf5;padding:8px;font:inherit;font-size:8px;outline:none}
+body.community-page .social-calendar-form input:focus,body.community-page .social-calendar-form textarea:focus{border-color:rgba(216,173,80,.48)}
+body.community-page .social-calendar-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+body.community-page .social-calendar-form-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px}
+body.community-page #socialCalendarStatus{margin-right:auto;color:#7c8ba0;font-size:7px}
+@media(max-width:980px){body.community-page .social-calendar-layout{grid-template-columns:1fr}body.community-page .social-calendar-day-panel{min-height:180px}}
+@media(max-width:620px){body.community-page .social-calendar{padding:10px;border-radius:12px}body.community-page .social-calendar-head{align-items:stretch;flex-direction:column}body.community-page .social-calendar-head .btn{width:100%}body.community-page .social-calendar-day{min-height:44px;padding:5px}body.community-page .social-calendar-weekday{font-size:5px}body.community-page .social-calendar-marks{left:5px;bottom:5px}body.community-page .social-calendar-form-grid{grid-template-columns:1fr}body.community-page .social-calendar-item{grid-template-columns:1fr auto}body.community-page .social-calendar-item-badge{grid-column:1/-1;width:max-content}}
