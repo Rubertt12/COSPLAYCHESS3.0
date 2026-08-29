@@ -5,6 +5,7 @@
   const $=id=>document.getElementById(id);
   const safe=(value)=>{try{const u=new URL(String(value||''));return ['http:','https:'].includes(u.protocol)?u.href:null;}catch{return null;}};
   const waitFor=(sel,ms=6000)=>new Promise(resolve=>{const found=document.querySelector(sel);if(found)return resolve(found);const obs=new MutationObserver(()=>{const el=document.querySelector(sel);if(el){obs.disconnect();resolve(el);}});obs.observe(document.documentElement,{childList:true,subtree:true});setTimeout(()=>{obs.disconnect();resolve(document.querySelector(sel));},ms);});
+  const waitPhotoWallReady=async()=>{const wall=await waitFor('#playerPhotoWall');if(!wall)return null;const loading=()=>wall.querySelector('.player-social-empty')?.textContent?.toLowerCase().includes('carregando');if(!loading())return wall;return new Promise(resolve=>{const obs=new MutationObserver(()=>{if(!loading()){obs.disconnect();resolve(wall);}});obs.observe(wall,{childList:true,subtree:true,characterData:true});setTimeout(()=>{obs.disconnect();resolve(wall);},5000);});};
   const signed=async path=>{const{data,error}=await db.storage.from(BUCKET).createSignedUrl(path,3600);return error?null:data?.signedUrl||null;};
 
   const loadProfile=async()=>{
@@ -27,7 +28,7 @@
   };
 
   const renderPublicAlbumPhotos=async profile=>{
-    const wall=await waitFor('#playerPhotoWall');
+    const wall=await waitPhotoWallReady();
     if(!wall||!profile)return;
     const{data:albums,error:albumsError}=await db.from('cosplay_social_albums').select('id,name,visibility,created_at').eq('owner_profile_id',profile.id).eq('visibility','public').order('created_at',{ascending:false}).limit(16);
     if(albumsError||!albums?.length)return;
@@ -46,7 +47,7 @@
       const tile=document.createElement('a');tile.className='player-photo-tile public-album-photo';tile.href=`./album.html?id=${encodeURIComponent(photo.album_id)}`;tile.setAttribute('aria-label',`Abrir álbum ${albumMap.get(photo.album_id)?.name||'público'}`);
       const img=document.createElement('img');img.src=url;img.alt=photo.caption||`Foto pública de ${profile.display_name||profile.nick||'participante'}`;img.loading='lazy';img.dataset.imagePath=photo.image_path;img.dataset.lightboxCaption=img.alt;
       const label=document.createElement('span');label.className='public-album-label';label.textContent=albumMap.get(photo.album_id)?.name||'Álbum público';
-      tile.append(img,label);wall.appendChild(tile);added++;
+      tile.append(img,label);wall.appendChild(tile);existing.add(photo.image_path);added++;
     }
     if(added&&!document.querySelector('.public-photo-source')){
       const panel=wall.closest('.player-social-panel');const head=panel?.querySelector('.player-social-panel-head');
