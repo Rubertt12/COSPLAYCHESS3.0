@@ -17,9 +17,10 @@
   ensureScript('./community-event-calendar.js?v=20260829-2','communityEventCalendarJs','__COSPLAY_EVENT_CALENDAR__');
   ensureScript('./community-profile-cover.js?v=20260829-1','communityProfileCoverJs','__COSPLAY_COMMUNITY_PROFILE_COVER__');
   ensureScript('./community-appearance.js?v=20260829-1','communityAppearanceJs','__COSPLAY_COMMUNITY_APPEARANCE__');
-  ensureScript('./community-discovery-pagination.js?v=20260829-1','communityDiscoveryPaginationJs','__COSPLAY_DISCOVERY_PAGINATION__');
+  ensureScript('./community-discovery-pagination.js?v=20260829-2','communityDiscoveryPaginationJs','__COSPLAY_DISCOVERY_PAGINATION__');
   ensureScript('./community-social-profile-links.js?v=20260829-1','communitySocialProfileLinksJs','__COSPLAY_SOCIAL_PROFILE_LINKS__');
   ensureScript('./community-visitors-rpc.js?v=20260829-1','communityVisitorsRpcJs','__COSPLAY_VISITORS_RPC__');
+  ensureScript('./community-friends-secure.js?v=20260829-1','communityFriendsSecureJs','__COSPLAY_FRIENDS_SECURE__');
 
   const setLabel=(button,html,key)=>{
     if(!button)return;
