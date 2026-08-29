@@ -55,3 +55,13 @@
   window.addEventListener('hashchange',()=>setOpen(false));
   sync();
 })();
+
+/* Social v2 admin module is isolated so legacy admin behavior stays untouched. */
+(()=>{
+  if(document.querySelector('script[data-admin-social-moderation]'))return;
+  const script=document.createElement('script');
+  script.src='./admin-social-moderation.js?v=20260829-1';
+  script.async=false;
+  script.dataset.adminSocialModeration='1';
+  document.body.appendChild(script);
+})();
