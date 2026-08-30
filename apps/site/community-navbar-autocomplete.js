@@ -4,6 +4,14 @@
   if (window.__COSPLAY_COMMUNITY_NAVBAR_AUTOCOMPLETE__) return;
   window.__COSPLAY_COMMUNITY_NAVBAR_AUTOCOMPLETE__ = true;
 
+  if (!document.querySelector('link[data-community-discovery-large]')) {
+    const style = document.createElement('link');
+    style.rel = 'stylesheet';
+    style.href = './community-discovery-large.css?v=20260830-1';
+    style.dataset.communityDiscoveryLarge = '1';
+    document.head.appendChild(style);
+  }
+
   const db = window.getCosplayChessParticipantDb
     ? window.getCosplayChessParticipantDb()
     : window.COSPLAYCHESS_PARTICIPANT_DB;
