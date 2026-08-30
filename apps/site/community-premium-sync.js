@@ -24,24 +24,17 @@
   ensureScript('./community-friends-secure.js?v=20260829-1','communityFriendsSecureJs','__COSPLAY_FRIENDS_SECURE__');
   ensureScript('./social-achievements-preview.js?v=20260829-1','socialAchievementsPreviewJs','__COSPLAY_SOCIAL_ACHIEVEMENTS_PREVIEW__');
 
-  const setLabel=(button,html,key)=>{
-    if(!button)return;
-    if(button.dataset[key]==='1')return;
-    const badge=button.querySelector('b');
-    button.innerHTML=html;
-    if(badge)button.appendChild(badge);
-    button.dataset[key]='1';
-  };
+  const setLabel=(button,html,key)=>{if(!button||button.dataset[key]==='1')return;const badge=button.querySelector('b');button.innerHTML=html;if(badge)button.appendChild(badge);button.dataset[key]='1';};
 
   const ensureProfileMenuStyles=()=>{
     if(document.getElementById('communityProfileMenuStyles'))return;
-    const style=document.createElement('style');
-    style.id='communityProfileMenuStyles';
-    style.textContent=`
-      .community-premium-topbar{display:flex!important;align-items:center!important;justify-content:space-between!important;min-height:68px!important;padding:0 clamp(18px,2.8vw,48px)!important;gap:18px!important}
-      .community-premium-topbar .premium-brand-zone{display:flex!important;align-items:center!important;margin-right:auto!important}
-      .community-premium-topbar .premium-brand-zone .premium-back,.community-premium-topbar .premium-global-search,.community-premium-topbar .premium-create,.community-premium-topbar .premium-icon-action{display:none!important}
-      .community-premium-topbar .premium-top-actions{position:relative!important;display:flex!important;align-items:center!important;justify-content:flex-end!important;margin-left:auto!important}
+    const style=document.createElement('style');style.id='communityProfileMenuStyles';style.textContent=`
+      .community-premium-topbar{display:grid!important;grid-template-columns:minmax(180px,1fr) minmax(320px,760px) minmax(180px,1fr)!important;align-items:center!important;min-height:68px!important;padding:0 clamp(18px,2.8vw,48px)!important;gap:18px!important}
+      .community-premium-topbar .premium-brand-zone{grid-column:1!important;display:flex!important;align-items:center!important;justify-self:start!important;margin:0!important}
+      .community-premium-topbar .premium-brand-zone .premium-back,.community-premium-topbar .premium-create,.community-premium-topbar .premium-icon-action{display:none!important}
+      .community-premium-topbar .premium-global-search{grid-column:2!important;display:flex!important;align-items:center!important;justify-self:center!important;width:100%!important;max-width:760px!important;margin:0!important;visibility:visible!important;opacity:1!important}
+      .community-premium-topbar .premium-global-search input{display:block!important;width:100%!important;visibility:visible!important;opacity:1!important}
+      .community-premium-topbar .premium-top-actions{grid-column:3!important;position:relative!important;display:flex!important;align-items:center!important;justify-content:flex-end!important;justify-self:end!important;margin:0!important}
       .community-premium-topbar .premium-user-menu{display:flex!important;align-items:center!important;gap:10px!important;min-height:48px!important;padding:5px 8px 5px 5px!important;border:1px solid transparent!important;border-radius:999px!important;background:transparent!important;cursor:pointer!important;transition:.18s ease!important}
       .community-premium-topbar .premium-user-menu:hover,.community-premium-topbar .premium-user-menu[aria-expanded="true"]{border-color:rgba(226,173,73,.24)!important;background:rgba(226,173,73,.06)!important}
       .community-premium-topbar .premium-header-avatar{width:40px!important;height:40px!important;flex:0 0 40px!important}
@@ -49,122 +42,17 @@
       .community-premium-topbar .premium-user-menu small{display:inline-grid!important;place-items:center;width:22px;height:22px;transition:transform .18s ease}
       .community-premium-topbar .premium-user-menu[aria-expanded="true"] small{transform:rotate(180deg)}
       .premium-profile-dropdown{position:absolute;top:calc(100% + 10px);right:0;z-index:220;width:min(290px,calc(100vw - 28px));padding:8px;border:1px solid rgba(226,173,73,.22);border-radius:14px;background:linear-gradient(180deg,rgba(13,23,39,.99),rgba(7,14,24,.995));box-shadow:0 22px 60px rgba(0,0,0,.46);backdrop-filter:blur(20px);transform-origin:top right}
-      .premium-profile-dropdown[hidden]{display:none!important}
-      .premium-profile-dropdown-head{display:flex;align-items:center;gap:10px;padding:10px 10px 12px;margin-bottom:5px;border-bottom:1px solid rgba(255,255,255,.07)}
+      .premium-profile-dropdown[hidden]{display:none!important}.premium-profile-dropdown-head{display:flex;align-items:center;gap:10px;padding:10px 10px 12px;margin-bottom:5px;border-bottom:1px solid rgba(255,255,255,.07)}
       .premium-profile-dropdown-avatar{display:grid;place-items:center;width:40px;height:40px;overflow:hidden;flex:0 0 40px;border:1px solid rgba(226,173,73,.45);border-radius:50%;background:#0c1523;color:#e2ad49}.premium-profile-dropdown-avatar img{width:100%;height:100%;object-fit:cover}
       .premium-profile-dropdown-copy{min-width:0}.premium-profile-dropdown-copy b,.premium-profile-dropdown-copy span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.premium-profile-dropdown-copy b{font-size:12px;color:#f5f7fb}.premium-profile-dropdown-copy span{margin-top:3px;font-size:9px;color:#7f8999}
       .premium-profile-dropdown a,.premium-profile-dropdown button{display:flex;align-items:center;gap:11px;width:100%;min-height:42px;padding:0 11px;border:0;border-radius:9px;background:transparent;color:#dbe1eb;text-decoration:none;text-align:left;font:inherit;font-size:11px;font-weight:750;cursor:pointer}
       .premium-profile-dropdown a:hover,.premium-profile-dropdown button:hover{background:rgba(226,173,73,.085);color:#fff}.premium-profile-dropdown .menu-icon{display:grid;place-items:center;width:22px;color:#e2ad49;font-size:15px}.premium-profile-dropdown .menu-separator{height:1px;margin:6px 8px;background:rgba(255,255,255,.07)}
-      @media(max-width:720px){.community-premium-topbar{min-height:62px!important;padding:0 12px!important}.premium-brand-zone .brand img{width:38px!important;height:38px!important}.premium-brand-zone .brand b{font-size:13px!important;letter-spacing:2.6px!important}.premium-brand-zone .brand em{font-size:10px!important;letter-spacing:3.2px!important}.community-premium-topbar .premium-user-menu b{display:none!important}.community-premium-topbar .premium-user-menu{gap:3px!important;padding-right:4px!important}}
-    `;
-    document.head.appendChild(style);
+      @media(max-width:820px){.community-premium-topbar{grid-template-columns:auto minmax(0,1fr) auto!important;min-height:62px!important;padding:0 12px!important;gap:10px!important}.community-premium-topbar .premium-global-search{display:flex!important;min-width:0!important}.community-premium-topbar .premium-search-key{display:none!important}.premium-brand-zone .brand span{display:none!important}.community-premium-topbar .premium-user-menu b,.community-premium-topbar .premium-user-menu small{display:none!important}.community-premium-topbar .premium-user-menu{gap:3px!important;padding-right:4px!important}}
+    `;document.head.appendChild(style);
   };
 
-  const ensureProfileMenu=()=>{
-    const topbar=document.querySelector('.community-premium-topbar');
-    const actions=topbar?.querySelector('.premium-top-actions');
-    const user=actions?.querySelector('.premium-user-menu');
-    if(!topbar||!actions||!user)return;
-    ensureProfileMenuStyles();
+  const ensureProfileMenu=()=>{const topbar=document.querySelector('.community-premium-topbar');const actions=topbar?.querySelector('.premium-top-actions');const user=actions?.querySelector('.premium-user-menu');if(!topbar||!actions||!user)return;ensureProfileMenuStyles();if(user.tagName==='A'){user.removeAttribute('href');user.setAttribute('role','button');user.setAttribute('tabindex','0');}user.setAttribute('aria-haspopup','menu');user.setAttribute('aria-expanded','false');let menu=actions.querySelector('.premium-profile-dropdown');if(!menu){menu=document.createElement('div');menu.className='premium-profile-dropdown';menu.hidden=true;menu.setAttribute('role','menu');const avatar=user.querySelector('.premium-header-avatar')?.cloneNode(true);const name=user.querySelector('b')?.textContent?.trim()||'Participante';const subtitle=document.querySelector('.premium-handle')?.textContent?.trim()||'Minha conta CosplayChess';const head=document.createElement('div');head.className='premium-profile-dropdown-head';const menuAvatar=document.createElement('span');menuAvatar.className='premium-profile-dropdown-avatar';if(avatar)menuAvatar.innerHTML=avatar.innerHTML;else menuAvatar.textContent='♜';const copy=document.createElement('div');copy.className='premium-profile-dropdown-copy';const title=document.createElement('b');title.textContent=name;const sub=document.createElement('span');sub.textContent=subtitle;copy.append(title,sub);head.append(menuAvatar,copy);const profile=document.createElement('a');const profileLink=document.getElementById('communityMyProfileLink')?.href;profile.href=profileLink&&profileLink!=='#'?profileLink:'./participante.html';profile.innerHTML='<span class="menu-icon">♙</span><span>Meu perfil</span>';const settings=document.createElement('button');settings.type='button';settings.innerHTML='<span class="menu-icon">⚙</span><span>Configurações</span>';settings.addEventListener('click',()=>{menu.hidden=true;user.setAttribute('aria-expanded','false');document.querySelector('[data-community-view="social-settings"]')?.click();setTimeout(()=>document.querySelector('[data-community-panel="social-settings"]')?.scrollIntoView({behavior:'smooth',block:'start'}),40);});const sep=document.createElement('div');sep.className='menu-separator';const back=document.createElement('a');back.href='./index.html';back.innerHTML='<span class="menu-icon">↩</span><span>Voltar ao site</span>';menu.append(head,profile,settings,sep,back);actions.appendChild(menu);}const toggle=()=>{const open=menu.hidden;menu.hidden=!open;user.setAttribute('aria-expanded',String(open));};if(user.dataset.profileMenuBound!=='1'){user.dataset.profileMenuBound='1';user.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();toggle();});user.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}if(e.key==='Escape'){menu.hidden=true;user.setAttribute('aria-expanded','false');}});document.addEventListener('click',e=>{if(!actions.contains(e.target)){menu.hidden=true;user.setAttribute('aria-expanded','false');}});document.addEventListener('keydown',e=>{if(e.key==='Escape'){menu.hidden=true;user.setAttribute('aria-expanded','false');}});}};
 
-    if(user.tagName==='A'){
-      user.removeAttribute('href');
-      user.setAttribute('role','button');
-      user.setAttribute('tabindex','0');
-    }
-    user.setAttribute('aria-haspopup','menu');
-    user.setAttribute('aria-expanded','false');
-
-    let menu=actions.querySelector('.premium-profile-dropdown');
-    if(!menu){
-      menu=document.createElement('div');
-      menu.className='premium-profile-dropdown';
-      menu.hidden=true;
-      menu.setAttribute('role','menu');
-
-      const avatar=user.querySelector('.premium-header-avatar')?.cloneNode(true);
-      const name=user.querySelector('b')?.textContent?.trim()||'Participante';
-      const subtitle=document.querySelector('.premium-handle')?.textContent?.trim()||'Minha conta CosplayChess';
-      const head=document.createElement('div');
-      head.className='premium-profile-dropdown-head';
-      const menuAvatar=document.createElement('span');
-      menuAvatar.className='premium-profile-dropdown-avatar';
-      if(avatar)menuAvatar.innerHTML=avatar.innerHTML;else menuAvatar.textContent='♜';
-      const copy=document.createElement('div');
-      copy.className='premium-profile-dropdown-copy';
-      const title=document.createElement('b');title.textContent=name;
-      const sub=document.createElement('span');sub.textContent=subtitle;
-      copy.append(title,sub);head.append(menuAvatar,copy);
-
-      const profile=document.createElement('a');
-      const profileLink=document.getElementById('communityMyProfileLink')?.href;
-      profile.href=profileLink&&profileLink!=='#'?profileLink:'./participante.html';
-      profile.innerHTML='<span class="menu-icon">♙</span><span>Meu perfil</span>';
-
-      const settings=document.createElement('button');
-      settings.type='button';
-      settings.innerHTML='<span class="menu-icon">⚙</span><span>Configurações</span>';
-      settings.addEventListener('click',()=>{
-        menu.hidden=true;user.setAttribute('aria-expanded','false');
-        document.querySelector('[data-community-view="social-settings"]')?.click();
-        setTimeout(()=>document.querySelector('[data-community-panel="social-settings"]')?.scrollIntoView({behavior:'smooth',block:'start'}),40);
-      });
-
-      const sep=document.createElement('div');sep.className='menu-separator';
-      const back=document.createElement('a');back.href='./index.html';back.innerHTML='<span class="menu-icon">↩</span><span>Voltar ao site</span>';
-      menu.append(head,profile,settings,sep,back);
-      actions.appendChild(menu);
-    }
-
-    const toggle=()=>{
-      const open=menu.hidden;
-      menu.hidden=!open;
-      user.setAttribute('aria-expanded',String(open));
-    };
-    if(user.dataset.profileMenuBound!=='1'){
-      user.dataset.profileMenuBound='1';
-      user.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();toggle();});
-      user.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}if(e.key==='Escape'){menu.hidden=true;user.setAttribute('aria-expanded','false');}});
-      document.addEventListener('click',e=>{if(!actions.contains(e.target)){menu.hidden=true;user.setAttribute('aria-expanded','false');}});
-      document.addEventListener('keydown',e=>{if(e.key==='Escape'){menu.hidden=true;user.setAttribute('aria-expanded','false');}});
-    }
-  };
-
-  const normalize=()=>{
-    const nav=document.querySelector('.community-nav');
-    if(nav){
-      const signature=[...nav.children].map(el=>`${el.tagName}:${el.dataset.communityView||el.getAttribute('href')||''}`).join('|');
-      if(signature!==lastNavSignature){
-        lastNavSignature=signature;
-        setLabel(nav.querySelector('[data-community-view="feed"]'),'<span>⌂</span>Feed','premiumFeedLabel');
-        setLabel(nav.querySelector('[data-community-view="photos"]'),'<span>▧</span>Fotos','premiumPhotosLabel');
-        setLabel(nav.querySelector('[data-community-view="discover"]'),'<span>⌕</span>Encontrar pessoas','premiumDiscoverLabel');
-        setLabel(nav.querySelector('[data-community-view="messages"]'),'<span>✉</span>Mensagens','premiumMessagesLabel');
-        const notifications=nav.querySelector('[data-community-view="notifications"]');
-        if(notifications)notifications.style.display='none';
-        setLabel(nav.querySelector('[data-community-view="social-settings"]'),'<span>⚙</span>Configurações','premiumSettingsLabel');
-        const add=(href,icon,label)=>{
-          if(nav.querySelector(`a[href="${href}"]`))return;
-          const a=document.createElement('a');
-          a.href=href;
-          a.innerHTML=`<span>${icon}</span>${label}`;
-          nav.appendChild(a);
-        };
-        add('./passaporte.html','▣','Passaporte');
-        add('./conquistas-social.html','♕','Conquistas');
-      }
-    }
-    const eventLink=document.querySelector('.premium-event-link');
-    if(eventLink&&eventLink.getAttribute('href')!=='./index.html#eventos')eventLink.href='./index.html#eventos';
-    ensureProfileMenu();
-  };
-
-  const run=()=>requestAnimationFrame(normalize);
-  run();
-  document.addEventListener('DOMContentLoaded',run,{once:true});
-  window.addEventListener('load',run,{once:true});
-  window.addEventListener('cosplay:social-shell-ready',run);
-  setTimeout(run,350);
-  setTimeout(run,1200);
-  setTimeout(run,2800);
+  const normalize=()=>{const nav=document.querySelector('.community-nav');if(nav){const signature=[...nav.children].map(el=>`${el.tagName}:${el.dataset.communityView||el.getAttribute('href')||''}`).join('|');if(signature!==lastNavSignature){lastNavSignature=signature;setLabel(nav.querySelector('[data-community-view="feed"]'),'<span>⌂</span>Feed','premiumFeedLabel');setLabel(nav.querySelector('[data-community-view="photos"]'),'<span>▧</span>Fotos','premiumPhotosLabel');setLabel(nav.querySelector('[data-community-view="discover"]'),'<span>⌕</span>Encontrar pessoas','premiumDiscoverLabel');setLabel(nav.querySelector('[data-community-view="messages"]'),'<span>✉</span>Mensagens','premiumMessagesLabel');const notifications=nav.querySelector('[data-community-view="notifications"]');if(notifications)notifications.style.display='none';setLabel(nav.querySelector('[data-community-view="social-settings"]'),'<span>⚙</span>Configurações','premiumSettingsLabel');const add=(href,icon,label)=>{if(nav.querySelector(`a[href="${href}"]`))return;const a=document.createElement('a');a.href=href;a.innerHTML=`<span>${icon}</span>${label}`;nav.appendChild(a);};add('./passaporte.html','▣','Passaporte');add('./conquistas-social.html','♕','Conquistas');}}const eventLink=document.querySelector('.premium-event-link');if(eventLink&&eventLink.getAttribute('href')!=='./index.html#eventos')eventLink.href='./index.html#eventos';ensureProfileMenu();};
+  const run=()=>requestAnimationFrame(normalize);run();document.addEventListener('DOMContentLoaded',run,{once:true});window.addEventListener('load',run,{once:true});window.addEventListener('cosplay:social-shell-ready',run);setTimeout(run,350);setTimeout(run,1200);setTimeout(run,2800);
 })();
