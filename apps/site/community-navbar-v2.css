@@ -15,10 +15,50 @@ body.community-page .premium-global-search{grid-column:2!important;justify-self:
 body.community-page .premium-top-actions{grid-column:3!important;justify-self:end!important;display:flex!important;align-items:center!important;gap:0!important;min-width:0!important;position:relative!important}
 body.community-page .premium-top-actions>.premium-create,
 body.community-page .premium-top-actions>.premium-icon-action{display:none!important}
-body.community-page .premium-user-menu{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:8px!important;padding:4px!important;margin:0!important;border:0!important;background:transparent!important;color:#fff!important;text-decoration:none!important;cursor:pointer!important}
-body.community-page .premium-user-menu b,
-body.community-page .premium-user-menu small{display:none!important}
+
+/* Perfil na direita: foto + nome + seta */
+body.community-page .premium-user-menu{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:9px!important;
+  min-height:48px!important;
+  padding:4px 10px 4px 5px!important;
+  margin:0!important;
+  border:1px solid transparent!important;
+  border-radius:999px!important;
+  background:transparent!important;
+  color:#fff!important;
+  text-decoration:none!important;
+  cursor:pointer!important;
+}
+body.community-page .premium-user-menu:hover,
+body.community-page .premium-user-menu[aria-expanded="true"]{
+  border-color:rgba(226,173,73,.25)!important;
+  background:rgba(226,173,73,.055)!important;
+}
+body.community-page .premium-user-menu b{
+  display:block!important;
+  max-width:150px!important;
+  overflow:hidden!important;
+  color:#f4f6fb!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+body.community-page .premium-user-menu small{
+  display:grid!important;
+  place-items:center!important;
+  width:20px!important;
+  height:20px!important;
+  color:#8d98aa!important;
+  font-size:11px!important;
+}
 body.community-page .premium-header-avatar{width:42px!important;height:42px!important;flex:0 0 42px!important}
+
+/* Há um menu legado criado pelo premium-sync. Mantemos apenas o menu final. */
+body.community-page .premium-profile-dropdown{display:none!important}
 
 body.community-page .community-profile-dropdown{
   position:absolute;
@@ -59,6 +99,9 @@ body.community-page .community-me-card > .community-achievement-mini{display:non
   body.community-page .community-premium-topbar{grid-template-columns:auto minmax(0,1fr) auto!important;gap:9px!important}
   body.community-page .premium-global-search{min-width:0!important}
   body.community-page .premium-global-search input{font-size:11px!important;padding:0 8px!important}
+  body.community-page .premium-user-menu b{display:none!important}
+  body.community-page .premium-user-menu small{display:none!important}
+  body.community-page .premium-user-menu{padding:3px!important}
   body.community-page .premium-header-avatar{width:38px!important;height:38px!important;flex-basis:38px!important}
   body.community-page .community-profile-dropdown{right:-2px;width:min(230px,calc(100vw - 24px))}
 }
