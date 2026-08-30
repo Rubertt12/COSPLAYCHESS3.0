@@ -1,0 +1,148 @@
+/* Acabamento final do perfil público: navegação e botões consistentes */
+
+body.public-player-page .player-social-tabs{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:8px!important;
+  width:100%!important;
+  padding:8px!important;
+  border:1px solid rgba(126,91,168,.22)!important;
+  border-radius:13px!important;
+  background:linear-gradient(180deg,rgba(15,18,29,.92),rgba(10,12,20,.92))!important;
+  box-shadow:0 10px 30px rgba(0,0,0,.16)!important;
+}
+
+body.public-player-page .player-social-tabs button{
+  width:100%!important;
+  min-width:0!important;
+  height:48px!important;
+  min-height:48px!important;
+  padding:0 18px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:9px!important;
+  border:1px solid transparent!important;
+  border-radius:9px!important;
+  background:transparent!important;
+  color:#b8c0d1!important;
+  font-size:13px!important;
+  font-weight:800!important;
+  line-height:1!important;
+  letter-spacing:.1px!important;
+  transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease!important;
+}
+
+body.public-player-page .player-social-tabs button:hover{
+  background:rgba(124,72,183,.10)!important;
+  border-color:rgba(153,99,215,.16)!important;
+  color:#f2f4f8!important;
+}
+
+body.public-player-page .player-social-tabs button.active{
+  background:linear-gradient(180deg,rgba(117,58,183,.34),rgba(82,38,134,.28))!important;
+  border-color:rgba(171,104,234,.40)!important;
+  color:#fff!important;
+  box-shadow:0 6px 18px rgba(88,40,145,.18),inset 0 0 0 1px rgba(255,255,255,.03)!important;
+}
+
+/* Botões da área principal: todos com a mesma altura e acabamento */
+body.public-player-page .player-actions{
+  gap:9px!important;
+  align-items:stretch!important;
+}
+
+body.public-player-page .player-actions .btn,
+body.public-player-page .player-actions button,
+body.public-player-page .player-actions a,
+body.public-player-page .player-v2-actions .btn,
+body.public-player-page .player-community-cta .btn{
+  box-sizing:border-box!important;
+  height:46px!important;
+  min-height:46px!important;
+  padding:0 16px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  border-radius:9px!important;
+  font-size:12px!important;
+  font-weight:850!important;
+  line-height:1.1!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+}
+
+body.public-player-page #playerShare{
+  height:46px!important;
+  min-height:46px!important;
+}
+
+/* Evita ações injetadas por JS com larguras aleatórias */
+body.public-player-page .player-actions > *,
+body.public-player-page .player-v2-actions > *{
+  min-width:0!important;
+}
+
+body.public-player-page .player-actions [data-player-friend-action],
+body.public-player-page .player-actions #playerShare{
+  width:100%!important;
+}
+
+/* Botões da topbar também ficam visualmente consistentes */
+body.public-player-page .top-actions .btn{
+  min-height:38px!important;
+  height:38px!important;
+  padding:0 14px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border-radius:8px!important;
+  font-size:11px!important;
+  font-weight:800!important;
+  line-height:1!important;
+}
+
+@media(max-width:860px){
+  body.public-player-page .player-social-tabs{
+    grid-template-columns:repeat(3,minmax(110px,1fr))!important;
+    overflow-x:auto!important;
+  }
+
+  body.public-player-page .player-social-tabs button{
+    height:44px!important;
+    min-height:44px!important;
+    font-size:12px!important;
+    padding:0 12px!important;
+  }
+
+  body.public-player-page .player-actions .btn,
+  body.public-player-page .player-actions button,
+  body.public-player-page .player-actions a,
+  body.public-player-page .player-v2-actions .btn,
+  body.public-player-page .player-community-cta .btn{
+    height:44px!important;
+    min-height:44px!important;
+    white-space:normal!important;
+  }
+}
+
+@media(max-width:560px){
+  body.public-player-page .player-social-tabs{
+    grid-template-columns:repeat(3,minmax(96px,1fr))!important;
+    gap:6px!important;
+    padding:6px!important;
+  }
+
+  body.public-player-page .player-social-tabs button{
+    font-size:11px!important;
+    padding:0 8px!important;
+  }
+
+  body.public-player-page .top-actions .btn{
+    min-height:36px!important;
+    height:36px!important;
+    padding:0 10px!important;
+    font-size:10px!important;
+  }
+}
