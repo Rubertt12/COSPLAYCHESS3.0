@@ -95,20 +95,22 @@ body.public-player-page .player-achievement-copy b{font-size:13px!important;over
 body.public-player-page .player-achievement-copy p{font-size:10px!important;line-height:1.45!important;overflow-wrap:anywhere}
 body.public-player-page .player-achievement-copy small{font-size:9px!important;color:#8f9aac!important}
 
-/* Recursos sociais antigos não podem virar colunas estreitas no grid principal */
-body.public-player-page #playerContent>.player-v2-section,
-body.public-player-page #playerContent>.player-ext-profile-grid,
-body.public-player-page #playerContent>.player-community-cta,
-body.public-player-page #playerContent>[class*="player-v2-"]:not(.player-social-panel),
-body.public-player-page #playerContent>[class*="player-ext-"]:not(.player-reference-about){
+/* Mantém o perfil público enxuto como na referência: sem blocos sociais extras abaixo. */
+body.public-player-page #playerContent>#playerV2Testimonials,
+body.public-player-page #playerContent>#playerV2VisitorsSection,
+body.public-player-page #playerContent>.player-ext-profile-grid{
+  display:none!important;
+}
+
+/* A barra da Comunidade permanece como encerramento do perfil. */
+body.public-player-page #playerContent>.player-community-cta{
   grid-column:1/-1!important;
   width:100%!important;
   min-width:0!important;
   box-sizing:border-box!important;
+  margin:0!important;
+  font-size:13px!important;
 }
-body.public-player-page #playerContent>.player-ext-profile-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
-body.public-player-page #playerContent>.player-v2-section{margin-top:0!important}
-body.public-player-page .player-community-cta{margin:0!important;font-size:13px!important}
 body.public-player-page .player-community-cta b{font-size:14px!important}
 body.public-player-page .player-community-cta span{font-size:12px!important}
 body.public-player-page .player-community-cta .btn{font-size:12px!important}
@@ -129,7 +131,6 @@ body.public-player-page .player-community-cta .btn{font-size:12px!important}
   body.public-player-page .player-social-stats,body.public-player-page .player-actions{grid-column:1!important;grid-row:auto!important;margin-top:14px!important}
   body.public-player-page .player-social-panel[data-player-social-panel="wall"],body.public-player-page .player-reference-about,body.public-player-page .player-achievements-section[data-player-social-panel="achievements"]{grid-column:1/-1!important}
   body.public-player-page .player-achievements-grid{grid-template-columns:1fr!important}
-  body.public-player-page #playerContent>.player-ext-profile-grid{grid-template-columns:1fr!important}
 }
 @media(max-width:560px){
   body.public-player-page .topbar{padding-left:12px!important;padding-right:12px!important}
