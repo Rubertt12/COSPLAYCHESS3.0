@@ -9,6 +9,7 @@
   <link rel="icon" type="image/png" href="./img/logofergoverse.png">
   <link rel="stylesheet" href="./landing.css">
   <link rel="stylesheet" href="./perfil-social.css?v=20260829-1">
+  <link rel="stylesheet" href="./perfil-social-v2.css?v=20260830-1">
   <link rel="stylesheet" href="./perfil-social-state-fix.css?v=20260829-1">
   <link rel="stylesheet" href="./social-achievements.css?v=20260829-1">
   <link rel="stylesheet" href="./social-photo-lightbox.css?v=20260829-1">
@@ -22,7 +23,7 @@
 
   <main class="social-profile-shell">
     <section id="socialProfileAuth" class="social-profile-state" hidden><span>♜</span><h1>Entre na Comunidade</h1><p>Este perfil social é exclusivo para participantes com acesso ativo.</p><a class="btn gold" href="./participante.html">Entrar na minha área</a></section>
-    <section id="socialProfileNotFound" class="social-profile-state" hidden><span>♟</span><h1>Comunidade indisponível</h1><p>Este participante não está com o perfil social visível.</p><a class="btn gold" href="./comunidade.html">Voltar à comunidade</a></section>
+    <section id="socialProfileNotFound" class="social-profile-state" hidden><span>♟</span><h1>Comunidade indisponível</h1><p>Não foi possível abrir esta comunidade social. O perfil pode estar oculto, bloqueado ou sem acesso ativo à comunidade.</p><a class="btn gold" href="./comunidade.html">Voltar à comunidade</a></section>
 
     <div id="socialProfileContent" hidden>
       <section class="social-profile-hero">
@@ -41,21 +42,23 @@
             <button class="btn gold" id="socialProfileFriendAction" type="button">Adicionar amigo</button>
           </div>
         </div>
-        <div class="social-profile-stats" id="socialProfileStats"><div><b>0</b><span>amigos</span></div><div><b>0</b><span>posts</span></div><div><b>0</b><span>fotos</span></div></div>
+        <div class="social-profile-stats" id="socialProfileStats"><div><b>0</b><span>amigos</span></div><div><b>0</b><span>posts</span></div><div><b>0</b><span>fotos</span></div><div><b id="socialProfileCommunityCount">0</b><span>comunidades</span></div></div>
+        <nav class="social-profile-tabs" aria-label="Seções do perfil"><a href="#socialProfileMural">Mural</a><a href="#socialProfileAbout">Sobre</a><a href="#socialProfileCommunitySection">Comunidades</a><a href="#socialProfileAlbumSection">Álbuns</a><a id="socialProfileAchievementsLink" href="#">Conquistas</a></nav>
       </section>
 
       <div class="social-profile-layout">
-        <section class="social-profile-card social-profile-main-card">
+        <section id="socialProfileMural" class="social-profile-card social-profile-main-card social-profile-section-anchor">
           <div class="social-profile-card-head"><div><span class="kicker">MURAL</span><h2>Publicações</h2></div><small>Somente o que sua relação e a privacidade permitem.</small></div>
+          <div id="socialProfileAbout" class="social-profile-about social-profile-section-anchor" hidden><h3>Sobre</h3><p id="socialProfileBio"></p></div>
           <div id="socialProfilePosts" class="social-profile-posts"><div class="social-profile-empty">Carregando publicações...</div></div>
         </section>
 
         <aside class="social-profile-side">
-          <section class="social-profile-card">
+          <section id="socialProfileCommunitySection" class="social-profile-card social-profile-section-anchor">
             <div class="social-profile-card-head"><div><span class="kicker">COMUNIDADES</span><h2>Participa</h2></div></div>
             <div id="socialProfileCommunities" class="social-profile-communities"><div class="social-profile-empty">Carregando comunidades...</div></div>
           </section>
-          <section class="social-profile-card">
+          <section id="socialProfileAlbumSection" class="social-profile-card social-profile-section-anchor">
             <div class="social-profile-card-head"><div><span class="kicker">ÁLBUNS</span><h2>Fotos</h2></div></div>
             <div id="socialProfileAlbums" class="social-profile-albums"><div class="social-profile-empty">Carregando álbuns...</div></div>
           </section>
@@ -67,7 +70,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
-  <script src="./perfil-social.js?v=20260829-1"></script>
+  <script src="./perfil-social.js?v=20260830-2"></script>
   <script src="./social-achievements-preview.js?v=20260829-1"></script>
   <script src="./social-photo-lightbox.js?v=20260829-2"></script>
 </body>
