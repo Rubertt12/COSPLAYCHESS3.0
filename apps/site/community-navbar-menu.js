@@ -1,8 +1,56 @@
 (() => {
   'use strict';
 
+  const getTopbar = () => document.querySelector('.community-premium-topbar');
   const getTopActions = () => document.querySelector('.premium-top-actions');
   const getUserButton = () => document.querySelector('.premium-user-menu');
+
+  const ensureSearch = () => {
+    const topbar = getTopbar();
+    if (!topbar) return null;
+
+    let search = topbar.querySelector('.premium-global-search');
+    if (!search) {
+      search = document.createElement('label');
+      search.className = 'premium-global-search';
+      search.innerHTML = '<span aria-hidden="true">⌕</span><input id="premiumGlobalSearch" type="search" placeholder="Buscar pessoas, comunidades, eventos..." autocomplete="off"><small class="premium-search-key">Ctrl /</small>';
+
+      const actions = getTopActions();
+      if (actions) topbar.insertBefore(search, actions);
+      else topbar.appendChild(search);
+    }
+
+    const input = search.querySelector('#premiumGlobalSearch');
+    if (input && input.dataset.communitySearchBound !== '1') {
+      input.dataset.communitySearchBound = '1';
+      input.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter') return;
+        const q = input.value.trim();
+        const discover = document.querySelector('[data-community-view="discover"]');
+        discover?.click();
+        setTimeout(() => {
+          const target = document.getElementById('communityPeopleSearch');
+          if (!target) return;
+          target.value = q;
+          target.dispatchEvent(new Event('input', { bubbles: true }));
+          target.focus();
+        }, 100);
+      });
+    }
+
+    return search;
+  };
+
+  const bindSearchShortcut = () => {
+    if (document.documentElement.dataset.communitySearchShortcut === '1') return;
+    document.documentElement.dataset.communitySearchShortcut = '1';
+    document.addEventListener('keydown', (event) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === '/') {
+        event.preventDefault();
+        ensureSearch()?.querySelector('input')?.focus();
+      }
+    });
+  };
 
   const openSettings = () => {
     const settings = document.querySelector('[data-community-view="social-settings"]');
@@ -11,7 +59,7 @@
       setTimeout(() => {
         const main = document.querySelector('.community-main');
         if (!main) return;
-        const topbar = document.querySelector('.community-premium-topbar');
+        const topbar = getTopbar();
         const offset = (topbar?.offsetHeight || 72) + 14;
         const y = main.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
@@ -20,6 +68,9 @@
   };
 
   const mount = () => {
+    ensureSearch();
+    bindSearchShortcut();
+
     const actions = getTopActions();
     const user = getUserButton();
     if (!actions || !user || actions.querySelector('.community-profile-dropdown')) return;
@@ -81,12 +132,15 @@
 
   const run = () => {
     clearLeftAchievements();
+    ensureSearch();
     mount();
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once: true });
   else run();
   window.addEventListener('cosplay:social-shell-ready', () => setTimeout(run, 50));
-  setTimeout(run, 450);
-  setTimeout(run, 1400);
+  window.addEventListener('load', () => setTimeout(run, 50), { once: true });
+  setTimeout(run, 350);
+  setTimeout(run, 900);
+  setTimeout(run, 1800);
 })();
