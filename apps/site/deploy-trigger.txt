@@ -1,1 +1,2 @@
 production refresh 2026-08-30 final-social-link-fix-2
+publish interactive social profile visibility 2026-08-30
