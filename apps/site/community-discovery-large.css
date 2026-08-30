@@ -1,0 +1,140 @@
+/* Encontrar pessoas — escala visual confortável */
+body.community-page [data-community-panel="discover"] .community-search{
+  min-height:54px!important;
+  border-radius:11px!important;
+}
+body.community-page [data-community-panel="discover"] .community-search>span{
+  font-size:20px!important;
+}
+body.community-page [data-community-panel="discover"] .community-search input{
+  font-size:14px!important;
+  padding:0 14px!important;
+}
+
+body.community-page .community-discovery-summary{
+  min-height:40px!important;
+  margin:14px 0 16px!important;
+  padding:0 14px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  border-radius:10px!important;
+  font-size:11px!important;
+}
+body.community-page .community-discovery-summary b{font-size:12px!important}
+
+body.community-page #communityPeoplePaged{
+  display:grid!important;
+  gap:12px!important;
+}
+body.community-page .community-paged-person{
+  display:grid!important;
+  grid-template-columns:76px minmax(0,1fr) auto!important;
+  align-items:center!important;
+  gap:16px!important;
+  min-height:104px!important;
+  padding:14px 16px!important;
+  border-radius:14px!important;
+  border:1px solid rgba(128,149,184,.20)!important;
+  background:rgba(11,19,33,.78)!important;
+  transition:transform .16s ease,border-color .16s ease,background .16s ease!important;
+}
+body.community-page .community-paged-person:hover{
+  transform:translateY(-2px)!important;
+  border-color:rgba(226,173,73,.34)!important;
+  background:rgba(15,26,43,.94)!important;
+}
+body.community-page .community-paged-avatar{
+  width:72px!important;
+  height:72px!important;
+  overflow:hidden!important;
+  border-radius:12px!important;
+  border:1px solid rgba(226,173,73,.28)!important;
+  background:#0b1523!important;
+  display:grid!important;
+  place-items:center!important;
+  color:#e8b85d!important;
+  font-size:28px!important;
+}
+body.community-page .community-paged-avatar img{
+  width:100%!important;
+  height:100%!important;
+  display:block!important;
+  object-fit:cover!important;
+}
+body.community-page .community-paged-copy{
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  gap:5px!important;
+}
+body.community-page .community-paged-copy b{
+  color:#fff!important;
+  font-size:15px!important;
+  line-height:1.25!important;
+}
+body.community-page .community-paged-copy span{
+  color:#aeb8c8!important;
+  font-size:12px!important;
+  line-height:1.35!important;
+}
+body.community-page .community-paged-copy small{
+  color:#75839a!important;
+  font-size:10px!important;
+  line-height:1.35!important;
+}
+body.community-page .community-paged-actions{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  flex-wrap:wrap!important;
+  gap:9px!important;
+}
+body.community-page .community-paged-actions .btn{
+  min-height:40px!important;
+  padding:0 14px!important;
+  border-radius:9px!important;
+  font-size:11px!important;
+  font-weight:800!important;
+  white-space:nowrap!important;
+}
+
+body.community-page .community-people-pager{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  margin-top:18px!important;
+}
+body.community-page .community-people-pager button{
+  min-width:40px!important;
+  height:40px!important;
+  border-radius:9px!important;
+  font-size:12px!important;
+}
+body.community-page .community-people-pager-info{
+  margin-left:6px!important;
+  font-size:10px!important;
+}
+
+@media(max-width:900px){
+  body.community-page .community-paged-person{
+    grid-template-columns:64px minmax(0,1fr)!important;
+    min-height:0!important;
+  }
+  body.community-page .community-paged-avatar{width:60px!important;height:60px!important}
+  body.community-page .community-paged-actions{
+    grid-column:1/-1!important;
+    justify-content:flex-start!important;
+    padding-left:80px!important;
+  }
+}
+@media(max-width:620px){
+  body.community-page .community-paged-person{grid-template-columns:56px minmax(0,1fr)!important;padding:12px!important;gap:12px!important}
+  body.community-page .community-paged-avatar{width:54px!important;height:54px!important;border-radius:10px!important}
+  body.community-page .community-paged-copy b{font-size:14px!important}
+  body.community-page .community-paged-actions{padding-left:0!important}
+  body.community-page .community-paged-actions .btn{flex:1 1 auto!important;min-height:38px!important;padding:0 10px!important;font-size:10px!important}
+  body.community-page .community-discovery-summary{font-size:9px!important}
+}
