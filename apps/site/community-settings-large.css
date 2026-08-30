@@ -1,0 +1,47 @@
+/* Larger, more readable privacy/settings view inspired by the approved dashboard reference. */
+body.community-page [data-community-panel="social-settings"]{padding:24px 26px 34px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-panel-head{margin-bottom:18px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-panel-head h3{font-size:24px!important;line-height:1.15!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-panel-head p{font-size:11px!important;line-height:1.55!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-grid{grid-template-columns:minmax(0,1fr) 290px!important;gap:14px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-card{border-radius:14px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-card-head{min-height:52px!important;padding:0 16px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-card-head b{font-size:12px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-card-body{padding:16px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-settings{gap:10px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-setting{min-height:62px!important;padding:13px 14px!important;border-radius:11px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-setting.wide{padding:14px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-setting b{font-size:11px!important;line-height:1.3!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-setting span{margin-top:4px!important;font-size:9px!important;line-height:1.5!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-setting input[type="text"],
+body.community-page [data-community-panel="social-settings"] .social-v2-setting select{height:42px!important;margin-top:10px!important;padding:0 12px!important;border-radius:9px!important;font-size:10px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-setting input[type="checkbox"]{width:20px!important;height:20px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-settings-actions{margin-top:2px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-settings-actions .btn{min-height:42px!important;padding:0 18px!important;font-size:10px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-visitors{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-visitor{padding:9px!important;border-radius:10px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-visitor .social-v2-avatar{width:56px!important;height:56px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-visitor b{font-size:9px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-visitor small{font-size:7px!important}
+body.community-page [data-community-panel="social-settings"] .social-v2-empty{padding:34px 16px!important;font-size:10px!important}
+
+body.community-page [data-community-panel="social-settings"] .social-ext-settings{margin-top:14px!important;padding:16px!important;border-radius:13px!important}
+body.community-page [data-community-panel="social-settings"] .social-ext-settings h4{margin-bottom:12px!important;font-size:12px!important}
+body.community-page [data-community-panel="social-settings"] .social-ext-settings-grid{gap:10px!important}
+body.community-page [data-community-panel="social-settings"] .social-ext-field span{margin-bottom:6px!important;font-size:9px!important}
+body.community-page [data-community-panel="social-settings"] .social-ext-field input,
+body.community-page [data-community-panel="social-settings"] .social-ext-field select{height:42px!important;padding:0 11px!important;border-radius:9px!important;font-size:10px!important}
+body.community-page [data-community-panel="social-settings"] .social-ext-field textarea{min-height:78px!important;padding:10px 11px!important;border-radius:9px!important;font-size:10px!important;line-height:1.5!important}
+body.community-page [data-community-panel="social-settings"] .social-ext-settings-actions{margin-top:12px!important}
+body.community-page [data-community-panel="social-settings"] .social-ext-settings-actions .btn{min-height:42px!important;padding:0 18px!important;font-size:10px!important}
+
+@media(max-width:1180px){
+  body.community-page [data-community-panel="social-settings"] .social-v2-grid{grid-template-columns:1fr!important}
+  body.community-page [data-community-panel="social-settings"] .social-v2-visitors{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+}
+@media(max-width:780px){
+  body.community-page [data-community-panel="social-settings"]{padding:16px!important}
+  body.community-page [data-community-panel="social-settings"] .social-v2-panel-head h3{font-size:21px!important}
+  body.community-page [data-community-panel="social-settings"] .social-v2-visitors{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  body.community-page [data-community-panel="social-settings"] .social-v2-setting{min-height:58px!important}
+}
