@@ -12,6 +12,20 @@
     document.head.appendChild(style);
   }
 
+  if (!document.querySelector('link[data-community-feed-panels-rail]')) {
+    const style = document.createElement('link');
+    style.rel = 'stylesheet';
+    style.href = './community-feed-panels-rail.css?v=20260830-1';
+    style.dataset.communityFeedPanelsRail = '1';
+    document.head.appendChild(style);
+  }
+  if (!document.querySelector('script[data-community-feed-panels-rail]')) {
+    const script = document.createElement('script');
+    script.src = './community-feed-panels-rail.js?v=20260830-1';
+    script.dataset.communityFeedPanelsRail = '1';
+    document.body.appendChild(script);
+  }
+
   const db = window.getCosplayChessParticipantDb
     ? window.getCosplayChessParticipantDb()
     : window.COSPLAYCHESS_PARTICIPANT_DB;
