@@ -1,6 +1,14 @@
 (() => {
   'use strict';
 
+  if(!document.querySelector('link[data-social-network-polish]')){
+    const l=document.createElement('link');
+    l.rel='stylesheet';
+    l.href='./social-network-polish.css?v=20260830-1';
+    l.dataset.socialNetworkPolish='1';
+    document.head.appendChild(l);
+  }
+
   const db = window.getCosplayChessParticipantDb ? window.getCosplayChessParticipantDb() : window.COSPLAYCHESS_PARTICIPANT_DB;
   const topOffset = () => (document.querySelector('.community-premium-topbar')?.offsetHeight || 72) + 14;
 
@@ -81,72 +89,31 @@
   const buildAchievementRail = async () => {
     const rail = document.querySelector('.community-orkut-rail');
     if (!rail || rail.querySelector('.community-achievements-rail')) return;
-
-    const oldCosplay = [...rail.querySelectorAll('.orkut-module')].find(section =>
-      /meu\s*cosplaychess/i.test(section.querySelector('h3')?.textContent || '')
-    );
-
+    const oldCosplay = [...rail.querySelectorAll('.orkut-module')].find(section => /meu\s*cosplaychess/i.test(section.querySelector('h3')?.textContent || ''));
     const achievementsHref = './conquistas-social.html';
     const card = document.createElement('section');
     card.className = 'community-achievements-rail';
     card.setAttribute('role', 'link');
     card.setAttribute('tabindex', '0');
     card.setAttribute('aria-label', 'Abrir minhas conquistas');
-    card.innerHTML = `
-      <div class="community-achievements-rail-head">
-        <h3>🏆 Minhas conquistas</h3>
-        <a href="${achievementsHref}">Ver todas</a>
-      </div>
-      <div class="community-achievements-rail-body">
-        <div class="community-achievements-empty">Carregando suas conquistas...</div>
-      </div>
-      <div class="community-achievements-summary"><span>Total desbloqueado</span><b>0</b></div>`;
-
-    const openAchievements = (event) => {
-      if (event?.target?.closest('a')) return;
-      location.href = achievementsHref;
-    };
+    card.innerHTML = `<div class="community-achievements-rail-head"><h3>🏆 Minhas conquistas</h3><a href="${achievementsHref}">Ver todas</a></div><div class="community-achievements-rail-body"><div class="community-achievements-empty">Carregando suas conquistas...</div></div><div class="community-achievements-summary"><span>Total desbloqueado</span><b>0</b></div>`;
+    const openAchievements = (event) => { if (event?.target?.closest('a')) return; location.href = achievementsHref; };
     card.addEventListener('click', openAchievements);
-    card.addEventListener('keydown', (event) => {
-      if (event.key !== 'Enter' && event.key !== ' ') return;
-      event.preventDefault();
-      location.href = achievementsHref;
-    });
-
-    if (oldCosplay) oldCosplay.replaceWith(card);
-    else rail.appendChild(card);
-
+    card.addEventListener('keydown', (event) => { if (event.key !== 'Enter' && event.key !== ' ') return; event.preventDefault(); location.href = achievementsHref; });
+    if (oldCosplay) oldCosplay.replaceWith(card); else rail.appendChild(card);
     const body = card.querySelector('.community-achievements-rail-body');
     const total = card.querySelector('.community-achievements-summary b');
-
     try {
       const achievements = await loadAchievements();
       total.textContent = String(achievements.length);
       body.replaceChildren();
-      if (!achievements.length) {
-        body.innerHTML = '<div class="community-achievements-empty">Você ainda não desbloqueou conquistas. Elas aparecerão aqui assim que forem concedidas.</div>';
-        return;
-      }
+      if (!achievements.length) { body.innerHTML = '<div class="community-achievements-empty">Você ainda não desbloqueou conquistas. Elas aparecerão aqui assim que forem concedidas.</div>'; return; }
       achievements.slice(0, 4).forEach(item => {
-        const row = document.createElement('a');
-        row.className = 'community-achievement-mini';
-        row.href = achievementsHref;
-        row.style.textDecoration = 'none';
-        const icon = document.createElement('div');
-        icon.className = 'community-achievement-mini-icon';
-        icon.textContent = item.definition.icon || '🏆';
-        const copy = document.createElement('div');
-        const title = document.createElement('b');
-        title.textContent = item.definition.title || 'Conquista';
-        const desc = document.createElement('span');
-        desc.textContent = item.definition.description || item.note || 'Conquista desbloqueada no CosplayChess.';
-        copy.append(title, desc);
-        row.append(icon, copy);
-        body.appendChild(row);
+        const row = document.createElement('a'); row.className = 'community-achievement-mini'; row.href = achievementsHref; row.style.textDecoration = 'none';
+        const icon = document.createElement('div'); icon.className = 'community-achievement-mini-icon'; icon.textContent = item.definition.icon || '🏆';
+        const copy = document.createElement('div'); const title = document.createElement('b'); title.textContent = item.definition.title || 'Conquista'; const desc = document.createElement('span'); desc.textContent = item.definition.description || item.note || 'Conquista desbloqueada no CosplayChess.'; copy.append(title, desc); row.append(icon, copy); body.appendChild(row);
       });
-    } catch (_) {
-      body.innerHTML = '<div class="community-achievements-empty">Não foi possível carregar as conquistas agora.</div>';
-    }
+    } catch (_) { body.innerHTML = '<div class="community-achievements-empty">Não foi possível carregar as conquistas agora.</div>'; }
   };
 
   const run = () => {
