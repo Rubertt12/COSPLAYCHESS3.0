@@ -7,7 +7,6 @@
     ? window.getCosplayChessParticipantDb()
     : window.COSPLAYCHESS_PARTICIPANT_DB;
 
-  const esc = (v) => String(v ?? '');
   const safeImage = (value) => {
     try {
       const u = new URL(String(value || ''), location.href);
@@ -19,6 +18,39 @@
 
   let timer = null;
   let seq = 0;
+
+  const dedupeSocialActions = (actions, slug) => {
+    if (!actions || !slug) return;
+    const targetHref = socialHref(slug);
+    const candidates = Array.from(actions.querySelectorAll('a,button')).filter(el =>
+      String(el.textContent || '').trim().toLowerCase() === 'ver comunidade'
+    );
+
+    let social = candidates[0] || actions.querySelector('.community-view-social-profile');
+    if (!social) {
+      social = document.createElement('a');
+      social.className = 'btn dark community-view-social-profile';
+      social.textContent = 'Ver comunidade';
+      actions.prepend(social);
+    }
+
+    if (social.tagName !== 'A') {
+      const replacement = document.createElement('a');
+      replacement.className = social.className || 'btn dark community-view-social-profile';
+      replacement.textContent = 'Ver comunidade';
+      social.replaceWith(replacement);
+      social = replacement;
+    }
+
+    social.classList.add('community-view-social-profile');
+    social.href = targetHref;
+    social.textContent = 'Ver comunidade';
+
+    Array.from(actions.querySelectorAll('a,button')).forEach(el => {
+      if (el === social) return;
+      if (String(el.textContent || '').trim().toLowerCase() === 'ver comunidade') el.remove();
+    });
+  };
 
   const cardFor = (row) => {
     const card = document.createElement('article');
@@ -77,9 +109,14 @@
       add.textContent = 'Adicionar amigo';
       add.addEventListener('click', async () => {
         if (!row.profile_id) return;
+        const requesterId = await getMyProfileId();
+        if (!requesterId) {
+          add.textContent = 'Sessão inválida';
+          return;
+        }
         add.disabled = true;
         const { error } = await db.from('cosplay_friendships').insert({
-          requester_profile_id: await getMyProfileId(),
+          requester_profile_id: requesterId,
           addressee_profile_id: row.profile_id,
           status: 'pending'
         });
@@ -150,7 +187,7 @@
     const rows = Array.isArray(data) ? data : [];
     root.replaceChildren();
     if (!rows.length) {
-      root.innerHTML = '<div class="community-empty">Nenhum perfil social visível encontrado.</div>';
+      root.innerHTML = '<div class="community-empty">Nenhum perfil social encontrado.</div>';
       return;
     }
     rows.forEach(row => root.appendChild(cardFor(row)));
@@ -174,22 +211,17 @@
 
   const fixExistingSocialLinks = (root = document) => {
     root.querySelectorAll('.community-person-card').forEach(card => {
-      const publicLink = card.querySelector('a[href*="jogador.html?slug="]');
-      if (!publicLink) return;
+      const anySlugLink = card.querySelector('a[href*="jogador.html?slug="], a[href*="perfil-social.html?slug="]');
+      if (!anySlugLink) return;
       let slug = '';
-      try { slug = new URL(publicLink.href, location.href).searchParams.get('slug') || ''; } catch (_) {}
+      try { slug = new URL(anySlugLink.href, location.href).searchParams.get('slug') || ''; } catch (_) {}
       if (!slug) return;
+
       card.querySelectorAll('.community-person-avatar,.community-person-copy').forEach(link => {
         if (link.tagName === 'A') link.href = socialHref(slug);
       });
-      const actions = card.querySelector('.community-person-actions');
-      if (actions && !actions.querySelector('.community-view-social-profile')) {
-        const social = document.createElement('a');
-        social.className = 'btn dark community-view-social-profile';
-        social.href = socialHref(slug);
-        social.textContent = 'Ver comunidade';
-        actions.prepend(social);
-      }
+
+      dedupeSocialActions(card.querySelector('.community-person-actions'), slug);
     });
   };
 
@@ -208,9 +240,7 @@
     fixAutocompleteLinks();
     const root = document.querySelector('.community-main') || document.body;
     const observer = new MutationObserver((mutations) => {
-      let relevant = false;
-      for (const m of mutations) if (m.addedNodes?.length) { relevant = true; break; }
-      if (!relevant) return;
+      if (!mutations.some(m => m.addedNodes?.length)) return;
       requestAnimationFrame(() => {
         fixExistingSocialLinks(root);
         fixAutocompleteLinks();
