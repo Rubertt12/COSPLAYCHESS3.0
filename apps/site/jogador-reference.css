@@ -115,6 +115,58 @@ body.public-player-page .player-community-cta b{font-size:14px!important}
 body.public-player-page .player-community-cta span{font-size:12px!important}
 body.public-player-page .player-community-cta .btn{font-size:12px!important}
 
+/* Refinamento estrutural da área inferior */
+@media(min-width:1181px){
+  body.public-player-page #playerContent{
+    grid-template-columns:minmax(0,1.85fr) minmax(250px,.52fr) minmax(360px,.83fr)!important;
+    column-gap:16px!important;
+    row-gap:14px!important;
+  }
+  body.public-player-page .player-hero-card,
+  body.public-player-page .player-social-tabs,
+  body.public-player-page #playerContent>.player-community-cta{
+    grid-column:1/-1!important;
+  }
+  body.public-player-page .player-social-panel[data-player-social-panel="wall"]{
+    grid-column:1!important;
+    align-self:stretch!important;
+    min-height:430px!important;
+  }
+  body.public-player-page .player-reference-about{
+    grid-column:2!important;
+    align-self:stretch!important;
+    min-height:430px!important;
+  }
+  body.public-player-page .player-achievements-section[data-player-social-panel="achievements"]{
+    grid-column:3!important;
+    align-self:stretch!important;
+    min-height:430px!important;
+  }
+  body.public-player-page .player-social-feed{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    align-items:start!important;
+  }
+  body.public-player-page .player-social-post{
+    display:flex!important;
+    flex-direction:column!important;
+    min-height:0!important;
+  }
+  body.public-player-page .player-social-post-image{
+    aspect-ratio:auto!important;
+    height:250px!important;
+    flex:0 0 250px!important;
+  }
+  body.public-player-page .player-social-post-copy{
+    flex:1 1 auto!important;
+  }
+  body.public-player-page .player-reference-about dl{
+    gap:20px!important;
+  }
+  body.public-player-page .player-achievements-grid{
+    gap:12px!important;
+  }
+}
+
 @media(max-width:1180px){
   body.public-player-page .player-identity{grid-template-columns:minmax(0,1fr) 350px!important}
   body.public-player-page .player-social-panel[data-player-social-panel="wall"]{grid-column:1/9!important}
