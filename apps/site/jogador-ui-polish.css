@@ -44,6 +44,22 @@ body.public-player-page .player-social-tabs button.active{
   box-shadow:0 6px 18px rgba(88,40,145,.18),inset 0 0 0 1px rgba(255,255,255,.03)!important;
 }
 
+/* Status/frase do participante no hero */
+body.public-player-page .player-v2-status{
+  font-size:16px!important;
+  line-height:1.5!important;
+  min-height:44px!important;
+  padding:11px 16px!important;
+  margin:14px 0 0!important;
+  display:flex!important;
+  align-items:center!important;
+  border-left:3px solid rgba(171,104,234,.78)!important;
+  border-radius:7px!important;
+  background:rgba(20,27,47,.72)!important;
+  color:#dfe5f2!important;
+  font-weight:600!important;
+}
+
 /* Todas as ações do perfil usam exatamente a mesma largura e altura. */
 body.public-player-page .player-actions{
   display:grid!important;
@@ -109,6 +125,11 @@ body.public-player-page .top-actions .btn{
     font-size:12px!important;
     padding:0 12px!important;
   }
+  body.public-player-page .player-v2-status{
+    font-size:15px!important;
+    min-height:42px!important;
+    padding:10px 14px!important;
+  }
   body.public-player-page .player-actions > *,
   body.public-player-page .player-actions .btn,
   body.public-player-page .player-actions button,
@@ -130,6 +151,10 @@ body.public-player-page .top-actions .btn{
   body.public-player-page .player-social-tabs button{
     font-size:11px!important;
     padding:0 8px!important;
+  }
+  body.public-player-page .player-v2-status{
+    font-size:14px!important;
+    line-height:1.45!important;
   }
   body.public-player-page .top-actions .btn{
     min-height:36px!important;
