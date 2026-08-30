@@ -1,6 +1,15 @@
 (() => {
   if (window.__COSPLAY_SHARED_SOCIAL_NAV__) return;
   window.__COSPLAY_SHARED_SOCIAL_NAV__ = true;
+
+  if(!document.querySelector('link[data-social-network-polish]')){
+    const l=document.createElement('link');
+    l.rel='stylesheet';
+    l.href='./social-network-polish.css?v=20260830-1';
+    l.dataset.socialNetworkPolish='1';
+    document.head.appendChild(l);
+  }
+
   const db=window.getCosplayChessParticipantDb?window.getCosplayChessParticipantDb():window.COSPLAYCHESS_PARTICIPANT_DB;
   const esc=s=>String(s||'').replace(/[&<>"']/g,'');
   const current=document.querySelector('header.topbar');
