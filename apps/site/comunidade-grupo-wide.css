@@ -1,0 +1,92 @@
+/* Página interna da comunidade — versão ampla */
+body.community-group-page .community-topbar{
+  min-height:70px!important;
+  padding-left:clamp(18px,2.5vw,46px)!important;
+  padding-right:clamp(18px,2.5vw,46px)!important;
+}
+body.community-group-page .community-group-shell{
+  grid-template-columns:minmax(280px,320px) minmax(0,1fr) minmax(290px,330px)!important;
+  gap:18px!important;
+  width:min(1820px,calc(100% - 32px))!important;
+  max-width:none!important;
+  padding:20px 0 44px!important;
+}
+body.community-group-page .group-side,
+body.community-group-page .group-right{top:88px!important;gap:14px!important}
+body.community-group-page .group-card,
+body.community-group-page .group-main-card{
+  border-radius:15px!important;
+  border-color:rgba(183,203,255,.15)!important;
+}
+body.community-group-page .group-cover{height:118px!important}
+body.community-group-page .group-avatar{
+  width:104px!important;
+  height:104px!important;
+  margin:-52px 18px 0!important;
+  border-radius:14px!important;
+  font-size:40px!important;
+}
+body.community-group-page .group-copy{padding:16px 18px 18px!important}
+body.community-group-page .group-copy .kicker{font-size:10px!important;letter-spacing:1.6px!important}
+body.community-group-page .group-copy h1{font-size:25px!important;line-height:1.15!important}
+body.community-group-page .group-copy p{font-size:11px!important;line-height:1.65!important}
+body.community-group-page .group-meta{gap:8px!important;margin-top:15px!important}
+body.community-group-page .group-meta span{padding:6px 9px!important;font-size:9px!important}
+body.community-group-page .group-actions{gap:8px!important;margin-top:15px!important}
+body.community-group-page .group-actions .btn{min-height:42px!important;font-size:11px!important}
+body.community-group-page .group-nav{gap:6px!important;padding:9px!important}
+body.community-group-page .group-nav button{
+  min-height:48px!important;
+  padding:0 12px!important;
+  font-size:12px!important;
+  border-radius:9px!important;
+}
+body.community-group-page .group-nav button span{width:30px!important;height:30px!important;font-size:18px!important}
+body.community-group-page .group-main-card{
+  min-height:720px!important;
+  padding:22px 24px 30px!important;
+}
+body.community-group-page .group-panel-head{
+  margin:-22px -24px 20px!important;
+  padding:20px 24px!important;
+}
+body.community-group-page .group-panel-head .kicker{font-size:10px!important;letter-spacing:1.5px!important}
+body.community-group-page .group-panel-head h2{font-size:31px!important}
+body.community-group-page .group-panel-head .btn{min-height:42px!important;padding:0 16px!important;font-size:11px!important}
+body.community-group-page .group-empty{padding:38px!important;font-size:11px!important}
+body.community-group-page .topic-list{gap:12px!important}
+body.community-group-page .topic-card{border-radius:12px!important}
+body.community-group-page .topic-head{gap:12px!important;padding:14px!important}
+body.community-group-page .topic-avatar,
+body.community-group-page .member-avatar{width:46px!important;height:46px!important;border-radius:9px!important}
+body.community-group-page .topic-copy h3{font-size:14px!important}
+body.community-group-page .topic-copy p{font-size:11px!important;line-height:1.6!important}
+body.community-group-page .topic-copy small{font-size:8px!important}
+body.community-group-page .topic-controls{padding:0 14px 12px!important}
+body.community-group-page .topic-controls button{min-height:32px!important;font-size:9px!important}
+body.community-group-page .member-list{gap:9px!important;padding:12px!important}
+body.community-group-page .member-row{grid-template-columns:44px minmax(0,1fr) auto!important;gap:10px!important;padding:10px!important;border-radius:9px!important}
+body.community-group-page .member-copy b{font-size:11px!important}
+body.community-group-page .member-copy span{font-size:8px!important}
+body.community-group-page .member-role{font-size:8px!important;padding:5px 7px!important}
+body.community-group-page .group-right .group-card .group-panel-head{margin:0!important;padding:14px 15px!important}
+body.community-group-page .group-right .group-card .group-panel-head h2{font-size:18px!important}
+body.community-group-page #groupOwner .member-row{grid-template-columns:46px minmax(0,1fr)!important}
+body.community-group-page .group-form{padding:16px!important;border-radius:12px!important}
+body.community-group-page .group-form input,
+body.community-group-page .group-form textarea{font-size:11px!important;padding:11px 12px!important}
+body.community-group-page .group-form textarea{min-height:130px!important}
+
+@media(max-width:1240px){
+  body.community-group-page .community-group-shell{grid-template-columns:270px minmax(0,1fr)!important;width:min(1180px,calc(100% - 24px))!important}
+  body.community-group-page .group-right{position:static!important;grid-column:1/-1!important;grid-template-columns:1fr 1fr!important}
+}
+@media(max-width:820px){
+  body.community-group-page .community-group-shell{display:block!important;width:calc(100% - 20px)!important;padding-top:10px!important}
+  body.community-group-page .group-side,
+  body.community-group-page .group-right{position:static!important}
+  body.community-group-page .group-main-card{min-height:520px!important;margin-top:12px!important;padding:16px!important}
+  body.community-group-page .group-panel-head{margin:-16px -16px 14px!important;padding:16px!important;align-items:flex-start!important;flex-direction:column!important}
+  body.community-group-page .group-panel-head h2{font-size:25px!important}
+  body.community-group-page .group-right{grid-template-columns:1fr!important}
+}
