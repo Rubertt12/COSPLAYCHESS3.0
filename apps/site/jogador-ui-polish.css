@@ -2,7 +2,7 @@
 
 body.public-player-page .player-social-tabs{
   display:grid!important;
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
   gap:8px!important;
   width:100%!important;
   padding:8px!important;
@@ -29,8 +29,6 @@ body.public-player-page .player-social-tabs button{
   font-size:13px!important;
   font-weight:800!important;
   line-height:1!important;
-  letter-spacing:.1px!important;
-  transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease!important;
 }
 
 body.public-player-page .player-social-tabs button:hover{
@@ -46,18 +44,24 @@ body.public-player-page .player-social-tabs button.active{
   box-shadow:0 6px 18px rgba(88,40,145,.18),inset 0 0 0 1px rgba(255,255,255,.03)!important;
 }
 
-/* Botões da área principal: todos com a mesma altura e acabamento */
+/* Todas as ações do perfil usam exatamente a mesma largura e altura. */
 body.public-player-page .player-actions{
+  display:grid!important;
+  grid-template-columns:1fr!important;
   gap:9px!important;
+  width:100%!important;
   align-items:stretch!important;
 }
 
+body.public-player-page .player-actions > *,
 body.public-player-page .player-actions .btn,
 body.public-player-page .player-actions button,
 body.public-player-page .player-actions a,
 body.public-player-page .player-v2-actions .btn,
 body.public-player-page .player-community-cta .btn{
   box-sizing:border-box!important;
+  width:100%!important;
+  min-width:0!important;
   height:46px!important;
   min-height:46px!important;
   padding:0 16px!important;
@@ -71,22 +75,13 @@ body.public-player-page .player-community-cta .btn{
   line-height:1.1!important;
   text-align:center!important;
   white-space:nowrap!important;
+  grid-column:1!important;
 }
 
-body.public-player-page #playerShare{
-  height:46px!important;
-  min-height:46px!important;
-}
-
-/* Evita ações injetadas por JS com larguras aleatórias */
-body.public-player-page .player-actions > *,
-body.public-player-page .player-v2-actions > *{
-  min-width:0!important;
-}
-
-body.public-player-page .player-actions [data-player-friend-action],
-body.public-player-page .player-actions #playerShare{
+body.public-player-page #playerShare,
+body.public-player-page .player-actions [data-player-friend-action]{
   width:100%!important;
+  grid-column:1!important;
 }
 
 /* Botões da topbar também ficam visualmente consistentes */
@@ -105,17 +100,16 @@ body.public-player-page .top-actions .btn{
 
 @media(max-width:860px){
   body.public-player-page .player-social-tabs{
-    grid-template-columns:repeat(3,minmax(110px,1fr))!important;
+    grid-template-columns:repeat(2,minmax(120px,1fr))!important;
     overflow-x:auto!important;
   }
-
   body.public-player-page .player-social-tabs button{
     height:44px!important;
     min-height:44px!important;
     font-size:12px!important;
     padding:0 12px!important;
   }
-
+  body.public-player-page .player-actions > *,
   body.public-player-page .player-actions .btn,
   body.public-player-page .player-actions button,
   body.public-player-page .player-actions a,
@@ -129,16 +123,14 @@ body.public-player-page .top-actions .btn{
 
 @media(max-width:560px){
   body.public-player-page .player-social-tabs{
-    grid-template-columns:repeat(3,minmax(96px,1fr))!important;
+    grid-template-columns:repeat(2,minmax(100px,1fr))!important;
     gap:6px!important;
     padding:6px!important;
   }
-
   body.public-player-page .player-social-tabs button{
     font-size:11px!important;
     padding:0 8px!important;
   }
-
   body.public-player-page .top-actions .btn{
     min-height:36px!important;
     height:36px!important;
