@@ -47,7 +47,25 @@
     };
   }
 
+  function ensureResultsNav() {
+    const nav = document.querySelector('.v6-nav');
+    if (!nav || nav.querySelector('[data-admin-results-link]')) return false;
+
+    const link = document.createElement('a');
+    link.href = './resultados-admin.html';
+    link.dataset.adminResultsLink = '1';
+    link.innerHTML = '<i>♛</i><span>Resultados do Jogo</span>';
+    link.title = 'Importar JSON e administrar resultados';
+
+    const backup = [...nav.querySelectorAll('a')].find(a => a.getAttribute('href') === '#backup');
+    if (backup) nav.insertBefore(link, backup);
+    else nav.appendChild(link);
+    return true;
+  }
+
   function install() {
+    ensureResultsNav();
+
     const btn = document.getElementById('exportRosterBtn');
     if (!btn || btn.dataset.autoResultSync === '1') return false;
     btn.dataset.autoResultSync = '1';
@@ -171,8 +189,12 @@
     return true;
   }
 
+  ensureResultsNav();
   if (!install()) {
-    const timer = setInterval(() => { if (install()) clearInterval(timer); }, 250);
+    const timer = setInterval(() => {
+      ensureResultsNav();
+      if (install()) clearInterval(timer);
+    }, 250);
     setTimeout(() => clearInterval(timer), 10000);
   }
 })();
