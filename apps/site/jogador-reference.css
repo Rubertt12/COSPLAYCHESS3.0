@@ -4,18 +4,37 @@ body.public-player-page{
 }
 body.public-player-page .topbar{padding-left:42px!important;padding-right:42px!important}
 body.public-player-page .player-public-shell{width:calc(100% - 44px)!important;max-width:none!important;padding:0 0 34px!important;margin:0 auto!important}
-body.public-player-page #playerContent{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+body.public-player-page #playerContent{display:grid!important;grid-template-columns:repeat(12,minmax(0,1fr))!important;grid-auto-flow:row!important;grid-auto-rows:auto!important;gap:14px!important;align-items:start!important}
 body.public-player-page #playerContent[hidden]{display:none!important}
 
-body.public-player-page .player-hero-card{grid-column:1/-1;display:grid!important;grid-template-columns:250px minmax(0,1fr)!important;gap:26px!important;align-items:end!important;min-height:465px!important;padding:220px 28px 28px!important;border:0!important;border-radius:0 0 24px 24px!important;background:linear-gradient(180deg,rgba(7,13,24,.10) 0%,rgba(7,13,24,.70) 42%,#08111f 72%,#091321 100%)!important;box-shadow:0 28px 80px rgba(0,0,0,.32)!important;overflow:hidden!important}
-body.public-player-page .player-hero-card.has-public-cover{padding-top:220px!important}
+/* HERO */
+body.public-player-page .player-hero-card{
+  grid-column:1/-1!important;
+  display:grid!important;
+  grid-template-columns:250px minmax(0,1fr)!important;
+  grid-template-rows:auto!important;
+  gap:26px!important;
+  align-items:end!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:465px!important;
+  max-height:none!important;
+  box-sizing:border-box!important;
+  padding:220px 28px 28px!important;
+  border:0!important;
+  border-radius:0 0 24px 24px!important;
+  background:linear-gradient(180deg,rgba(7,13,24,.10) 0%,rgba(7,13,24,.70) 42%,#08111f 72%,#091321 100%)!important;
+  box-shadow:0 28px 80px rgba(0,0,0,.32)!important;
+  overflow:hidden!important;
+}
+body.public-player-page .player-hero-card.has-public-cover{padding-top:220px!important;min-height:465px!important;height:auto!important}
 body.public-player-page .player-public-cover{height:300px!important;inset:0 0 auto!important}
 body.public-player-page .player-public-cover img{object-position:center 30%!important}
 body.public-player-page .player-public-cover:after{background:linear-gradient(180deg,rgba(3,7,13,.02),rgba(3,8,15,.14) 48%,rgba(5,10,18,.90) 100%)!important}
 body.public-player-page .player-public-cover-label{top:16px!important;right:18px!important;font-size:10px!important;padding:7px 10px!important}
 
-body.public-player-page .player-photo{width:220px!important;height:220px!important;aspect-ratio:1!important;border-radius:28px!important;border:4px solid rgba(245,245,248,.85)!important;background:#0a1019!important;box-shadow:0 18px 45px rgba(0,0,0,.48)!important;z-index:3!important}
-body.public-player-page .player-identity{display:grid!important;grid-template-columns:minmax(0,1fr) 430px!important;column-gap:28px!important;align-items:start!important;z-index:3!important}
+body.public-player-page .player-photo{width:220px!important;height:220px!important;min-width:220px!important;aspect-ratio:1!important;border-radius:28px!important;border:4px solid rgba(245,245,248,.85)!important;background:#0a1019!important;box-shadow:0 18px 45px rgba(0,0,0,.48)!important;z-index:3!important;align-self:end!important}
+body.public-player-page .player-identity{display:grid!important;grid-template-columns:minmax(0,1fr) 430px!important;grid-template-rows:auto!important;column-gap:28px!important;align-items:start!important;align-self:end!important;min-width:0!important;z-index:3!important}
 body.public-player-page .player-identity>.kicker,body.public-player-page .player-identity>h1,body.public-player-page .player-identity>.player-character,body.public-player-page .player-identity>.player-nick,body.public-player-page .player-identity>.player-bio,body.public-player-page .player-identity>.player-socials{grid-column:1!important}
 body.public-player-page .player-identity>.kicker{font-size:12px!important;letter-spacing:2px!important;color:#b987ff!important}
 body.public-player-page .player-identity h1{font-size:clamp(44px,4.7vw,72px)!important;line-height:.95!important;margin:10px 0 12px!important;letter-spacing:-1.5px!important;color:#fff!important}
@@ -23,36 +42,108 @@ body.public-player-page .player-character{font-size:18px!important;margin:0 0 10
 body.public-player-page .player-character b{font-size:18px!important}
 body.public-player-page .player-nick{font-size:14px!important;color:#aeb7c9!important;margin:0 0 16px!important}
 body.public-player-page .player-bio{font-size:15px!important;line-height:1.72!important;color:#d8deea!important;max-width:780px!important;margin:7px 0 14px!important}
-body.public-player-page .player-socials{margin:8px 0 0!important}.public-player-page .player-socials a{font-size:12px!important;min-height:38px!important;padding:0 14px!important}
+body.public-player-page .player-socials{margin:8px 0 0!important}
+body.public-player-page .player-socials a{font-size:12px!important;min-height:38px!important;padding:0 14px!important}
 
-body.public-player-page .player-social-stats{grid-column:2!important;grid-row:1/5!important;display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:6px!important;margin:0 0 12px!important;align-self:start!important}
+body.public-player-page .player-social-stats{grid-column:2!important;grid-row:1/5!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important;margin:0 0 12px!important;align-self:start!important;width:100%!important}
 body.public-player-page .player-social-stat{min-width:0!important;padding:20px 8px!important;border:1px solid rgba(116,139,179,.32)!important;border-radius:8px!important;background:rgba(10,22,40,.82)!important;text-align:center!important}
-body.public-player-page .player-social-stat b{font-size:25px!important;color:#fff!important}.public-player-page .player-social-stat span{font-size:10px!important;color:#a8b2c4!important;margin-top:7px!important;letter-spacing:.4px!important}
-body.public-player-page .player-actions{grid-column:2!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:9px!important;margin:0!important;align-self:end!important}
-body.public-player-page .player-actions .btn{min-height:46px!important;justify-content:center!important;font-size:13px!important;font-weight:900!important;border-radius:8px!important}
+body.public-player-page .player-social-stat b{font-size:25px!important;color:#fff!important}
+body.public-player-page .player-social-stat span{font-size:10px!important;color:#a8b2c4!important;margin-top:7px!important;letter-spacing:.4px!important}
+body.public-player-page .player-actions{grid-column:2!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:9px!important;margin:0!important;align-self:end!important;width:100%!important}
+body.public-player-page .player-actions .btn{min-height:46px!important;justify-content:center!important;font-size:13px!important;font-weight:900!important;border-radius:8px!important;white-space:normal!important;text-align:center!important}
 body.public-player-page #playerShare{grid-column:1/-1!important;background:linear-gradient(180deg,#f1b83d,#d99a22)!important;color:#140f07!important;border-color:#f6cb67!important}
 body.public-player-page .player-actions [data-player-friend-action]{grid-column:1/-1!important;order:2!important}
 
-body.public-player-page .player-social-tabs{grid-column:1/-1!important;margin:0!important;padding:7px!important;border-radius:9px!important;background:rgba(11,10,18,.80)!important;border-color:rgba(151,103,208,.18)!important}
+/* TABS */
+body.public-player-page .player-social-tabs{grid-column:1/-1!important;width:100%!important;box-sizing:border-box!important;margin:0!important;padding:7px!important;border-radius:9px!important;background:rgba(11,10,18,.80)!important;border-color:rgba(151,103,208,.18)!important}
 body.public-player-page .player-social-tabs button{min-height:42px!important;padding:0 20px!important;font-size:13px!important;border-radius:7px!important;color:#d9dce5!important}
 body.public-player-page .player-social-tabs button.active{background:rgba(121,59,186,.24)!important;color:#f4e6ff!important;border-color:rgba(162,94,232,.35)!important}
 
-body.public-player-page .player-social-panel[data-player-social-panel="wall"]{grid-column:1/8!important}
-body.public-player-page .player-reference-about{grid-column:8/10!important}
-body.public-player-page .player-achievements-section[data-player-social-panel="achievements"]{grid-column:10/13!important}
-body.public-player-page .player-social-panel[data-player-social-panel="photos"]{grid-column:1/-1!important}
-body.public-player-page .player-social-panel,body.public-player-page .player-reference-about,body.public-player-page .player-achievements-section{border:1px solid rgba(105,129,172,.20)!important;border-radius:14px!important;background:linear-gradient(145deg,rgba(13,27,48,.95),rgba(8,18,33,.98))!important;box-shadow:none!important;padding:20px!important}
+/* LINHA PRINCIPAL — exatamente 3 blocos */
+body.public-player-page .player-social-panel[data-player-social-panel="wall"]{grid-column:1/8!important;grid-row:auto!important;display:block!important;min-width:0!important}
+body.public-player-page .player-reference-about{grid-column:8/10!important;grid-row:auto!important;min-width:0!important}
+body.public-player-page .player-achievements-section[data-player-social-panel="achievements"]{grid-column:10/13!important;grid-row:auto!important;display:block!important;min-width:0!important}
+body.public-player-page .player-achievements-section[data-player-social-panel="achievements"][hidden]{display:block!important}
+body.public-player-page .player-social-panel[data-player-social-panel="photos"]{grid-column:1/-1!important;min-width:0!important}
+body.public-player-page .player-social-panel[data-player-social-panel="photos"][hidden]{display:none!important}
+body.public-player-page .player-social-panel,body.public-player-page .player-reference-about,body.public-player-page .player-achievements-section{border:1px solid rgba(105,129,172,.20)!important;border-radius:14px!important;background:linear-gradient(145deg,rgba(13,27,48,.95),rgba(8,18,33,.98))!important;box-shadow:none!important;padding:20px!important;box-sizing:border-box!important}
 body.public-player-page .player-social-panel-head h2,body.public-player-page .player-achievements-section h2{font-size:24px!important;color:#fff!important}
 body.public-player-page .player-social-panel-head .kicker,body.public-player-page .player-reference-about .kicker{font-size:11px!important;color:#c879ff!important;letter-spacing:2px!important}
 body.public-player-page .player-social-feed{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
 body.public-player-page .player-social-post{border-radius:12px!important;border-color:rgba(111,139,184,.23)!important;background:rgba(11,24,43,.76)!important;min-height:170px!important}
-body.public-player-page .player-social-post-copy{padding:16px!important}.public-player-page .player-social-post-copy p{font-size:14px!important;line-height:1.6!important;color:#e3e7ef!important}.public-player-page .player-social-post-copy small{font-size:10px!important;color:#8f9bb0!important;margin-top:10px!important}
+body.public-player-page .player-social-post-copy{padding:16px!important}
+body.public-player-page .player-social-post-copy p{font-size:14px!important;line-height:1.6!important;color:#e3e7ef!important}
+body.public-player-page .player-social-post-copy small{font-size:10px!important;color:#8f9bb0!important;margin-top:10px!important}
 
-body.public-player-page .player-reference-about h3{margin:6px 0 18px;font-size:22px;color:#fff}.public-player-page .player-reference-about dl{display:grid;gap:17px;margin:0}.public-player-page .player-reference-about dt{font-size:10px;color:#8c98ad;text-transform:uppercase;letter-spacing:.7px}.public-player-page .player-reference-about dd{margin:4px 0 0;font-size:14px;color:#fff;font-weight:800;line-height:1.4}.public-player-page .player-reference-about .about-accent{color:#f0b93e!important}.public-player-page .player-reference-status{display:inline-flex;align-items:center;gap:8px}.public-player-page .player-reference-status:before{content:"";width:12px;height:12px;border-radius:50%;background:#37c967;box-shadow:0 0 0 4px rgba(55,201,103,.10)}
+body.public-player-page .player-reference-about h3{margin:6px 0 18px;font-size:22px;color:#fff}
+body.public-player-page .player-reference-about dl{display:grid;gap:17px;margin:0}
+body.public-player-page .player-reference-about dt{font-size:10px;color:#8c98ad;text-transform:uppercase;letter-spacing:.7px}
+body.public-player-page .player-reference-about dd{margin:4px 0 0;font-size:14px;color:#fff;font-weight:800;line-height:1.4;overflow-wrap:anywhere}
+body.public-player-page .player-reference-about .about-accent{color:#f0b93e!important}
+body.public-player-page .player-reference-status{display:inline-flex;align-items:center;gap:8px}
+body.public-player-page .player-reference-status:before{content:"";width:12px;height:12px;flex:0 0 12px;border-radius:50%;background:#37c967;box-shadow:0 0 0 4px rgba(55,201,103,.10)}
 
-body.public-player-page .player-achievements-section .section-head{align-items:center!important}.public-player-page .player-achievements-section .section-head .kicker{display:none!important}.public-player-page .player-achievements-section h2{font-size:20px!important;margin:0!important}.public-player-page .player-achievement-counter{font-size:13px!important;min-width:38px!important;height:38px!important}.public-player-page .player-achievements-grid{grid-template-columns:1fr!important;gap:10px!important;margin-top:14px!important}.public-player-page .player-achievement-card{grid-template-columns:52px 1fr!important;gap:10px!important;padding:10px!important;border:0!important;background:transparent!important}.public-player-page .player-achievement-icon{width:52px!important;height:52px!important;border-radius:50%!important;font-size:24px!important;background:radial-gradient(circle,rgba(159,91,244,.46),rgba(78,38,126,.36))!important;box-shadow:0 0 0 2px rgba(164,92,240,.25),0 0 18px rgba(130,68,209,.25)!important}.public-player-page .player-achievement-copy b{font-size:13px!important}.public-player-page .player-achievement-copy p{font-size:10px!important;line-height:1.45!important}.public-player-page .player-achievement-copy small{font-size:9px!important;color:#8f9aac!important}
-body.public-player-page .player-community-cta{grid-column:1/-1!important;margin:0!important;font-size:13px!important}.public-player-page .player-community-cta b{font-size:14px!important}.public-player-page .player-community-cta span{font-size:12px!important}.public-player-page .player-community-cta .btn{font-size:12px!important}
+body.public-player-page .player-achievements-section .section-head{align-items:center!important}
+body.public-player-page .player-achievements-section .section-head .kicker{display:none!important}
+body.public-player-page .player-achievements-section h2{font-size:20px!important;margin:0!important}
+body.public-player-page .player-achievement-counter{font-size:13px!important;min-width:38px!important;height:38px!important}
+body.public-player-page .player-achievements-grid{grid-template-columns:1fr!important;gap:10px!important;margin-top:14px!important}
+body.public-player-page .player-achievement-card{grid-template-columns:52px minmax(0,1fr)!important;gap:10px!important;padding:10px!important;border:0!important;background:transparent!important;min-width:0!important}
+body.public-player-page .player-achievement-icon{width:52px!important;height:52px!important;border-radius:50%!important;font-size:24px!important;background:radial-gradient(circle,rgba(159,91,244,.46),rgba(78,38,126,.36))!important;box-shadow:0 0 0 2px rgba(164,92,240,.25),0 0 18px rgba(130,68,209,.25)!important}
+body.public-player-page .player-achievement-copy{min-width:0!important}
+body.public-player-page .player-achievement-copy b{font-size:13px!important;overflow-wrap:anywhere}
+body.public-player-page .player-achievement-copy p{font-size:10px!important;line-height:1.45!important;overflow-wrap:anywhere}
+body.public-player-page .player-achievement-copy small{font-size:9px!important;color:#8f9aac!important}
 
-@media(max-width:1180px){body.public-player-page .player-identity{grid-template-columns:minmax(0,1fr) 350px!important}body.public-player-page .player-social-panel[data-player-social-panel="wall"]{grid-column:1/9!important}body.public-player-page .player-reference-about{grid-column:9/13!important}body.public-player-page .player-achievements-section[data-player-social-panel="achievements"]{grid-column:1/-1!important}.public-player-page .player-achievements-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
-@media(max-width:860px){body.public-player-page .player-public-shell{width:calc(100% - 22px)!important}body.public-player-page .player-hero-card,body.public-player-page .player-hero-card.has-public-cover{grid-template-columns:1fr!important;padding:190px 20px 22px!important}.public-player-page .player-public-cover{height:240px!important}.public-player-page .player-photo{width:170px!important;height:170px!important}.public-player-page .player-identity{grid-template-columns:1fr!important}.public-player-page .player-social-stats,.public-player-page .player-actions{grid-column:1!important;grid-row:auto!important}.public-player-page .player-social-panel[data-player-social-panel="wall"],.public-player-page .player-reference-about,.public-player-page .player-achievements-section[data-player-social-panel="achievements"]{grid-column:1/-1!important}.public-player-page .player-achievements-grid{grid-template-columns:1fr!important}}
-@media(max-width:560px){body.public-player-page .topbar{padding-left:12px!important;padding-right:12px!important}.public-player-page .player-public-shell{width:calc(100% - 14px)!important}.public-player-page .player-hero-card,.public-player-page .player-hero-card.has-public-cover{padding:150px 14px 18px!important;min-height:0!important}.public-player-page .player-public-cover{height:195px!important}.public-player-page .player-photo{width:128px!important;height:128px!important;border-radius:22px!important}.public-player-page .player-identity h1{font-size:38px!important}.public-player-page .player-bio{font-size:14px!important}.public-player-page .player-social-stats{grid-template-columns:repeat(2,1fr)!important}.public-player-page .player-actions{grid-template-columns:1fr!important}.public-player-page #playerShare,.public-player-page .player-actions [data-player-friend-action]{grid-column:1!important}.public-player-page .player-social-feed{grid-template-columns:1fr!important}.public-player-page .player-social-tabs{overflow:auto!important}.public-player-page .player-social-tabs button{font-size:12px!important}.public-player-page .player-social-panel,.public-player-page .player-reference-about,.public-player-page .player-achievements-section{padding:15px!important}}
+/* Recursos sociais antigos não podem virar colunas estreitas no grid principal */
+body.public-player-page #playerContent>.player-v2-section,
+body.public-player-page #playerContent>.player-ext-profile-grid,
+body.public-player-page #playerContent>.player-community-cta,
+body.public-player-page #playerContent>[class*="player-v2-"]:not(.player-social-panel),
+body.public-player-page #playerContent>[class*="player-ext-"]:not(.player-reference-about){
+  grid-column:1/-1!important;
+  width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+body.public-player-page #playerContent>.player-ext-profile-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+body.public-player-page #playerContent>.player-v2-section{margin-top:0!important}
+body.public-player-page .player-community-cta{margin:0!important;font-size:13px!important}
+body.public-player-page .player-community-cta b{font-size:14px!important}
+body.public-player-page .player-community-cta span{font-size:12px!important}
+body.public-player-page .player-community-cta .btn{font-size:12px!important}
+
+@media(max-width:1180px){
+  body.public-player-page .player-identity{grid-template-columns:minmax(0,1fr) 350px!important}
+  body.public-player-page .player-social-panel[data-player-social-panel="wall"]{grid-column:1/9!important}
+  body.public-player-page .player-reference-about{grid-column:9/13!important}
+  body.public-player-page .player-achievements-section[data-player-social-panel="achievements"]{grid-column:1/-1!important}
+  body.public-player-page .player-achievements-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:860px){
+  body.public-player-page .player-public-shell{width:calc(100% - 22px)!important}
+  body.public-player-page .player-hero-card,body.public-player-page .player-hero-card.has-public-cover{grid-template-columns:1fr!important;padding:190px 20px 22px!important;min-height:0!important}
+  body.public-player-page .player-public-cover{height:240px!important}
+  body.public-player-page .player-photo{width:170px!important;height:170px!important;min-width:170px!important}
+  body.public-player-page .player-identity{grid-template-columns:1fr!important}
+  body.public-player-page .player-social-stats,body.public-player-page .player-actions{grid-column:1!important;grid-row:auto!important;margin-top:14px!important}
+  body.public-player-page .player-social-panel[data-player-social-panel="wall"],body.public-player-page .player-reference-about,body.public-player-page .player-achievements-section[data-player-social-panel="achievements"]{grid-column:1/-1!important}
+  body.public-player-page .player-achievements-grid{grid-template-columns:1fr!important}
+  body.public-player-page #playerContent>.player-ext-profile-grid{grid-template-columns:1fr!important}
+}
+@media(max-width:560px){
+  body.public-player-page .topbar{padding-left:12px!important;padding-right:12px!important}
+  body.public-player-page .player-public-shell{width:calc(100% - 14px)!important}
+  body.public-player-page .player-hero-card,body.public-player-page .player-hero-card.has-public-cover{padding:150px 14px 18px!important;min-height:0!important}
+  body.public-player-page .player-public-cover{height:195px!important}
+  body.public-player-page .player-photo{width:128px!important;height:128px!important;min-width:128px!important;border-radius:22px!important}
+  body.public-player-page .player-identity h1{font-size:38px!important}
+  body.public-player-page .player-bio{font-size:14px!important}
+  body.public-player-page .player-social-stats{grid-template-columns:repeat(2,1fr)!important}
+  body.public-player-page .player-actions{grid-template-columns:1fr!important}
+  body.public-player-page #playerShare,body.public-player-page .player-actions [data-player-friend-action]{grid-column:1!important}
+  body.public-player-page .player-social-feed{grid-template-columns:1fr!important}
+  body.public-player-page .player-social-tabs{overflow:auto!important}
+  body.public-player-page .player-social-tabs button{font-size:12px!important}
+  body.public-player-page .player-social-panel,body.public-player-page .player-reference-about,body.public-player-page .player-achievements-section{padding:15px!important}
+}
