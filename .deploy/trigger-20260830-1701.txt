@@ -1,0 +1,1 @@
+Trigger seguro de deploy de produção para publicar as correções da rede social.
