@@ -1,0 +1,169 @@
+/* CosplayChess Social — responsive polish layer */
+:root{--social-max:1760px;--social-gap:16px;--social-radius:16px;--social-border:rgba(255,255,255,.08);--social-panel:rgba(9,16,27,.94);--social-muted:#8996aa}
+*{box-sizing:border-box}img{max-width:100%}button,input,select,textarea{font:inherit}
+
+/* Main social dashboard */
+body.community-page .community-shell{width:min(var(--social-max),calc(100% - 32px))!important;grid-template-columns:minmax(250px,290px) minmax(0,1fr) minmax(280px,340px)!important;gap:var(--social-gap)!important}
+body.community-page .community-main,body.community-page .community-view,body.community-page .community-view>*{min-width:0}
+body.community-page .community-sidebar,body.community-page .community-orkut-rail{scrollbar-gutter:stable}
+body.community-page .community-view:not([hidden]){width:100%}
+body.community-page .community-section-head{gap:16px;align-items:center;flex-wrap:wrap}
+body.community-page .community-section-head h2{font-size:clamp(24px,2.5vw,34px)!important;line-height:1.05}
+body.community-page .community-section-head .btn{min-height:42px}
+body.community-page .community-composer{grid-template-columns:44px minmax(0,1fr)!important;padding:14px 16px!important}
+body.community-page .community-composer textarea{min-height:54px!important;height:auto!important;line-height:1.5!important}
+body.community-page .community-composer-controls{display:flex!important;flex-wrap:wrap!important;gap:8px!important;align-items:center!important}
+body.community-page .community-composer-controls .btn{margin-left:auto}
+body.community-page .community-feed{display:grid;gap:14px}
+body.community-page .community-post,body.community-page .premium-post-card{overflow:hidden;border-radius:var(--social-radius)!important}
+body.community-page .community-post img,body.community-page .premium-post-card img{max-width:100%;height:auto}
+body.community-page .community-people-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+body.community-page .community-person-card,body.community-page .community-person{min-width:0}
+body.community-page .community-person-copy,body.community-page .community-person-copy *{min-width:0;overflow-wrap:anywhere}
+body.community-page .community-group-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+body.community-page .community-group-card{min-width:0}
+body.community-page .community-photo-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important}
+body.community-page .community-photo-grid img{width:100%;aspect-ratio:1/1;object-fit:cover}
+body.community-page .community-search{width:100%}
+body.community-page .community-search input{min-width:0;width:100%}
+body.community-page .community-group-toolbar{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(180px,260px)!important;gap:12px!important}
+body.community-page .social-v2-messages-layout{grid-template-columns:minmax(240px,300px) minmax(0,1fr)!important;min-height:560px}
+body.community-page .social-v2-thread-list,body.community-page .social-v2-conversation{min-width:0}
+body.community-page .social-v2-message-stream{max-height:60vh!important;min-height:320px}
+body.community-page [data-community-panel="social-settings"] .social-v2-grid{grid-template-columns:minmax(0,1fr) minmax(260px,320px)!important;gap:16px!important}
+body.community-page .social-v2-settings{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body.community-page .social-v2-setting.wide{grid-column:1/-1}
+body.community-page .social-v2-setting{min-width:0}
+body.community-page .social-v2-setting input[type="text"],body.community-page .social-v2-setting select{width:100%;min-width:0}
+body.community-page .orkut-module,body.community-page .community-me-card,body.community-page .community-nav{border-radius:var(--social-radius)!important}
+body.community-page .community-profile-dropdown{max-width:min(320px,calc(100vw - 20px))}
+
+/* Shared social pages */
+body.social-profile-page,body.social-achievements-page,body.album-page,body.community-group-page{overflow-x:hidden}
+body.social-profile-page main,body.social-achievements-page main,body.album-page main,body.community-group-page main{width:min(1480px,calc(100% - 32px));margin-left:auto;margin-right:auto}
+body.social-profile-page .social-profile-shell{width:min(1480px,calc(100% - 32px))!important}
+body.social-profile-page .social-profile-cover{height:clamp(180px,24vw,320px)!important}
+body.social-profile-page .social-profile-identity{grid-template-columns:132px minmax(0,1fr) auto!important;gap:20px!important;padding:0 26px 22px!important}
+body.social-profile-page .social-profile-avatar{width:124px!important;height:124px!important}
+body.social-profile-page .social-profile-copy h1{font-size:clamp(28px,4vw,48px)!important}
+body.social-profile-page .social-profile-actions{align-self:center}
+body.social-profile-page .social-profile-actions .btn{min-height:42px}
+body.social-profile-page .social-profile-stats{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+body.social-profile-page .social-profile-tabs{display:flex;gap:6px;overflow-x:auto;padding:10px 14px;border-top:1px solid var(--social-border);scrollbar-width:none}
+body.social-profile-page .social-profile-tabs::-webkit-scrollbar{display:none}
+body.social-profile-page .social-profile-tabs a{flex:0 0 auto;padding:9px 13px;border-radius:999px;text-decoration:none;color:#aeb9ce;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06)}
+body.social-profile-page .social-profile-tabs a:hover{color:#f2c66b;border-color:rgba(226,185,92,.25)}
+body.social-profile-page .social-profile-layout{grid-template-columns:minmax(0,1.7fr) minmax(300px,.8fr)!important;gap:18px!important}
+body.social-profile-page .social-profile-card{border-radius:var(--social-radius)!important}
+body.social-profile-page .social-profile-posts{gap:14px!important;padding:16px!important}
+body.social-profile-page .social-profile-post-copy p{font-size:14px!important;line-height:1.65!important}
+body.social-profile-page .social-profile-post-copy small,body.social-profile-page .social-profile-card-head>small{font-size:11px!important}
+body.social-profile-page .social-profile-community b{font-size:12px!important}body.social-profile-page .social-profile-community span{font-size:10px!important}
+body.social-profile-page .social-profile-album span{font-size:11px!important}
+body.social-profile-page .social-profile-empty{font-size:12px!important}
+body.social-profile-page .social-profile-state{min-height:calc(100vh - 120px)!important;padding:30px 16px}
+
+body.social-achievements-page .social-achievements-shell{width:min(1480px,calc(100% - 32px))!important}
+body.social-achievements-page .social-achievements-hero{gap:20px;align-items:center}
+body.social-achievements-page .social-achievements-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+body.social-achievements-page .social-achievements-toolbar{gap:12px;flex-wrap:wrap}
+
+body.album-page .album-shell{width:min(1480px,calc(100% - 32px))!important}
+body.album-page .album-hero{gap:18px;align-items:flex-end}
+body.album-page .album-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+body.album-page .album-grid img{width:100%;height:auto}
+body.album-page .album-editor-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+body.album-page .album-editor-grid .wide{grid-column:1/-1}
+
+body.community-group-page .community-group-shell{width:min(1560px,calc(100% - 32px))!important;grid-template-columns:minmax(250px,310px) minmax(0,1fr) minmax(250px,310px)!important;gap:16px!important}
+body.community-group-page .group-side,body.community-group-page .group-main,body.community-group-page .group-right{min-width:0}
+body.community-group-page .group-card,body.community-group-page .group-main-card{border-radius:var(--social-radius)!important}
+body.community-group-page .group-panel-head{gap:12px;flex-wrap:wrap}
+body.community-group-page .member-list{min-width:0}
+
+/* Tablet */
+@media(max-width:1240px){
+ body.community-page .community-shell{grid-template-columns:250px minmax(0,1fr)!important;width:min(1180px,calc(100% - 24px))!important}
+ body.community-page .community-orkut-rail{position:relative!important;top:auto!important;grid-column:2;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-height:none!important;overflow:visible!important}
+ body.community-page .community-orkut-rail>*{min-width:0}
+ body.community-page .community-people-grid,body.community-page .community-group-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.social-profile-page .social-profile-layout{grid-template-columns:minmax(0,1.4fr) minmax(280px,.8fr)!important}
+ body.social-achievements-page .social-achievements-grid,body.album-page .album-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ body.community-group-page .community-group-shell{grid-template-columns:minmax(240px,280px) minmax(0,1fr)!important}
+ body.community-group-page .group-right{grid-column:2;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+}
+
+@media(max-width:920px){
+ body.community-page .community-shell{display:block!important;width:calc(100% - 20px)!important;padding-top:10px!important}
+ body.community-page .community-sidebar{position:relative!important;top:auto!important;max-height:none!important;overflow:visible!important;margin-bottom:12px}
+ body.community-page .community-me-card{display:grid!important;grid-template-columns:72px minmax(0,1fr);text-align:left!important;align-items:center;padding:12px!important}
+ body.community-page .community-me-cover{display:none!important}
+ body.community-page .community-me-avatar{width:68px!important;height:68px!important;margin:0!important;grid-row:1/3}
+ body.community-page .community-me-copy{margin:0!important}
+ body.community-page .premium-profile-stats,.premium-sidebar-foot{display:none!important}
+ body.community-page .community-nav{display:flex!important;overflow-x:auto!important;gap:6px!important;padding:7px!important;scrollbar-width:none}
+ body.community-page .community-nav::-webkit-scrollbar{display:none}
+ body.community-page .community-nav button,body.community-page .community-nav>a{flex:0 0 auto!important;width:auto!important;min-height:38px!important;padding:0 12px!important;white-space:nowrap}
+ body.community-page .community-nav button.active:before{display:none}
+ body.community-page .community-main{width:100%}
+ body.community-page .community-orkut-rail{grid-column:auto;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:12px}
+ body.community-page [data-community-panel="social-settings"] .social-v2-grid{grid-template-columns:1fr!important}
+ body.community-page .social-v2-messages-layout{grid-template-columns:220px minmax(0,1fr)!important}
+ body.social-profile-page .social-profile-identity{grid-template-columns:100px minmax(0,1fr)!important;align-items:center!important}
+ body.social-profile-page .social-profile-avatar{width:96px!important;height:96px!important}
+ body.social-profile-page .social-profile-actions{grid-column:1/-1;justify-content:flex-start!important}
+ body.social-profile-page .social-profile-layout{grid-template-columns:1fr!important}
+ body.social-profile-page .social-profile-side{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.social-achievements-page .social-achievements-grid,body.album-page .album-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.community-group-page .community-group-shell{display:block!important;width:calc(100% - 20px)!important}
+ body.community-group-page .group-side,body.community-group-page .group-main,body.community-group-page .group-right{width:100%;margin-bottom:14px}
+ body.community-group-page .group-right{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+/* Mobile */
+@media(max-width:640px){
+ body.community-page .community-shell,body.social-profile-page main,body.social-achievements-page main,body.album-page main,body.community-group-page main{width:calc(100% - 12px)!important}
+ body.community-page .community-me-card{grid-template-columns:58px minmax(0,1fr)!important;padding:10px!important}
+ body.community-page .community-me-avatar{width:54px!important;height:54px!important}
+ body.community-page .community-nav button,body.community-page .community-nav>a{font-size:10px!important;padding:0 10px!important}
+ body.community-page .community-view:not(.active){padding:12px!important}
+ body.community-page .community-section-head{align-items:flex-start}
+ body.community-page .community-section-head h2{font-size:25px!important}
+ body.community-page .community-composer{grid-template-columns:34px minmax(0,1fr)!important;padding:10px!important}
+ body.community-page .community-composer-avatar{width:32px!important;height:32px!important}
+ body.community-page .community-composer-controls{display:grid!important;grid-template-columns:1fr 1fr!important}
+ body.community-page .community-composer-controls .btn{grid-column:1/-1;width:100%;margin:0!important}
+ body.community-page .community-people-grid,body.community-page .community-group-grid{grid-template-columns:1fr!important}
+ body.community-page .community-photo-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.community-page .community-group-toolbar{grid-template-columns:1fr!important}
+ body.community-page .community-orkut-rail{grid-template-columns:1fr!important}
+ body.community-page .social-v2-settings{grid-template-columns:1fr!important}
+ body.community-page .social-v2-setting.wide{grid-column:auto}
+ body.community-page .social-v2-messages-layout{grid-template-columns:1fr!important;min-height:0}
+ body.community-page .social-v2-thread-list{max-height:260px;overflow:auto}
+ body.community-page .social-v2-message-stream{min-height:260px;max-height:48vh!important}
+ body.social-profile-page .social-profile-shell,body.social-achievements-page .social-achievements-shell,body.album-page .album-shell{width:calc(100% - 12px)!important;margin-top:10px!important}
+ body.social-profile-page .social-profile-cover{height:150px!important}
+ body.social-profile-page .social-profile-identity{grid-template-columns:74px minmax(0,1fr)!important;gap:10px!important;padding:0 12px 14px!important}
+ body.social-profile-page .social-profile-avatar{width:72px!important;height:72px!important;margin-top:-36px!important}
+ body.social-profile-page .social-profile-copy h1{font-size:24px!important}
+ body.social-profile-page .social-profile-actions{display:grid!important;grid-template-columns:1fr!important;width:100%}
+ body.social-profile-page .social-profile-actions .btn{width:100%;justify-content:center}
+ body.social-profile-page .social-profile-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.social-profile-page .social-profile-tabs{padding:8px}
+ body.social-profile-page .social-profile-side{grid-template-columns:1fr}
+ body.social-profile-page .social-profile-card-head{padding:12px!important}
+ body.social-profile-page .social-profile-posts{padding:10px!important}
+ body.social-achievements-page .social-achievements-hero{display:block;padding:16px}
+ body.social-achievements-page .social-achievements-avatar{margin-bottom:12px}
+ body.social-achievements-page .social-achievements-grid,body.album-page .album-grid{grid-template-columns:1fr}
+ body.social-achievements-page .social-achievements-filters{width:100%;overflow-x:auto;flex-wrap:nowrap}
+ body.album-page .album-hero{display:block}
+ body.album-page .album-actions{margin-top:14px;display:grid;grid-template-columns:1fr}
+ body.album-page .album-actions .btn{width:100%}
+ body.album-page .album-editor-grid{grid-template-columns:1fr}
+ body.album-page .album-editor-grid .wide{grid-column:auto}
+ body.community-group-page .group-right{grid-template-columns:1fr}
+ body.community-group-page .group-actions{display:grid!important;grid-template-columns:1fr!important}
+ body.community-group-page .group-actions .btn{width:100%}
+}
