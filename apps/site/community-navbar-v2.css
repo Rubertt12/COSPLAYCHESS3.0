@@ -1,0 +1,82 @@
+/* Navbar da comunidade: logo esquerda, busca centro, perfil direita */
+body.community-page .community-premium-topbar{
+  display:grid!important;
+  grid-template-columns:minmax(180px,1fr) minmax(320px,760px) minmax(180px,1fr)!important;
+  align-items:center!important;
+  gap:20px!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  padding:0 clamp(18px,2.4vw,46px)!important;
+}
+
+body.community-page .premium-brand-zone{
+  grid-column:1!important;
+  justify-self:start!important;
+  display:flex!important;
+  align-items:center!important;
+  min-width:0!important;
+}
+body.community-page .premium-brand-zone .premium-back{display:none!important}
+body.community-page .premium-brand-zone .brand{margin:0!important}
+
+body.community-page .premium-global-search{
+  grid-column:2!important;
+  justify-self:center!important;
+  width:100%!important;
+  max-width:760px!important;
+  margin:0!important;
+}
+
+body.community-page .premium-top-actions{
+  grid-column:3!important;
+  justify-self:end!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:0!important;
+  min-width:0!important;
+}
+
+/* Oculta ações extras da barra. Elas continuam acessíveis pelo restante da interface. */
+body.community-page .premium-top-actions>.premium-create,
+body.community-page .premium-top-actions>.premium-icon-action{
+  display:none!important;
+}
+
+body.community-page .premium-user-menu{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:8px!important;
+  padding:4px!important;
+  margin:0!important;
+  border:0!important;
+  background:transparent!important;
+}
+body.community-page .premium-user-menu b,
+body.community-page .premium-user-menu small{display:none!important}
+body.community-page .premium-header-avatar{
+  width:42px!important;
+  height:42px!important;
+  flex:0 0 42px!important;
+}
+
+@media(max-width:900px){
+  body.community-page .community-premium-topbar{
+    grid-template-columns:auto minmax(180px,1fr) auto!important;
+    gap:12px!important;
+    padding:0 14px!important;
+  }
+  body.community-page .premium-brand-zone .brand span{display:none!important}
+  body.community-page .premium-brand-zone .brand img{width:38px!important;height:38px!important}
+  body.community-page .premium-search-key{display:none!important}
+}
+
+@media(max-width:620px){
+  body.community-page .community-premium-topbar{
+    grid-template-columns:auto minmax(0,1fr) auto!important;
+    gap:9px!important;
+  }
+  body.community-page .premium-global-search{min-width:0!important}
+  body.community-page .premium-global-search input{font-size:11px!important;padding:0 8px!important}
+  body.community-page .premium-header-avatar{width:38px!important;height:38px!important;flex-basis:38px!important}
+}
