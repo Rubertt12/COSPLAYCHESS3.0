@@ -11,97 +11,44 @@ body.community-page .community-premium-topbar{
 body.community-page .premium-brand-zone{grid-column:1!important;justify-self:start!important;display:flex!important;align-items:center!important;min-width:0!important}
 body.community-page .premium-brand-zone .premium-back{display:none!important}
 body.community-page .premium-brand-zone .brand{margin:0!important}
-body.community-page .premium-global-search{grid-column:2!important;justify-self:center!important;width:100%!important;max-width:760px!important;margin:0!important}
+body.community-page .premium-global-search{grid-column:2!important;justify-self:center!important;width:100%!important;max-width:760px!important;margin:0!important;position:relative!important}
 body.community-page .premium-top-actions{grid-column:3!important;justify-self:end!important;display:flex!important;align-items:center!important;gap:0!important;min-width:0!important;position:relative!important}
 body.community-page .premium-top-actions>.premium-create,
 body.community-page .premium-top-actions>.premium-icon-action{display:none!important}
 
 /* Perfil na direita: foto + nome + seta */
-body.community-page .premium-user-menu{
-  display:flex!important;
-  align-items:center!important;
-  justify-content:flex-end!important;
-  gap:9px!important;
-  min-height:48px!important;
-  padding:4px 10px 4px 5px!important;
-  margin:0!important;
-  border:1px solid transparent!important;
-  border-radius:999px!important;
-  background:transparent!important;
-  color:#fff!important;
-  text-decoration:none!important;
-  cursor:pointer!important;
-}
-body.community-page .premium-user-menu:hover,
-body.community-page .premium-user-menu[aria-expanded="true"]{
-  border-color:rgba(226,173,73,.25)!important;
-  background:rgba(226,173,73,.055)!important;
-}
-body.community-page .premium-user-menu b{
-  display:block!important;
-  max-width:150px!important;
-  overflow:hidden!important;
-  color:#f4f6fb!important;
-  font-size:12px!important;
-  font-weight:800!important;
-  text-overflow:ellipsis!important;
-  white-space:nowrap!important;
-}
-body.community-page .premium-user-menu small{
-  display:grid!important;
-  place-items:center!important;
-  width:20px!important;
-  height:20px!important;
-  color:#8d98aa!important;
-  font-size:11px!important;
-}
+body.community-page .premium-user-menu{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:9px!important;min-height:48px!important;padding:4px 10px 4px 5px!important;margin:0!important;border:1px solid transparent!important;border-radius:999px!important;background:transparent!important;color:#fff!important;text-decoration:none!important;cursor:pointer!important}
+body.community-page .premium-user-menu:hover,body.community-page .premium-user-menu[aria-expanded="true"]{border-color:rgba(226,173,73,.25)!important;background:rgba(226,173,73,.055)!important}
+body.community-page .premium-user-menu b{display:block!important;max-width:150px!important;overflow:hidden!important;color:#f4f6fb!important;font-size:12px!important;font-weight:800!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+body.community-page .premium-user-menu small{display:grid!important;place-items:center!important;width:20px!important;height:20px!important;color:#8d98aa!important;font-size:11px!important}
 body.community-page .premium-header-avatar{width:42px!important;height:42px!important;flex:0 0 42px!important}
-
-/* Há um menu legado criado pelo premium-sync. Mantemos apenas o menu final. */
 body.community-page .premium-profile-dropdown{display:none!important}
 
-body.community-page .community-profile-dropdown{
-  position:absolute;
-  top:calc(100% + 10px);
-  right:0;
-  z-index:300;
-  width:230px;
-  padding:8px;
-  border:1px solid rgba(226,173,73,.22);
-  border-radius:12px;
-  background:rgba(7,14,24,.98);
-  box-shadow:0 18px 50px rgba(0,0,0,.42);
-  backdrop-filter:blur(18px);
-}
+/* autocomplete da pesquisa */
+body.community-page .premium-search-autocomplete{position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:420;overflow:hidden;border:1px solid rgba(226,173,73,.22);border-radius:12px;background:rgba(7,14,24,.985);box-shadow:0 22px 60px rgba(0,0,0,.45);backdrop-filter:blur(18px)}
+body.community-page .premium-search-autocomplete[hidden]{display:none!important}
+body.community-page .premium-search-autocomplete-head{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.055);color:#788599;font-size:8px;font-weight:900;letter-spacing:1px}
+body.community-page .premium-search-person{display:grid;grid-template-columns:42px minmax(0,1fr) 18px;gap:10px;align-items:center;min-height:58px;padding:8px 11px;border-bottom:1px solid rgba(255,255,255,.045);color:#e8edf5;text-decoration:none}
+body.community-page .premium-search-person:hover{background:rgba(226,173,73,.075)}
+body.community-page .premium-search-person-avatar{display:grid;place-items:center;width:42px;height:42px;overflow:hidden;border:1px solid rgba(226,173,73,.3);border-radius:50%;background:#101b2b;color:#e5b24e;font-size:14px;font-weight:900}
+body.community-page .premium-search-person-avatar img{width:100%;height:100%;object-fit:cover}
+body.community-page .premium-search-person-copy{min-width:0}
+body.community-page .premium-search-person-copy b,body.community-page .premium-search-person-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.community-page .premium-search-person-copy b{font-size:11px;color:#f4f6fb}
+body.community-page .premium-search-person-copy small{margin-top:4px;color:#8390a4;font-size:9px}
+body.community-page .premium-search-person-arrow{color:#e2ad49;font-size:20px}
+body.community-page .premium-search-see-all{width:100%;min-height:42px;padding:0 12px;border:0;background:rgba(226,173,73,.045);color:#e7bb67;font:inherit;font-size:10px;font-weight:800;text-align:left;cursor:pointer}
+body.community-page .premium-search-see-all:hover{background:rgba(226,173,73,.09);color:#fff}
+
+body.community-page .community-profile-dropdown{position:absolute;top:calc(100% + 10px);right:0;z-index:300;width:230px;padding:8px;border:1px solid rgba(226,173,73,.22);border-radius:12px;background:rgba(7,14,24,.98);box-shadow:0 18px 50px rgba(0,0,0,.42);backdrop-filter:blur(18px)}
 body.community-page .community-profile-dropdown[hidden]{display:none!important}
 body.community-page .community-profile-dropdown-head{padding:10px 11px 12px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:6px}
 body.community-page .community-profile-dropdown-head b{display:block;color:#fff;font-size:12px}
 body.community-page .community-profile-dropdown-head span{display:block;margin-top:3px;color:#7f8a9d;font-size:9px}
-body.community-page .community-profile-dropdown a,
-body.community-page .community-profile-dropdown button{
-  width:100%;min-height:39px;padding:0 11px;border:0;border-radius:8px;background:transparent;color:#dce2eb;text-decoration:none;font:inherit;font-size:11px;font-weight:700;text-align:left;display:flex;align-items:center;gap:9px;cursor:pointer;box-sizing:border-box
-}
-body.community-page .community-profile-dropdown a:hover,
-body.community-page .community-profile-dropdown button:hover{background:rgba(226,173,73,.09);color:#fff}
+body.community-page .community-profile-dropdown a,body.community-page .community-profile-dropdown button{width:100%;min-height:39px;padding:0 11px;border:0;border-radius:8px;background:transparent;color:#dce2eb;text-decoration:none;font:inherit;font-size:11px;font-weight:700;text-align:left;display:flex;align-items:center;gap:9px;cursor:pointer;box-sizing:border-box}
+body.community-page .community-profile-dropdown a:hover,body.community-page .community-profile-dropdown button:hover{background:rgba(226,173,73,.09);color:#fff}
 body.community-page .community-profile-dropdown .danger-separator{margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.06)}
+body.community-page .community-me-card [data-community-achievements-preview],body.community-page .community-me-card > .community-achievement-mini{display:none!important}
 
-/* Nunca permitir conquistas dentro do cartão esquerdo do perfil. */
-body.community-page .community-me-card [data-community-achievements-preview],
-body.community-page .community-me-card > .community-achievement-mini{display:none!important}
-
-@media(max-width:900px){
-  body.community-page .community-premium-topbar{grid-template-columns:auto minmax(180px,1fr) auto!important;gap:12px!important;padding:0 14px!important}
-  body.community-page .premium-brand-zone .brand span{display:none!important}
-  body.community-page .premium-brand-zone .brand img{width:38px!important;height:38px!important}
-  body.community-page .premium-search-key{display:none!important}
-}
-@media(max-width:620px){
-  body.community-page .community-premium-topbar{grid-template-columns:auto minmax(0,1fr) auto!important;gap:9px!important}
-  body.community-page .premium-global-search{min-width:0!important}
-  body.community-page .premium-global-search input{font-size:11px!important;padding:0 8px!important}
-  body.community-page .premium-user-menu b{display:none!important}
-  body.community-page .premium-user-menu small{display:none!important}
-  body.community-page .premium-user-menu{padding:3px!important}
-  body.community-page .premium-header-avatar{width:38px!important;height:38px!important;flex-basis:38px!important}
-  body.community-page .community-profile-dropdown{right:-2px;width:min(230px,calc(100vw - 24px))}
-}
+@media(max-width:900px){body.community-page .community-premium-topbar{grid-template-columns:auto minmax(180px,1fr) auto!important;gap:12px!important;padding:0 14px!important}body.community-page .premium-brand-zone .brand span{display:none!important}body.community-page .premium-brand-zone .brand img{width:38px!important;height:38px!important}body.community-page .premium-search-key{display:none!important}}
+@media(max-width:620px){body.community-page .community-premium-topbar{grid-template-columns:auto minmax(0,1fr) auto!important;gap:9px!important}body.community-page .premium-global-search{min-width:0!important}body.community-page .premium-global-search input{font-size:11px!important;padding:0 8px!important}body.community-page .premium-user-menu b,body.community-page .premium-user-menu small{display:none!important}body.community-page .premium-user-menu{padding:3px!important}body.community-page .premium-header-avatar{width:38px!important;height:38px!important;flex-basis:38px!important}body.community-page .community-profile-dropdown{right:-2px;width:min(230px,calc(100vw - 24px))}body.community-page .premium-search-autocomplete{left:-40px;right:-46px}}
