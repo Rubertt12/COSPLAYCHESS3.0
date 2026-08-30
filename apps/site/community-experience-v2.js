@@ -86,17 +86,32 @@
       /meu\s*cosplaychess/i.test(section.querySelector('h3')?.textContent || '')
     );
 
+    const achievementsHref = './conquistas-social.html';
     const card = document.createElement('section');
     card.className = 'community-achievements-rail';
+    card.setAttribute('role', 'link');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', 'Abrir minhas conquistas');
     card.innerHTML = `
       <div class="community-achievements-rail-head">
         <h3>🏆 Minhas conquistas</h3>
-        <a href="./conquistas.html">Ver todas</a>
+        <a href="${achievementsHref}">Ver todas</a>
       </div>
       <div class="community-achievements-rail-body">
         <div class="community-achievements-empty">Carregando suas conquistas...</div>
       </div>
       <div class="community-achievements-summary"><span>Total desbloqueado</span><b>0</b></div>`;
+
+    const openAchievements = (event) => {
+      if (event?.target?.closest('a')) return;
+      location.href = achievementsHref;
+    };
+    card.addEventListener('click', openAchievements);
+    card.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      location.href = achievementsHref;
+    });
 
     if (oldCosplay) oldCosplay.replaceWith(card);
     else rail.appendChild(card);
@@ -115,7 +130,7 @@
       achievements.slice(0, 4).forEach(item => {
         const row = document.createElement('a');
         row.className = 'community-achievement-mini';
-        row.href = './conquistas.html';
+        row.href = achievementsHref;
         row.style.textDecoration = 'none';
         const icon = document.createElement('div');
         icon.className = 'community-achievement-mini-icon';
