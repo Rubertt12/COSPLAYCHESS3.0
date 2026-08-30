@@ -1,0 +1,22 @@
+(() => {
+  if (window.__COSPLAY_SHARED_SOCIAL_NAV__) return;
+  window.__COSPLAY_SHARED_SOCIAL_NAV__ = true;
+  const db=window.getCosplayChessParticipantDb?window.getCosplayChessParticipantDb():window.COSPLAYCHESS_PARTICIPANT_DB;
+  const esc=s=>String(s||'').replace(/[&<>"']/g,'');
+  const current=document.querySelector('header.topbar');
+  if(!current)return;
+  const nav=document.createElement('header');
+  nav.className='social-network-navbar';
+  nav.innerHTML=`<a class="social-network-brand" href="./comunidade.html"><img src="./img/logofergoverse.png" alt="CosplayChess"><span><b>COSPLAY</b><em>CHESS</em></span></a><label class="social-network-search"><span aria-hidden="true">⌕</span><input id="socialNetworkSearch" type="search" placeholder="Buscar pessoas, comunidades, eventos..." autocomplete="off"><small>Ctrl /</small></label><div class="social-network-account"><button class="social-network-user" type="button" aria-haspopup="menu" aria-expanded="false"><span class="social-network-avatar" id="socialNetworkAvatar">♜</span><span class="social-network-user-copy"><b id="socialNetworkName">Minha conta</b><small id="socialNetworkCharacter">CosplayChess</small></span><span class="social-network-caret">⌄</span></button><div class="social-network-dropdown" hidden role="menu"><div class="social-network-dropdown-head"><b id="socialNetworkMenuName">Minha conta</b><span id="socialNetworkMenuCharacter">CosplayChess</span></div><a href="./comunidade.html" role="menuitem">⌂ Comunidade</a><a href="./participante.html" role="menuitem">👤 Meu perfil</a><a href="./comunidade.html#configuracoes" role="menuitem">⚙ Configurações</a><a href="./passaporte.html" role="menuitem">♜ Passaporte</a><a class="social-network-danger" href="./index.html" role="menuitem">↩ Voltar ao site</a></div></div>`;
+  current.replaceWith(nav);
+  const userBtn=nav.querySelector('.social-network-user');
+  const menu=nav.querySelector('.social-network-dropdown');
+  const close=()=>{menu.hidden=true;userBtn.setAttribute('aria-expanded','false');};
+  userBtn.addEventListener('click',e=>{e.stopPropagation();menu.hidden=!menu.hidden;userBtn.setAttribute('aria-expanded',menu.hidden?'false':'true');});
+  document.addEventListener('click',e=>{if(!nav.contains(e.target))close();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')close();if((e.ctrlKey||e.metaKey)&&e.key==='/'){e.preventDefault();nav.querySelector('#socialNetworkSearch')?.focus();}});
+  const search=nav.querySelector('#socialNetworkSearch');
+  search.addEventListener('keydown',e=>{if(e.key!=='Enter')return;const q=search.value.trim();location.href=`./comunidade.html${q?`?q=${encodeURIComponent(q)}#explorar`:'#explorar'}`;});
+  if(!db)return;
+  (async()=>{const{data:s}=await db.auth.getSession();const user=s?.session?.user;if(!user)return;const{data:p}=await db.from('cosplay_participant_profiles').select('display_name,nick,character_name,character_photo_url').eq('user_id',user.id).neq('registration_status','cancelled').order('created_at',{ascending:false}).limit(1).maybeSingle();if(!p)return;const n=p.display_name||p.nick||'Minha conta';const c=p.character_name||'CosplayChess';['socialNetworkName','socialNetworkMenuName'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=esc(n);});['socialNetworkCharacter','socialNetworkMenuCharacter'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=esc(c);});const a=document.getElementById('socialNetworkAvatar');if(a&&p.character_photo_url){const img=document.createElement('img');img.src=p.character_photo_url;img.alt='';a.replaceChildren(img);}})().catch(()=>{});
+})();
