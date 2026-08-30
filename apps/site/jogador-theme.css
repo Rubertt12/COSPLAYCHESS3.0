@@ -1,1 +1,61 @@
 body.public-player-page{--player-accent:#d4a64d;--player-accent-soft:rgba(212,166,77,.13);--player-surface:#11101a;--player-surface-2:#0c0b12;--player-border:rgba(224,190,120,.13)}body.public-player-page.accent-blue{--player-accent:#7f9df2;--player-accent-soft:rgba(127,157,242,.14);--player-border:rgba(145,172,246,.16)}body.public-player-page.accent-pink{--player-accent:#e783b9;--player-accent-soft:rgba(231,131,185,.13);--player-border:rgba(238,151,198,.16)}body.public-player-page.accent-purple{--player-accent:#a985eb;--player-accent-soft:rgba(169,133,235,.14);--player-border:rgba(182,151,239,.17)}body.public-player-page.accent-gold{--player-accent:#d4a64d;--player-accent-soft:rgba(212,166,77,.13);--player-border:rgba(224,190,120,.13)}body.public-player-page.theme-orkut-night{--player-surface:#10192d;--player-surface-2:#0b1325;background:radial-gradient(circle at 15% 0,rgba(77,110,207,.18),transparent 32%),#080d1a}body.public-player-page.theme-royal-purple{--player-surface:#171127;--player-surface-2:#0e0a18;background:radial-gradient(circle at 15% 0,rgba(132,80,204,.22),transparent 33%),#09070f}body.public-player-page.theme-chess-gold{--player-surface:#17140e;--player-surface-2:#0e0c08;background:radial-gradient(circle at 15% 0,rgba(210,161,67,.17),transparent 33%),#0b0906}.public-player-page .player-hero-card,.public-player-page .player-social-panel,.public-player-page .player-community-cta,.public-player-page .player-social-v2-card{border-color:var(--player-border)!important;background:linear-gradient(145deg,color-mix(in srgb,var(--player-surface) 96%,transparent),color-mix(in srgb,var(--player-surface-2) 98%,transparent))!important}.public-player-page .kicker,.public-player-page .player-character span,.public-player-page .player-social-stat b{color:var(--player-accent)!important}.public-player-page .player-social-tabs button.active{color:var(--player-accent)!important;border-color:var(--player-border)!important;background:var(--player-accent-soft)!important}.public-player-page .player-actions .btn.gold,.public-player-page .player-social-v2-actions .btn.gold{border-color:var(--player-border)!important;box-shadow:0 0 0 1px var(--player-accent-soft) inset}.public-player-page .player-photo{box-shadow:0 0 0 1px var(--player-border),0 20px 50px rgba(0,0,0,.32)}
+
+/* Full-width public profile + desktop readability pass */
+@media (min-width: 821px){
+  body.public-player-page .player-public-shell{
+    width:calc(100% - 64px)!important;
+    max-width:none!important;
+    margin-left:32px!important;
+    margin-right:32px!important;
+    padding-top:28px!important;
+  }
+
+  body.public-player-page .player-hero-card{
+    grid-template-columns:250px minmax(0,1fr)!important;
+    gap:30px!important;
+    padding-left:28px!important;
+    padding-right:28px!important;
+  }
+
+  body.public-player-page .player-identity h1{font-size:clamp(42px,4vw,68px)!important}
+  body.public-player-page .kicker{font-size:11px!important;letter-spacing:2px!important}
+  body.public-player-page .player-character b{font-size:18px!important}
+  body.public-player-page .player-nick{font-size:13px!important}
+  body.public-player-page .player-bio{max-width:980px!important;font-size:15px!important;line-height:1.7!important}
+  body.public-player-page .player-socials a{font-size:11px!important;min-height:36px!important;padding:0 13px!important}
+  body.public-player-page .player-actions .btn{font-size:11px!important;min-height:38px!important;padding-left:16px!important;padding-right:16px!important}
+  body.public-player-page .player-social-stat{min-width:92px!important;padding:10px 13px!important}
+  body.public-player-page .player-social-stat b{font-size:17px!important}
+  body.public-player-page .player-social-stat span{font-size:9px!important}
+
+  body.public-player-page .player-social-tabs button{font-size:10px!important;min-height:38px!important;padding:0 16px!important}
+  body.public-player-page .player-social-panel{padding:22px!important}
+  body.public-player-page .player-social-panel-head h2{font-size:22px!important}
+  body.public-player-page .player-social-post-copy p{font-size:12px!important;line-height:1.65!important}
+  body.public-player-page .player-social-post-copy small{font-size:9px!important}
+  body.public-player-page .player-community-cta b{font-size:13px!important}
+  body.public-player-page .player-community-cta span{font-size:10px!important}
+
+  body.public-player-page .player-v2-head h3{font-size:18px!important}
+  body.public-player-page .player-v2-head span{font-size:10px!important}
+  body.public-player-page .player-v2-testimonial-copy b{font-size:11px!important}
+  body.public-player-page .player-v2-testimonial-copy p{font-size:11px!important;line-height:1.6!important}
+  body.public-player-page .player-v2-testimonial-copy small{font-size:9px!important}
+  body.public-player-page .player-v2-comment-copy b{font-size:9px!important}
+  body.public-player-page .player-v2-comment-copy p{font-size:10px!important}
+  body.public-player-page .player-v2-comment-copy small{font-size:8px!important}
+  body.public-player-page .player-v2-empty,
+  body.public-player-page .player-social-empty{font-size:11px!important}
+
+  body.public-player-page .player-achievements-section{padding:22px!important}
+  body.public-player-page .player-achievement-copy b{font-size:13px!important}
+  body.public-player-page .player-achievement-copy p{font-size:10px!important;line-height:1.6!important}
+  body.public-player-page .player-achievement-copy small{font-size:9px!important}
+}
+
+@media (max-width:820px){
+  body.public-player-page .player-public-shell{width:calc(100% - 20px)!important}
+  body.public-player-page .player-bio{font-size:13px!important}
+  body.public-player-page .player-social-post-copy p{font-size:11px!important}
+  body.public-player-page .player-actions .btn{font-size:10px!important}
+}
