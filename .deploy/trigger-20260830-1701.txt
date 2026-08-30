@@ -1,2 +1,3 @@
 Trigger seguro de deploy de produção para publicar as correções da rede social.
 Atualização: perfis sociais ativos liberados e botão duplicado removido.
+Atualização final: publicar remoção do script legado duplicado em comunidade.html.
