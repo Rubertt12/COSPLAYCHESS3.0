@@ -31,9 +31,15 @@
   };
 
   const renderHero=async()=>{
-    const p=state.target;$('socialProfileName').textContent=name(p);$('socialProfileCharacter').textContent=p.character_name||'CosplayChess';$('socialProfileNick').textContent=p.nick?`@${String(p.nick).replace(/^@/,'')}`:'';setImage($('socialProfileAvatar'),p.character_photo_url);
+    const p=state.target;
+    $('socialProfileName').textContent=name(p);
+    $('socialProfileCharacter').textContent=p.character_name||'CosplayChess';
+    $('socialProfileNick').textContent=p.nick?`@${String(p.nick).replace(/^@/,'')}`:'';
+    setImage($('socialProfileAvatar'),p.character_photo_url);
     const cover=$('socialProfileCover');const coverUrl=safe(p.cover_photo_url);if(coverUrl){cover.style.backgroundImage=`linear-gradient(180deg,rgba(8,10,17,.04),rgba(8,10,17,.28)),url("${coverUrl.replace(/"/g,'%22')}")`;cover.style.backgroundPosition=`center,${Number(p.cover_position_x??50)}% ${Number(p.cover_position_y??50)}%`;cover.style.backgroundSize='cover,cover';}
     const publicLink=$('socialProfilePublicLink');if(p.public_profile_visible&&p.public_slug){publicLink.href=`./jogador.html?slug=${encodeURIComponent(p.public_slug)}`;publicLink.hidden=false;}else publicLink.hidden=true;
+    const achievements=$('socialProfileAchievementsLink');if(achievements)achievements.href=`./conquistas-social.html?slug=${encodeURIComponent(p.public_slug||slug)}`;
+    const about=$('socialProfileAbout');const bio=$('socialProfileBio');const bioText=String(p.bio||'').trim();if(about&&bio&&bioText){bio.textContent=bioText;about.hidden=false;}
     const{data:presence}=await db.rpc('cosplay_public_profile_presence',{target_profile_id:p.id});const st=String(presence?.status_message||'').trim();if(st){$('socialProfileStatus').textContent=`“${st}”`;$('socialProfileStatus').hidden=false;}
     const{data:statsData}=await db.rpc('cosplay_public_profile_social_stats',{target_profile_id:p.id});const stats=Array.isArray(statsData)?statsData[0]:statsData||{};const boxes=$('socialProfileStats').children;if(boxes[0])boxes[0].querySelector('b').textContent=String(stats.friend_count||0);if(boxes[1])boxes[1].querySelector('b').textContent=String(stats.post_count||0);if(boxes[2])boxes[2].querySelector('b').textContent=String(stats.photo_count||0);
   };
@@ -58,7 +64,9 @@
   };
 
   const loadCommunities=async()=>{
-    const{data:members}=await db.from('cosplay_community_members').select('community_id,role').eq('profile_id',state.target.id).limit(60);const ids=(members||[]).map(x=>x.community_id);if(ids.length){const{data}=await db.from('cosplay_communities').select('id,name,slug,category,avatar_url,moderation_status').in('id',ids).eq('moderation_status','active');state.communities=data||[];}const root=$('socialProfileCommunities');root.replaceChildren();if(!state.communities.length){root.innerHTML='<div class="social-profile-empty">Nenhuma comunidade visível.</div>';return;}state.communities.slice(0,12).forEach(c=>{const a=document.createElement('a');a.className='social-profile-community';a.href=c.slug?`./comunidade-grupo.html?slug=${encodeURIComponent(c.slug)}`:'#';const i=document.createElement('i');const src=safe(c.avatar_url);if(src){const img=document.createElement('img');img.src=src;img.alt='';i.appendChild(img);}else i.textContent=(c.name||'C').charAt(0).toUpperCase();const copy=document.createElement('div');const b=document.createElement('b');b.textContent=c.name;const s=document.createElement('span');s.textContent=c.category||'Comunidade';copy.append(b,s);a.append(i,copy);root.appendChild(a);});
+    const{data:members}=await db.from('cosplay_community_members').select('community_id,role').eq('profile_id',state.target.id).limit(60);const ids=(members||[]).map(x=>x.community_id);if(ids.length){const{data}=await db.from('cosplay_communities').select('id,name,slug,category,avatar_url,moderation_status').in('id',ids).eq('moderation_status','active');state.communities=data||[];}
+    const count=$('socialProfileCommunityCount');if(count)count.textContent=String(state.communities.length);
+    const root=$('socialProfileCommunities');root.replaceChildren();if(!state.communities.length){root.innerHTML='<div class="social-profile-empty">Nenhuma comunidade visível.</div>';return;}state.communities.slice(0,12).forEach(c=>{const a=document.createElement('a');a.className='social-profile-community';a.href=c.slug?`./comunidade-grupo.html?slug=${encodeURIComponent(c.slug)}`:'#';const i=document.createElement('i');const src=safe(c.avatar_url);if(src){const img=document.createElement('img');img.src=src;img.alt='';i.appendChild(img);}else i.textContent=(c.name||'C').charAt(0).toUpperCase();const copy=document.createElement('div');const b=document.createElement('b');b.textContent=c.name;const s=document.createElement('span');s.textContent=c.category||'Comunidade';copy.append(b,s);a.append(i,copy);root.appendChild(a);});
   };
 
   const loadAlbums=async()=>{
