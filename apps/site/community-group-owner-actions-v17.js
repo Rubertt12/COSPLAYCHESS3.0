@@ -79,18 +79,16 @@
       button.textContent = 'Excluindo…';
       status.textContent = 'Removendo a comunidade…';
       try {
-        const { data, error } = await db.from('cosplay_communities')
+        const { error } = await db.from('cosplay_communities')
           .update({ moderation_status:'removed', updated_at:new Date().toISOString() })
           .eq('id', ctx.group.id)
-          .eq('owner_profile_id', ctx.profile.id)
-          .select('id');
+          .eq('owner_profile_id', ctx.profile.id);
         if (error) throw error;
-        if (!Array.isArray(data) || data.length !== 1) throw new Error('A ação não foi autorizada.');
         status.textContent = 'Comunidade excluída.';
         location.replace('./comunidade.html?deleted=1');
       } catch (error) {
         console.error('[CosplayChess community owner action]', error);
-        status.textContent = 'Não foi possível excluir a comunidade. Verifique sua sessão e tente novamente.';
+        status.textContent = `Não foi possível excluir a comunidade${error?.message ? `: ${error.message}` : '.'}`;
         button.disabled = false;
         button.textContent = 'Excluir comunidade';
       }
