@@ -3,6 +3,27 @@
   if (window.__CC_GROUP_POLISH_V11__) return;
   window.__CC_GROUP_POLISH_V11__ = true;
 
+  function loadCss(href, id) {
+    if (document.getElementById(id)) return;
+    const link = document.createElement('link');
+    link.id = id;
+    link.rel = 'stylesheet';
+    link.href = href;
+    document.head.appendChild(link);
+  }
+
+  function loadScript(src, id) {
+    if (document.getElementById(id)) return;
+    const script = document.createElement('script');
+    script.id = id;
+    script.src = src;
+    script.defer = true;
+    document.head.appendChild(script);
+  }
+
+  loadCss('./community-group-ux-v14.css?v=20260831-1', 'ccCommunityGroupUxV14Css');
+  loadScript('./community-group-ux-v14.js?v=20260831-1', 'ccCommunityGroupUxV14Js');
+
   function polish() {
     const cover = document.querySelector('.community-group-page .group-cover');
     if (cover) {
