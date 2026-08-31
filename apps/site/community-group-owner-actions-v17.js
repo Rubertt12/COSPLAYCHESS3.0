@@ -27,14 +27,11 @@
     const user = sessionData?.session?.user;
     if (!user) return null;
 
-    const { data: profile } = await db.from('cosplay_participant_profiles')
+    const { data: profiles, error: profilesError } = await db.from('cosplay_participant_profiles')
       .select('id,user_id')
       .eq('user_id', user.id)
-      .neq('registration_status', 'cancelled')
-      .order('created_at', { ascending:false })
-      .limit(1)
-      .maybeSingle();
-    if (!profile) return null;
+      .neq('registration_status', 'cancelled');
+    if (profilesError || !Array.isArray(profiles) || profiles.length === 0) return null;
 
     const slug = new URLSearchParams(location.search).get('slug');
     if (!slug) return null;
@@ -42,7 +39,10 @@
       .select('id,name,slug,owner_profile_id,moderation_status')
       .eq('slug', slug)
       .maybeSingle();
-    if (!group || group.owner_profile_id !== profile.id) return null;
+    if (!group) return null;
+
+    const profile = profiles.find(item => item.id === group.owner_profile_id);
+    if (!profile) return null;
     return { profile, group };
   }
 
