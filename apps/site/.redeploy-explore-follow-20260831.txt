@@ -1,0 +1,1 @@
+Redeploy marker for Explore follow fix. Parent includes social-explore-follow-v10.js and comunidade.html loader.
