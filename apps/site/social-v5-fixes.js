@@ -41,7 +41,42 @@
 
   const openStaticView = (name) => q(`.community-nav [data-community-view="${name}"]`)?.click();
 
+  const openComposer = () => {
+    const field = $('communityPostBody');
+    if (!field) return;
+    const feedButton = q('.community-nav [data-community-view="feed"]');
+    feedButton?.click();
+
+    // Fallback caso algum módulo de navegação ainda não tenha terminado de inicializar.
+    document.querySelectorAll('[data-community-panel]').forEach((panel) => {
+      const active = panel.dataset.communityPanel === 'feed';
+      panel.hidden = !active;
+      panel.classList.toggle('active', active);
+    });
+    document.querySelectorAll('[data-community-view]').forEach((item) => {
+      if (item.matches('.community-nav [data-community-view]')) {
+        item.classList.toggle('active', item.dataset.communityView === 'feed');
+      }
+    });
+
+    if (location.hash) history.replaceState(null, '', `${location.pathname}${location.search}`);
+    const composer = field.closest('.community-composer');
+    composer?.classList.add('cc-composer-attention');
+    field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => {
+      field.focus({ preventScroll: true });
+      composer?.classList.remove('cc-composer-attention');
+    }, 220);
+  };
+
   document.addEventListener('click', (event) => {
+    const createPost = event.target.closest('#ccCreatePost');
+    if (createPost) {
+      event.preventDefault();
+      openComposer();
+      return;
+    }
+
     const agenda = event.target.closest('.cc-event-post [data-community-view="events"]');
     if (agenda) {
       event.preventDefault();
