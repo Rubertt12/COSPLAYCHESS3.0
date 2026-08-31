@@ -7,19 +7,20 @@
   <meta name="description" content="Rede Social CosplayChess">
   <title>Rede Social — CosplayChess</title>
   <link rel="icon" type="image/png" href="./img/logofergoverse.png">
+  <link rel="manifest" href="./social-manifest.webmanifest">
   <link rel="stylesheet" href="./landing.css">
   <link rel="stylesheet" href="./comunidade.css?v=20260829-1">
   <link rel="stylesheet" href="./community-groups.css?v=20260829-1">
-  <link rel="stylesheet" href="./community-social-v2.css?v=20260829-2">
-  <link rel="stylesheet" href="./community-social-extended.css?v=20260829-2">
-  <link rel="stylesheet" href="./community-following.css?v=20260829-1">
-  <link rel="stylesheet" href="./community-event-photo-tags.css?v=20260829-1">
   <link rel="stylesheet" href="./community-group-avatar.css?v=20260829-2">
   <link rel="stylesheet" href="./social-network-v4.css?v=20260831-1">
   <link rel="stylesheet" href="./social-network-v4-polish.css?v=20260831-1">
   <link rel="stylesheet" href="./social-network-v4-fullscreen.css?v=20260831-1">
   <link rel="stylesheet" href="./social-network-v5.css?v=20260831-1">
+  <link rel="stylesheet" href="./social-network-v6.css?v=20260831-2">
   <link rel="stylesheet" href="./social-settings-v6.css?v=20260831-2">
+  <link rel="stylesheet" href="./social-photo-lightbox.css?v=20260831-2">
+  <link rel="stylesheet" href="./social-community-create-v1.css?v=20260831-2">
+  <link rel="stylesheet" href="./social-app-v9.css?v=20260831-1">
 </head>
 <body class="community-page cc-v4">
   <div class="grain"></div>
@@ -42,9 +43,11 @@
         <button type="button" data-community-view="notifications"><span>♧</span>Notificações <b class="social-v2-badge" hidden>0</b></button>
         <button type="button" data-community-view="friends"><span>♙</span>Amigos <b id="communityRequestBadge" hidden>0</b></button>
         <a class="cc-nav-link" href="./passaporte.html"><span>♛</span>Conquistas</a>
+        <button type="button" data-community-view="ranking"><span>♛</span>Ranking</button>
         <button type="button" data-community-view="photos"><span>▧</span>Álbuns</button>
         <button type="button" data-community-view="events"><span>▣</span>Eventos</button>
         <button type="button" data-community-view="saved"><span>♡</span>Salvos</button>
+        <button id="cc9ModerationNav" type="button" data-community-view="moderation" hidden><span>⚑</span>Moderação</button>
       </nav>
 
       <div class="cc-left-divider"></div>
@@ -71,7 +74,7 @@
 
     <section class="cc-center">
       <div class="cc-center-head">
-        <label class="cc-global-search"><span>⌕</span><input id="ccGlobalSearch" type="search" placeholder="Buscar pessoas, comunidades, eventos..."><kbd>Ctrl /</kbd></label>
+        <label class="cc-global-search"><span>⌕</span><input id="ccGlobalSearch" type="search" autocomplete="off" placeholder="Buscar pessoas, comunidades, eventos, hashtags..."><kbd>Ctrl /</kbd></label>
       </div>
 
       <section class="community-main">
@@ -124,14 +127,14 @@
           <div id="communityPeople" class="community-people-grid"><div class="community-empty">Carregando...</div></div>
         </section>
 
-        <section class="community-view" data-community-panel="photos" hidden>
-          <div class="community-subhead"><h3>Álbuns</h3></div>
-          <div id="communityPhotos" class="community-photo-grid"><div class="community-empty">Carregando...</div></div>
-        </section>
-
-        <section class="community-view" data-community-panel="social-settings" hidden>
-          <div class="cc-loading-inline">Carregando configurações...</div>
-        </section>
+        <section class="community-view" data-community-panel="photos" hidden><div class="cc9-empty">Carregando álbuns...</div></section>
+        <section class="community-view" data-community-panel="messages" hidden><div class="cc9-empty">Carregando mensagens...</div></section>
+        <section class="community-view" data-community-panel="notifications" hidden><div class="cc9-empty">Carregando notificações...</div></section>
+        <section class="community-view" data-community-panel="events" hidden><div class="cc9-empty">Carregando eventos...</div></section>
+        <section class="community-view" data-community-panel="saved" hidden><div class="cc9-empty">Carregando salvos...</div></section>
+        <section class="community-view" data-community-panel="ranking" hidden><div class="cc9-empty">Carregando ranking...</div></section>
+        <section class="community-view" data-community-panel="social-settings" hidden><div class="cc9-empty">Carregando configurações...</div></section>
+        <section class="community-view" data-community-panel="moderation" hidden><div class="cc9-empty">Carregando moderação...</div></section>
       </section>
     </section>
 
@@ -155,10 +158,10 @@
           <p class="cc-profile-tagline">Xadrez • Cosplay • Performance</p>
           <div class="cc-profile-stats">
             <div><b id="communityPostCount" data-cc-count="posts">0</b><span>Publicações</span></div>
-            <div><b id="communityFriendCount" data-cc-count="friends">0</b><span>Amigos</span></div>
-            <div><b id="communityPhotoCount" data-cc-count="photos">0</b><span>Fotos</span></div>
+            <div><b id="communityFriendCount" data-cc-count="friends">0</b><span>Seguidores</span></div>
+            <div><b id="communityPhotoCount" data-cc-count="photos">0</b><span>Seguindo</span></div>
           </div>
-          <a class="community-profile-link" id="communityMyProfileLink" href="#">Ver perfil</a>
+          <a class="community-profile-link" id="communityMyProfileLink" href="#">Ver perfil cosplay</a>
         </div>
       </section>
 
@@ -173,10 +176,8 @@
       </section>
 
       <section class="cc-card" id="ccAchievementsCard">
-        <div class="cc-card-head"><b>CONQUISTAS</b><a href="./passaporte.html">Ver todas</a></div>
-        <div class="cc-achievements">
-          <div class="community-empty">Carregando conquistas...</div>
-        </div>
+        <div class="cc-card-head"><b>CONQUISTAS SOCIAIS</b><a href="./passaporte.html">Ver todas</a></div>
+        <div class="cc-achievements"><div class="community-empty">Carregando conquistas...</div></div>
       </section>
     </aside>
   </main>
@@ -189,12 +190,11 @@
   <script src="./config.js"></script>
   <script src="./comunidade.js?v=20260829-1"></script>
   <script src="./community-groups.js?v=20260829-2"></script>
-  <script src="./community-social-v2.js?v=20260829-2"></script>
-  <script src="./social-network-v4.js?v=20260831-4"></script>
-  <script src="./social-lazy-features.js?v=20260831-3"></script>
-  <script src="./social-ui-runtime-v4.js?v=20260831-1"></script>
   <script src="./social-rich-content-v1.js?v=20260831-1"></script>
-  <script src="./social-v5-fixes.js?v=20260831-1"></script>
-  <script src="./social-settings-v7.js?v=20260831-1"></script>
+  <script src="./cosplay-profile-only.js?v=20260831-2"></script>
+  <script src="./social-profile-card-cover.js?v=20260831-2"></script>
+  <script src="./social-photo-lightbox.js?v=20260831-2"></script>
+  <script src="./social-community-create-v1.js?v=20260831-2"></script>
+  <script src="./social-app-v9.js?v=20260831-1"></script>
 </body>
 </html>
