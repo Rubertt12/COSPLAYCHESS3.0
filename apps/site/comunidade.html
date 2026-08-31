@@ -15,90 +15,173 @@
   <link rel="stylesheet" href="./community-following.css?v=20260829-1">
   <link rel="stylesheet" href="./community-event-photo-tags.css?v=20260829-1">
   <link rel="stylesheet" href="./community-group-avatar.css?v=20260829-2">
-  <link rel="stylesheet" href="./social-network-v3.css?v=20260831-1">
+  <link rel="stylesheet" href="./social-network-v4.css?v=20260831-1">
 </head>
-<body class="community-page">
+<body class="community-page cc-v4">
   <div class="grain"></div>
-  <header class="topbar community-topbar">
-    <a class="brand" href="./index.html"><img src="./img/logofergoverse.png" alt="CosplayChess"><span><b>COSPLAY</b><em>CHESS</em></span></a>
-    <label class="cc-global-search"><span>⌕</span><input id="ccGlobalSearch" type="search" placeholder="Buscar pessoas, comunidades, eventos..."></label>
-    <nav class="community-top-actions"><a class="btn dark" href="./passaporte.html">♜ Passaporte</a><a class="btn dark" href="./participante.html">Meu painel</a><a class="btn ghost" href="./index.html">Site</a></nav>
-  </header>
 
-  <main class="community-shell">
-    <aside class="community-sidebar">
-      <section class="community-me-card">
-        <div class="community-me-cover"></div>
-        <div class="community-me-avatar" id="communityMyAvatar"><span>♜</span></div>
-        <div class="community-me-copy"><span class="kicker">MINHA REDE</span><h1 id="communityMyName">Participante</h1><p id="communityMyCharacter">CosplayChess</p></div>
-        <div class="community-me-stats"><div><b id="communityFriendCount">0</b><span>amigos</span></div><div><b id="communityPostCount">0</b><span>posts</span></div><div><b id="communityPhotoCount">0</b><span>fotos</span></div></div>
-        <a class="btn gold community-profile-link" id="communityMyProfileLink" href="#">Ver meu perfil</a>
-      </section>
+  <main class="cc-app-shell">
+    <aside class="cc-left community-sidebar">
+      <div class="cc-left-head">
+        <a class="cc-brand" href="./index.html">
+          <img src="./img/logofergoverse.png" alt="CosplayChess">
+          <span class="cc-brand-copy"><b>COSPLAY</b><b>CHESS</b></span>
+        </a>
+        <button class="cc-collapse" type="button" aria-label="Recolher menu">«</button>
+      </div>
 
-      <nav class="community-nav">
+      <nav class="community-nav" aria-label="Rede Social">
         <button class="active" type="button" data-community-view="feed"><span>⌂</span>Feed</button>
         <button type="button" data-community-view="discover"><span>⌕</span>Explorar</button>
-        <button type="button" data-community-view="communities"><span>♜</span>Comunidades</button>
+        <button type="button" data-community-view="communities"><span>♙</span>Comunidades</button>
         <button type="button" data-community-view="messages"><span>✉</span>Mensagens</button>
-        <button type="button" data-community-view="notifications"><span>♢</span>Notificações</button>
+        <button type="button" data-community-view="notifications"><span>♧</span>Notificações</button>
         <button type="button" data-community-view="friends"><span>♙</span>Amigos <b id="communityRequestBadge" hidden>0</b></button>
+        <a class="cc-nav-link" href="./passaporte.html"><span>♛</span>Conquistas</a>
         <button type="button" data-community-view="photos"><span>▧</span>Álbuns</button>
-        <button type="button" data-community-view="social-settings"><span>⚙</span>Configurações</button>
+        <a class="cc-nav-link" href="./index.html"><span>▣</span>Eventos</a>
+        <a class="cc-nav-link" href="#"><span>♡</span>Salvos</a>
       </nav>
-      <div class="cc-sidebar-bottom"><a href="./passaporte.html">♛ Conquistas</a><a href="./index.html">♟ Eventos</a><a href="./participante.html">Meu painel</a></div>
+
+      <div class="cc-left-divider"></div>
+      <a class="cc-nav-link" href="#"><span>◔</span>Temas</a>
+      <button class="cc-nav-link" type="button" data-community-view="social-settings"><span>⚙</span>Configurações</button>
+
+      <section class="community-me-card cc-left-user">
+        <div class="cc-left-user-top">
+          <div class="community-me-avatar" id="communityMyAvatar"><span>♜</span></div>
+          <div class="community-me-copy">
+            <span class="kicker">MINHA REDE</span>
+            <h1 id="communityMyName">Participante</h1>
+            <p id="communityMyCharacter">CosplayChess</p>
+          </div>
+        </div>
+        <div class="cc-level-row"><span>Nível</span><b class="cc-level-pill">45</b></div>
+        <div class="cc-xp"><i></i></div>
+        <div class="cc-xp-copy">8.250 / 12.000 <b>XP</b></div>
+        <div class="cc-member-since">♜ Cosplayer desde 2023</div>
+        <div class="community-me-cover"></div>
+        <div class="community-me-stats"></div>
+      </section>
     </aside>
 
-    <section class="community-main">
-      <section class="community-view active" data-community-panel="feed">
-        <section class="community-composer">
-          <div class="community-composer-avatar" id="communityComposerAvatar"><span>♜</span></div>
-          <form id="communityPostForm">
-            <textarea id="communityPostBody" maxlength="1200" rows="2" placeholder="O que você quer compartilhar, cosplayer?"></textarea>
-            <div class="community-composer-preview" id="communityPostPreview" hidden></div>
-            <div class="community-composer-controls">
-              <label class="community-file-btn">📷 Foto<input id="communityPostImage" type="file" accept="image/jpeg,image/png,image/webp"></label>
-              <label class="community-select-wrap">👥 Marcar<select id="communityPostTag"><option value="">Ninguém</option></select></label>
-              <label class="community-select-wrap">🔒 Visibilidade<select id="communityPostVisibility"><option value="friends">Amigos</option><option value="public">Público</option></select></label>
-              <button class="btn gold" id="communityPostSubmit" type="submit">Publicar</button>
-            </div>
-            <div id="communityPostStatus" class="community-status"></div>
-          </form>
+    <section class="cc-center">
+      <div class="cc-center-head">
+        <label class="cc-global-search"><span>⌕</span><input id="ccGlobalSearch" type="search" placeholder="Buscar pessoas, comunidades, eventos..."><kbd>Ctrl /</kbd></label>
+      </div>
+
+      <section class="community-main">
+        <section class="community-view active" data-community-panel="feed">
+          <section class="community-composer">
+            <div class="community-composer-avatar" id="communityComposerAvatar"><span>♜</span></div>
+            <form id="communityPostForm">
+              <textarea id="communityPostBody" maxlength="1200" rows="2" placeholder="O que você quer compartilhar, cosplayer?"></textarea>
+              <div class="community-composer-preview" id="communityPostPreview" hidden></div>
+              <div class="community-composer-controls">
+                <label class="community-file-btn">♧ Foto<input id="communityPostImage" type="file" accept="image/jpeg,image/png,image/webp"></label>
+                <span class="community-file-btn">▣ Vídeo</span>
+                <span class="community-file-btn">▥ Enquete</span>
+                <span class="community-file-btn">▣ Evento</span>
+                <label class="community-select-wrap" hidden>Marcar<select id="communityPostTag"><option value="">Ninguém</option></select></label>
+                <label class="community-select-wrap" hidden>Visibilidade<select id="communityPostVisibility"><option value="friends">Amigos</option><option value="public">Público</option></select></label>
+                <button class="btn gold" id="communityPostSubmit" type="submit">Publicar</button>
+              </div>
+              <div id="communityPostStatus" class="community-status"></div>
+            </form>
+          </section>
+
+          <div class="cc-feed-tabs">
+            <button class="active" type="button" data-feed-mode="for-you">Para você</button>
+            <button type="button" data-feed-mode="following">Seguindo</button>
+            <button type="button" data-feed-mode="recent">Mais recentes⌄</button>
+          </div>
+          <button id="communityRefreshFeed" type="button" hidden>Atualizar</button>
+          <div id="communityFeed" class="community-feed"><div class="community-empty">Carregando feed...</div></div>
         </section>
-        <div class="cc-feed-tabs"><button class="active" type="button">Para você</button><button type="button">Seguindo</button><button type="button">Mais recentes</button></div>
-        <button id="communityRefreshFeed" type="button" hidden>Atualizar</button>
-        <div id="communityFeed" class="community-feed"><div class="community-empty">Carregando feed...</div></div>
-      </section>
 
-      <section class="community-view" data-community-panel="friends" hidden>
-        <section class="community-subsection" id="communityRequestsSection" hidden><div class="community-subhead"><h3>Solicitações</h3><span id="communityRequestsCount">0</span></div><div id="communityRequests" class="community-people-grid"></div></section>
-        <section class="community-subsection"><div class="community-subhead"><h3>Amigos</h3><span id="communityFriendsCount">0</span></div><div id="communityFriends" class="community-people-grid"><div class="community-empty">Carregando...</div></div></section>
-      </section>
+        <section class="community-view" data-community-panel="friends" hidden>
+          <section class="community-subsection" id="communityRequestsSection" hidden>
+            <div class="community-subhead"><h3>Solicitações</h3><span id="communityRequestsCount">0</span></div>
+            <div id="communityRequests" class="community-people-grid"></div>
+          </section>
+          <section class="community-subsection">
+            <div class="community-subhead"><h3>Amigos</h3><span id="communityFriendsCount">0</span></div>
+            <div id="communityFriends" class="community-people-grid"><div class="community-empty">Carregando...</div></div>
+          </section>
+        </section>
 
-      <section class="community-view" data-community-panel="communities" hidden>
-        <div class="community-subhead"><h3>Comunidades</h3><button class="btn gold" id="communityCreateGroupToggle" type="button">＋ Criar comunidade</button></div>
-        <div id="communityGroups" class="community-group-grid"><div class="community-empty">Carregando...</div></div>
-      </section>
+        <section class="community-view" data-community-panel="communities" hidden>
+          <div class="community-subhead"><h3>Comunidades</h3><button class="btn gold" id="communityCreateGroupToggle" type="button">＋ Criar comunidade</button></div>
+          <div id="communityGroups" class="community-group-grid"><div class="community-empty">Carregando...</div></div>
+        </section>
 
-      <section class="community-view" data-community-panel="discover" hidden>
-        <label class="community-search"><span>⌕</span><input id="communityPeopleSearch" type="search" placeholder="Buscar por nome, nick ou personagem..."></label>
-        <div id="communityPeople" class="community-people-grid"><div class="community-empty">Carregando...</div></div>
-      </section>
+        <section class="community-view" data-community-panel="discover" hidden>
+          <label class="community-search"><span>⌕</span><input id="communityPeopleSearch" type="search" placeholder="Buscar por nome, nick ou personagem..."></label>
+          <div id="communityPeople" class="community-people-grid"><div class="community-empty">Carregando...</div></div>
+        </section>
 
-      <section class="community-view" data-community-panel="photos" hidden>
-        <div class="community-subhead"><h3>Álbuns</h3></div>
-        <div id="communityPhotos" class="community-photo-grid"><div class="community-empty">Carregando...</div></div>
+        <section class="community-view" data-community-panel="photos" hidden>
+          <div class="community-subhead"><h3>Álbuns</h3></div>
+          <div id="communityPhotos" class="community-photo-grid"><div class="community-empty">Carregando...</div></div>
+        </section>
       </section>
     </section>
 
-    <aside class="community-orkut-rail" aria-label="Sugestões, comunidades e conquistas"></aside>
+    <aside class="cc-right">
+      <div class="cc-right-head">
+        <a class="cc-icon-btn" href="#communityPostBody" aria-label="Criar publicação">＋</a>
+        <button class="cc-icon-btn subtle" type="button" data-community-view="notifications" aria-label="Notificações">♧<b>5</b></button>
+        <a class="cc-account" href="./participante.html"><span class="cc-mirror-avatar"><span>♜</span></span><b data-cc-profile-name>Participante</b><span>⌄</span></a>
+      </div>
+
+      <section class="cc-card cc-profile-card">
+        <div class="cc-profile-cover"></div>
+        <div class="cc-profile-body">
+          <div class="cc-profile-row">
+            <div class="cc-profile-identity">
+              <div class="cc-mirror-avatar"><span>♜</span></div>
+              <div class="cc-profile-name"><b data-cc-profile-name>Participante</b><span>@<span data-cc-profile-name>Participante</span></span></div>
+            </div>
+            <span class="cc-profile-gear">⚙</span>
+          </div>
+          <p class="cc-profile-tagline">Cosplayer | Gamer | Estrategista</p>
+          <div class="cc-profile-stats">
+            <div><b id="communityPostCount">0</b><span>Publicações</span></div>
+            <div><b id="communityFriendCount">0</b><span>Amigos</span></div>
+            <div><b id="communityPhotoCount">0</b><span>Fotos</span></div>
+          </div>
+          <a class="community-profile-link" id="communityMyProfileLink" href="#">Ver perfil</a>
+        </div>
+      </section>
+
+      <section class="cc-card">
+        <div class="cc-card-head"><b>STORIES</b><a href="#">Ver todos</a></div>
+        <div class="cc-stories" id="ccStories"><div class="cc-story"><div class="cc-story-avatar cc-mirror-avatar"><span>♜</span></div><span>Você</span></div></div>
+      </section>
+
+      <section class="cc-card">
+        <div class="cc-card-head"><b>COMUNIDADES EM DESTAQUE</b><a href="#" data-community-view="communities">Ver todas</a></div>
+        <div class="cc-highlight-list" id="ccHighlightedGroups"></div>
+      </section>
+
+      <section class="cc-card">
+        <div class="cc-card-head"><b>CONQUISTAS</b><a href="./passaporte.html">Ver todas</a></div>
+        <div class="cc-achievements">
+          <div class="cc-ach"><div class="cc-ach-badge">♛</div><span>Primeiro Evento</span><i></i></div>
+          <div class="cc-ach"><div class="cc-ach-badge">♚</div><span>Estrategista</span><i></i></div>
+          <div class="cc-ach"><div class="cc-ach-badge">★</div><span>Vencedor</span><i></i></div>
+        </div>
+      </section>
+    </aside>
   </main>
 
-  <div class="community-auth-block" id="communityAuthBlock" hidden><div><span>♜</span><h1>Entre na Área do Participante</h1><p>A rede social é exclusiva para participantes com acesso liberado.</p><a class="btn gold" href="./participante.html">Entrar</a></div></div>
+  <div class="community-auth-block" id="communityAuthBlock" hidden>
+    <div><span>♜</span><h1>Entre na Área do Participante</h1><p>A rede social é exclusiva para participantes com acesso liberado.</p><a class="btn gold" href="./participante.html">Entrar</a></div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
   <script src="./comunidade.js?v=20260829-1"></script>
-  <script src="./community-orkut.js?v=20260829-1"></script>
   <script src="./community-groups.js?v=20260829-2"></script>
   <script src="./community-groups-links.js?v=20260829-1"></script>
   <script src="./community-social-v2.js?v=20260829-2"></script>
@@ -111,5 +194,6 @@
   <script src="./community-event-photo-tags.js?v=20260829-1"></script>
   <script src="./community-group-avatar.js?v=20260829-2"></script>
   <script src="./community-social-access-fix.js?v=20260830-1"></script>
+  <script src="./social-network-v4.js?v=20260831-1"></script>
 </body>
 </html>
