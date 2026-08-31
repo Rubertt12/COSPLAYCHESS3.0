@@ -1,0 +1,406 @@
+/* Public player v14 — editorial/blog profile layer */
+body.public-player-page{
+  --blog-bg:#070b12;
+  --blog-panel:#0d1420;
+  --blog-panel-soft:#101926;
+  --blog-line:rgba(167,184,211,.15);
+  --blog-text:#f5f1ea;
+  --blog-muted:#98a3b5;
+  --blog-accent:#e6b957;
+  --blog-purple:#b77cff;
+  background:
+    radial-gradient(circle at 8% 0%,rgba(103,72,159,.18),transparent 34%),
+    radial-gradient(circle at 92% 16%,rgba(207,155,66,.11),transparent 28%),
+    linear-gradient(180deg,#070a10 0%,#08101a 48%,#060a10 100%)!important;
+}
+
+body.public-player-page .topbar{
+  position:relative!important;
+  max-width:1260px!important;
+  margin:0 auto!important;
+  padding:18px 24px!important;
+  background:transparent!important;
+  border-bottom:1px solid rgba(255,255,255,.06)!important;
+}
+
+body.public-player-page .player-public-shell{
+  width:min(1240px,calc(100% - 36px))!important;
+  margin:0 auto!important;
+  padding:26px 0 70px!important;
+}
+
+body.public-player-page #playerContent{
+  display:grid!important;
+  grid-template-columns:minmax(0,2.05fr) minmax(290px,.82fr)!important;
+  gap:22px!important;
+  align-items:start!important;
+}
+body.public-player-page #playerContent[hidden]{display:none!important}
+
+/* Editorial cover / author header */
+body.public-player-page .player-hero-card,
+body.public-player-page .player-hero-card.has-public-cover{
+  grid-column:1/-1!important;
+  position:relative!important;
+  min-height:510px!important;
+  padding:315px 38px 34px!important;
+  display:grid!important;
+  grid-template-columns:190px minmax(0,1fr)!important;
+  gap:28px!important;
+  align-items:end!important;
+  overflow:hidden!important;
+  border:1px solid var(--blog-line)!important;
+  border-radius:28px!important;
+  background:
+    linear-gradient(180deg,rgba(5,9,15,.04) 0%,rgba(5,9,15,.22) 37%,rgba(6,11,18,.88) 68%,rgba(8,14,23,.98) 100%),
+    radial-gradient(circle at 15% 10%,rgba(181,122,244,.22),transparent 36%),
+    #0b121d!important;
+  box-shadow:0 28px 90px rgba(0,0,0,.34)!important;
+}
+body.public-player-page .player-public-cover{height:360px!important}
+body.public-player-page .player-public-cover:after{
+  background:linear-gradient(180deg,rgba(4,8,13,.02),rgba(5,9,15,.17) 48%,rgba(6,11,18,.92) 100%)!important;
+}
+body.public-player-page .player-public-cover-label{
+  top:18px!important;right:18px!important;
+  padding:7px 11px!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+  border-radius:999px!important;
+  background:rgba(4,8,13,.58)!important;
+  backdrop-filter:blur(10px)!important;
+  color:#e7e8ee!important;
+  font-size:10px!important;
+}
+
+body.public-player-page .player-photo{
+  width:174px!important;height:174px!important;min-width:174px!important;
+  aspect-ratio:1!important;
+  border-radius:50%!important;
+  border:5px solid rgba(247,242,234,.95)!important;
+  background:#0a111b!important;
+  box-shadow:0 18px 44px rgba(0,0,0,.48),0 0 0 1px rgba(255,255,255,.08)!important;
+  z-index:4!important;
+}
+body.public-player-page .player-photo img{object-fit:cover!important}
+
+body.public-player-page .player-identity{
+  z-index:4!important;
+  min-width:0!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  column-gap:28px!important;
+  align-items:end!important;
+}
+body.public-player-page .player-identity>.kicker,
+body.public-player-page .player-identity>h1,
+body.public-player-page .player-identity>.player-character,
+body.public-player-page .player-identity>.player-nick,
+body.public-player-page .player-identity>.player-bio,
+body.public-player-page .player-identity>.player-socials{grid-column:1!important}
+body.public-player-page .player-identity>.kicker{
+  color:var(--blog-accent)!important;
+  font-size:11px!important;
+  letter-spacing:2.1px!important;
+}
+body.public-player-page .player-identity h1{
+  margin:8px 0 8px!important;
+  color:var(--blog-text)!important;
+  font-family:Georgia,'Times New Roman',serif!important;
+  font-size:clamp(48px,6vw,82px)!important;
+  font-weight:500!important;
+  line-height:.92!important;
+  letter-spacing:-2.4px!important;
+}
+body.public-player-page .player-character{
+  margin:4px 0 8px!important;
+  color:#efd17e!important;
+}
+body.public-player-page .player-character b{font-size:16px!important}
+body.public-player-page .player-nick{
+  margin:0 0 10px!important;
+  color:#b8c0ce!important;
+  font-size:12px!important;
+}
+body.public-player-page .player-bio{
+  max-width:760px!important;
+  margin:8px 0 12px!important;
+  color:#d6dbe4!important;
+  font-size:14px!important;
+  line-height:1.75!important;
+}
+body.public-player-page .player-socials{margin:8px 0 0!important}
+body.public-player-page .player-socials a{
+  min-height:34px!important;
+  padding:0 12px!important;
+  border-color:rgba(255,255,255,.12)!important;
+  background:rgba(255,255,255,.04)!important;
+  color:#e4e7ed!important;
+  font-size:10px!important;
+}
+body.public-player-page .player-socials a:hover{
+  background:rgba(230,185,87,.09)!important;
+  border-color:rgba(230,185,87,.34)!important;
+  color:#f4d78d!important;
+}
+
+body.public-player-page .player-social-stats{
+  grid-column:2!important;
+  grid-row:1/5!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(96px,1fr))!important;
+  gap:8px!important;
+  width:250px!important;
+  margin:0!important;
+}
+body.public-player-page .player-social-stat{
+  padding:13px 12px!important;
+  border:1px solid rgba(255,255,255,.1)!important;
+  border-radius:13px!important;
+  background:rgba(8,13,22,.62)!important;
+  backdrop-filter:blur(9px)!important;
+}
+body.public-player-page .player-social-stat b{font-size:22px!important;color:#fff!important}
+body.public-player-page .player-social-stat span{font-size:8px!important;color:#aeb7c5!important}
+body.public-player-page .player-actions{
+  grid-column:2!important;
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+  width:250px!important;
+  margin:10px 0 0!important;
+}
+body.public-player-page .player-actions .btn{
+  min-height:38px!important;
+  border-radius:10px!important;
+  justify-content:center!important;
+  font-size:10px!important;
+}
+body.public-player-page #playerShare{grid-column:1/-1!important}
+
+/* Navigation becomes a magazine section bar */
+body.public-player-page .player-social-tabs{
+  grid-column:1/-1!important;
+  position:sticky!important;
+  top:8px!important;
+  z-index:20!important;
+  display:flex!important;
+  gap:4px!important;
+  margin:0!important;
+  padding:6px!important;
+  border:1px solid var(--blog-line)!important;
+  border-radius:14px!important;
+  background:rgba(8,13,21,.88)!important;
+  backdrop-filter:blur(16px)!important;
+  box-shadow:0 10px 34px rgba(0,0,0,.18)!important;
+}
+body.public-player-page .player-social-tabs button{
+  min-height:42px!important;
+  padding:0 18px!important;
+  border-radius:10px!important;
+  color:#aeb7c4!important;
+  font-size:11px!important;
+  letter-spacing:.1px!important;
+}
+body.public-player-page .player-social-tabs button.active{
+  border-color:rgba(230,185,87,.22)!important;
+  background:rgba(230,185,87,.10)!important;
+  color:#f3d98f!important;
+}
+
+/* Main story/feed column */
+body.public-player-page .player-social-panel[data-player-social-panel="wall"]{
+  grid-column:1!important;
+  grid-row:auto!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+body.public-player-page .player-social-panel[data-player-social-panel="wall"] .player-social-panel-head{
+  margin:0 0 14px!important;
+  padding:4px 2px 14px!important;
+  border-bottom:1px solid var(--blog-line)!important;
+}
+body.public-player-page .player-social-panel[data-player-social-panel="wall"] .player-social-panel-head:before{
+  content:'DIÁRIO DO COSPLAYER';
+  display:block;
+  margin-bottom:5px;
+  color:var(--blog-accent);
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+body.public-player-page .player-social-panel-head h2,
+body.public-player-page .player-achievements-section h2,
+body.public-player-page .player-reference-about h3{
+  color:var(--blog-text)!important;
+  font-family:Georgia,'Times New Roman',serif!important;
+  font-weight:500!important;
+}
+body.public-player-page .player-social-panel-head h2{font-size:31px!important}
+body.public-player-page .player-social-feed{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:18px!important;
+}
+body.public-player-page .player-social-post{
+  overflow:hidden!important;
+  border:1px solid var(--blog-line)!important;
+  border-radius:18px!important;
+  background:linear-gradient(145deg,rgba(16,25,38,.96),rgba(10,17,27,.98))!important;
+  box-shadow:0 12px 34px rgba(0,0,0,.12)!important;
+}
+body.public-player-page .player-social-post-image{
+  height:auto!important;
+  aspect-ratio:16/8.3!important;
+  background:#05080d!important;
+}
+body.public-player-page .player-social-post-image img{object-fit:cover!important}
+body.public-player-page .player-social-post-copy{padding:20px 22px 22px!important}
+body.public-player-page .player-social-post-copy p{
+  color:#e1e5ec!important;
+  font-family:Georgia,'Times New Roman',serif!important;
+  font-size:16px!important;
+  line-height:1.75!important;
+}
+body.public-player-page .player-social-post-copy small{
+  margin-top:13px!important;
+  color:#8994a6!important;
+  font-family:Inter,system-ui,sans-serif!important;
+  font-size:10px!important;
+}
+
+/* Sidebar — author card + trophies */
+body.public-player-page .player-reference-about{
+  grid-column:2!important;
+  grid-row:auto!important;
+  padding:22px!important;
+  border:1px solid var(--blog-line)!important;
+  border-radius:18px!important;
+  background:linear-gradient(145deg,rgba(15,24,37,.96),rgba(10,17,27,.98))!important;
+  box-shadow:0 12px 34px rgba(0,0,0,.10)!important;
+}
+body.public-player-page .player-reference-about .kicker{
+  color:var(--blog-purple)!important;
+  font-size:9px!important;
+  letter-spacing:1.8px!important;
+}
+body.public-player-page .player-reference-about h3{margin:7px 0 20px!important;font-size:25px!important}
+body.public-player-page .player-reference-about dl{gap:0!important}
+body.public-player-page .player-reference-about dl>div{
+  padding:13px 0!important;
+  border-top:1px solid rgba(255,255,255,.07)!important;
+}
+body.public-player-page .player-reference-about dt{font-size:9px!important;color:#818da0!important}
+body.public-player-page .player-reference-about dd{font-size:13px!important;color:#f2f2f4!important}
+
+body.public-player-page .player-achievements-section[data-player-social-panel="achievements"]{
+  grid-column:2!important;
+  grid-row:auto!important;
+  margin:0!important;
+  padding:22px!important;
+  border:1px solid var(--blog-line)!important;
+  border-radius:18px!important;
+  background:linear-gradient(145deg,rgba(15,24,37,.96),rgba(10,17,27,.98))!important;
+}
+body.public-player-page .player-achievements-section h2{font-size:23px!important}
+body.public-player-page .player-achievement-counter{
+  min-width:36px!important;height:36px!important;
+  border-color:rgba(230,185,87,.24)!important;
+  background:rgba(230,185,87,.08)!important;
+  color:#efd27e!important;
+}
+body.public-player-page .player-achievements-grid{grid-template-columns:1fr!important;gap:6px!important;margin-top:15px!important}
+body.public-player-page .player-achievement-card{
+  padding:11px 0!important;
+  border:0!important;
+  border-top:1px solid rgba(255,255,255,.07)!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+body.public-player-page .player-achievement-icon{
+  width:44px!important;height:44px!important;
+  border-radius:12px!important;
+  background:rgba(230,185,87,.08)!important;
+  box-shadow:none!important;
+}
+body.public-player-page .player-achievement-copy b{font-size:11px!important}
+body.public-player-page .player-achievement-copy p{font-size:9px!important;color:#8e99aa!important}
+
+/* Photos take the editorial main column; CTA closes the page */
+body.public-player-page .player-social-panel[data-player-social-panel="photos"]{
+  grid-column:1!important;
+  padding:20px!important;
+  border:1px solid var(--blog-line)!important;
+  border-radius:18px!important;
+  background:var(--blog-panel)!important;
+}
+body.public-player-page .player-photo-wall{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}
+body.public-player-page .player-photo-tile{border-radius:10px!important}
+body.public-player-page #playerContent>.player-community-cta{
+  grid-column:1/-1!important;
+  margin-top:2px!important;
+  padding:18px 20px!important;
+  border:1px solid var(--blog-line)!important;
+  border-radius:16px!important;
+  background:linear-gradient(100deg,rgba(230,185,87,.06),rgba(183,124,255,.045))!important;
+}
+
+/* Avoid a second duplicate feed below the editorial profile. */
+body.public-player-page #playerContent>#playerSocialV9{display:none!important}
+
+/* Birthday chip stays readable in the new header. */
+body.public-player-page .player-ext-birthday{
+  margin-top:9px!important;
+  padding:7px 11px!important;
+  border-color:rgba(230,185,87,.18)!important;
+  background:rgba(230,185,87,.07)!important;
+  color:#f0d994!important;
+}
+
+@media(max-width:920px){
+  body.public-player-page #playerContent{grid-template-columns:1fr!important}
+  body.public-player-page .player-hero-card,
+  body.public-player-page .player-hero-card.has-public-cover{
+    grid-template-columns:150px minmax(0,1fr)!important;
+    padding:260px 24px 26px!important;
+    min-height:440px!important;
+  }
+  body.public-player-page .player-public-cover{height:310px!important}
+  body.public-player-page .player-photo{width:140px!important;height:140px!important;min-width:140px!important}
+  body.public-player-page .player-identity{grid-template-columns:1fr!important}
+  body.public-player-page .player-social-stats,
+  body.public-player-page .player-actions{grid-column:1!important;grid-row:auto!important;width:100%!important;margin-top:12px!important}
+  body.public-player-page .player-social-stats{grid-template-columns:repeat(4,1fr)!important}
+  body.public-player-page .player-social-panel[data-player-social-panel="wall"],
+  body.public-player-page .player-reference-about,
+  body.public-player-page .player-achievements-section[data-player-social-panel="achievements"],
+  body.public-player-page .player-social-panel[data-player-social-panel="photos"]{grid-column:1!important}
+  body.public-player-page .player-reference-about{order:3}
+  body.public-player-page .player-achievements-section[data-player-social-panel="achievements"]{order:4}
+}
+
+@media(max-width:620px){
+  body.public-player-page .player-public-shell{width:calc(100% - 18px)!important;padding-top:12px!important}
+  body.public-player-page .topbar{padding:12px 10px!important}
+  body.public-player-page .player-hero-card,
+  body.public-player-page .player-hero-card.has-public-cover{
+    grid-template-columns:1fr!important;
+    gap:15px!important;
+    padding:220px 16px 18px!important;
+    border-radius:0 0 20px 20px!important;
+  }
+  body.public-player-page .player-public-cover{height:250px!important}
+  body.public-player-page .player-photo{width:112px!important;height:112px!important;min-width:112px!important;border-width:4px!important}
+  body.public-player-page .player-identity h1{font-size:43px!important;letter-spacing:-1.4px!important}
+  body.public-player-page .player-bio{font-size:13px!important}
+  body.public-player-page .player-social-stats{grid-template-columns:repeat(2,1fr)!important}
+  body.public-player-page .player-actions{grid-template-columns:1fr!important}
+  body.public-player-page #playerShare{grid-column:1!important}
+  body.public-player-page .player-social-tabs{top:4px!important;overflow:auto!important}
+  body.public-player-page .player-social-tabs button{white-space:nowrap!important;padding:0 14px!important}
+  body.public-player-page .player-social-panel-head h2{font-size:27px!important}
+  body.public-player-page .player-social-post-copy{padding:16px!important}
+  body.public-player-page .player-social-post-copy p{font-size:15px!important}
+  body.public-player-page .player-photo-wall{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
