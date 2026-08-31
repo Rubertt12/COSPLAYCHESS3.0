@@ -9,7 +9,7 @@
     const promise = new Promise((resolve, reject) => {
       if (document.querySelector(`script[src^="${src}"]`)) return resolve();
       const script = document.createElement('script');
-      script.src = `${src}${src.includes('?') ? '&' : '?'}lazy=20260831-2`;
+      script.src = `${src}${src.includes('?') ? '&' : '?'}lazy=20260831-3`;
       script.async = true;
       script.onload = resolve;
       script.onerror = reject;
@@ -53,6 +53,7 @@
       try {
         await loadMany(extended);
         await waitForPanel(view);
+        if (view === 'events') await loadScript('./community-event-calendar.js');
         bypass = true;
         viewButton.click();
       } catch (error) {
