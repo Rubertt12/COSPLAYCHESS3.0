@@ -4,6 +4,7 @@
   const type = String(params.get('type') || '').trim().toLowerCase();
   const storageKey = 'cosplaychess-participant-activation';
   const allowedTypes = new Set(['invite', 'recovery']);
+  const activationLifetimeMs = 6 * 60 * 60 * 1000;
 
   if (tokenHash && allowedTypes.has(type)) {
     try {
@@ -23,7 +24,7 @@
     if (raw) activation = JSON.parse(raw);
   } catch (_) {}
   if (!activation?.tokenHash || !allowedTypes.has(String(activation.type || '').toLowerCase())) return;
-  if (Date.now() - Number(activation.savedAt || 0) > 60 * 60 * 1000) {
+  if (Date.now() - Number(activation.savedAt || 0) > activationLifetimeMs) {
     try { sessionStorage.removeItem(storageKey); } catch (_) {}
     return;
   }
@@ -43,7 +44,7 @@
     status.textContent = message;
     status.className = `participant-status${kind ? ` ${kind}` : ''}`;
   };
-  setStatus('Convite reconhecido. Crie sua senha para ativar o acesso.', 'success');
+  setStatus('Convite reconhecido. Este link é válido por até 6 horas. Crie sua senha para ativar o acesso.', 'success');
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
