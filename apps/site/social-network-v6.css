@@ -2,6 +2,8 @@
 @media (min-width:821px){
   .cc-v4.cc-left-collapsed .cc-app-shell{grid-template-columns:82px minmax(0,1fr) 400px!important}
   .cc-v4.cc-left-collapsed .cc-left{padding-left:10px!important;padding-right:10px!important;overflow-x:hidden!important}
+  .cc-v4.cc-left-collapsed .cc-center{padding-left:6px!important;transition:padding-left .18s ease}
+  .cc-v4:not(.cc-left-collapsed) .cc-center{transition:padding-left .18s ease}
   .cc-v4.cc-left-collapsed .cc-left-head{height:74px!important;padding:0!important;justify-content:center!important;position:relative}
   .cc-v4.cc-left-collapsed .cc-brand{justify-content:center!important}
   .cc-v4.cc-left-collapsed .cc-brand img{width:44px!important;height:44px!important}
