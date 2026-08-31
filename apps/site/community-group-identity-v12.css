@@ -1,0 +1,111 @@
+/* Community identity v12 — avatar sits beside community name */
+.community-group-page .group-side>.group-card:first-child{
+  display:grid!important;
+  grid-template-columns:92px minmax(0,1fr)!important;
+  grid-template-rows:auto auto auto auto auto auto!important;
+  column-gap:12px!important;
+  align-items:start!important;
+  overflow:hidden!important;
+}
+.community-group-page .group-side>.group-card:first-child>.group-cover{
+  grid-column:1/-1!important;
+  grid-row:1!important;
+  min-height:120px!important;
+  height:120px!important;
+  margin:0!important;
+  position:relative!important;
+  z-index:1!important;
+}
+.community-group-page .group-side>.group-card:first-child>.group-avatar{
+  grid-column:1!important;
+  grid-row:2/4!important;
+  width:76px!important;
+  height:76px!important;
+  margin:14px 0 0 14px!important;
+  align-self:start!important;
+  position:relative!important;
+  z-index:5!important;
+  border:3px solid #202a3c!important;
+  border-radius:16px!important;
+  overflow:hidden!important;
+  box-shadow:0 8px 22px rgba(0,0,0,.28),0 0 0 1px rgba(239,189,80,.24)!important;
+}
+.community-group-page .group-side>.group-card:first-child>.group-avatar img{
+  width:100%!important;
+  height:100%!important;
+  display:block!important;
+  object-fit:cover!important;
+  object-position:center!important;
+}
+.community-group-page .group-side>.group-card:first-child>.group-copy{
+  display:contents!important;
+}
+.community-group-page .group-side>.group-card:first-child>.group-copy>.kicker{
+  grid-column:2!important;
+  grid-row:2!important;
+  align-self:end!important;
+  margin:15px 14px 2px 0!important;
+  text-align:left!important;
+  color:#efbd50!important;
+}
+.community-group-page .group-side>.group-card:first-child>.group-copy>h1{
+  grid-column:2!important;
+  grid-row:3!important;
+  align-self:start!important;
+  margin:0 14px 12px 0!important;
+  text-align:left!important;
+  font-size:21px!important;
+  line-height:1.14!important;
+  overflow-wrap:anywhere!important;
+}
+.community-group-page .group-side>.group-card:first-child>.group-copy>p{
+  grid-column:1/-1!important;
+  grid-row:4!important;
+  margin:0!important;
+  padding:0 14px 13px!important;
+  text-align:left!important;
+  color:#aab4c5!important;
+  line-height:1.58!important;
+}
+.community-group-page .group-side>.group-card:first-child>.group-copy>.group-meta{
+  grid-column:1/-1!important;
+  grid-row:5!important;
+  margin:0 14px!important;
+  padding:11px 0 0!important;
+  justify-content:flex-start!important;
+}
+.community-group-page .group-side>.group-card:first-child>.group-copy>.group-actions{
+  grid-column:1/-1!important;
+  grid-row:6!important;
+  margin:12px 14px 14px!important;
+}
+.community-group-page .group-side>.group-card:first-child>.group-copy>.group-privacy-row{
+  grid-column:1/-1!important;
+  grid-row:7!important;
+  justify-content:flex-start!important;
+  margin:0 14px 14px!important;
+}
+
+@media(max-width:980px){
+  .community-group-page .group-side>.group-card:first-child{
+    grid-template-columns:86px minmax(0,1fr)!important;
+  }
+  .community-group-page .group-side>.group-card:first-child>.group-cover{
+    min-height:150px!important;
+    height:min(36vw,190px)!important;
+  }
+  .community-group-page .group-side>.group-card:first-child>.group-avatar{
+    width:70px!important;height:70px!important;margin:12px 0 0 12px!important;
+  }
+  .community-group-page .group-side>.group-card:first-child>.group-copy>.kicker{margin-top:13px!important}
+  .community-group-page .group-side>.group-card:first-child>.group-copy>h1{font-size:22px!important}
+}
+@media(max-width:480px){
+  .community-group-page .group-side>.group-card:first-child{grid-template-columns:76px minmax(0,1fr)!important;column-gap:9px!important}
+  .community-group-page .group-side>.group-card:first-child>.group-avatar{width:62px!important;height:62px!important;margin:10px 0 0 10px!important;border-radius:14px!important}
+  .community-group-page .group-side>.group-card:first-child>.group-copy>.kicker{margin:11px 10px 1px 0!important}
+  .community-group-page .group-side>.group-card:first-child>.group-copy>h1{margin-right:10px!important;font-size:19px!important}
+  .community-group-page .group-side>.group-card:first-child>.group-copy>p{padding-left:10px!important;padding-right:10px!important}
+  .community-group-page .group-side>.group-card:first-child>.group-copy>.group-meta{margin-left:10px!important;margin-right:10px!important}
+  .community-group-page .group-side>.group-card:first-child>.group-copy>.group-actions{margin-left:10px!important;margin-right:10px!important}
+}
