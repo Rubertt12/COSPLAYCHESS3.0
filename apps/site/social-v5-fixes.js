@@ -7,6 +7,34 @@
   const $ = (id) => document.getElementById(id);
   const q = (selector, root = document) => root.querySelector(selector);
 
+  const loadStyle = (href) => {
+    if (document.querySelector(`link[href^="${href}"]`)) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = `${href}?v=20260831-1`;
+    document.head.appendChild(link);
+  };
+
+  const loadScript = (src) => {
+    if (document.querySelector(`script[src^="${src}"]`)) return Promise.resolve();
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = `${src}?v=20260831-1`;
+      script.async = true;
+      script.onload = resolve;
+      script.onerror = resolve;
+      document.body.appendChild(script);
+    });
+  };
+
+  const loadUnifiedProfile = () => {
+    loadStyle('./social-network-v6.css');
+    return Promise.all([
+      loadScript('./cosplay-profile-only.js'),
+      loadScript('./social-profile-card-cover.js')
+    ]);
+  };
+
   const openStaticView = (name) => q(`.community-nav [data-community-view="${name}"]`)?.click();
 
   document.addEventListener('click', (event) => {
@@ -105,6 +133,7 @@
   };
 
   const init = () => {
+    loadUnifiedProfile().catch(() => {});
     renderRealAchievements().catch(() => {});
     window.addEventListener('focus', () => renderRealAchievements().catch(() => {}), { passive:true });
   };
