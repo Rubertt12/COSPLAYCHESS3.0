@@ -17,6 +17,8 @@
   <link rel="stylesheet" href="./community-orkut-v9.css?v=20260831-1">
   <link rel="stylesheet" href="./community-group-mobile-v10.css?v=20260831-1">
   <link rel="stylesheet" href="./community-group-v11.css?v=20260831-1">
+  <link rel="stylesheet" href="./community-group-identity-v12.css?v=20260831-1">
+  <link rel="stylesheet" href="./community-group-editor-v12.css?v=20260831-1">
 </head>
 <body class="community-group-page">
   <div class="grain"></div>
@@ -25,7 +27,21 @@
     <aside class="group-side">
       <section class="group-card"><div class="group-cover"></div><div class="group-avatar" id="groupAvatar">C</div><div class="group-copy"><span class="kicker">COMUNIDADE</span><h1 id="groupName">Comunidade</h1><p id="groupDescription"></p><div class="group-meta"><span id="groupCategory">Geral</span><span><b id="groupMemberCount">0</b> membros</span></div><div class="group-actions"><button class="btn gold" id="groupJoinButton" type="button">Entrar</button><button class="btn dark" id="groupShareButton" type="button">Compartilhar</button><button class="btn dark" id="groupEditToggle" type="button" hidden>Editar comunidade</button></div></div></section>
       <nav class="group-card group-nav"><button class="active" type="button" data-group-view="topics"><span>✦</span>Tópicos</button><button type="button" data-group-view="polls"><span>☷</span>Enquetes</button><button type="button" data-group-view="members"><span>♟</span>Membros</button></nav>
-      <section class="group-card group-edit-card" id="groupEditCard" hidden><div class="group-copy"><span class="kicker">EDITAR COMUNIDADE</span></div><form id="groupEditForm" class="group-edit-form"><div class="group-edit-avatar"><div class="community-group-avatar-preview" id="groupEditAvatarPreview">C</div><div class="community-group-avatar-picker"><b>Foto de perfil</b><span>JPG, PNG ou WebP · até 5 MB.</span><label>Trocar foto<input id="groupEditAvatar" type="file" accept="image/jpeg,image/png,image/webp"></label></div></div><div class="group-edit-fields"><label><span>Nome</span><input id="groupEditName" maxlength="80" required></label><label><span>Categoria</span><select id="groupEditCategory"><option>Anime & Mangá</option><option>Cosplay</option><option>Games</option><option>Xadrez</option><option>Fotografia</option><option>Eventos</option><option>Filmes & Séries</option><option>Outros</option></select></label><label class="wide"><span>Descrição</span><textarea id="groupEditDescription" maxlength="600"></textarea></label></div><div class="group-edit-actions"><span id="groupEditStatus" class="group-status"></span><button class="btn gold" type="submit">Salvar alterações</button></div></form></section>
+      <section class="group-card group-edit-card" id="groupEditCard" hidden>
+        <div class="group-copy"><span class="kicker">EDITAR COMUNIDADE</span></div>
+        <form id="groupEditForm" class="group-edit-form">
+          <div class="group-edit-media">
+            <div class="group-edit-cover-block">
+              <div class="group-edit-label"><span>Capa da comunidade</span><small>JPG, PNG ou WebP · até 8 MB</small></div>
+              <div class="community-group-cover-preview" id="groupEditCoverPreview">Nenhuma capa definida</div>
+              <div class="group-edit-media-actions"><label class="group-edit-file">▧ Trocar capa<input id="groupEditCover" type="file" accept="image/jpeg,image/png,image/webp"></label></div>
+            </div>
+            <div class="group-edit-avatar"><div class="community-group-avatar-preview" id="groupEditAvatarPreview">C</div><div class="community-group-avatar-picker"><b>Foto de perfil</b><span>Essa imagem aparece ao lado do nome da comunidade.</span><label class="group-edit-file">♙ Trocar foto<input id="groupEditAvatar" type="file" accept="image/jpeg,image/png,image/webp"></label></div></div>
+          </div>
+          <div class="group-edit-fields"><label><span>Nome</span><input id="groupEditName" maxlength="80" required></label><label><span>Categoria</span><select id="groupEditCategory"><option>Anime & Mangá</option><option>Cosplay</option><option>Games</option><option>Xadrez</option><option>Fotografia</option><option>Eventos</option><option>Filmes & Séries</option><option>Outros</option></select></label><label class="wide"><span>Descrição</span><textarea id="groupEditDescription" maxlength="600"></textarea></label></div>
+          <div class="group-edit-actions"><span id="groupEditStatus" class="group-status"></span><button class="btn gold" type="submit">Salvar alterações</button></div>
+        </form>
+      </section>
     </aside>
     <section class="group-main">
       <section class="group-main-card group-panel" data-group-panel="topics"><div class="group-panel-head"><div><span class="kicker">FÓRUM DA COMUNIDADE</span><h2>Tópicos & <i>conversas.</i></h2></div><button class="btn gold" id="groupNewTopicToggle" type="button">＋ Novo tópico</button></div><form class="group-form" id="groupTopicForm" hidden><input id="groupTopicTitle" maxlength="120" required placeholder="Título do tópico"><textarea id="groupTopicBody" maxlength="5000" placeholder="Comece a conversa..."></textarea><div class="group-form-actions"><span id="groupTopicStatus" class="group-status"></span><button class="btn gold" type="submit">Publicar tópico</button></div></form><div class="topic-list" id="groupTopics"><div class="group-empty">Carregando tópicos...</div></div></section>
@@ -35,6 +51,6 @@
     <aside class="group-right"><section class="group-card"><div class="group-panel-head"><div><span class="kicker">MEMBROS</span><h2>Na comunidade</h2></div></div><div class="member-list" id="groupMembersRail"><div class="group-empty">Carregando...</div></div></section><section class="group-card"><div class="group-copy"><span class="kicker">CRIADA POR</span><div id="groupOwner"></div></div></section></aside>
   </main>
   <div class="group-auth" id="groupAuth"><div><span style="font-size:38px;color:#b7c8ff">◉</span><h1>Carregando comunidade...</h1><p>Entre na Área do Participante para acessar comunidades, tópicos e enquetes.</p><a class="btn gold" href="./participante.html">Entrar</a></div></div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script src="./social-network-navbar.js?v=20260830-2"></script><script src="./comunidade-grupo.js?v=20260829-2"></script><script src="./community-group-avatar-edit.js?v=20260829-1"></script><script src="./community-orkut-v9.js?v=20260831-1"></script><script src="./community-group-polish-v11.js?v=20260831-1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script src="./social-network-navbar.js?v=20260830-2"></script><script src="./comunidade-grupo.js?v=20260829-2"></script><script src="./community-group-avatar-edit.js?v=20260831-2"></script><script src="./community-orkut-v9.js?v=20260831-1"></script><script src="./community-group-polish-v11.js?v=20260831-1"></script>
 </body>
 </html>
