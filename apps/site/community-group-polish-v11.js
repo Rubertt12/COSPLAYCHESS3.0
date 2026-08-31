@@ -21,8 +21,8 @@
     document.head.appendChild(script);
   }
 
-  loadCss('./community-group-ux-v14.css?v=20260831-1', 'ccCommunityGroupUxV14Css');
-  loadScript('./community-group-ux-v14.js?v=20260831-1', 'ccCommunityGroupUxV14Js');
+  loadCss('./community-group-ux-v14.css?v=20260831-2', 'ccCommunityGroupUxV14Css');
+  loadScript('./community-group-ux-v15.js?v=20260831-1', 'ccCommunityGroupUxV15Js');
 
   function polish() {
     const cover = document.querySelector('.community-group-page .group-cover');
@@ -51,6 +51,5 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', polish, { once:true });
   else polish();
 
-  // Cobre apenas a inicialização assíncrona dos módulos existentes; não mantém observer permanente.
-  [160,420,900,1800,3200,5200].forEach(ms => setTimeout(polish, ms));
+  [160,420,900,1800,3200].forEach(ms => setTimeout(polish, ms));
 })();
