@@ -60,6 +60,7 @@
   loadCss('./community-event-calendar-v13.css?v=20260831-1','ccEventCalendarV13Css');
   loadScript('./social-chat-delete-v13.js?v=20260831-1','ccChatDeleteV13Js');
   loadScript('./community-event-calendar-v13.js?v=20260831-1','ccEventCalendarV13Js');
+  loadScript('./social-message-alerts-v13.js?v=20260831-1','ccMessageAlertsV13Js');
 
   function filterThreads(input){
     const term = String(input?.value || '').trim().toLocaleLowerCase('pt-BR');
