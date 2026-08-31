@@ -20,11 +20,13 @@
   <link rel="stylesheet" href="./jogador-ui-polish.css?v=20260830-2">
   <link rel="stylesheet" href="./jogador-social-v9.css?v=20260831-1">
   <link rel="stylesheet" href="./jogador-mobile-v10.css?v=20260831-1">
+  <link rel="stylesheet" href="./jogador-navbar-mobile-v11.css?v=20260831-1">
 </head>
 <body class="public-player-page">
   <div class="grain"></div>
   <header class="topbar">
     <a class="brand" href="./index.html"><img src="./img/logofergoverse.png" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a>
+    <span class="player-mobile-page-title">Meu perfil</span>
     <div class="top-actions">
       <a class="btn participant-profile-login" href="./comunidade.html">✦ Comunidade</a>
       <a class="btn participant-profile-login" href="./passaporte.html">♜ Passaporte</a>
@@ -32,6 +34,13 @@
       <a class="btn ghost" href="./index.html">Voltar ao site</a>
     </div>
   </header>
+
+  <nav class="player-mobile-bottom-nav" aria-label="Navegação do perfil">
+    <a class="active" href="#playerContent" aria-current="page"><span>👤</span><span>Perfil</span></a>
+    <a href="./comunidade.html"><span>✦</span><span>Rede</span></a>
+    <a href="./passaporte.html"><span>♜</span><span>Passaporte</span></a>
+    <a href="./participante.html"><span>▣</span><span>Minha área</span></a>
+  </nav>
 
   <main class="player-public-shell">
     <section id="playerLoading" class="player-state-card"><span class="player-state-icon">♜</span><h1>Carregando perfil...</h1></section>
