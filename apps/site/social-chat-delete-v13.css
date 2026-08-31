@@ -7,3 +7,7 @@
 .cc13-thread-delete{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;min-width:28px;margin-left:4px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;opacity:.55}
 .cc13-thread-delete:hover{color:#ff8c99;border-color:rgba(239,100,116,.24);background:rgba(239,100,116,.06);opacity:1}
 @media(max-width:720px){.cc13-delete-conversation{width:38px;min-width:38px;padding:0;justify-content:center;font-size:0}.cc13-delete-conversation::before{content:'🗑';font-size:14px}.cc12-bubble-row .cc12-delete{opacity:1!important;width:32px!important;height:32px!important}.cc13-thread-delete{opacity:1;width:34px;height:34px}}
+
+/* Feed v18 — o renderer legado e o V9 podem terminar quase ao mesmo tempo após publicar.
+   O feed V9 é o renderer canônico; quando ele existe, cartões legados ficam fora da UI. */
+#communityFeed:has(> .cc9-post) > .community-post:not(.cc9-post){display:none!important}
