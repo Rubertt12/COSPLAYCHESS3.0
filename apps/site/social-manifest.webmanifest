@@ -1,0 +1,19 @@
+{
+  "name": "CosplayChess Social",
+  "short_name": "CosplayChess",
+  "description": "Rede social dos participantes do CosplayChess.",
+  "start_url": "./comunidade.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#05070b",
+  "theme_color": "#05070b",
+  "orientation": "any",
+  "icons": [
+    {"src":"./img/logofergoverse.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"./img/logofergoverse.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ],
+  "shortcuts": [
+    {"name":"Feed","url":"./comunidade.html","icons":[{"src":"./img/logofergoverse.png","sizes":"192x192"}]},
+    {"name":"Meu perfil","url":"./participante.html","icons":[{"src":"./img/logofergoverse.png","sizes":"192x192"}]}
+  ]
+}
