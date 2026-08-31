@@ -80,7 +80,7 @@
       status.textContent = 'Removendo a comunidade…';
       try {
         const { data, error } = await db.from('cosplay_communities')
-          .update({ moderation_status:'deleted', updated_at:new Date().toISOString() })
+          .update({ moderation_status:'removed', updated_at:new Date().toISOString() })
           .eq('id', ctx.group.id)
           .eq('owner_profile_id', ctx.profile.id)
           .select('id');
