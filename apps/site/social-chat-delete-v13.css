@@ -1,0 +1,9 @@
+/* Exclusão de conversa/mensagem v13 */
+.cc13-delete-conversation{margin-left:auto;display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 10px;border:1px solid rgba(239,100,116,.28);border-radius:8px;background:rgba(239,100,116,.07);color:#ff8c99;font:800 9px Inter,system-ui;cursor:pointer;white-space:nowrap}
+.cc13-delete-conversation:hover{background:rgba(239,100,116,.13);border-color:rgba(239,100,116,.5)}
+.cc13-delete-conversation:disabled{opacity:.55;cursor:wait}
+.cc12-bubble-row .cc12-delete{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:28px!important;height:28px!important;min-width:28px!important;border:1px solid rgba(239,100,116,.24)!important;border-radius:8px!important;background:rgba(239,100,116,.06)!important;color:#ff8c99!important;opacity:.78!important;cursor:pointer!important;font-size:13px!important}
+.cc12-bubble-row:hover .cc12-delete,.cc12-bubble-row .cc12-delete:focus{opacity:1!important}
+.cc13-thread-delete{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;min-width:28px;margin-left:4px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;opacity:.55}
+.cc13-thread-delete:hover{color:#ff8c99;border-color:rgba(239,100,116,.24);background:rgba(239,100,116,.06);opacity:1}
+@media(max-width:720px){.cc13-delete-conversation{width:38px;min-width:38px;padding:0;justify-content:center;font-size:0}.cc13-delete-conversation::before{content:'🗑';font-size:14px}.cc12-bubble-row .cc12-delete{opacity:1!important;width:32px!important;height:32px!important}.cc13-thread-delete{opacity:1;width:34px;height:34px}}
