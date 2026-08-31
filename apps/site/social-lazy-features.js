@@ -9,7 +9,7 @@
     const promise = new Promise((resolve, reject) => {
       if (document.querySelector(`script[src^="${src}"]`)) return resolve();
       const script = document.createElement('script');
-      script.src = `${src}${src.includes('?') ? '&' : '?'}lazy=20260831-1`;
+      script.src = `${src}${src.includes('?') ? '&' : '?'}lazy=20260831-2`;
       script.async = true;
       script.onload = resolve;
       script.onerror = reject;
@@ -35,7 +35,6 @@
     discover: ['./community-social-access-fix.js'],
     communities: ['./community-groups-links.js', './community-group-avatar.js'],
     photos: ['./community-album-browser.js', './community-event-photo-tags.js'],
-    'social-settings': ['./community-settings-secure.js', './community-profile-visibility.js'],
   };
 
   const extended = ['./community-social-extended.js', './community-team-links.js'];
@@ -76,11 +75,4 @@
     if (!tab) return;
     loadScript('./community-following.js').catch((error) => console.error('Falha ao carregar feed Seguindo:', error));
   }, { passive: true });
-
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      const discover = document.querySelector('[data-community-panel="discover"]');
-      if (discover && !discover.hidden) loadMany(secondary.discover).catch(() => {});
-    }, 1500);
-  }, { once: true });
 })();
