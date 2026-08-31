@@ -23,7 +23,7 @@
     const src=safe(profile.cover_photo_url);if(!src)return;
     hero.classList.add('has-public-cover');
     const cover=document.createElement('div');cover.className='player-public-cover';
-    const img=document.createElement('img');img.src=src;img.alt=`Foto de capa de ${profile.display_name||profile.nick||'participante'}`;img.dataset.lightboxCaption=img.alt;img.style.objectPosition=`${clamp(profile.cover_position_x)}% ${clamp(profile.cover_position_y)}%`;
+    const img=document.createElement('img');img.src=src;img.alt=`Foto de capa de ${profile.display_name||profile.nick||'participante'}`;img.dataset.lightboxCaption=img.alt;img.style.setProperty('object-position',`${clamp(profile.cover_position_x)}% ${clamp(profile.cover_position_y)}%`,'important');
     const label=document.createElement('span');label.className='player-public-cover-label';label.textContent='Foto de capa';
     cover.append(img,label);hero.prepend(cover);
   };
