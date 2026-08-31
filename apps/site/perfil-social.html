@@ -3,79 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#0b0710">
-  <meta name="description" content="Perfil social de participante na Comunidade CosplayChess.">
-  <title>Comunidade do participante — CosplayChess</title>
-  <link rel="icon" type="image/png" href="./img/logofergoverse.png">
-  <link rel="stylesheet" href="./landing.css">
-  <link rel="stylesheet" href="./perfil-social.css?v=20260829-1">
-  <link rel="stylesheet" href="./perfil-social-v2.css?v=20260830-1">
-  <link rel="stylesheet" href="./perfil-social-state-fix.css?v=20260829-1">
-  <link rel="stylesheet" href="./social-achievements.css?v=20260829-1">
-  <link rel="stylesheet" href="./social-photo-lightbox.css?v=20260829-1">
-  <link rel="stylesheet" href="./social-network-navbar.css?v=20260830-1">
-  <link rel="stylesheet" href="./social-network-polish.css?v=20260830-1">
+  <meta name="theme-color" content="#05070b">
+  <meta name="robots" content="noindex">
+  <title>Perfil Cosplay — CosplayChess</title>
+  <script>
+    (() => {
+      const params = new URLSearchParams(location.search);
+      const slug = String(params.get('slug') || '').trim();
+      const target = slug
+        ? `./jogador.html?slug=${encodeURIComponent(slug)}`
+        : './participante.html';
+      location.replace(target);
+    })();
+  </script>
 </head>
-<body class="social-profile-page">
-  <div class="grain"></div>
-  <header class="topbar social-profile-topbar">
-    <a class="brand" href="./index.html"><img src="./img/logofergoverse.png" alt="CosplayChess"><span><b>COSPLAY</b><em>CHESS</em></span></a>
-    <div class="top-actions"><a class="btn dark" href="./comunidade.html">✦ Voltar à comunidade</a><a class="btn ghost" href="./index.html">Voltar ao site</a></div>
-  </header>
-
-  <main class="social-profile-shell">
-    <section id="socialProfileAuth" class="social-profile-state" hidden><span>♜</span><h1>Entre na Comunidade</h1><p>Este perfil social é exclusivo para participantes com acesso ativo.</p><a class="btn gold" href="./participante.html">Entrar na minha área</a></section>
-    <section id="socialProfileNotFound" class="social-profile-state" hidden><span>♟</span><h1>Perfil não encontrado</h1><p>Não foi possível localizar este participante na comunidade. Perfis ativos continuam visíveis para outros participantes, respeitando apenas bloqueios e contas sem acesso ativo.</p><a class="btn gold" href="./comunidade.html">Voltar à comunidade</a></section>
-
-    <div id="socialProfileContent" hidden>
-      <section class="social-profile-hero">
-        <div class="social-profile-cover" id="socialProfileCover"></div>
-        <div class="social-profile-identity">
-          <div class="social-profile-avatar" id="socialProfileAvatar">♜</div>
-          <div class="social-profile-copy">
-            <span class="kicker">PERFIL NA COMUNIDADE</span>
-            <h1 id="socialProfileName">Participante</h1>
-            <p id="socialProfileCharacter">CosplayChess</p>
-            <small id="socialProfileNick"></small>
-            <blockquote id="socialProfileStatus" hidden></blockquote>
-          </div>
-          <div class="social-profile-actions" id="socialProfileActions">
-            <a class="btn dark" id="socialProfilePublicLink" href="#">Ver perfil cosplay</a>
-            <button class="btn gold" id="socialProfileFriendAction" type="button">Adicionar amigo</button>
-          </div>
-        </div>
-        <div class="social-profile-stats" id="socialProfileStats"><div><b>0</b><span>amigos</span></div><div><b>0</b><span>posts</span></div><div><b>0</b><span>fotos</span></div><div><b id="socialProfileCommunityCount">0</b><span>comunidades</span></div></div>
-        <nav class="social-profile-tabs" aria-label="Seções do perfil"><a href="#socialProfileMural">Mural</a><a href="#socialProfileAbout">Sobre</a><a href="#socialProfileCommunitySection">Comunidades</a><a href="#socialProfileAlbumSection">Álbuns</a><a id="socialProfileAchievementsLink" href="#">Conquistas</a></nav>
-      </section>
-
-      <div class="social-profile-layout">
-        <section id="socialProfileMural" class="social-profile-card social-profile-main-card social-profile-section-anchor">
-          <div class="social-profile-card-head"><div><span class="kicker">MURAL</span><h2>Publicações</h2></div><small>Veja as publicações e interaja com este participante.</small></div>
-          <div id="socialProfileAbout" class="social-profile-about social-profile-section-anchor" hidden><h3>Sobre</h3><p id="socialProfileBio"></p></div>
-          <div id="socialProfilePosts" class="social-profile-posts"><div class="social-profile-empty">Carregando publicações...</div></div>
-        </section>
-
-        <aside class="social-profile-side">
-          <section id="socialProfileCommunitySection" class="social-profile-card social-profile-section-anchor">
-            <div class="social-profile-card-head"><div><span class="kicker">COMUNIDADES</span><h2>Participa</h2></div></div>
-            <div id="socialProfileCommunities" class="social-profile-communities"><div class="social-profile-empty">Carregando comunidades...</div></div>
-          </section>
-          <section id="socialProfileAlbumSection" class="social-profile-card social-profile-section-anchor">
-            <div class="social-profile-card-head"><div><span class="kicker">ÁLBUNS</span><h2>Fotos</h2></div></div>
-            <div id="socialProfileAlbums" class="social-profile-albums"><div class="social-profile-empty">Carregando álbuns...</div></div>
-          </section>
-        </aside>
-      </div>
-      <p class="social-profile-family">CosplayChess é family friendly: conteúdos públicos devem ser apropriados para todas as idades.</p>
-    </div>
-  </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./config.js"></script>
-  <script src="./social-network-navbar.js?v=20260830-2"></script>
-  <script src="./perfil-social.js?v=20260830-2"></script>
-  <script src="./perfil-social-interactions.js?v=20260830-2"></script>
-  <script src="./social-achievements-preview.js?v=20260829-1"></script>
-  <script src="./social-photo-lightbox.js?v=20260829-2"></script>
-</body>
+<body></body>
 </html>
