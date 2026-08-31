@@ -2,3 +2,411 @@
 @import url('./social-white-mode-v14.css?v=20260831-3');
 @import url('./social-white-accents-v15.css?v=20260831-2');
 @import url('./social-white-buttons-v16.css?v=20260831-3');
+
+/* ========================================================================== */
+/* CosplayChess Social Polish v17 — camada final para toda a rede social       */
+/* ========================================================================== */
+
+body.community-page.cc-v4{
+  --cc17-radius-xs:8px;
+  --cc17-radius-sm:10px;
+  --cc17-radius-md:14px;
+  --cc17-radius-lg:17px;
+  --cc17-shadow:0 12px 34px rgba(0,0,0,.16);
+  --cc17-shadow-soft:0 5px 18px rgba(0,0,0,.10);
+  --cc17-hover:color-mix(in srgb,var(--purple) 8%,var(--panel2));
+  --cc17-line:color-mix(in srgb,var(--line) 88%,transparent);
+  --cc17-focus:color-mix(in srgb,var(--purple) 72%,#fff 8%);
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* Layout geral mais equilibrado: mais espaço para conteúdo, menos para as laterais. */
+.cc-v4 .cc-app-shell{
+  max-width:1760px;
+  grid-template-columns:278px minmax(620px,1fr) 390px;
+}
+.cc-v4 .cc-left{padding:12px 12px 14px}
+.cc-v4 .cc-left-head{height:66px;padding:0 5px}
+.cc-v4 .cc-center{padding:12px 18px 30px}
+.cc-v4 .cc-right{padding:12px 16px 22px 8px}
+
+/* Cabeçalho central com sensação de app. */
+.cc-v4 .cc-center-head{
+  position:sticky;
+  top:0;
+  z-index:900;
+  height:68px;
+  padding:7px 0;
+  background:color-mix(in srgb,var(--bg) 90%,transparent);
+  backdrop-filter:blur(18px) saturate(130%);
+  -webkit-backdrop-filter:blur(18px) saturate(130%);
+}
+.cc-v4 .cc-global-search{
+  height:50px;
+  border-radius:14px;
+  border-color:var(--cc17-line);
+  box-shadow:0 1px 0 rgba(255,255,255,.02),0 8px 24px rgba(0,0,0,.07);
+  transition:border-color .16s ease,box-shadow .16s ease,background .16s ease;
+}
+.cc-v4 .cc-global-search:focus-within{
+  border-color:var(--cc17-focus);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--purple) 14%,transparent),0 10px 28px rgba(0,0,0,.09);
+}
+.cc-v4 .cc-global-search input{font-size:13px}
+
+/* Branding/sidebar. */
+.cc-v4 .cc-brand img{width:48px;height:48px}
+.cc-v4 .cc-brand-copy{font-size:19px;letter-spacing:.075em}
+.cc-v4 .cc-collapse{
+  width:38px;height:38px;border-radius:10px;
+  transition:transform .16s ease,border-color .16s ease,background .16s ease;
+}
+.cc-v4 .cc-collapse:hover{transform:translateX(-1px)}
+.cc-v4 .community-nav{gap:3px;margin-top:12px}
+.cc-v4 .community-nav button,.cc-v4 .cc-nav-link{
+  height:44px;
+  padding:0 13px;
+  border:1px solid transparent;
+  border-radius:11px;
+  gap:12px;
+  font-size:13px;
+  transition:background .14s ease,color .14s ease,border-color .14s ease,transform .14s ease;
+}
+.cc-v4 .community-nav button span,.cc-v4 .cc-nav-link span{width:22px;font-size:18px}
+.cc-v4 .community-nav button:hover,.cc-v4 .cc-nav-link:hover{transform:translateX(2px)}
+.cc-v4 .community-nav button.active{
+  border-color:color-mix(in srgb,var(--purple) 30%,var(--line));
+  box-shadow:inset 3px 0 0 var(--purple),0 7px 20px color-mix(in srgb,var(--purple) 7%,transparent);
+}
+.cc-v4 .cc-left-divider{margin:12px 2px}
+.cc-v4 .cc-left-user{
+  margin-top:12px;
+  padding:13px;
+  border-radius:15px;
+  box-shadow:0 8px 24px rgba(0,0,0,.09);
+}
+.cc-v4 .community-me-avatar{width:50px;height:50px;flex-basis:50px}
+.cc-v4 .community-me-copy h1{font-size:14px}
+.cc-v4 .community-me-copy p{font-size:10px}
+.cc-v4 .cc-level-row{margin-top:12px}
+.cc-v4 .cc-level-pill{border-radius:999px;padding:4px 10px}
+.cc-v4 .cc-member-since{margin-top:10px;padding-top:9px}
+
+/* Composer mais limpo e com hierarquia clara. */
+.cc-v4 .community-composer{
+  gap:13px;
+  margin-bottom:12px;
+  padding:15px 16px;
+  border-radius:var(--cc17-radius-lg);
+  border-color:var(--cc17-line);
+  box-shadow:var(--cc17-shadow-soft);
+  transition:border-color .18s ease,box-shadow .18s ease;
+}
+.cc-v4 .community-composer:focus-within{
+  border-color:color-mix(in srgb,var(--purple) 42%,var(--line));
+  box-shadow:0 12px 34px rgba(0,0,0,.13),0 0 0 3px color-mix(in srgb,var(--purple) 6%,transparent);
+}
+.cc-v4 .community-composer-avatar{width:48px;height:48px;flex-basis:48px}
+.cc-v4 #communityPostBody{
+  min-height:62px;
+  font-size:14px;
+  line-height:1.5;
+}
+.cc-v4 .community-composer-controls{gap:7px;margin-top:11px}
+.cc-v4 .community-file-btn,.cc-v4 .community-select-wrap{
+  min-height:36px;
+  border-radius:9px;
+  transition:background .14s ease,border-color .14s ease,color .14s ease;
+}
+.cc-v4 .community-file-btn:not([aria-disabled="true"]):hover{
+  background:var(--cc17-hover);
+  color:var(--text);
+}
+.cc-v4 #communityPostSubmit{
+  min-height:38px;
+  border-radius:10px;
+  padding-inline:18px;
+  transition:transform .14s ease,filter .14s ease,box-shadow .14s ease;
+}
+.cc-v4 #communityPostSubmit:hover{transform:translateY(-1px)}
+
+/* Filtros do feed fixos e mais discretos. */
+.cc-v4 .cc-feed-tabs{
+  position:sticky;
+  top:68px;
+  z-index:160;
+  height:48px;
+  margin-bottom:8px;
+  padding:0 8px;
+  gap:10px;
+  border:1px solid var(--cc17-line);
+  border-radius:12px;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(16px) saturate(125%);
+  -webkit-backdrop-filter:blur(16px) saturate(125%);
+  overflow:hidden;
+}
+.cc-v4 .cc-feed-tabs button{
+  height:46px;
+  min-width:105px;
+  padding:0 12px;
+  border-radius:9px 9px 0 0;
+  font-size:12px;
+}
+.cc-v4 .cc-feed-tabs button:hover{background:color-mix(in srgb,var(--purple) 6%,transparent)}
+
+/* Feed/postagens. */
+.cc-v4 .community-feed{gap:12px;padding-top:2px}
+.cc-v4 .community-feed>*,.cc-v4 .cc9-post{
+  border-radius:var(--cc17-radius-lg)!important;
+  border-color:var(--cc17-line)!important;
+  box-shadow:var(--cc17-shadow-soft)!important;
+  transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease;
+}
+.cc-v4 .community-feed>*:hover,.cc-v4 .cc9-post:hover{
+  border-color:color-mix(in srgb,var(--purple) 24%,var(--line))!important;
+  box-shadow:var(--cc17-shadow)!important;
+}
+.cc9-post-inner{padding:16px 16px 14px}
+.cc9-post-avatar{width:45px;height:45px;flex-basis:45px;box-shadow:0 0 0 2px color-mix(in srgb,var(--purple) 12%,transparent)}
+.cc9-post-author a{font-size:12px;letter-spacing:.005em}
+.cc9-post-author small{font-size:8.5px}
+.cc9-follow-mini{border-radius:999px;padding-inline:11px}
+.cc9-menu-toggle{border-radius:9px}
+.cc9-menu-pop{border-radius:12px;box-shadow:0 18px 45px rgba(0,0,0,.28)}
+.cc9-post-body{font-size:13px;line-height:1.62}
+.cc9-post-media{border-radius:12px;background:color-mix(in srgb,#000 84%,var(--panel))}
+.cc9-post-actions{gap:5px;padding-top:11px}
+.cc9-action{
+  min-height:36px;
+  border:1px solid transparent;
+  border-radius:9px;
+  font-weight:650;
+  transition:background .14s ease,border-color .14s ease,color .14s ease,transform .14s ease;
+}
+.cc9-action:hover{border-color:color-mix(in srgb,var(--purple) 14%,var(--line));transform:translateY(-1px)}
+.cc9-action.active,.cc9-action.saved,.cc9-action.share-active{
+  background:color-mix(in srgb,currentColor 7%,transparent);
+}
+.cc9-feed-context{border-radius:12px}
+.cc9-feed-sentinel{min-height:72px}
+
+/* Comentários e conteúdo rico. */
+.cc9-comments{margin-inline:16px}
+.cc9-comment-bubble{border:1px solid color-mix(in srgb,var(--line) 65%,transparent);border-radius:11px}
+.cc9-comment-bubble p{line-height:1.5}
+.cc9-comment-form input,.cc9-comment-form button{border-radius:10px}
+.cc9-poll,.cc9-event-box{border-radius:13px}
+.cc9-poll-option{border-radius:10px}
+.cc9-event-rsvp button{border-radius:9px}
+
+/* Painéis genéricos — Explorar, Amigos, Comunidades, Salvos, Ranking, etc. */
+.cc9-panel{min-height:calc(100vh - 105px)}
+.cc9-panel-head{margin-bottom:16px;align-items:center}
+.cc9-panel-head h2{font-size:24px;letter-spacing:-.025em}
+.cc9-panel-head p{font-size:10px;line-height:1.5}
+.cc9-chip{
+  height:35px;
+  border-radius:999px;
+  padding-inline:12px;
+  transition:background .14s ease,border-color .14s ease,color .14s ease,transform .14s ease;
+}
+.cc9-chip:hover{transform:translateY(-1px)}
+.cc9-card,
+.cc-v4 .community-subsection,
+.cc-v4 [data-community-panel="communities"],
+.cc-v4 [data-community-panel="discover"],
+.cc-v4 [data-community-panel="photos"],
+.cc-v4 [data-community-panel="notifications"],
+.cc-v4 [data-community-panel="saved"],
+.cc-v4 [data-community-panel="ranking"],
+.cc-v4 [data-community-panel="social-settings"],
+.cc-v4 [data-community-panel="moderation"]{
+  border-radius:var(--cc17-radius-lg);
+  border-color:var(--cc17-line);
+}
+.cc-v4 .community-subhead{margin-bottom:16px}
+.cc-v4 .community-subhead h3{font-size:19px;letter-spacing:-.015em}
+.cc-v4 .community-search{height:48px;border-radius:12px}
+.cc-v4 .community-people-grid,.cc-v4 .community-group-grid{gap:12px}
+.cc-v4 .community-people-grid>*,.cc-v4 .community-group-grid>*{
+  border-radius:14px!important;
+  transition:border-color .16s ease,transform .16s ease,box-shadow .16s ease;
+}
+.cc-v4 .community-people-grid>*:hover,.cc-v4 .community-group-grid>*:hover{
+  transform:translateY(-2px);
+  border-color:color-mix(in srgb,var(--purple) 28%,var(--line))!important;
+  box-shadow:var(--cc17-shadow-soft)!important;
+}
+.cc9-person{border-radius:14px!important}
+.cc9-person-actions button,.cc9-person-actions a{border-radius:9px!important}
+
+/* Notificações. */
+.cc9-notifications{gap:9px}
+.cc9-notification{
+  padding:12px;
+  border-radius:13px;
+  transition:background .14s ease,border-color .14s ease,transform .14s ease;
+}
+.cc9-notification:hover{transform:translateY(-1px)}
+.cc9-notification.unread{box-shadow:inset 3px 0 0 var(--purple)}
+
+/* Ranking, álbuns, salvos e configurações: superfícies mais consistentes. */
+.cc9-ranking-row,.cc9-album-card,.cc9-saved-card,.cc-settings-v6-main,.cc-settings-v6-side{
+  border-radius:14px!important;
+  border-color:var(--cc17-line)!important;
+}
+.cc-settings-v6-field,.cc-settings-v6-toggle,.cc-settings-field,.cc-settings-toggle{border-radius:11px!important}
+
+/* Chat v12 integrado visualmente ao restante da rede. */
+.cc12-chat{
+  border-radius:var(--cc17-radius-lg);
+  border-color:var(--cc17-line);
+  box-shadow:var(--cc17-shadow-soft);
+}
+.cc12-side-head,.cc12-chat-head{min-height:66px}
+.cc12-new-chat{border-radius:10px}
+.cc12-thread{min-height:66px;transition:background .14s ease}
+.cc12-thread.active{box-shadow:inset 3px 0 0 var(--purple)}
+.cc12-bubble{border-radius:14px 14px 14px 5px;line-height:1.52}
+.cc12-bubble-row.mine .cc12-bubble{border-radius:14px 14px 5px 14px}
+.cc12-compose textarea{border-radius:12px}
+.cc12-tool,.cc12-send{border-radius:11px}
+.cc12-emoji-panel{border-radius:14px}
+.cc13-delete-conversation{border-radius:9px}
+
+/* Eventos/calendário. */
+.cc13-calendar,.cc13-calendar-shell,.cc13-day-panel,.cc13-event-card{
+  border-radius:14px!important;
+}
+.cc13-calendar-toolbar button,.cc13-event-actions button{border-radius:9px!important}
+.cc13-calendar-day{border-radius:10px!important;transition:background .14s ease,border-color .14s ease,transform .14s ease}
+.cc13-calendar-day:hover{transform:translateY(-1px)}
+
+/* Rail direito mais compacto e útil. */
+.cc-v4 .cc-right-head{height:66px;gap:10px}
+.cc-v4 .cc-icon-btn{width:40px;height:40px;border-radius:11px;font-size:22px}
+.cc-v4 .cc-account{border-radius:12px;padding:4px 6px 4px 4px;text-decoration:none}
+.cc-v4 .cc-card{
+  margin-bottom:12px;
+  border-radius:var(--cc17-radius-lg);
+  border-color:var(--cc17-line);
+  box-shadow:var(--cc17-shadow-soft);
+}
+.cc-v4 .cc-profile-cover{height:116px}
+.cc-v4 .cc-profile-body{padding:0 14px 14px}
+.cc-v4 .cc-profile-identity{margin-top:-36px}
+.cc-v4 .cc-profile-identity .cc-mirror-avatar{width:72px;height:72px;box-shadow:0 0 0 4px var(--panel)}
+.cc-v4 .cc-profile-name b{font-size:17px}
+.cc-v4 .cc-profile-tagline{margin:12px 0;color:var(--muted)}
+.cc-v4 .cc-profile-stats{margin-bottom:11px}
+.cc-v4 .community-profile-link{height:38px;line-height:36px;border-radius:10px}
+.cc-v4 .cc-card-head{height:46px;padding:0 14px}
+.cc-v4 .cc-card-head b{font-size:10px}
+.cc-v4 .cc-stories{padding:11px 10px 13px;gap:7px}
+.cc-v4 .cc-story-avatar{width:48px;height:48px}
+.cc-v4 .cc-highlight-list{padding:9px 12px 12px}
+
+/* Estados vazios/carregamento com melhor respiro. */
+.cc-v4 .community-empty,.cc9-empty,.cc12-online-empty{
+  color:var(--muted);
+  line-height:1.55;
+}
+.cc-v4 .community-empty,.cc9-empty{padding:34px 18px}
+
+/* Controles globais: feedback consistente e acessibilidade. */
+.cc-v4 button,.cc-v4 a,.cc-v4 input,.cc-v4 textarea,.cc-v4 select{
+  outline:none;
+}
+.cc-v4 button:focus-visible,.cc-v4 a:focus-visible,.cc-v4 input:focus-visible,.cc-v4 textarea:focus-visible,.cc-v4 select:focus-visible{
+  outline:2px solid var(--cc17-focus)!important;
+  outline-offset:2px!important;
+}
+.cc-v4 button,.cc-v4 .btn,.cc-v4 [role="button"]{
+  transition:background .14s ease,border-color .14s ease,color .14s ease,opacity .14s ease,transform .14s ease,box-shadow .14s ease;
+}
+.cc-v4 button:active:not(:disabled),.cc-v4 .btn:active:not(:disabled),.cc-v4 [role="button"]:active{
+  transform:translateY(1px);
+}
+
+/* Scrollbars discretas sem sumir completamente. */
+.cc-v4 *{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--muted) 38%,transparent) transparent}
+.cc-v4 *::-webkit-scrollbar{width:8px;height:8px}
+.cc-v4 *::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--muted) 28%,transparent);border:2px solid transparent;background-clip:padding-box;border-radius:999px}
+.cc-v4 *::-webkit-scrollbar-thumb:hover{background:color-mix(in srgb,var(--muted) 45%,transparent);border:2px solid transparent;background-clip:padding-box}
+
+/* White Mode: preserva a identidade clara, mas com profundidade e separação. */
+body.community-page.cc-v4[data-cc-theme="white-mode"]{
+  --cc17-shadow:0 14px 36px rgba(31,41,55,.095);
+  --cc17-shadow-soft:0 4px 16px rgba(31,41,55,.065);
+  --cc17-line:#dfe5ee;
+}
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc-center-head{
+  background:rgba(243,245,249,.90)!important;
+}
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc-feed-tabs{
+  background:rgba(255,255,255,.88)!important;
+  border-color:#dfe5ee!important;
+  box-shadow:0 6px 18px rgba(31,41,55,.045)!important;
+}
+body.community-page.cc-v4[data-cc-theme="white-mode"] .community-composer,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .community-feed>*,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc9-post,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc-card,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc12-chat{
+  box-shadow:var(--cc17-shadow-soft)!important;
+}
+body.community-page.cc-v4[data-cc-theme="white-mode"] .community-feed>*:hover,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc9-post:hover{
+  box-shadow:var(--cc17-shadow)!important;
+}
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc-left-user{
+  background:linear-gradient(180deg,#fff,#f8f9fc)!important;
+}
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc9-menu-pop,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc9-search-popover,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc9-mention-popover{
+  box-shadow:0 18px 48px rgba(31,41,55,.15)!important;
+}
+
+/* Telas intermediárias. */
+@media(max-width:1440px) and (min-width:1181px){
+  .cc-v4 .cc-app-shell{grid-template-columns:250px minmax(560px,1fr) 350px}
+  .cc-v4 .cc-center{padding-inline:14px}
+  .cc-v4 .cc-right{padding-right:12px}
+  .cc-v4 .community-nav button,.cc-v4 .cc-nav-link{font-size:12px;padding-inline:11px}
+}
+
+/* Mobile/tablet: só refinamentos; a estrutura continua sob responsabilidade do v10. */
+@media(max-width:980px){
+  .cc-v4 .community-main{padding:10px!important}
+  .cc-v4 .cc-center-head{box-shadow:0 5px 22px rgba(0,0,0,.08)}
+  .cc-v4 .community-composer,.cc-v4 .community-feed>*,.cc-v4 .cc9-post,.cc9-panel,.cc12-chat{
+    box-shadow:none!important;
+  }
+  .cc-v4 .cc-feed-tabs{top:var(--cc-mobile-head-h)!important;border-radius:0!important;border-left:0!important;border-right:0!important}
+  .cc9-post-inner{padding:13px!important}
+  .cc9-post-actions{gap:2px!important}
+  .cc9-action{min-height:42px!important;border-radius:10px!important}
+  .cc-v4 .community-subhead{align-items:flex-start!important}
+  .cc12-chat{border-radius:0!important}
+}
+
+@media(max-width:520px){
+  .cc-v4 .community-main{padding:8px!important}
+  .cc-v4 .community-composer{border-radius:13px!important}
+  .cc-v4 .community-feed>*,.cc-v4 .cc9-post{border-radius:13px!important}
+  .cc9-post-body{font-size:13.5px!important}
+  .cc9-post-actions{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  .cc9-action{padding-inline:2px!important;font-size:10px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .cc-v4 *, .cc-v4 *::before, .cc-v4 *::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.01ms!important;
+  }
+}
