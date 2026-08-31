@@ -48,6 +48,19 @@
   style.textContent = css;
   document.head.appendChild(style);
 
+  function loadCss(href,id){
+    if(document.getElementById(id))return;
+    const link=document.createElement('link');link.id=id;link.rel='stylesheet';link.href=href;document.head.appendChild(link);
+  }
+  function loadScript(src,id){
+    if(document.getElementById(id))return;
+    const script=document.createElement('script');script.id=id;script.src=src;script.defer=true;document.head.appendChild(script);
+  }
+  loadCss('./social-chat-delete-v13.css?v=20260831-1','ccChatDeleteV13Css');
+  loadCss('./community-event-calendar-v13.css?v=20260831-1','ccEventCalendarV13Css');
+  loadScript('./social-chat-delete-v13.js?v=20260831-1','ccChatDeleteV13Js');
+  loadScript('./community-event-calendar-v13.js?v=20260831-1','ccEventCalendarV13Js');
+
   function filterThreads(input){
     const term = String(input?.value || '').trim().toLocaleLowerCase('pt-BR');
     const rows = [...document.querySelectorAll('#cc12ThreadList .cc12-thread')];
@@ -91,7 +104,6 @@
   document.addEventListener('click', e => {
     const msgTrigger = e.target.closest?.('[data-community-view="messages"]');
     if(msgTrigger){
-      // O chat v12 já recebe este clique antes; daqui em diante bloqueamos renderizadores antigos.
       e.stopImmediatePropagation();
       [90,220,480,900].forEach(ms=>setTimeout(enhanceChat,ms));
       return;
