@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="./social-network-v4-polish.css?v=20260831-1">
   <link rel="stylesheet" href="./social-network-v4-fullscreen.css?v=20260831-1">
   <link rel="stylesheet" href="./social-network-v5.css?v=20260831-1">
-  <link rel="stylesheet" href="./social-settings-v6.css?v=20260831-1">
+  <link rel="stylesheet" href="./social-settings-v6.css?v=20260831-2">
 </head>
 <body class="community-page cc-v4">
   <div class="grain"></div>
@@ -48,8 +48,8 @@
       </nav>
 
       <div class="cc-left-divider"></div>
-      <button class="cc-nav-link" type="button" data-community-view="social-settings"><span>◔</span>Temas</button>
-      <button class="cc-nav-link" type="button" data-community-view="social-settings"><span>⚙</span>Configurações</button>
+      <button class="cc-nav-link" type="button" data-community-view="social-settings" data-settings-open="appearance"><span>◔</span>Temas</button>
+      <button class="cc-nav-link" type="button" data-community-view="social-settings" data-settings-open="privacy"><span>⚙</span>Configurações</button>
 
       <section class="community-me-card cc-left-user">
         <div class="cc-left-user-top">
@@ -128,6 +128,10 @@
           <div class="community-subhead"><h3>Álbuns</h3></div>
           <div id="communityPhotos" class="community-photo-grid"><div class="community-empty">Carregando...</div></div>
         </section>
+
+        <section class="community-view" data-community-panel="social-settings" hidden>
+          <div class="cc-loading-inline">Carregando configurações...</div>
+        </section>
       </section>
     </section>
 
@@ -146,7 +150,7 @@
               <div class="cc-mirror-avatar"><span>♜</span></div>
               <div class="cc-profile-name"><b data-cc-profile-name>Participante</b><span>Cosplay: <span data-cc-profile-character>CosplayChess</span></span></div>
             </div>
-            <button class="cc-profile-gear" type="button" data-community-view="social-settings" aria-label="Configurações">⚙</button>
+            <button class="cc-profile-gear" type="button" data-community-view="social-settings" data-settings-open="privacy" aria-label="Configurações">⚙</button>
           </div>
           <p class="cc-profile-tagline">Xadrez • Cosplay • Performance</p>
           <div class="cc-profile-stats">
@@ -191,6 +195,6 @@
   <script src="./social-ui-runtime-v4.js?v=20260831-1"></script>
   <script src="./social-rich-content-v1.js?v=20260831-1"></script>
   <script src="./social-v5-fixes.js?v=20260831-1"></script>
-  <script src="./social-settings-v6.js?v=20260831-1"></script>
+  <script src="./social-settings-v7.js?v=20260831-1"></script>
 </body>
 </html>
