@@ -1,0 +1,25 @@
+/* Community group v13 — controles leves e estáveis */
+.community-group-page .topic-controls{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;margin:10px 0 0;padding:0 2px}
+.community-group-page .topic-controls button{min-height:32px;padding:0 10px;border:1px solid rgba(120,143,178,.30);border-radius:8px;background:#101827;color:#c7d0df;font:800 10px/1 system-ui;cursor:pointer}
+.community-group-page .topic-controls button:hover{background:#172237;color:#fff}
+.community-group-page .topic-controls button.danger,.community-group-page .topic-delete{border-color:rgba(226,85,103,.44)!important;color:#ff9aaa!important;background:rgba(151,38,55,.10)!important}
+.community-group-page .topic-controls button:disabled{opacity:.55;cursor:wait}
+.community-group-page .topic-reply{position:relative;min-width:0}
+.community-group-page .topic-reply-delete{align-self:flex-start;margin-left:auto;min-height:28px;padding:0 8px;border:1px solid rgba(226,85,103,.28);border-radius:7px;background:transparent;color:#e79aa6;font:700 9px/1 system-ui;cursor:pointer}
+.community-group-page .topic-reply-delete:hover{background:rgba(151,38,55,.12);color:#ffc1ca}
+.community-group-page .topic-copy,.community-group-page .topic-reply-body{min-width:0;overflow-wrap:anywhere}
+.community-group-page .topic-card{contain:layout paint style}
+.community-group-page #groupV13Admin .group-v9-admin-person{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
+.community-group-page #groupV13Admin .group-v9-admin-person img,.community-group-page #groupV13Admin .group-v9-admin-person>span{width:34px;height:34px;flex:0 0 34px;border-radius:50%;object-fit:cover;display:grid;place-items:center;background:#131b2a}
+.community-group-page #groupV13Admin .group-v9-admin-person b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px}
+.community-group-page #groupV13Admin .group-v9-admin-row{display:flex;align-items:center;gap:8px;min-width:0}
+.community-group-page #groupV13Admin .group-v9-admin-actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+@media(max-width:720px){
+  .community-group-page .topic-controls{justify-content:stretch}
+  .community-group-page .topic-controls button{flex:1 1 auto;min-height:38px}
+  .community-group-page .topic-reply{grid-template-columns:32px minmax(0,1fr)!important}
+  .community-group-page .topic-reply-delete{grid-column:2;justify-self:end;margin:4px 0 0}
+  .community-group-page #groupV13Admin .group-v9-admin-row{align-items:flex-start;flex-wrap:wrap}
+  .community-group-page #groupV13Admin .group-v9-admin-actions{width:100%;justify-content:stretch}
+  .community-group-page #groupV13Admin .group-v9-admin-actions button{flex:1;min-height:36px}
+}
