@@ -5,12 +5,15 @@
 
   const copyAvatar = (source, target) => {
     if (!source || !target) return;
+    const sourceImg = source.querySelector('img');
+    const targetImg = target.querySelector('img');
+    if (sourceImg?.src && targetImg?.src === sourceImg.src && target.childElementCount === 1) return;
+    if (!sourceImg && !targetImg && target.textContent?.trim() === '♜') return;
     target.replaceChildren();
-    const img = source.querySelector('img');
-    if (img?.src) {
+    if (sourceImg?.src) {
       const clone = document.createElement('img');
-      clone.src = img.src;
-      clone.alt = img.alt || 'Avatar';
+      clone.src = sourceImg.src;
+      clone.alt = sourceImg.alt || 'Avatar';
       clone.loading = 'lazy';
       target.appendChild(clone);
     } else {
@@ -25,8 +28,8 @@
   const syncProfile = () => {
     const name = $('communityMyName')?.textContent?.trim() || 'Participante';
     const character = $('communityMyCharacter')?.textContent?.trim() || 'CosplayChess';
-    qa('[data-cc-profile-name]').forEach(el => { el.textContent = name; });
-    qa('[data-cc-profile-character]').forEach(el => { el.textContent = character; });
+    qa('[data-cc-profile-name]').forEach(el => { if (el.textContent !== name) el.textContent = name; });
+    qa('[data-cc-profile-character]').forEach(el => { if (el.textContent !== character) el.textContent = character; });
     qa('.cc-mirror-avatar').forEach(el => copyAvatar($('communityMyAvatar'), el));
   };
 
@@ -36,9 +39,9 @@
       posts: readNumber($('communityPostCount')),
       photos: readNumber($('communityPhotoCount')),
     };
-    qa('[data-cc-count="friends"]').forEach(el => { el.textContent = String(values.friends); });
-    qa('[data-cc-count="posts"]').forEach(el => { el.textContent = String(values.posts); });
-    qa('[data-cc-count="photos"]').forEach(el => { el.textContent = String(values.photos); });
+    qa('[data-cc-count="friends"]').forEach(el => { const v = String(values.friends); if (el.textContent !== v) el.textContent = v; });
+    qa('[data-cc-count="posts"]').forEach(el => { const v = String(values.posts); if (el.textContent !== v) el.textContent = v; });
+    qa('[data-cc-count="photos"]').forEach(el => { const v = String(values.photos); if (el.textContent !== v) el.textContent = v; });
 
     const score = (values.posts * 12) + (values.friends * 20) + (values.photos * 8);
     const level = Math.max(1, Math.floor(score / 100) + 1);
@@ -46,9 +49,9 @@
     const levelEl = $('ccSocialLevel');
     const xpBar = $('ccSocialXpBar');
     const xpCopy = $('ccSocialXpCopy');
-    if (levelEl) levelEl.textContent = String(level);
-    if (xpBar) xpBar.style.width = `${progress}%`;
-    if (xpCopy) xpCopy.textContent = `${score} pontos sociais`;
+    if (levelEl && levelEl.textContent !== String(level)) levelEl.textContent = String(level);
+    if (xpBar && xpBar.style.width !== `${progress}%`) xpBar.style.width = `${progress}%`;
+    if (xpCopy && xpCopy.textContent !== `${score} pontos sociais`) xpCopy.textContent = `${score} pontos sociais`;
   };
 
   const syncNotificationBadge = () => {
@@ -56,7 +59,7 @@
     const target = $('ccNotificationBadge');
     if (!target) return;
     const value = readNumber(source);
-    target.textContent = String(value);
+    if (target.textContent !== String(value)) target.textContent = String(value);
     target.hidden = value === 0;
   };
 
@@ -64,6 +67,11 @@
     const wrap = $('ccStories');
     if (!wrap) return false;
     const cards = qa('.community-person-card', $('communityFriends')).slice(0, 5);
+    const signature = cards.map(card => `${card.querySelector('.community-person-copy b')?.textContent || ''}|${card.querySelector('.community-person-avatar img')?.src || ''}`).join('::');
+    const mineSrc = $('communityMyAvatar')?.querySelector('img')?.src || '';
+    const nextKey = `${mineSrc}::${signature}`;
+    if (wrap.dataset.renderKey === nextKey) return cards.length > 0;
+    wrap.dataset.renderKey = nextKey;
     wrap.replaceChildren();
 
     const mine = document.createElement('button');
@@ -100,6 +108,9 @@
     const wrap = $('ccHighlightedGroups');
     if (!wrap) return false;
     const cards = qa('#communityGroups > *').filter(el => !el.classList.contains('community-empty')).slice(0, 3);
+    const signature = cards.map(card => `${card.querySelector('h3,b,strong')?.textContent || ''}|${card.querySelector('img')?.src || ''}`).join('::');
+    if (wrap.dataset.renderKey === signature) return cards.length > 0;
+    wrap.dataset.renderKey = signature;
     wrap.replaceChildren();
     if (!cards.length) {
       const empty = document.createElement('div');
@@ -215,18 +226,28 @@
     const targets = [
       $('communityMyAvatar'), $('communityMyName'), $('communityMyCharacter'),
       $('communityFriendCount'), $('communityPostCount'), $('communityPhotoCount'),
-      $('communityFriends'), $('communityGroups'), q('[data-community-view="notifications"]')
+      $('communityFriends'), $('communityGroups')
     ].filter(Boolean);
-    if (!targets.length) return;
-    const observer = new MutationObserver(() => {
+    const notificationBadge = q('[data-community-view="notifications"] .social-v2-badge');
+    if (!targets.length && !notificationBadge) return;
+    let queued = false;
+    const flush = () => {
+      queued = false;
       syncProfile();
       syncCounts();
       syncNotificationBadge();
       buildStories();
       buildCommunities();
-    });
-    targets.forEach(t => observer.observe(t, { childList:true, subtree:true, characterData:true, attributes:true, attributeFilter:['hidden'] }));
-    setTimeout(() => observer.disconnect(), 30000);
+    };
+    const schedule = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(flush);
+    };
+    const observer = new MutationObserver(schedule);
+    targets.forEach(t => observer.observe(t, { childList:true, subtree:true, characterData:true }));
+    if (notificationBadge) observer.observe(notificationBadge, { childList:true, characterData:true, attributes:true, attributeFilter:['hidden'] });
+    setTimeout(() => observer.disconnect(), 8000);
   };
 
   const init = () => {
