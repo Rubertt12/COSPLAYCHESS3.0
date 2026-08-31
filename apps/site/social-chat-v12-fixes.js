@@ -58,9 +58,11 @@
   }
   loadCss('./social-chat-delete-v13.css?v=20260831-1','ccChatDeleteV13Css');
   loadCss('./community-event-calendar-v13.css?v=20260831-1','ccEventCalendarV13Css');
+  loadCss('./social-chat-modern-v14.css?v=20260831-1','ccChatModernV14Css');
   loadScript('./social-chat-delete-v13.js?v=20260831-1','ccChatDeleteV13Js');
   loadScript('./community-event-calendar-v13.js?v=20260831-1','ccEventCalendarV13Js');
   loadScript('./social-message-alerts-v13.js?v=20260831-1','ccMessageAlertsV13Js');
+  loadScript('./social-chat-modern-v14.js?v=20260831-1','ccChatModernV14Js');
 
   function filterThreads(input){
     const term = String(input?.value || '').trim().toLocaleLowerCase('pt-BR');
