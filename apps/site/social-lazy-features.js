@@ -9,7 +9,7 @@
     const promise = new Promise((resolve, reject) => {
       if (document.querySelector(`script[src^="${src}"]`)) return resolve();
       const script = document.createElement('script');
-      script.src = `${src}${src.includes('?') ? '&' : '?'}lazy=20260831-3`;
+      script.src = `${src}${src.includes('?') ? '&' : '?'}lazy=20260831-4`;
       script.async = true;
       script.onload = resolve;
       script.onerror = reject;
@@ -32,7 +32,6 @@
   });
 
   const secondary = {
-    discover: ['./community-social-access-fix.js'],
     communities: ['./community-groups-links.js', './community-group-avatar.js'],
     photos: ['./community-album-browser.js', './community-event-photo-tags.js'],
   };
