@@ -1,5 +1,7 @@
 (() => {
-  const db = window.getCosplayChessDb ? window.getCosplayChessDb() : window.COSPLAYCHESS_DB;
+  const db = window.getCosplayChessParticipantDb
+    ? window.getCosplayChessParticipantDb()
+    : (window.COSPLAYCHESS_PARTICIPANT_DB || (window.getCosplayChessDb ? window.getCosplayChessDb() : window.COSPLAYCHESS_DB));
   const loading = document.getElementById('playerLoading');
   const notFound = document.getElementById('playerNotFound');
   const content = document.getElementById('playerContent');
@@ -137,7 +139,7 @@
       .from('cosplay_participant_profiles')
       .select('registration_id,public_slug,display_name,nick,character_name,character_photo_url,bio,instagram_url,tiktok_url,facebook_url,youtube_url,profile_visible')
       .eq('public_slug', slug)
-      .eq('profile_visible', true)
+      .neq('registration_status', 'cancelled')
       .maybeSingle();
     if (error || !data) return setState('not-found');
     profile = data;
