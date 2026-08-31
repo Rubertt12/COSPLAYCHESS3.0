@@ -1,0 +1,123 @@
+/* CosplayChess White Mode v15 — identidade segue a cor escolhida; detalhes dourados; inputs roxos */
+body.community-page.cc-v4[data-cc-theme="white-mode"]{
+  --cc-white-gold:#b97808;
+  --cc-white-gold-strong:#935d00;
+  --cc-white-gold-soft:#fff7e6;
+  --cc-white-purple:#7557d6;
+  --cc-white-purple-strong:#5e42bd;
+  --cc-white-purple-soft:#f5f1ff;
+  --cc-white-purple-line:#b9abea;
+  --cc-white-identity:var(--cc-theme-action,var(--cc-theme-gold,#b97808));
+}
+
+/* Nomes e identidade usam a cor de destaque escolhida pelo participante */
+body.community-page.cc-v4[data-cc-theme="white-mode"] #communityMyName,
+body.community-page.cc-v4[data-cc-theme="white-mode"] [data-cc-profile-name],
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc-profile-name>b,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .community-me-copy h1,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .community-post-author b,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc9-post-author b,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc12-chat-head-copy b,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc12-thread-copy b,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc13-day-head h3,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc-settings-v6-head h2,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc-account b,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .community-people-grid h3,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .community-group-grid h3{
+  color:var(--cc-white-identity)!important;
+}
+
+/* Dourado continua como assinatura visual do CosplayChess */
+body.community-page.cc-v4[data-cc-theme="white-mode"] .kicker,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc-card-head>b,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc13-day-head>span,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc13-calendar-head .kicker,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc-brand-copy b:last-child{
+  color:var(--cc-white-gold)!important;
+}
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc-member-since{
+  border-color:#ead5a7!important;
+  background:var(--cc-white-gold-soft)!important;
+  color:var(--cc-white-gold-strong)!important;
+}
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc-xp i{
+  background:linear-gradient(90deg,var(--cc-white-identity),var(--cc-white-gold))!important;
+}
+
+/* Inputs seguem roxo no White Mode para manter hierarquia visual */
+body.community-page.cc-v4[data-cc-theme="white-mode"] input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+body.community-page.cc-v4[data-cc-theme="white-mode"] textarea,
+body.community-page.cc-v4[data-cc-theme="white-mode"] select{
+  background:var(--cc-white-purple-soft)!important;
+  border-color:var(--cc-white-purple-line)!important;
+  color:#2d2450!important;
+  caret-color:var(--cc-white-purple)!important;
+  box-shadow:inset 0 0 0 1px rgba(117,87,214,.025)!important;
+}
+body.community-page.cc-v4[data-cc-theme="white-mode"] input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):hover,
+body.community-page.cc-v4[data-cc-theme="white-mode"] textarea:hover,
+body.community-page.cc-v4[data-cc-theme="white-mode"] select:hover{
+  border-color:#9e8cdd!important;
+}
+body.community-page.cc-v4[data-cc-theme="white-mode"] input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):focus,
+body.community-page.cc-v4[data-cc-theme="white-mode"] textarea:focus,
+body.community-page.cc-v4[data-cc-theme="white-mode"] select:focus,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc-global-search:focus-within,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .community-search:focus-within{
+  outline:none!important;
+  border-color:var(--cc-white-purple)!important;
+  background:#f1ecff!important;
+  box-shadow:0 0 0 3px rgba(117,87,214,.13)!important;
+}
+body.community-page.cc-v4[data-cc-theme="white-mode"] input::placeholder,
+body.community-page.cc-v4[data-cc-theme="white-mode"] textarea::placeholder{
+  color:#897bb5!important;
+}
+body.community-page.cc-v4[data-cc-theme="white-mode"] select option{
+  background:#fff!important;
+  color:#2d2450!important;
+}
+
+/* Pesquisa e composer com leitura roxa consistente */
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc-global-search,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .community-search{
+  background:var(--cc-white-purple-soft)!important;
+  border-color:var(--cc-white-purple-line)!important;
+}
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc-global-search>span,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .community-search>span{
+  color:var(--cc-white-purple)!important;
+}
+body.community-page.cc-v4[data-cc-theme="white-mode"] #communityPostBody,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc12-compose textarea,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc12-new-chat,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc13-thread-search,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc13-calendar-form input,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc13-calendar-form textarea{
+  background:var(--cc-white-purple-soft)!important;
+  border-color:var(--cc-white-purple-line)!important;
+}
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc12-tool{
+  background:#f3efff!important;
+  border-color:#c7bbed!important;
+  color:var(--cc-white-purple-strong)!important;
+}
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc12-tool:hover{
+  background:#ebe4ff!important;
+  border-color:var(--cc-white-purple)!important;
+}
+
+/* Seleções e indicadores podem acompanhar a cor escolhida */
+body.community-page.cc-v4[data-cc-theme="white-mode"] .community-nav button.active,
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc-feed-tabs button.active,
+body.community-page.cc-v4[data-cc-theme="white-mode"] #ccMobileBottomNav button.active{
+  color:var(--cc-white-identity)!important;
+}
+body.community-page.cc-v4[data-cc-theme="white-mode"] .community-nav button.active{
+  box-shadow:inset 3px 0 0 var(--cc-white-identity),inset 0 0 0 1px color-mix(in srgb,var(--cc-white-identity) 18%,transparent)!important;
+}
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc-level-pill{
+  background:color-mix(in srgb,var(--cc-white-identity) 10%,#fff)!important;
+  color:var(--cc-white-identity)!important;
+  border-color:color-mix(in srgb,var(--cc-white-identity) 27%,#fff)!important;
+}
