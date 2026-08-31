@@ -1,0 +1,70 @@
+/* Perfil público v12 — avatar realmente ao lado do nome */
+body.public-player-page .player-hero-card,
+body.public-player-page .player-hero-card.has-public-cover{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:170px minmax(0,1fr) 430px!important;
+  grid-template-rows:auto auto auto auto auto auto!important;
+  column-gap:22px!important;
+  row-gap:0!important;
+  align-items:start!important;
+  padding:220px 28px 28px!important;
+}
+body.public-player-page .player-photo{
+  grid-column:1!important;
+  grid-row:1/7!important;
+  width:160px!important;
+  height:160px!important;
+  min-width:160px!important;
+  margin:0!important;
+  align-self:start!important;
+  border-radius:24px!important;
+}
+body.public-player-page .player-identity{display:contents!important}
+body.public-player-page .player-identity>.kicker{grid-column:2!important;grid-row:1!important;align-self:end!important;margin:2px 0 0!important}
+body.public-player-page .player-identity>h1{grid-column:2!important;grid-row:2!important;margin:7px 0 9px!important}
+body.public-player-page .player-identity>.player-character{grid-column:2!important;grid-row:3!important}
+body.public-player-page .player-identity>.player-nick{grid-column:2!important;grid-row:4!important}
+body.public-player-page .player-identity>.player-bio{grid-column:2!important;grid-row:5!important}
+body.public-player-page .player-identity>.player-socials{grid-column:2!important;grid-row:6!important}
+body.public-player-page .player-social-stats{grid-column:3!important;grid-row:1/4!important;margin:0!important;align-self:start!important}
+body.public-player-page .player-actions{grid-column:3!important;grid-row:4/7!important;align-self:end!important;margin:10px 0 0!important}
+
+@media(max-width:1180px) and (min-width:861px){
+  body.public-player-page .player-hero-card,
+  body.public-player-page .player-hero-card.has-public-cover{grid-template-columns:150px minmax(0,1fr) 340px!important;column-gap:18px!important}
+  body.public-player-page .player-photo{width:140px!important;height:140px!important;min-width:140px!important}
+}
+
+@media(max-width:860px){
+  body.public-player-page .player-hero-card,
+  body.public-player-page .player-hero-card.has-public-cover{
+    display:grid!important;
+    grid-template-columns:104px minmax(0,1fr)!important;
+    grid-template-rows:auto auto auto auto auto auto auto auto!important;
+    column-gap:13px!important;
+    align-items:start!important;
+    padding:164px 14px 18px!important;
+  }
+  body.public-player-page .player-photo{
+    grid-column:1!important;grid-row:1/5!important;
+    width:96px!important;height:96px!important;min-width:96px!important;
+    margin:0!important;border-radius:20px!important;
+  }
+  body.public-player-page .player-identity{display:contents!important}
+  body.public-player-page .player-identity>.kicker{grid-column:2!important;grid-row:1!important;margin:3px 0 0!important;align-self:end!important}
+  body.public-player-page .player-identity>h1{grid-column:2!important;grid-row:2!important;margin:5px 0 7px!important;font-size:clamp(28px,8.7vw,39px)!important;align-self:center!important}
+  body.public-player-page .player-identity>.player-character{grid-column:2!important;grid-row:3!important;margin:0!important}
+  body.public-player-page .player-identity>.player-nick{grid-column:2!important;grid-row:4!important;margin:5px 0 0!important}
+  body.public-player-page .player-identity>.player-bio{grid-column:1/-1!important;grid-row:5!important;margin:14px 0 10px!important}
+  body.public-player-page .player-identity>.player-socials{grid-column:1/-1!important;grid-row:6!important}
+  body.public-player-page .player-social-stats{grid-column:1/-1!important;grid-row:7!important;margin:14px 0 0!important}
+  body.public-player-page .player-actions{grid-column:1/-1!important;grid-row:8!important;margin:11px 0 0!important}
+}
+
+@media(max-width:420px){
+  body.public-player-page .player-hero-card,
+  body.public-player-page .player-hero-card.has-public-cover{grid-template-columns:86px minmax(0,1fr)!important;column-gap:10px!important;padding-top:154px!important}
+  body.public-player-page .player-photo{width:80px!important;height:80px!important;min-width:80px!important;border-radius:17px!important}
+  body.public-player-page .player-identity>h1{font-size:30px!important}
+}
