@@ -1,0 +1,153 @@
+/* CosplayChess — perfil cosplay mobile v10 */
+@media (max-width: 860px){
+  html,body.public-player-page{max-width:100%;overflow-x:hidden!important}
+  body.public-player-page{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))!important;background:#050910!important}
+  body.public-player-page *{box-sizing:border-box}
+
+  /* topo compacto e legível */
+  body.public-player-page .topbar{
+    position:sticky!important;top:0!important;z-index:1200!important;
+    width:100%!important;min-height:auto!important;height:auto!important;
+    padding:8px 10px!important;padding-top:calc(8px + env(safe-area-inset-top,0px))!important;
+    display:grid!important;grid-template-columns:1fr auto!important;gap:8px!important;
+    align-items:center!important;background:rgba(5,9,16,.96)!important;
+    border-bottom:1px solid rgba(132,100,184,.22)!important;
+    backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;
+  }
+  body.public-player-page .topbar .brand{min-width:0!important;gap:8px!important}
+  body.public-player-page .topbar .brand img{width:34px!important;height:34px!important;object-fit:contain!important}
+  body.public-player-page .topbar .brand span{display:flex!important;align-items:baseline!important;gap:4px!important;min-width:0!important}
+  body.public-player-page .topbar .brand b,body.public-player-page .topbar .brand em{font-size:12px!important;line-height:1!important;letter-spacing:.04em!important}
+  body.public-player-page .top-actions{
+    min-width:0!important;display:flex!important;gap:6px!important;overflow-x:auto!important;
+    scrollbar-width:none!important;-webkit-overflow-scrolling:touch!important;padding-bottom:1px!important;
+  }
+  body.public-player-page .top-actions::-webkit-scrollbar{display:none!important}
+  body.public-player-page .top-actions .btn{min-width:44px!important;min-height:40px!important;height:40px!important;padding:0 11px!important;border-radius:10px!important;font-size:11px!important;white-space:nowrap!important}
+  body.public-player-page .top-actions .participant-profile-login:nth-of-type(2),
+  body.public-player-page .top-actions .participant-profile-login:nth-of-type(3){display:none!important}
+
+  /* tela inteira */
+  body.public-player-page .player-public-shell{width:100%!important;max-width:none!important;margin:0!important;padding:0 0 20px!important}
+  body.public-player-page .player-state-card{width:calc(100% - 24px)!important;margin:18px auto!important;padding:28px 18px!important;border-radius:16px!important}
+  body.public-player-page #playerContent{display:block!important;width:100%!important;max-width:100%!important}
+  body.public-player-page #playerContent[hidden]{display:none!important}
+
+  /* hero pensado para retrato */
+  body.public-player-page .player-hero-card,
+  body.public-player-page .player-hero-card.has-public-cover{
+    position:relative!important;display:block!important;width:100%!important;min-height:0!important;
+    margin:0!important;padding:164px 14px 18px!important;border-radius:0 0 22px 22px!important;
+    overflow:hidden!important;background:linear-gradient(180deg,#07101b,#081423)!important;
+  }
+  body.public-player-page .player-public-cover{height:205px!important;inset:0 0 auto!important}
+  body.public-player-page .player-public-cover img{width:100%!important;height:100%!important;object-fit:cover!important}
+  body.public-player-page .player-public-cover:after{background:linear-gradient(180deg,rgba(3,8,15,.04),rgba(4,9,17,.18) 45%,#07111f 100%)!important}
+  body.public-player-page .player-public-cover-label{top:10px!important;right:10px!important;font-size:9px!important;padding:6px 8px!important}
+  body.public-player-page .player-photo{
+    position:relative!important;z-index:4!important;width:116px!important;height:116px!important;min-width:116px!important;
+    margin:0 0 12px!important;border-radius:24px!important;border-width:3px!important;box-shadow:0 12px 34px rgba(0,0,0,.48)!important;
+  }
+  body.public-player-page .player-identity{display:block!important;width:100%!important;min-width:0!important}
+  body.public-player-page .player-identity>.kicker{font-size:10px!important;letter-spacing:1.5px!important}
+  body.public-player-page .player-identity h1{margin:7px 0 8px!important;font-size:clamp(30px,10vw,42px)!important;line-height:1!important;letter-spacing:-.7px!important;overflow-wrap:anywhere!important}
+  body.public-player-page .player-character,body.public-player-page .player-character b{font-size:15px!important}
+  body.public-player-page .player-character{margin-bottom:8px!important}
+  body.public-player-page .player-nick{font-size:13px!important;margin-bottom:10px!important}
+  body.public-player-page .player-bio{max-width:none!important;margin:9px 0 12px!important;font-size:14px!important;line-height:1.58!important;color:#dbe2ee!important}
+  body.public-player-page .player-socials{display:flex!important;gap:7px!important;overflow-x:auto!important;scrollbar-width:none!important;padding-bottom:2px!important}
+  body.public-player-page .player-socials::-webkit-scrollbar{display:none!important}
+  body.public-player-page .player-socials a{flex:0 0 auto!important;min-height:40px!important;padding:0 12px!important;font-size:11px!important}
+
+  body.public-player-page .player-social-stats{
+    display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;
+    width:100%!important;margin:15px 0 0!important
+  }
+  body.public-player-page .player-social-stat{min-height:74px!important;padding:13px 8px!important;border-radius:12px!important}
+  body.public-player-page .player-social-stat b{font-size:23px!important}
+  body.public-player-page .player-social-stat span{font-size:9px!important}
+
+  body.public-player-page .player-actions{display:grid!important;grid-template-columns:1fr!important;gap:8px!important;width:100%!important;margin:12px 0 0!important}
+  body.public-player-page .player-actions .btn{width:100%!important;min-height:46px!important;font-size:13px!important;border-radius:11px!important}
+  body.public-player-page #playerShare,body.public-player-page .player-actions [data-player-friend-action]{grid-column:1!important}
+
+  /* navegação interna rolável */
+  body.public-player-page .player-social-tabs,
+  body.public-player-page .player-social-v9-tabs{
+    position:sticky!important;top:57px!important;z-index:700!important;width:100%!important;max-width:100%!important;
+    margin:10px 0!important;padding:6px 10px!important;border-radius:0!important;border-left:0!important;border-right:0!important;
+    display:flex!important;gap:6px!important;overflow-x:auto!important;overscroll-behavior-x:contain!important;
+    scrollbar-width:none!important;background:rgba(5,9,16,.95)!important;backdrop-filter:blur(12px)!important;
+  }
+  body.public-player-page .player-social-tabs::-webkit-scrollbar,body.public-player-page .player-social-v9-tabs::-webkit-scrollbar{display:none!important}
+  body.public-player-page .player-social-tabs button,body.public-player-page .player-social-v9-tabs button{
+    flex:0 0 auto!important;min-height:42px!important;height:42px!important;padding:0 14px!important;border-radius:10px!important;font-size:12px!important;white-space:nowrap!important
+  }
+
+  /* conteúdo em uma coluna, sem cartões espremidos */
+  body.public-player-page .player-social-panel,
+  body.public-player-page .player-reference-about,
+  body.public-player-page .player-achievements-section,
+  body.public-player-page .player-social-v9{
+    width:calc(100% - 20px)!important;max-width:none!important;margin:10px auto!important;padding:14px!important;border-radius:15px!important
+  }
+  body.public-player-page .player-social-panel[data-player-social-panel="wall"],
+  body.public-player-page .player-reference-about,
+  body.public-player-page .player-achievements-section[data-player-social-panel="achievements"]{display:block!important}
+  body.public-player-page .player-social-panel-head{display:flex!important;align-items:flex-end!important;gap:8px!important;flex-wrap:wrap!important}
+  body.public-player-page .player-social-panel-head h2,body.public-player-page .player-achievements-section h2{font-size:21px!important;line-height:1.15!important}
+  body.public-player-page .player-social-feed{display:grid!important;grid-template-columns:1fr!important;gap:10px!important}
+  body.public-player-page .player-social-post{min-height:0!important;border-radius:12px!important}
+  body.public-player-page .player-social-post-image{height:auto!important;max-height:420px!important;aspect-ratio:auto!important}
+  body.public-player-page .player-social-post-image img{width:100%!important;height:auto!important;max-height:420px!important;object-fit:contain!important}
+  body.public-player-page .player-social-post-copy{padding:13px!important}
+  body.public-player-page .player-social-post-copy p{font-size:14px!important;line-height:1.55!important}
+  body.public-player-page .player-reference-about dl{gap:13px!important}
+  body.public-player-page .player-reference-about dt{font-size:10px!important}
+  body.public-player-page .player-reference-about dd{font-size:14px!important}
+
+  /* conquistas grandes o suficiente para toque e leitura */
+  body.public-player-page .player-achievements-grid{display:grid!important;grid-template-columns:1fr!important;gap:9px!important;margin-top:12px!important}
+  body.public-player-page .player-achievement-card{grid-template-columns:50px minmax(0,1fr)!important;min-height:70px!important;padding:10px!important;border-radius:11px!important}
+  body.public-player-page .player-achievement-icon{width:48px!important;height:48px!important;font-size:22px!important}
+  body.public-player-page .player-achievement-copy b{font-size:13px!important}
+  body.public-player-page .player-achievement-copy p{font-size:11px!important;line-height:1.45!important}
+
+  /* atividade social v9 */
+  body.public-player-page .player-social-v9-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+  body.public-player-page .player-social-v9-stat{min-height:70px!important;padding:11px 8px!important}
+  body.public-player-page .player-social-v9-stat b{font-size:20px!important}
+  body.public-player-page .player-social-v9-posts{padding:8px!important}
+  body.public-player-page .player-social-v9-post{padding:11px!important}
+  body.public-player-page .player-social-v9-post p{font-size:13px!important;line-height:1.55!important}
+  body.public-player-page .player-social-v9-media img,body.public-player-page .player-social-v9-media video{max-height:70vh!important}
+  body.public-player-page .player-social-v9-photos{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5px!important}
+  body.public-player-page .player-social-v9-groups{grid-template-columns:1fr!important}
+  body.public-player-page .player-social-v9-follow .btn{min-height:42px!important}
+
+  body.public-player-page #playerContent>.player-community-cta{width:calc(100% - 20px)!important;margin:10px auto!important;padding:14px!important;border-radius:14px!important;display:grid!important;gap:10px!important}
+  body.public-player-page #playerContent>.player-community-cta .btn{width:100%!important;min-height:44px!important}
+
+  /* modal/fotos */
+  body.public-player-page .social-photo-lightbox-dialog{width:100vw!important;height:100dvh!important;max-width:none!important;max-height:none!important;border-radius:0!important}
+  body.public-player-page input,body.public-player-page textarea,body.public-player-page select{font-size:16px!important}
+}
+
+@media (max-width: 420px){
+  body.public-player-page .topbar .brand span{display:none!important}
+  body.public-player-page .top-actions .btn{padding:0 9px!important;font-size:10px!important}
+  body.public-player-page .player-hero-card,body.public-player-page .player-hero-card.has-public-cover{padding-top:154px!important}
+  body.public-player-page .player-public-cover{height:190px!important}
+  body.public-player-page .player-photo{width:108px!important;height:108px!important;min-width:108px!important}
+  body.public-player-page .player-identity h1{font-size:32px!important}
+  body.public-player-page .player-social-stats{gap:6px!important}
+  body.public-player-page .player-social-stat{padding:11px 6px!important}
+  body.public-player-page .player-social-v9-summary{gap:6px!important}
+}
+
+@media (orientation:landscape) and (max-height:540px) and (max-width:900px){
+  body.public-player-page .player-public-cover{height:150px!important}
+  body.public-player-page .player-hero-card,body.public-player-page .player-hero-card.has-public-cover{padding-top:112px!important}
+  body.public-player-page .player-photo{width:94px!important;height:94px!important;min-width:94px!important}
+  body.public-player-page .player-social-tabs,body.public-player-page .player-social-v9-tabs{position:relative!important;top:auto!important}
+}
