@@ -3,6 +3,22 @@
   if (window.__CC_EXPLORE_FOLLOW_V10__) return;
   window.__CC_EXPLORE_FOLLOW_V10__ = true;
 
+  // Carrega o complemento de acesso direto às comunidades sem depender de outro ponto da navbar.
+  if (!document.querySelector('link[data-cc-community-access-v2]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = './community-groups-access-v2.css?v=20260831-1';
+    link.dataset.ccCommunityAccessV2 = '1';
+    document.head.appendChild(link);
+  }
+  if (!document.querySelector('script[data-cc-community-access-v2]')) {
+    const script = document.createElement('script');
+    script.src = './community-groups-access-v2.js?v=20260831-1';
+    script.defer = true;
+    script.dataset.ccCommunityAccessV2 = '1';
+    document.head.appendChild(script);
+  }
+
   const db = window.getCosplayChessParticipantDb ? window.getCosplayChessParticipantDb() : window.COSPLAYCHESS_PARTICIPANT_DB;
   if (!db) return;
 
@@ -61,7 +77,6 @@
     button.textContent = desired ? 'Seguindo…' : 'Deixando de seguir…';
     let result = await db.rpc('cosplay_social_set_follow', { p_target: targetId, p_follow: desired });
     if (result.error) {
-      // Compatibilidade caso o cache de schema ainda não tenha atualizado.
       result = await db.rpc('cosplay_social_toggle_follow', { p_target: targetId });
     }
     button.disabled = false;
@@ -184,13 +199,12 @@
     const trigger = e.target.closest('[data-community-view="discover"]');
     if (!trigger) return;
     scheduleRender(30);
-    scheduleRender(420); // vence qualquer carregamento legado que termine logo depois da navegação
+    scheduleRender(420);
   }, true);
 
   const input = $('communityPeopleSearch');
   if (input) {
     input.addEventListener('input', e => {
-      // impede o renderer legado de sobrescrever os cards novos sem botão Seguir
       e.stopImmediatePropagation();
       clearTimeout(inputTimer);
       inputTimer = setTimeout(() => renderExplore().catch(() => {}), 180);
