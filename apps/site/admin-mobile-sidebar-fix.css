@@ -1,11 +1,16 @@
 @media(max-width:1000px){
-  html,body{overscroll-behavior:none}
-  body.admin-mobile-nav-open{overflow:hidden!important;touch-action:pan-y!important}
+  html,body{overscroll-behavior:auto!important;touch-action:auto!important}
+  body.admin-mobile-nav-open{overflow-y:auto!important;overflow-x:hidden!important;touch-action:pan-y!important}
+  body.admin-v6.admin-authenticated .v6-shell,
+  body.admin-v6.admin-authenticated .v6-main,
+  body.admin-v6.admin-authenticated .v6-view{
+    overflow:visible!important;touch-action:pan-y!important
+  }
   body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-sidebar{
     display:block!important;position:fixed!important;inset:0 auto 0 0!important;
     width:min(86vw,320px)!important;height:100dvh!important;max-height:100dvh!important;
     overflow-y:auto!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important;
-    overscroll-behavior-y:contain!important;touch-action:pan-y!important;
+    overscroll-behavior-y:auto!important;touch-action:pan-y!important;
     padding-bottom:calc(28px + env(safe-area-inset-bottom))!important;
     scrollbar-width:thin
   }
