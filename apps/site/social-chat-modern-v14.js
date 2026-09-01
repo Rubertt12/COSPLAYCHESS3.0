@@ -3,6 +3,14 @@
   if (window.__CC_CHAT_MODERN_V14__) return;
   window.__CC_CHAT_MODERN_V14__ = true;
 
+  if(!document.querySelector('script[data-cc-chat-presence-v19]')){
+    const presence=document.createElement('script');
+    presence.src='./social-chat-presence-v19.js?v=20260901-1';
+    presence.defer=true;
+    presence.dataset.ccChatPresenceV19='true';
+    document.head.appendChild(presence);
+  }
+
   const db = window.getCosplayChessParticipantDb ? window.getCosplayChessParticipantDb() : window.COSPLAYCHESS_PARTICIPANT_DB;
   if (!db) return;
   const q = (s,r=document) => r.querySelector(s);
