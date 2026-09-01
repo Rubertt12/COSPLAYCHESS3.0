@@ -1,11 +1,17 @@
 @media(max-width:1000px){
-  body.admin-mobile-nav-open{overflow:hidden!important;touch-action:auto!important}
+  html,body{overscroll-behavior:none}
+  body.admin-mobile-nav-open{overflow:hidden!important;touch-action:pan-y!important}
   body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-sidebar{
     display:block!important;position:fixed!important;inset:0 auto 0 0!important;
     width:min(86vw,320px)!important;height:100dvh!important;max-height:100dvh!important;
-    overflow-y:scroll!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important;
+    overflow-y:auto!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important;
     overscroll-behavior-y:contain!important;touch-action:pan-y!important;
-    padding-bottom:calc(28px + env(safe-area-inset-bottom))!important
+    padding-bottom:calc(28px + env(safe-area-inset-bottom))!important;
+    scrollbar-width:thin
+  }
+  body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-sidebar,
+  body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-sidebar *{
+    touch-action:pan-y!important
   }
   body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-sidebar-top,
   body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-nav,
@@ -15,6 +21,6 @@
   body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-nav{padding-bottom:10px!important}
   body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-user-card{margin:14px 0 10px!important}
   body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-collapse{margin:0 0 calc(18px + env(safe-area-inset-bottom))!important}
-  body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-sidebar a,
-  body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-sidebar button{touch-action:manipulation!important}
+  body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-sidebar::-webkit-scrollbar{width:4px}
+  body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:99px}
 }
