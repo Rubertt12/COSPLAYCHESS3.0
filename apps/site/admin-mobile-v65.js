@@ -9,6 +9,11 @@
   const sidebarId=sidebar.id||'v65AdminSidebar';
   sidebar.id=sidebarId;
 
+  const style=document.createElement('style');
+  style.id='adminMobileSidebarScrollFix';
+  style.textContent='@media(max-width:1000px){body.admin-mobile-nav-open{overflow:hidden!important;touch-action:auto!important}body.admin-v6.admin-authenticated .v6-shell .v6-sidebar{height:100dvh!important;max-height:100dvh!important;overflow-y:auto!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior-y:contain!important;touch-action:pan-y!important}body.admin-v6.admin-authenticated .v6-sidebar .v6-nav,body.admin-v6.admin-authenticated .v6-sidebar .v6-user-card{flex:0 0 auto!important}body.admin-v6.admin-authenticated .v6-sidebar .v6-user-card{margin-bottom:calc(18px + env(safe-area-inset-bottom))!important}}';
+  document.head.appendChild(style);
+
   trigger.type='button';
   trigger.className='v65-mobile-menu';
   trigger.setAttribute('aria-label','Abrir menu administrativo');
@@ -33,10 +38,12 @@
     trigger.setAttribute('aria-label',next?'Fechar menu administrativo':'Abrir menu administrativo');
     trigger.textContent=next?'×':'☰';
     backdrop.hidden=!next;
+    if(next)requestAnimationFrame(()=>{sidebar.scrollTop=Math.max(0,sidebar.scrollTop);});
   }
 
   trigger.addEventListener('click',()=>setOpen(!shell.classList.contains('mobile-nav-open')));
   backdrop.addEventListener('click',()=>setOpen(false));
+  sidebar.addEventListener('touchmove',event=>event.stopPropagation(),{passive:true});
   sidebar.addEventListener('click',event=>{
     if(event.target.closest('a,button[data-mobile-close]'))setOpen(false);
   });
