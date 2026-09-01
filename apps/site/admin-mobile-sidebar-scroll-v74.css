@@ -1,0 +1,21 @@
+/* Mobile admin drawer scroll fix v7.4 */
+@media (max-width:1000px){
+  body.admin-mobile-nav-open{overflow:hidden!important;touch-action:auto!important}
+  body.admin-v6.admin-authenticated .v6-shell .v6-sidebar{
+    height:100dvh!important;
+    max-height:100dvh!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior-y:contain!important;
+    touch-action:pan-y!important;
+    scrollbar-gutter:stable;
+  }
+  body.admin-v6.admin-authenticated .v6-sidebar .v6-nav,
+  body.admin-v6.admin-authenticated .v6-sidebar .v6-user-card{
+    flex:0 0 auto!important;
+  }
+  body.admin-v6.admin-authenticated .v6-sidebar .v6-user-card{
+    margin-bottom:calc(18px + env(safe-area-inset-bottom))!important;
+  }
+}
