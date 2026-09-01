@@ -23,7 +23,30 @@
 
   function rawAvatar(side) {
     const value = store?.g?.[`avatar${side}`];
-    return typeof value === 'string' && value.startsWith('data:image/') ? value : '';
+    return typeof value === 'string' ? value.trim() : '';
+  }
+
+  function blobToDataUrl(blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '');
+      reader.onerror = () => reject(reader.error || new Error('Falha ao converter a foto do Player.'));
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  async function avatarToDataUrl(value) {
+    const raw = String(value || '').trim();
+    if (!raw) return '';
+    if (raw.startsWith('data:image/')) return raw;
+    if (!/^https?:\/\//i.test(raw)) return '';
+
+    const response = await originalFetch(raw, { cache: 'no-store', mode: 'cors' });
+    if (!response.ok) throw new Error(`Não foi possível carregar a foto do Player (${response.status}).`);
+    const blob = await response.blob();
+    if (!blob.type.startsWith('image/')) throw new Error('A foto do Player não é uma imagem válida.');
+    if (blob.size > 4 * 1024 * 1024) throw new Error('A foto do Player é muito grande.');
+    return blobToDataUrl(blob);
   }
 
   function compactAvatar(dataUrl) {
@@ -81,9 +104,13 @@
     }
 
     setPhotoSyncState('sending');
+    const [player1Raw, player2Raw] = await Promise.all([
+      avatarToDataUrl(avatarB),
+      avatarToDataUrl(avatarP)
+    ]);
     const [player1Photo, player2Photo] = await Promise.all([
-      compactAvatar(avatarB),
-      compactAvatar(avatarP)
+      compactAvatar(player1Raw),
+      compactAvatar(player2Raw)
     ]);
 
     const cfg = syncConfig() || {};
