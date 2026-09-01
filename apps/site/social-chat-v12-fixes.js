@@ -19,6 +19,7 @@
   // Messenger único. Não carregar novamente as antigas camadas v13/v14 do chat.
   loadCss('./social-chat-v20.css?v=20260901-2','ccChatV20Css');
   loadScript('./social-chat-v20.js?v=20260901-2','ccChatV20Js');
+  loadScript('./social-chat-audio-v20.js?v=20260901-1','ccChatAudioV20Js');
 
   // Notificações: popover das 3 mais recentes + central clicável.
   loadCss('./social-notifications-v22.css?v=20260901-2','ccNotificationsV22Css');
