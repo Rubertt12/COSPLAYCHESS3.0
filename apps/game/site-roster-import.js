@@ -232,7 +232,7 @@
       return;
     }
     const photoScript = document.createElement('script');
-    photoScript.src = 'game-player-photo-sync.js';
+    photoScript.src = 'game-player-photo-sync.js?v=20260901-player-url-fix1';
     photoScript.dataset.playerPhotoSync = 'true';
     photoScript.onload = loadGameUxPolish;
     document.body.appendChild(photoScript);
