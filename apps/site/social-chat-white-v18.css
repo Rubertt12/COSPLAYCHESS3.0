@@ -48,6 +48,23 @@ body.community-page.cc-v4[data-cc-theme="white-mode"] .cc12-emoji-panel,
 body.community-page.cc-v4[data-cc-theme="white-mode"] .cc12-new-chat-menu{background:#fff!important;color:#172033!important;border-color:#d9e0e9!important;box-shadow:0 18px 45px rgba(24,32,51,.15)!important}
 body.community-page.cc-v4[data-cc-theme="white-mode"] .cc13-delete-conversation{background:#fff!important;color:#a52b35!important;border-color:#e5c6ca!important}
 
+/* Feed header alignment fix */
+.cc-v4 .cc9-post-head{display:grid!important;grid-template-columns:46px minmax(0,1fr) auto!important;align-items:start!important;column-gap:11px!important}
+.cc-v4 .cc9-post-avatar{grid-column:1;grid-row:1;align-self:start!important;margin:0!important}
+.cc-v4 .cc9-post-author{grid-column:2;grid-row:1;min-width:0;padding-top:1px!important;line-height:1.15!important}
+.cc-v4 .cc9-post-author a{display:inline-flex!important;align-items:center!important;min-height:18px!important;line-height:1.2!important}
+.cc-v4 .cc9-post-author small{display:block!important;margin-top:3px!important;line-height:1.25!important}
+.cc-v4 .cc9-post-head-actions{grid-column:3;grid-row:1;display:flex!important;align-items:center!important;gap:8px!important;align-self:start!important}
+.cc-v4 .cc9-menu-toggle{position:relative!important;display:grid!important;place-items:center!important;width:34px!important;height:34px!important;min-width:34px!important;padding:0!important;margin:0!important;font-size:0!important;line-height:1!important;border-radius:10px!important}
+.cc-v4 .cc9-menu-toggle::before{content:"";width:4px;height:4px;border-radius:50%;background:currentColor;box-shadow:0 7px 0 currentColor,0 14px 0 currentColor;transform:translateY(-7px)}
+.cc-v4 .cc9-menu-toggle>*{display:none!important}
+.cc-v4 .cc9-menu-toggle:hover{background:color-mix(in srgb,var(--purple,#9956ed) 8%,transparent)!important}
+.cc-v4 .cc9-post-body{margin-top:12px!important}
+.cc-v4 .cc9-post-actions{align-items:center!important}
+
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc9-menu-toggle{color:#667085!important;border-color:#dde3ec!important;background:#fff!important}
+body.community-page.cc-v4[data-cc-theme="white-mode"] .cc9-menu-toggle:hover{color:#5439aa!important;background:#f4f1fd!important;border-color:#d8d0f1!important}
+
 @media(max-width:900px){
   .cc-v4 [data-community-panel="messages"] .cc12-panel{min-height:calc(100dvh - 120px)}
   .cc-v4 .cc12-chat{height:calc(100dvh - 120px);min-height:520px;grid-template-columns:minmax(220px,300px) minmax(0,1fr)}
@@ -61,4 +78,7 @@ body.community-page.cc-v4[data-cc-theme="white-mode"] .cc13-delete-conversation{
   .cc-v4 .cc12-messages{padding:12px 10px}
   .cc-v4 .cc12-bubble-row{max-width:90%}
   .cc-v4 .cc12-compose{padding:9px 9px calc(9px + env(safe-area-inset-bottom))}
+  .cc-v4 .cc9-post-head{grid-template-columns:42px minmax(0,1fr) auto!important;column-gap:9px!important}
+  .cc-v4 .cc9-post-avatar{width:42px!important;height:42px!important;flex-basis:42px!important}
+  .cc-v4 .cc9-menu-toggle{width:32px!important;height:32px!important;min-width:32px!important}
 }
