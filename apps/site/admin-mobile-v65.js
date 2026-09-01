@@ -63,6 +63,15 @@
   sync();
 })();
 
+/* Load isolated mobile sidebar and event-map enhancements without touching legacy admin flow. */
+(()=>{
+  const addCss=(href,id)=>{if(document.getElementById(id))return;const l=document.createElement('link');l.id=id;l.rel='stylesheet';l.href=href;document.head.appendChild(l)};
+  const addJs=(src,id)=>{if(document.getElementById(id))return;const s=document.createElement('script');s.id=id;s.src=src;s.defer=true;document.body.appendChild(s)};
+  addCss('./admin-mobile-sidebar-fix.css?v=20260901-1','ccAdminMobileSidebarFixCss');
+  addCss('./admin-event-map-preview.css?v=20260901-1','ccAdminEventMapPreviewCss');
+  addJs('./admin-event-map-preview.js?v=20260901-1','ccAdminEventMapPreviewJs');
+})();
+
 /* Social v2 admin module is isolated so legacy admin behavior stays untouched. */
 (()=>{
   if(document.querySelector('script[data-admin-social-moderation]'))return;
