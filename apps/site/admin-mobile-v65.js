@@ -11,7 +11,7 @@
 
   const style=document.createElement('style');
   style.id='adminMobileSidebarScrollFix';
-  style.textContent='@media(max-width:1000px){body.admin-mobile-nav-open{overflow:hidden!important;touch-action:auto!important}body.admin-v6.admin-authenticated .v6-shell .v6-sidebar{height:100dvh!important;max-height:100dvh!important;overflow-y:auto!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior-y:contain!important;touch-action:pan-y!important}body.admin-v6.admin-authenticated .v6-sidebar .v6-nav,body.admin-v6.admin-authenticated .v6-sidebar .v6-user-card{flex:0 0 auto!important}body.admin-v6.admin-authenticated .v6-sidebar .v6-user-card{margin-bottom:calc(18px + env(safe-area-inset-bottom))!important}}';
+  style.textContent='@media(max-width:1000px){body.admin-mobile-nav-open{overflow:hidden!important;touch-action:auto!important}body.admin-v6.admin-authenticated .v6-shell .v6-sidebar{height:100dvh!important;max-height:100dvh!important;overflow-y:scroll!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior-y:contain!important;touch-action:pan-y!important}}';
   document.head.appendChild(style);
 
   trigger.type='button';
@@ -38,41 +38,27 @@
     trigger.setAttribute('aria-label',next?'Fechar menu administrativo':'Abrir menu administrativo');
     trigger.textContent=next?'×':'☰';
     backdrop.hidden=!next;
-    if(next)requestAnimationFrame(()=>{sidebar.scrollTop=Math.max(0,sidebar.scrollTop);});
   }
 
   trigger.addEventListener('click',()=>setOpen(!shell.classList.contains('mobile-nav-open')));
   backdrop.addEventListener('click',()=>setOpen(false));
-  sidebar.addEventListener('touchmove',event=>event.stopPropagation(),{passive:true});
-  sidebar.addEventListener('click',event=>{
-    if(event.target.closest('a,button[data-mobile-close]'))setOpen(false);
-  });
-  document.addEventListener('keydown',event=>{
-    if(event.key==='Escape'&&shell.classList.contains('mobile-nav-open'))setOpen(false);
-  });
-
-  const sync=()=>{
-    if(!mobile.matches||shell.hidden)setOpen(false);
-    trigger.hidden=!mobile.matches||shell.hidden;
-  };
-  if(typeof mobile.addEventListener==='function')mobile.addEventListener('change',sync);
-  else mobile.addListener(sync);
-
+  sidebar.addEventListener('click',event=>{if(event.target.closest('a,button[data-mobile-close]'))setOpen(false)});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&shell.classList.contains('mobile-nav-open'))setOpen(false)});
+  const sync=()=>{if(!mobile.matches||shell.hidden)setOpen(false);trigger.hidden=!mobile.matches||shell.hidden};
+  if(typeof mobile.addEventListener==='function')mobile.addEventListener('change',sync);else mobile.addListener(sync);
   new MutationObserver(sync).observe(shell,{attributes:true,attributeFilter:['hidden']});
   window.addEventListener('hashchange',()=>setOpen(false));
   sync();
 })();
 
-/* Load isolated mobile sidebar and event-map enhancements without touching legacy admin flow. */
 (()=>{
   const addCss=(href,id)=>{if(document.getElementById(id))return;const l=document.createElement('link');l.id=id;l.rel='stylesheet';l.href=href;document.head.appendChild(l)};
   const addJs=(src,id)=>{if(document.getElementById(id))return;const s=document.createElement('script');s.id=id;s.src=src;s.defer=true;document.body.appendChild(s)};
-  addCss('./admin-mobile-sidebar-fix.css?v=20260901-1','ccAdminMobileSidebarFixCss');
-  addCss('./admin-event-map-preview.css?v=20260901-1','ccAdminEventMapPreviewCss');
-  addJs('./admin-event-map-preview.js?v=20260901-1','ccAdminEventMapPreviewJs');
+  addCss('./admin-mobile-sidebar-fix.css?v=20260901-2','ccAdminMobileSidebarFixCss');
+  addCss('./admin-event-map-preview.css?v=20260901-2','ccAdminEventMapPreviewCss');
+  addJs('./admin-event-map-preview.js?v=20260901-2','ccAdminEventMapPreviewJs');
 })();
 
-/* Social v2 admin module is isolated so legacy admin behavior stays untouched. */
 (()=>{
   if(document.querySelector('script[data-admin-social-moderation]'))return;
   const script=document.createElement('script');
