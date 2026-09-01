@@ -121,6 +121,13 @@
 
   const bind = () => {
     const profileForm = $('participantProfileForm');
+    const aboutField = profileForm?.elements.namedItem('bio');
+    if (aboutField) {
+      const label = aboutField.closest('label');
+      const title = label?.querySelector(':scope > span');
+      if (title) title.textContent = 'Sobre mim';
+      aboutField.placeholder = 'Conte sobre você, sua história com cosplay, personagens favoritos e o que quiser mostrar no seu perfil...';
+    }
     profileForm?.elements.namedItem('display_name')?.addEventListener('input', syncIdentityFromForm);
     profileForm?.elements.namedItem('character_name')?.addEventListener('input', syncIdentityFromForm);
 
