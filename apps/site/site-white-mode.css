@@ -1,0 +1,28 @@
+/* Shared White Mode for CosplayChess member/social pages */
+body[data-cc-theme="white-mode"]{
+  --bg:#f4f6f9;--panel:#fff;--panel2:#f8f9fc;--line:#dce2ea;--text:#172033;--muted:#687386;--purple:#7557d6;--purple2:#6546c5;--gold:#a96f08;
+  color-scheme:light;background:#f4f6f9!important;color:#172033!important;
+  background-image:radial-gradient(circle at 88% 0,rgba(117,87,214,.08),transparent 28%),radial-gradient(circle at 8% 90%,rgba(169,111,8,.04),transparent 25%)!important;
+}
+body[data-cc-theme="white-mode"] .grain{opacity:.025!important;mix-blend-mode:multiply!important}
+body[data-cc-theme="white-mode"] :is(.topbar,.sitebar,.participant-card,.premium-card,.passport-card,.passport-panel,.album-card,.album-panel,.social-card,.profile-card,.community-card,.group-card,.achievement-card,.panel,.card){background:#fff!important;color:#172033!important;border-color:#dce2ea!important;box-shadow:0 4px 18px rgba(24,32,51,.055)!important}
+body[data-cc-theme="white-mode"] :is(.topbar,.sitebar){background:rgba(255,255,255,.92)!important;border-bottom-color:#dfe5ed!important;backdrop-filter:blur(18px)}
+body[data-cc-theme="white-mode"] :is(h1,h2,h3,h4,h5,h6,strong,b,dt,label){color:#172033}
+body[data-cc-theme="white-mode"] :is(p,small,.muted,.subtitle,.description,.hint,.participant-help,.premium-label){color:#687386!important}
+body[data-cc-theme="white-mode"] :is(input,textarea,select){background:#f8f9fc!important;color:#172033!important;border-color:#d7dee8!important;box-shadow:none!important}
+body[data-cc-theme="white-mode"] :is(input,textarea,select):focus{background:#fff!important;border-color:#9a87df!important;box-shadow:0 0 0 3px rgba(117,87,214,.09)!important;outline:0}
+body[data-cc-theme="white-mode"] :is(input,textarea)::placeholder{color:#98a1b1!important}
+body[data-cc-theme="white-mode"] :is(.btn.dark,.btn.ghost,.participant-link-button){background:#fff!important;color:#354055!important;border-color:#cfd7e3!important}
+body[data-cc-theme="white-mode"] :is(.btn.gold,.btn.primary){background:linear-gradient(135deg,#7557d6,#6546c5)!important;color:#fff!important;border-color:#6546c5!important;box-shadow:0 6px 16px rgba(101,70,197,.16)!important}
+body[data-cc-theme="white-mode"] a{color:#5f46ba}
+body[data-cc-theme="white-mode"] :is(.participant-status,.participant-empty,.empty,.premium-stat,.participant-point,.premium-community-info>div,.premium-photo-drop){background:#f8f9fc!important;border-color:#e0e5ed!important;color:#4d586b!important}
+body[data-cc-theme="white-mode"] :is(.premium-hero-card,.participant-hero,.profile-hero){border-color:#dce2ea!important}
+body[data-cc-theme="white-mode"] .premium-hero-card:after{background:linear-gradient(90deg,rgba(255,255,255,.96),rgba(255,255,255,.72))!important}
+body[data-cc-theme="white-mode"] :is(.premium-main-grid,.premium-bottom-grid,.participant-shell){color:#172033}
+body[data-cc-theme="white-mode"] :is(.participant-achievement,.achievement-card,.premium-latest-post){background:#f8f9fc!important;border-color:#e1e6ee!important;color:#172033!important}
+body[data-cc-theme="white-mode"] :is(table,thead,tbody,tr,td,th){border-color:#e0e5ed!important}
+body[data-cc-theme="white-mode"] th{background:#f5f6f9!important;color:#4b5668!important}
+body[data-cc-theme="white-mode"] td{background:#fff!important;color:#263145!important}
+body[data-cc-theme="white-mode"] :is(dialog,.modal,.popover,.dropdown,.menu){background:#fff!important;color:#172033!important;border-color:#d8dfe9!important;box-shadow:0 20px 60px rgba(24,32,51,.16)!important}
+body[data-cc-theme="white-mode"] hr{border-color:#e1e6ee!important}
+@media(max-width:700px){body[data-cc-theme="white-mode"] :is(.topbar,.sitebar){background:#fff!important}}
