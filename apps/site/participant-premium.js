@@ -198,3 +198,16 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind, { once:true });
   else bind();
 })();
+
+(()=>{
+  if(!document.getElementById('participantProfileExtrasCss')){
+    const link=document.createElement('link');
+    link.id='participantProfileExtrasCss';link.rel='stylesheet';link.href='./participant-profile-extras.css?v=20260901-1';
+    document.head.appendChild(link);
+  }
+  if(!document.getElementById('participantProfileExtrasJs')){
+    const script=document.createElement('script');
+    script.id='participantProfileExtrasJs';script.src='./participant-profile-extras.js?v=20260901-1';script.defer=true;
+    document.body.appendChild(script);
+  }
+})();
