@@ -11,7 +11,7 @@
 
   const style=document.createElement('style');
   style.id='adminMobileSidebarScrollFix';
-  style.textContent='@media(max-width:1000px){body.admin-mobile-nav-open{overflow:hidden!important;touch-action:auto!important}body.admin-v6.admin-authenticated .v6-shell .v6-sidebar{height:100dvh!important;max-height:100dvh!important;overflow-y:scroll!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior-y:contain!important;touch-action:pan-y!important}}';
+  style.textContent='@media(max-width:1000px){body.admin-mobile-nav-open{overflow:hidden!important;touch-action:pan-y!important}body.admin-v6.admin-authenticated .v6-shell .v6-sidebar{height:100dvh!important;max-height:100dvh!important;overflow-y:auto!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior-y:contain!important;touch-action:pan-y!important}body.admin-v6.admin-authenticated .v6-shell .v6-sidebar *{touch-action:pan-y!important}}';
   document.head.appendChild(style);
 
   trigger.type='button';
@@ -54,7 +54,7 @@
 (()=>{
   const addCss=(href,id)=>{if(document.getElementById(id))return;const l=document.createElement('link');l.id=id;l.rel='stylesheet';l.href=href;document.head.appendChild(l)};
   const addJs=(src,id)=>{if(document.getElementById(id))return;const s=document.createElement('script');s.id=id;s.src=src;s.defer=true;document.body.appendChild(s)};
-  addCss('./admin-mobile-sidebar-fix.css?v=20260901-2','ccAdminMobileSidebarFixCss');
+  addCss('./admin-mobile-sidebar-fix.css?v=20260901-3','ccAdminMobileSidebarFixCss');
   addCss('./admin-event-map-preview.css?v=20260901-2','ccAdminEventMapPreviewCss');
   addJs('./admin-event-map-preview.js?v=20260901-2','ccAdminEventMapPreviewJs');
 })();
