@@ -22,14 +22,15 @@
       .home-universe-card .universe-link .icon{width:42px;height:42px;display:grid;place-items:center;color:var(--gold2);border:1px solid rgba(224,190,119,.24);border-radius:12px;background:linear-gradient(145deg,rgba(92,28,54,.3),rgba(11,10,15,.94));box-shadow:0 10px 26px rgba(0,0,0,.24)}
       .home-universe-card .universe-link .icon svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
       .duelist.winner{position:relative}
-      .duelist.winner .duelist-photo{position:relative;overflow:visible}
-      .duelist.winner .champion-helmet{position:absolute;z-index:6;left:50%;top:-34px;transform:translateX(-50%);width:82px;height:54px;pointer-events:none;filter:drop-shadow(0 7px 10px rgba(0,0,0,.65)) drop-shadow(0 0 10px rgba(224,190,119,.22))}
+      .champion-photo-wrap{position:relative;display:inline-block;margin:38px auto 12px}
+      .duelist.winner .duelist-photo{position:relative;overflow:hidden}
+      .duelist.winner .champion-helmet{position:absolute;z-index:6;left:50%;top:-42px;transform:translateX(-50%);width:66px;height:44px;pointer-events:none;filter:drop-shadow(0 7px 10px rgba(0,0,0,.65)) drop-shadow(0 0 10px rgba(224,190,119,.22))}
       .duelist.winner .champion-helmet svg{width:100%;height:100%;overflow:visible}
       .duelist.winner .champion-helmet .helmet-fill{fill:url(#championHelmetGold);stroke:#f0cf83;stroke-width:1.35}
       .duelist.winner .champion-helmet .helmet-dark{fill:#5b3918;stroke:#d6a453;stroke-width:1.1}
       .duelist.winner .champion-helmet .helmet-line{fill:none;stroke:#fff0b3;stroke-width:1.25;stroke-linecap:round;opacity:.78}
-      .duelist.winner .champion-helmet:after{content:"CAMPEÃO";position:absolute;left:50%;top:-10px;transform:translateX(-50%);padding:3px 7px;border:1px solid rgba(238,199,116,.48);border-radius:999px;background:#120d10;color:#efcd80;font-size:6px;font-weight:900;letter-spacing:1.25px;white-space:nowrap}
-      @media(max-width:700px){.duelist.winner .champion-helmet{top:-31px;width:74px;height:50px}}
+      .duelist.winner .champion-helmet:after{content:"CAMPEÃO";position:absolute;left:50%;top:-11px;transform:translateX(-50%);padding:3px 7px;border:1px solid rgba(238,199,116,.48);border-radius:999px;background:#120d10;color:#efcd80;font-size:6px;font-weight:900;letter-spacing:1.25px;white-space:nowrap}
+      @media(max-width:700px){.champion-photo-wrap{margin-top:34px}.duelist.winner .champion-helmet{top:-38px;width:60px;height:40px}}
     `;
     document.head.appendChild(style);
 
@@ -62,7 +63,7 @@
     const {data,error}=await db.from('cosplay_matches').select('*,cosplay_events(title,start_at,venue,city)').eq('published',true).order('played_at',{ascending:false});
     if(error||!data?.length){root.innerHTML=empty('Nenhum resultado oficial publicado ainda. Quando a primeira partida entrar para a história, ela aparece aqui.');return;}
     root.innerHTML=data.map(m=>`<article class="champion-card"><div class="champion-top"><div><small>${esc(m.cosplay_events?.title||'CosplayChess')}</small><div>${esc(m.match_label||'Partida')}</div></div><span>${fmtDate(m.played_at)}</span></div><div class="duel"><div class="duelist winner"><div class="champion-photo-wrap">${photo(m.winner_photo_url,m.winner_character,'duelist-photo')}${m.winner_photo_url?championHelmet():''}</div><em>Vencedor</em><b>${esc(m.winner_character)}</b><span>${esc(m.winner_cosplayer)}</span></div><div class="versus">VS</div><div class="duelist">${photo(m.opponent_photo_url,m.opponent_character||m.opponent_cosplayer,'duelist-photo')}<em>Contra</em><b>${esc(m.opponent_character||'Adversário')}</b><span>${esc(m.opponent_cosplayer||'')}</span></div></div>${m.notes?`<div class="champion-notes">${esc(m.notes)}</div>`:''}</article>`).join('');
-    root.querySelectorAll('.champion-photo-wrap').forEach(w=>{w.style.position='relative';w.style.width='fit-content';w.style.margin='0 auto 12px';const p=w.querySelector('.duelist-photo');if(p)p.style.margin='0';});
+    root.querySelectorAll('.champion-photo-wrap').forEach(w=>{const p=w.querySelector('.duelist-photo');if(p)p.style.margin='0';});
   }
 
   let rankingRows=[];
