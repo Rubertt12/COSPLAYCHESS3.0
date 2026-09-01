@@ -12,7 +12,7 @@
     overflow-y:auto!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important;
     overscroll-behavior-y:auto!important;touch-action:pan-y!important;
     padding-bottom:calc(28px + env(safe-area-inset-bottom))!important;
-    scrollbar-width:thin
+    scrollbar-width:none!important;-ms-overflow-style:none!important
   }
   body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-sidebar,
   body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-sidebar *{
@@ -26,6 +26,5 @@
   body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-nav{padding-bottom:10px!important}
   body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-user-card{margin:14px 0 10px!important}
   body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-collapse{margin:0 0 calc(18px + env(safe-area-inset-bottom))!important}
-  body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-sidebar::-webkit-scrollbar{width:4px}
-  body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:99px}
+  body.admin-v6.admin-authenticated .v6-shell.mobile-nav-open .v6-sidebar::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
 }
