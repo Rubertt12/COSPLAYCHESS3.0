@@ -198,3 +198,30 @@
     setTimeout(() => clearInterval(timer), 10000);
   }
 })();
+
+/* Runtime release bridge: guarantees the admin receives the latest mobile sidebar and event-map fixes even when older asset query strings are cached. */
+(() => {
+  if (window.__CC_ADMIN_RELEASE_BRIDGE_20260901__) return;
+  window.__CC_ADMIN_RELEASE_BRIDGE_20260901__ = true;
+
+  const style = document.createElement('style');
+  style.id = 'ccAdminMobileScrollEmergencyFix';
+  style.textContent = `@media(max-width:1000px){body.admin-mobile-nav-open{overflow:hidden!important;touch-action:auto!important}body.admin-v6.admin-authenticated .v6-shell .v6-sidebar{height:100dvh!important;max-height:100dvh!important;overflow-y:auto!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior-y:contain!important;touch-action:pan-y!important}body.admin-v6.admin-authenticated .v6-sidebar .v6-nav,body.admin-v6.admin-authenticated .v6-sidebar .v6-user-card{flex:0 0 auto!important}body.admin-v6.admin-authenticated .v6-sidebar .v6-user-card{margin-bottom:calc(22px + env(safe-area-inset-bottom))!important}}`;
+  document.head.appendChild(style);
+
+  if (!document.querySelector('link[data-admin-event-map-preview]')) {
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = './admin-event-map-preview.css?v=20260901-mapfix2';
+    css.dataset.adminEventMapPreview = '1';
+    document.head.appendChild(css);
+  }
+
+  if (!document.querySelector('script[data-admin-event-map-preview]')) {
+    const script = document.createElement('script');
+    script.src = './admin-event-map-preview.js?v=20260901-mapfix2';
+    script.async = false;
+    script.dataset.adminEventMapPreview = '1';
+    document.body.appendChild(script);
+  }
+})();
