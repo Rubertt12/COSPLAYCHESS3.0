@@ -102,6 +102,19 @@
     const nextRoot=document.getElementById('participantNextEvent');if(next&&nextRoot&&!q('.cc-event-cosplay-edit',nextRoot))nextRoot.appendChild(makeButton(next,false));
   }
 
+  async function loadOwn(){
+    try{
+      const {data:s}=await db.auth.getSession();const user=s?.session?.user;if(!user)return;
+      const [eventResult,profileResult]=await Promise.all([
+        db.rpc('cosplay_my_event_participations'),
+        db.from('cosplay_participant_profiles').select('registration_id').eq('user_id',user.id).neq('registration_status','cancelled').order('created_at',{ascending:true}).limit(1).maybeSingle()
+      ]);
+      if(!eventResult.error)events=eventResult.data||[];
+      primaryRegistrationId=profileResult.data?.registration_id||primaryRegistrationId;
+      decorate();
+    }catch{}
+  }
+
   window.addEventListener('cosplay:participant-events-loaded',event=>{events=Array.isArray(event.detail?.events)?event.detail.events:[];primaryRegistrationId=event.detail?.primaryRegistrationId||'';setTimeout(decorate,50)});
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(decorate,1500),{once:true});else setTimeout(decorate,1500);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{setTimeout(decorate,900);setTimeout(loadOwn,1200)},{once:true});else{setTimeout(decorate,900);setTimeout(loadOwn,1200)}
 })();
