@@ -113,6 +113,16 @@
       <div class="community-auth-block" id="communityAuthBlock" hidden><div><span>♜</span><h1>Entre na Área do Participante</h1><p>A rede social é exclusiva para participantes com acesso liberado.</p><a class="btn gold" href="./participante.html">Entrar</a></div></div>`);
   }
 
+  // A identidade social principal precisa existir em TODAS as páginas multipágina.
+  // Carregamos o restaurador diretamente aqui, em vez de depender de módulos secundários.
+  if (!document.getElementById('ccSocialShellStateV2Js')) {
+    const identityScript = document.createElement('script');
+    identityScript.id = 'ccSocialShellStateV2Js';
+    identityScript.src = './social-shell-state-v2.js?v=20260902-2';
+    identityScript.defer = true;
+    document.body.appendChild(identityScript);
+  }
+
   const activate = () => {
     const settingsTab = new URLSearchParams(location.search).get('tab') || 'privacy';
     document.querySelectorAll('[data-community-view]').forEach(el => {
