@@ -111,12 +111,26 @@
   };
 
   const scheduleRepaint = () => {
-    if (!current) return;
+    if (!current?.profile) return;
     clearTimeout(repaintTimer);
     repaintTimer = setTimeout(() => {
-      const name = document.getElementById('communityMyName')?.textContent?.trim();
-      const avatar = document.querySelector('#communityMyAvatar img,.cc-mirror-avatar img');
-      if (!name || name === 'Participante' || (!avatar && current.profile?.character_photo_url)) apply(current);
+      const expectedName = current.profile.display_name || current.profile.nick || 'Participante';
+      const expectedCharacter = current.profile.character_name || 'CosplayChess';
+      const shownName = document.getElementById('communityMyName')?.textContent?.trim() || '';
+      const shownCharacter = document.getElementById('communityMyCharacter')?.textContent?.trim() || '';
+      const mirrorNames = [...document.querySelectorAll('[data-cc-profile-name]')].map(el => el.textContent?.trim() || '');
+      const mirrorCharacters = [...document.querySelectorAll('[data-cc-profile-character]')].map(el => el.textContent?.trim() || '');
+      const expectedAvatar = safeUrl(current.profile.character_photo_url);
+      const avatarSrc = document.querySelector('#communityMyAvatar img,.cc-mirror-avatar img')?.src || '';
+
+      const mismatch =
+        shownName !== expectedName ||
+        shownCharacter !== expectedCharacter ||
+        mirrorNames.some(value => value !== expectedName) ||
+        mirrorCharacters.some(value => value !== expectedCharacter) ||
+        (expectedAvatar && avatarSrc !== expectedAvatar);
+
+      if (mismatch) apply(current);
     }, 80);
   };
 
