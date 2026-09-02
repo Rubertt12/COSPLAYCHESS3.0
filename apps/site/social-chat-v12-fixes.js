@@ -15,13 +15,19 @@
     script.id=id; script.src=src; script.defer=true;
     document.body.appendChild(script);
   };
+  const page=location.pathname.split('/').pop()||'comunidade.html';
+  const isMessages=page==='mensagens.html'||document.body.dataset.entryView==='messages';
 
-  // Messenger único.
+  // Messenger base + recursos modernos.
   loadCss('./social-chat-v20.css?v=20260901-2','ccChatV20Css');
   loadScript('./social-chat-v20.js?v=20260901-2','ccChatV20Js');
   loadScript('./social-chat-audio-v20.js?v=20260901-1','ccChatAudioV20Js');
   loadCss('./social-chat-presence-v21.css?v=20260902-1','ccChatPresenceV21Css');
   loadScript('./social-chat-presence-v21.js?v=20260902-1','ccChatPresenceV21Js');
+  if(isMessages){
+    loadCss('./social-messenger-v22.css?v=20260902-1','ccMessengerV22Css');
+    loadScript('./social-messenger-v22.js?v=20260902-1','ccMessengerV22Js');
+  }
 
   // Notificações multipágina: sino com as 3 últimas + central completa.
   loadCss('./social-notifications-v22.css?v=20260901-2','ccNotificationsV22Css');
@@ -29,7 +35,7 @@
   loadScript('./social-notifications-v23.js?v=20260902-1','ccNotificationsV23Js');
 
   // Estado persistente do perfil/tema entre as páginas da rede.
-  loadScript('./social-shell-state-v2.js?v=20260902-1','ccSocialShellStateV2Js');
+  loadScript('./social-shell-state-v2.js?v=20260902-2','ccSocialShellStateV2Js');
 
   // Modal de fotos: curtir, comentar e compartilhar no feed.
   loadCss('./social-photo-actions-v21.css?v=20260901-2','ccPhotoActionsV21Css');
