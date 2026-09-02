@@ -7,7 +7,7 @@
   if (!db) return;
 
   const q=(s,r=document)=>r.querySelector(s), qa=(s,r=document)=>[...r.querySelectorAll(s)];
-  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const safe=v=>{try{const u=new URL(String(v||''),location.href);return ['http:','https:'].includes(u.protocol)?u.href:''}catch{return''}};
   const fmt=v=>{try{return new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(v))}catch{return''}};
   const file=location.pathname.split('/').pop()||'comunidade.html';
@@ -56,7 +56,7 @@
   async function action(row){
     if(!row)return; await markOne(row);
     const actor=profiles.get(row.actor_profile_id);
-    if(row.entity_type==='message'&&row.entity_id){
+    if((row.entity_type==='message'||row.kind==='message')&&row.entity_id){
       const {data:m}=await db.from('cosplay_direct_messages').select('sender_profile_id,recipient_profile_id').eq('id',row.entity_id).maybeSingle();
       const mine=await getMe(); const peer=m?(m.sender_profile_id===mine.id?m.recipient_profile_id:m.sender_profile_id):row.actor_profile_id;
       if(peer){location.href=`./mensagens.html?message=${encodeURIComponent(peer)}`;return;}
@@ -107,6 +107,8 @@
     document.addEventListener('click',e=>{
       const bell=e.target.closest('.cc-right-head [data-community-view="notifications"]');
       if(bell){e.preventDefault();e.stopImmediatePropagation();const p=ensurePopover();p.hidden?openPreview():(p.hidden=true);return;}
+      const local=e.target.closest('.community-nav [data-community-view="notifications"]');
+      if(local&&file==='notificacoes.html'){e.preventDefault();e.stopImmediatePropagation();renderFull();return;}
       if(popover&&!popover.hidden&&!e.target.closest('.cc22-popover'))popover.hidden=true;
     },true);
     window.addEventListener('resize',()=>{if(popover&&!popover.hidden)position()},{passive:true});
