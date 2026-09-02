@@ -2,6 +2,15 @@
   'use strict';
   if (window.__CC_SITE_THEME_SYNC__) return;
   window.__CC_SITE_THEME_SYNC__ = true;
+
+  if (!document.getElementById('ccSameTabNavigationV1Js')) {
+    const script=document.createElement('script');
+    script.id='ccSameTabNavigationV1Js';
+    script.src='./same-tab-navigation-v1.js?v=20260902-1';
+    script.defer=true;
+    (document.head || document.documentElement).appendChild(script);
+  }
+
   const KEYS=['cosplaychess-social-appearance-v8','cosplaychess-social-appearance-v7','cosplaychess-social-appearance-v6'];
   const read=()=>{for(const key of KEYS){try{const raw=localStorage.getItem(key);if(raw){const v=JSON.parse(raw);if(v&&typeof v==='object')return v;}}catch{}}return null;};
   const apply=(value)=>{
