@@ -10,7 +10,7 @@
     messages:'./mensagens.html',
     notifications:'./notificacoes.html',
     friends:'./amigos.html',
-    ranking:'./ranking.html',
+    ranking:'./ranking-social.html',
     photos:'./albuns.html',
     events:'./eventos.html',
     saved:'./salvos.html',
