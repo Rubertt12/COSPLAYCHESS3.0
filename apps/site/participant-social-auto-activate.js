@@ -11,10 +11,24 @@
       link.href='./participant-event-cards-v1.css?v=20260902-1';
       document.head.appendChild(link);
     }
+    if(!document.getElementById('participantEventCosplayEditCss')){
+      const link=document.createElement('link');
+      link.id='participantEventCosplayEditCss';
+      link.rel='stylesheet';
+      link.href='./participant-event-cosplay-edit-v1.css?v=20260902-1';
+      document.head.appendChild(link);
+    }
     if(!document.getElementById('participantEventCardsJs')){
       const script=document.createElement('script');
       script.id='participantEventCardsJs';
       script.src='./participant-event-cards-v1.js?v=20260902-2';
+      script.defer=true;
+      document.body.appendChild(script);
+    }
+    if(!document.getElementById('participantEventCosplayEditJs')){
+      const script=document.createElement('script');
+      script.id='participantEventCosplayEditJs';
+      script.src='./participant-event-cosplay-edit-v1.js?v=20260902-1';
       script.defer=true;
       document.body.appendChild(script);
     }
