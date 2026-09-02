@@ -3,6 +3,49 @@
   if (window.__CC_SOCIAL_PAGE_SHELL_V1__) return;
   window.__CC_SOCIAL_PAGE_SHELL_V1__ = true;
 
+  const installPrimaryProfileGuard = () => {
+    const client = window.getCosplayChessParticipantDb ? window.getCosplayChessParticipantDb() : window.COSPLAYCHESS_PARTICIPANT_DB;
+    if (!client || client.__ccSocialPrimaryProfileGuard) return;
+    const originalFrom = client.from.bind(client);
+    const wrappedFilters = new WeakSet();
+
+    const wrapFilter = (filter, initialUserScoped = false) => {
+      if (!filter || typeof filter !== 'object' || wrappedFilters.has(filter)) return filter;
+      wrappedFilters.add(filter);
+      let userScoped = initialUserScoped;
+      if (typeof filter.eq === 'function') {
+        const originalEq = filter.eq.bind(filter);
+        filter.eq = (column, value) => {
+          if (column === 'user_id') userScoped = true;
+          const result = originalEq(column, value);
+          return result === filter ? filter : wrapFilter(result, userScoped);
+        };
+      }
+      if (typeof filter.order === 'function') {
+        const originalOrder = filter.order.bind(filter);
+        filter.order = (column, options) => {
+          if (userScoped && column === 'created_at' && options?.ascending === false) {
+            return originalOrder(column, { ...options, ascending:true });
+          }
+          return originalOrder(column, options);
+        };
+      }
+      return filter;
+    };
+
+    client.from = (table) => {
+      const query = originalFrom(table);
+      if (table !== 'cosplay_participant_profiles' || !query || typeof query.select !== 'function') return query;
+      const originalSelect = query.select.bind(query);
+      query.select = (...args) => wrapFilter(originalSelect(...args));
+      return query;
+    };
+    try { Object.defineProperty(client, '__ccSocialPrimaryProfileGuard', { value:true, configurable:false }); }
+    catch { client.__ccSocialPrimaryProfileGuard = true; }
+  };
+
+  installPrimaryProfileGuard();
+
   const byPath = {
     'comunidade.html':'feed',
     'explorar.html':'discover',
@@ -11,6 +54,7 @@
     'notificacoes.html':'notifications',
     'amigos.html':'friends',
     'ranking.html':'ranking',
+    'ranking-social.html':'ranking',
     'albuns.html':'photos',
     'eventos.html':'events',
     'salvos.html':'saved',
