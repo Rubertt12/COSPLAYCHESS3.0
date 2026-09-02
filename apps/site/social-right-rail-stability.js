@@ -3,6 +3,36 @@
   if (window.__CC_SOCIAL_RIGHT_RAIL_STABILITY__) return;
   window.__CC_SOCIAL_RIGHT_RAIL_STABILITY__ = true;
 
+  const routeByView = {
+    feed:'./comunidade.html',
+    discover:'./explorar.html',
+    communities:'./comunidades.html',
+    messages:'./mensagens.html',
+    notifications:'./notificacoes.html',
+    friends:'./amigos.html',
+    ranking:'./ranking.html',
+    photos:'./albuns.html',
+    events:'./eventos.html',
+    saved:'./salvos.html',
+    'social-settings':'./configuracoes.html',
+    moderation:'./moderacao.html'
+  };
+  const viewByFile = Object.fromEntries(Object.entries(routeByView).map(([view,url]) => [url.replace('./',''),view]));
+  const currentFile = location.pathname.split('/').pop() || 'comunidade.html';
+  const currentView = document.body.dataset.entryView || viewByFile[currentFile] || 'feed';
+
+  document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-community-view]');
+    if (!trigger) return;
+    const view = trigger.dataset.communityView;
+    if (!routeByView[view] || view === currentView) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    let target = routeByView[view];
+    if (view === 'social-settings') target += `?tab=${encodeURIComponent(trigger.dataset.settingsOpen || 'privacy')}`;
+    location.href = target;
+  }, true);
+
   const rail = document.querySelector('.cc-right');
   if (!rail) return;
 
