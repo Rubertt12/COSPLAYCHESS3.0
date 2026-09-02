@@ -11,7 +11,8 @@
     cursor: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
     selected: new Date(),
     official: [],
-    personal: []
+    personal: [],
+    participations: []
   };
 
   const pad = (n) => String(n).padStart(2, '0');
@@ -22,8 +23,24 @@
   const fullDate = (d) => new Intl.DateTimeFormat('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}).format(d);
   const timeText = (value) => value ? String(value).slice(0,5) : '';
   const eventTime = (e) => {
-    if (e.start_at) return new Intl.DateTimeFormat('pt-BR',{hour:'2-digit',minute:'2-digit'}).format(new Date(e.start_at));
+    const start=e.start_at||e.event_start_at;
+    if (start) return new Intl.DateTimeFormat('pt-BR',{hour:'2-digit',minute:'2-digit'}).format(new Date(start));
     return timeText(e.start_time);
+  };
+
+  const ensureRegistrationStyle = () => {
+    if (document.getElementById('socialCalendarRegistrationCss')) return;
+    const style=document.createElement('style');
+    style.id='socialCalendarRegistrationCss';
+    style.textContent=`
+      .social-calendar-legend i.registration,
+      .social-calendar-marks i.registration{background:#7dd7a0!important;box-shadow:0 0 0 3px rgba(76,181,115,.12)}
+      .social-calendar-day.has-registration{border-color:rgba(86,193,126,.42)!important}
+      .social-calendar-item.registration{border-color:rgba(86,193,126,.34)!important;background:linear-gradient(110deg,rgba(70,171,108,.12),rgba(16,19,29,.72))!important}
+      .social-calendar-item.registration .social-calendar-item-badge{color:#9ce4b7!important;border-color:rgba(86,193,126,.35)!important;background:rgba(86,193,126,.1)!important}
+      .social-calendar-registration-note{display:block!important;margin-top:5px!important;color:#9ce4b7!important;font-size:10px!important;font-weight:700!important}
+    `;
+    document.head.appendChild(style);
   };
 
   const waitFor = (selector, timeout=7000) => new Promise((resolve) => {
@@ -42,7 +59,7 @@
       .select('id,user_id,display_name,nick,registration_status,created_at')
       .eq('user_id',state.user.id)
       .neq('registration_status','cancelled')
-      .order('created_at',{ascending:false})
+      .order('created_at',{ascending:true})
       .limit(1)
       .maybeSingle();
     if(error||!data) return false;
@@ -61,7 +78,7 @@
     const {start,end}=visibleRange();
     const startKey=dateKey(start);
     const endKey=dateKey(addDays(end,-1));
-    const [{data:official,error:officialError},{data:personal,error:personalError}] = await Promise.all([
+    const [officialResult,personalResult,participationResult] = await Promise.all([
       db.from('cosplay_events')
         .select('id,title,slug,venue,city,start_at,end_at,cover_url,published')
         .eq('published',true)
@@ -74,32 +91,55 @@
         .gte('event_date',startKey)
         .lte('event_date',endKey)
         .order('event_date',{ascending:true})
-        .order('start_time',{ascending:true})
+        .order('start_time',{ascending:true}),
+      db.rpc('cosplay_my_event_participations')
     ]);
-    state.official=officialError?[]:(official||[]);
-    state.personal=personalError?[]:(personal||[]);
+    state.official=officialResult.error?[]:(officialResult.data||[]);
+    state.personal=personalResult.error?[]:(personalResult.data||[]);
+    state.participations=participationResult.error?[]:(participationResult.data||[]).filter((item)=>{
+      if(!item?.event_start_at) return false;
+      const when=new Date(item.event_start_at);
+      return when>=start&&when<end;
+    });
     render();
   };
 
   const officialKey = (e) => dateKey(new Date(e.start_at));
-  const eventsFor = (key) => ({
-    official: state.official.filter(e=>officialKey(e)===key),
-    personal: state.personal.filter(e=>e.event_date===key)
-  });
+  const participationKey = (e) => dateKey(new Date(e.event_start_at));
+  const eventsFor = (key) => {
+    const participations=state.participations.filter(e=>participationKey(e)===key);
+    const registeredEventIds=new Set(participations.map(e=>String(e.event_id||'')).filter(Boolean));
+    return {
+      participations,
+      official: state.official.filter(e=>officialKey(e)===key&&!registeredEventIds.has(String(e.id||''))),
+      personal: state.personal.filter(e=>e.event_date===key)
+    };
+  };
 
   const createItem = (e,type) => {
+    const registration=type==='registration';
     const row=document.createElement('article');
-    row.className=`social-calendar-item ${type}`;
+    row.className=`social-calendar-item ${registration?'official registration':type}`;
     const badge=document.createElement('span');
     badge.className='social-calendar-item-badge';
-    badge.textContent=type==='official'?'OFICIAL':'MINHA AGENDA';
+    badge.textContent=registration?'MINHA INSCRIÇÃO':type==='official'?'OFICIAL':'MINHA AGENDA';
     const copy=document.createElement('div');
     copy.className='social-calendar-item-copy';
-    const title=document.createElement('b');title.textContent=e.title;
+    const title=document.createElement('b');
+    title.textContent=registration?(e.event_title||'Evento CosplayChess'):(e.title||'Evento');
     const meta=document.createElement('span');
-    const place=type==='official'?[e.venue,e.city].filter(Boolean).join(' · '):e.location;
+    const place=registration
+      ? [e.event_venue,e.event_city].filter(Boolean).join(' · ')
+      : type==='official'?[e.venue,e.city].filter(Boolean).join(' · '):e.location;
     meta.textContent=[eventTime(e),place].filter(Boolean).join(' · ')||'Sem horário definido';
     copy.append(title,meta);
+    if(registration){
+      const note=document.createElement('small');
+      note.className='social-calendar-registration-note';
+      note.textContent=`✓ Inscrição confirmada${e.character_name?` · Cosplay: ${e.character_name}`:''}`;
+      copy.appendChild(note);
+      row.title='Sua inscrição confirmada neste evento';
+    }
     if(type==='personal'&&e.notes){const note=document.createElement('small');note.textContent=e.notes;copy.appendChild(note);}
     row.append(badge,copy);
     if(type==='personal'){
@@ -119,7 +159,7 @@
 
   const renderDayPanel = () => {
     const key=dateKey(state.selected);
-    const {official,personal}=eventsFor(key);
+    const {participations,official,personal}=eventsFor(key);
     const title=document.getElementById('socialCalendarSelectedDate');
     const list=document.getElementById('socialCalendarDayList');
     const dateInput=document.getElementById('socialCalendarEventDate');
@@ -127,7 +167,8 @@
     if(dateInput) dateInput.value=key;
     if(!list) return;
     list.replaceChildren();
-    if(!official.length&&!personal.length){const empty=document.createElement('div');empty.className='social-calendar-empty';empty.textContent='Nenhum evento marcado neste dia.';list.appendChild(empty);return;}
+    if(!participations.length&&!official.length&&!personal.length){const empty=document.createElement('div');empty.className='social-calendar-empty';empty.textContent='Nenhum evento marcado neste dia.';list.appendChild(empty);return;}
+    participations.forEach(e=>list.appendChild(createItem(e,'registration')));
     official.forEach(e=>list.appendChild(createItem(e,'official')));
     personal.forEach(e=>list.appendChild(createItem(e,'personal')));
   };
@@ -148,10 +189,14 @@
       if(d.getMonth()!==state.cursor.getMonth())btn.classList.add('outside');
       if(key===today)btn.classList.add('today');
       if(key===selected)btn.classList.add('selected');
+      if(data.participations.length)btn.classList.add('has-registration');
       if(data.official.length)btn.classList.add('has-official');
       if(data.personal.length)btn.classList.add('has-personal');
+      const count=data.participations.length+data.official.length+data.personal.length;
+      btn.setAttribute('aria-label',`${d.getDate()} de ${monthLabel(d)}${count?` · ${count} item(ns)`:''}`);
       const num=document.createElement('b');num.textContent=String(d.getDate());btn.appendChild(num);
       const marks=document.createElement('span');marks.className='social-calendar-marks';
+      if(data.participations.length){const mark=document.createElement('i');mark.className='registration';mark.title=`${data.participations.length} inscrição(ões) confirmada(s)`;marks.appendChild(mark);}
       if(data.official.length){const mark=document.createElement('i');mark.className='official';mark.title=`${data.official.length} evento(s) oficial(is)`;marks.appendChild(mark);}
       if(data.personal.length){const mark=document.createElement('i');mark.className='personal';mark.title=`${data.personal.length} item(ns) na agenda`;marks.appendChild(mark);}
       btn.appendChild(marks);
@@ -183,19 +228,20 @@
     const legacyRoot=document.getElementById('socialExt-events');
     if(!panel||!legacyRoot||document.getElementById('communityEventCalendar'))return;
     if(!await loadMe())return;
+    ensureRegistrationStyle();
 
     const root=document.createElement('section');
     root.id='communityEventCalendar';root.className='social-calendar';
     root.innerHTML=`
       <div class="social-calendar-head">
-        <div><span>MINHA AGENDA</span><h3>Calendário de eventos</h3><p>Eventos oficiais aparecem automaticamente. Você também pode marcar compromissos e outros eventos só na sua agenda.</p></div>
+        <div><span>MINHA AGENDA</span><h3>Calendário de eventos</h3><p>Eventos oficiais aparecem automaticamente. Suas inscrições confirmadas ficam destacadas e você também pode adicionar compromissos pessoais.</p></div>
         <button class="btn gold" id="socialCalendarAdd" type="button">＋ Novo evento</button>
       </div>
       <div class="social-calendar-layout">
         <div class="social-calendar-card">
           <div class="social-calendar-toolbar"><button type="button" id="socialCalendarPrev" aria-label="Mês anterior">‹</button><strong id="socialCalendarMonthLabel"></strong><button type="button" id="socialCalendarNext" aria-label="Próximo mês">›</button></div>
           <div class="social-calendar-grid" id="socialCalendarGrid"></div>
-          <div class="social-calendar-legend"><span><i class="official"></i>Evento oficial</span><span><i class="personal"></i>Minha agenda</span></div>
+          <div class="social-calendar-legend"><span><i class="registration"></i>Minha inscrição</span><span><i class="official"></i>Evento oficial</span><span><i class="personal"></i>Minha agenda</span></div>
         </div>
         <aside class="social-calendar-day-panel">
           <div class="social-calendar-day-head"><span>AGENDA DO DIA</span><h4 id="socialCalendarSelectedDate"></h4></div>
