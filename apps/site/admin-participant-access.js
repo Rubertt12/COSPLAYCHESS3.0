@@ -20,6 +20,7 @@
   function stateMeta(status){
     if(status==='invited')return{label:'Convite enviado',button:'Reenviar acesso',tone:'invited'};
     if(status==='active')return{label:'Conta ativa',button:'Enviar recuperação',tone:'active'};
+    if(status==='linked')return{label:'Conta existente',button:'Já vinculado',tone:'active'};
     if(status==='blocked')return{label:'Acesso bloqueado',button:'Bloqueado',tone:'blocked'};
     return{label:'Acesso não enviado',button:'Liberar acesso',tone:'not-sent'};
   }
@@ -59,6 +60,10 @@
     const current=accessByRegistration.get(String(registration.id));
     const meta=stateMeta(current?.status);
     if(current?.status==='blocked'){alert('Este acesso está bloqueado.');return;}
+    if(current?.status==='linked'){
+      alert('Esta inscrição já está vinculada à conta existente do participante. Não é necessário enviar outro convite.');
+      return;
+    }
     const active=current?.status==='active';
     const action=active?'Enviar um link para o participante criar uma nova senha?':current?.status==='invited'?'Reenviar o link de criação de senha?':'Liberar a Área do Participante e enviar o link para criação da senha?';
     if(!confirm(`${action}\n\nParticipante: ${registration.full_name||registration.character_name||'Inscrito'}\nE-mail: ${registration.email}`))return;
@@ -130,27 +135,32 @@
     const current=accessByRegistration.get(id)||null;
     const meta=stateMeta(current?.status);
     const unavailable=!registration.email||registration.status!=='confirmed';
+    const linked=current?.status==='linked';
     badge.className=`participant-access-state ${meta.tone}`;
     badge.textContent=unavailable
       ?(!registration.email?'Sem e-mail para acesso':'Acesso após confirmação')
       :meta.label;
-    badge.title=current?.status==='active'&&current?.activated_at
-      ?`Conta ativada em ${formatDate(current.activated_at)}`
-      :current?.last_invited_at
-        ?`Último envio: ${formatDate(current.last_invited_at)}${current?.invite_count?` · ${current.invite_count} envio(s)`:''}`
-        :'';
+    badge.title=linked
+      ?'Esta inscrição usa a conta já existente do participante.'
+      :current?.status==='active'&&current?.activated_at
+        ?`Conta ativada em ${formatDate(current.activated_at)}`
+        :current?.last_invited_at
+          ?`Último envio: ${formatDate(current.last_invited_at)}${current?.invite_count?` · ${current.invite_count} envio(s)`:''}`
+          :'';
 
     if(button.dataset.busy!=='1')button.textContent=meta.button;
-    button.disabled=button.dataset.busy==='1'||unavailable||current?.status==='blocked';
+    button.disabled=button.dataset.busy==='1'||unavailable||current?.status==='blocked'||linked;
     button.title=!registration.email
       ?'Cadastre um e-mail antes de liberar o acesso'
       :registration.status!=='confirmed'
         ?'Disponível somente para inscrições confirmadas'
-        :current?.status==='active'
-          ?'Enviar link seguro para criação de uma nova senha'
-          :current?.status==='invited'
-            ?'Reenviar o convite da Área do Participante'
-            :'Liberar a Área do Participante';
+        :linked
+          ?'A inscrição já usa a conta existente; nenhum novo convite é necessário'
+          :current?.status==='active'
+            ?'Enviar link seguro para criação de uma nova senha'
+            :current?.status==='invited'
+              ?'Reenviar o convite da Área do Participante'
+              :'Liberar a Área do Participante';
   }
 
   function organize(){
