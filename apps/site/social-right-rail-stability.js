@@ -21,10 +21,29 @@
   const currentFile = location.pathname.split('/').pop() || 'comunidade.html';
   const currentView = document.body.dataset.entryView || viewByFile[currentFile] || 'feed';
 
+  const loadCss = (href,id) => {
+    if (document.getElementById(id)) return;
+    const link=document.createElement('link'); link.id=id; link.rel='stylesheet'; link.href=href; document.head.appendChild(link);
+  };
+  const loadScript = (src,id) => {
+    if (document.getElementById(id)) return;
+    const script=document.createElement('script'); script.id=id; script.src=src; script.defer=true; document.body.appendChild(script);
+  };
+
+  loadScript('./social-shell-state-v2.js?v=20260902-1','ccSocialShellStateV2Js');
+  loadCss('./social-notifications-v22.css?v=20260901-2','ccNotificationsV22Css');
+  loadCss('./social-notifications-v23.css?v=20260902-1','ccNotificationsV23Css');
+  loadScript('./social-notifications-v23.js?v=20260902-1','ccNotificationsV23Js');
+  if (currentView === 'messages') {
+    loadCss('./social-chat-presence-v21.css?v=20260902-1','ccChatPresenceV21Css');
+    loadScript('./social-chat-presence-v21.js?v=20260902-1','ccChatPresenceV21Js');
+  }
+
   document.addEventListener('click', (event) => {
     const trigger = event.target.closest('[data-community-view]');
     if (!trigger) return;
     const view = trigger.dataset.communityView;
+    if (view === 'notifications' && trigger.closest('.cc-right-head')) return;
     if (!routeByView[view] || view === currentView) return;
     event.preventDefault();
     event.stopImmediatePropagation();
