@@ -1,0 +1,61 @@
+/* Área do Participante — organização visual v2 */
+body.participant-page{--cc-participant-max:1600px;--cc-participant-gap:14px}
+body.participant-page .participant-shell{width:min(var(--cc-participant-max),calc(100% - 32px))!important;max-width:var(--cc-participant-max)!important;margin-inline:auto!important}
+body.participant-page [data-participant-dashboard]{width:100%!important;min-width:0!important}
+body.participant-page .participant-premium-content{display:grid!important;gap:var(--cc-participant-gap)!important;min-width:0!important}
+body.participant-page .premium-main-grid,
+body.participant-page .premium-bottom-grid{gap:var(--cc-participant-gap)!important;align-items:start!important}
+body.participant-page .premium-card{min-width:0!important}
+
+/* Barra de organização */
+.cc-participant-organizer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 13px;border:1px solid rgba(226,177,69,.14);border-radius:14px;background:linear-gradient(135deg,rgba(17,18,25,.94),rgba(8,9,14,.96));box-shadow:0 12px 30px rgba(0,0,0,.16)}
+.cc-participant-organizer-copy{display:flex;align-items:center;gap:10px;min-width:0}.cc-participant-organizer-icon{display:grid;place-items:center;flex:0 0 32px;width:32px;height:32px;border:1px solid rgba(226,177,69,.2);border-radius:9px;background:rgba(226,177,69,.06);color:#e2b145;font-size:14px}.cc-participant-organizer-copy b,.cc-participant-organizer-copy small{display:block}.cc-participant-organizer-copy b{font-size:10px;letter-spacing:.02em}.cc-participant-organizer-copy small{margin-top:2px;color:#77717e;font-size:7.5px}.cc-participant-organizer-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}.cc-participant-organizer .cc-organizer-btn{min-height:31px;padding:0 10px;border:1px solid rgba(255,255,255,.08);border-radius:9px;background:#111219;color:#a9a3ae;font:inherit;font-size:7.5px;font-weight:800;cursor:pointer;transition:.18s ease}.cc-participant-organizer .cc-organizer-btn:hover{border-color:rgba(226,177,69,.28);color:#f0d99d;background:#17161a}.cc-participant-organizer .cc-organizer-btn.primary{border-color:rgba(226,177,69,.22);background:rgba(226,177,69,.08);color:#e3bc62}
+
+/* Cards recolhíveis */
+.cc-participant-collapsible{position:relative!important;overflow:hidden!important;transition:border-color .18s ease,box-shadow .18s ease,background .18s ease!important}
+.cc-participant-collapsible:hover{border-color:rgba(226,177,69,.14)!important}
+.cc-participant-collapsible.cc-is-collapsed{box-shadow:0 8px 24px rgba(0,0,0,.12)!important}
+.cc-participant-section-head{position:relative!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;min-height:42px!important;padding-right:44px!important;cursor:pointer!important;user-select:none}
+.cc-participant-section-head.premium-section-title{padding:13px 46px 13px 15px!important;margin:0!important}
+.cc-participant-section-head.participant-extra-head,
+.cc-participant-section-head.premium-achievements-head{padding-right:48px!important}
+.cc-participant-collapse-toggle{position:absolute;z-index:5;top:50%;right:11px;display:grid;place-items:center;width:27px;height:27px;transform:translateY(-50%);border:1px solid rgba(255,255,255,.09);border-radius:8px;background:rgba(10,11,16,.86);color:#b9b2be;cursor:pointer;transition:transform .18s ease,border-color .18s ease,color .18s ease,background .18s ease}
+.cc-participant-collapse-toggle:hover{border-color:rgba(226,177,69,.32);background:rgba(226,177,69,.07);color:#e6bd5b}.cc-participant-collapse-toggle svg{width:12px;height:12px;transition:transform .2s ease}.cc-is-collapsed .cc-participant-collapse-toggle svg{transform:rotate(-90deg)}
+.cc-participant-collapsible>.cc-participant-collapse-body{transition:opacity .18s ease,transform .18s ease}
+.cc-participant-collapsible.cc-is-collapsed>.cc-participant-collapse-body{display:none!important}
+.cc-participant-collapsible.cc-is-collapsed>.cc-participant-section-head{border-bottom:0!important}
+.cc-participant-collapsible.cc-is-collapsed>.premium-section-title{color:#d7d1da}
+.cc-participant-collapsible.cc-is-collapsed:after{content:'Recolhido';position:absolute;right:48px;top:16px;color:#5f5965;font-size:6.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;pointer-events:none}
+
+/* Cabeçalho sintético para módulos que não tinham barra própria */
+.cc-participant-synthetic-head{padding:12px 46px 12px 15px;border-bottom:1px solid rgba(255,255,255,.055);background:linear-gradient(90deg,rgba(132,54,218,.045),transparent);color:#e8e2eb;font-size:9px;font-weight:900;letter-spacing:.02em}
+
+/* Densidade melhor no dashboard */
+body.participant-page .premium-card{border-radius:16px!important}
+body.participant-page .premium-profile-form{gap:10px!important}
+body.participant-page .premium-profile-card,
+body.participant-page .premium-achievements-card,
+body.participant-page .premium-community-card,
+body.participant-page .premium-share-card{align-self:start!important}
+body.participant-page .participant-extra-card{align-self:start!important}
+body.participant-page .premium-bottom-actions{margin-top:0!important}
+
+/* Em telas grandes, evita o efeito de painel esticado de ponta a ponta */
+@media(min-width:1500px){
+  body.participant-page .participant-shell{width:min(1600px,calc(100% - 56px))!important}
+  body.participant-page .premium-main-grid{grid-template-columns:minmax(0,1.55fr) minmax(330px,.75fr)!important}
+  body.participant-page .premium-bottom-grid{grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr)!important}
+}
+@media(max-width:1100px){
+  body.participant-page .participant-shell{width:min(100% - 22px,1100px)!important}
+  body.participant-page .premium-main-grid,
+  body.participant-page .premium-bottom-grid{grid-template-columns:1fr!important}
+  .cc-participant-organizer{align-items:flex-start;flex-direction:column}.cc-participant-organizer-actions{justify-content:flex-start}
+}
+@media(max-width:640px){
+  body.participant-page{--cc-participant-gap:9px}
+  body.participant-page .participant-shell{width:calc(100% - 12px)!important}
+  .cc-participant-organizer{padding:10px;border-radius:12px}.cc-participant-organizer-copy small{display:none}.cc-participant-organizer-actions{width:100%;display:grid;grid-template-columns:repeat(3,1fr)}.cc-participant-organizer .cc-organizer-btn{padding:0 5px;font-size:6.8px}
+  .cc-participant-section-head{min-height:40px!important}.cc-participant-collapse-toggle{right:8px;width:25px;height:25px}.cc-participant-collapsible.cc-is-collapsed:after{display:none}
+  .cc-participant-section-head.premium-section-title{padding-right:40px!important}
+}
