@@ -52,7 +52,7 @@
       try {
         await loadMany(extended);
         await waitForPanel(view);
-        if (view === 'events') await loadScript('./community-event-calendar.js');
+        if (view === 'events') await loadScript('./community-event-calendar.js?v=20260902-2');
         bypass = true;
         viewButton.click();
       } catch (error) {
