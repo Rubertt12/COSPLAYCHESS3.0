@@ -60,7 +60,6 @@
 
   function loadMobile() {
     if (!matchMedia('(max-width: 920px)').matches) return;
-    loadStyle('./social-mobile-v10.css?v=20260831-1', 'mobile');
     loadScript('./social-mobile-v10.js?v=20260831-1', 'mobile').catch(() => {});
   }
 
