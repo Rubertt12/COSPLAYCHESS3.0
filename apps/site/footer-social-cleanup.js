@@ -2,6 +2,49 @@
   if(window.__COSPLAYCHESS_FOOTER_SOCIAL_CLEANUP__)return;
   window.__COSPLAYCHESS_FOOTER_SOCIAL_CLEANUP__=true;
 
+  /* Camada mobile/PWA comum às páginas públicas carregadas via config.js. */
+  if(!document.querySelector('link[data-cc-mobile-responsive]')){
+    const mobile=document.createElement('link');
+    mobile.rel='stylesheet';
+    mobile.href='./mobile-responsive-v1.css?v=20260902-1';
+    mobile.dataset.ccMobileResponsive='1';
+    document.head.appendChild(mobile);
+  }
+  if(!document.querySelector('script[data-cc-mobile-responsive]')){
+    const mobileJs=document.createElement('script');
+    mobileJs.src='./mobile-responsive-v1.js?v=20260902-1';
+    mobileJs.defer=true;
+    mobileJs.dataset.ccMobileResponsive='1';
+    document.head.appendChild(mobileJs);
+  }
+  if(!document.querySelector('link[rel="manifest"]')){
+    const manifest=document.createElement('link');
+    manifest.rel='manifest';
+    manifest.href='./manifest.webmanifest?v=20260902-1';
+    document.head.appendChild(manifest);
+  }
+  if(!document.querySelector('link[rel="apple-touch-icon"]')){
+    const apple=document.createElement('link');
+    apple.rel='apple-touch-icon';
+    apple.href='./img/logofergoverse.png';
+    document.head.appendChild(apple);
+  }
+  if(!document.querySelector('meta[name="apple-mobile-web-app-capable"]')){
+    const capable=document.createElement('meta');
+    capable.name='apple-mobile-web-app-capable';
+    capable.content='yes';
+    document.head.appendChild(capable);
+  }
+  if(!document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]')){
+    const status=document.createElement('meta');
+    status.name='apple-mobile-web-app-status-bar-style';
+    status.content='black-translucent';
+    document.head.appendChild(status);
+  }
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?v=20260902-1',{scope:'./'}).catch(()=>{}),{once:true});
+  }
+
   const ICON=`<span class="cc-footer-instagram-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.4" cy="6.7" r="1.15" fill="currentColor"/></svg></span><span class="cc-footer-instagram-handle">@fergorverse</span>`;
   let applying=false;
   const clamp=(n,min,max)=>Math.max(min,Math.min(max,Number(n)));
@@ -74,7 +117,7 @@
     clean();
     applyFooterChibi();
     const footer=document.querySelector('.site-footer');
-    if(!footer){setTimeout(start,180);return;}
+    if(!footer)return;
     const observer=new MutationObserver(clean);
     observer.observe(footer,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['data-fergorverse-instagram','data-cms-global-role']});
     [250,700,1400,2800].forEach(delay=>setTimeout(clean,delay));
