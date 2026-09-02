@@ -32,6 +32,7 @@
 
   loadScript('./social-shell-state-v2.js?v=20260902-1','ccSocialShellStateV2Js');
   loadScript('./social-profile-avatar-position-v1.js?v=20260902-1','ccSocialAvatarPositionV1Js');
+  loadCss('./social-avatar-button-compact-v1.css?v=20260902-1','ccSocialAvatarButtonCompactV1Css');
   loadCss('./social-notifications-v22.css?v=20260901-2','ccNotificationsV22Css');
   loadCss('./social-notifications-v23.css?v=20260902-1','ccNotificationsV23Css');
   loadScript('./social-notifications-v23.js?v=20260902-1','ccNotificationsV23Js');
