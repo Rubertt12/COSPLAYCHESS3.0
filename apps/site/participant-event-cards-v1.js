@@ -10,6 +10,7 @@
   let totalEvents = 0;
   let countObserver = null;
   let loading = false;
+  let primaryRegistrationId = '';
 
   const fmtDay = (value) => {
     try { return new Intl.DateTimeFormat('pt-BR',{day:'2-digit'}).format(new Date(value)); }
@@ -68,7 +69,7 @@
     if (!row) {
       const empty = document.createElement('div');
       empty.className = 'participant-event-empty';
-      empty.textContent = 'Nenhum próximo evento confirmado por enquanto.';
+      empty.textContent = 'Nenhuma nova participação confirmada por enquanto.';
       root.appendChild(empty);
       return;
     }
@@ -81,7 +82,7 @@
 
     const copy = document.createElement('div');
     copy.className = 'participant-event-copy';
-    const kicker = document.createElement('span'); kicker.textContent = 'PRÓXIMO EVENTO';
+    const kicker = document.createElement('span'); kicker.textContent = 'PRÓXIMA PARTICIPAÇÃO';
     const title = document.createElement('h4'); title.textContent = row.event_title || 'Evento CosplayChess';
     const meta = document.createElement('p');
     meta.textContent = [fmtFull(row.event_start_at),row.event_venue,row.event_city].filter(Boolean).join(' · ');
@@ -113,7 +114,8 @@
 
     rows.forEach((row) => {
       const item = document.createElement('article');
-      item.className = `participant-calendar-item${row.is_upcoming ? ' upcoming' : ' past'}`;
+      const primary = String(row.registration_id || '') === String(primaryRegistrationId || '');
+      item.className = `participant-calendar-item${row.is_upcoming ? ' upcoming' : ' past'}${primary ? ' primary' : ''}`;
 
       const date = document.createElement('div');
       date.className = 'participant-calendar-date';
@@ -130,7 +132,7 @@
       body.append(title,location,character);
 
       const state = document.createElement('em');
-      state.textContent = row.is_upcoming ? 'Próximo' : 'Participou';
+      state.textContent = primary ? 'Perfil atual' : row.is_upcoming ? 'Próximo' : 'Participou';
       item.append(date,body,state);
       root.appendChild(item);
     });
@@ -143,9 +145,10 @@
     const total = $('participantEventTotal');
     if (total) total.textContent = `${totalEvents} ${totalEvents === 1 ? 'evento' : 'eventos'}`;
     forceEventCount();
-    renderNext(list.find(row => row.is_upcoming) || null);
+    const extraUpcoming = list.find(row => row.is_upcoming && String(row.registration_id || '') !== String(primaryRegistrationId || ''));
+    renderNext(extraUpcoming || null);
     renderCalendar(list);
-    window.dispatchEvent(new CustomEvent('cosplay:participant-events-loaded',{detail:{events:list}}));
+    window.dispatchEvent(new CustomEvent('cosplay:participant-events-loaded',{detail:{events:list,primaryRegistrationId}}));
   };
 
   const load = async () => {
@@ -153,11 +156,22 @@
     loading = true;
     try {
       const { data: sessionData } = await db.auth.getSession();
-      if (!sessionData?.session?.user) return;
+      const user = sessionData?.session?.user;
+      if (!user) return;
       ensureHub();
-      const { data, error } = await db.rpc('cosplay_my_event_participations');
-      if (error) throw error;
-      render(data || []);
+      const [eventsResult,profileResult] = await Promise.all([
+        db.rpc('cosplay_my_event_participations'),
+        db.from('cosplay_participant_profiles')
+          .select('registration_id')
+          .eq('user_id',user.id)
+          .neq('registration_status','cancelled')
+          .order('created_at',{ascending:true})
+          .limit(1)
+          .maybeSingle()
+      ]);
+      if (eventsResult.error) throw eventsResult.error;
+      primaryRegistrationId = profileResult.data?.registration_id || '';
+      render(eventsResult.data || []);
     } catch (error) {
       const next = $('participantNextEvent');
       if (next) next.innerHTML = '<div class="participant-event-empty">Não foi possível carregar sua agenda agora.</div>';
