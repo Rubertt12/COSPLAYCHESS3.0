@@ -14,7 +14,7 @@
     if(!document.getElementById('participantEventCardsJs')){
       const script=document.createElement('script');
       script.id='participantEventCardsJs';
-      script.src='./participant-event-cards-v1.js?v=20260902-1';
+      script.src='./participant-event-cards-v1.js?v=20260902-2';
       script.defer=true;
       document.body.appendChild(script);
     }
