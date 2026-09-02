@@ -1,0 +1,192 @@
+/* Cosplays da jornada — avatar circular v5 */
+.passport-characters-card>.passport-body{
+  padding:22px 24px 26px!important;
+}
+.passport-characters{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(340px,460px))!important;
+  justify-content:start!important;
+  gap:16px!important;
+  overflow:visible!important;
+  padding:0!important;
+}
+.passport-character,
+.passport-character:first-child:nth-last-child(1),
+.passport-character:first-child:nth-last-child(2),
+.passport-character:first-child:nth-last-child(2)~.passport-character,
+.passport-character:first-child:nth-last-child(n+4),
+.passport-character:first-child:nth-last-child(n+4)~.passport-character{
+  counter-increment:cc-cosplay;
+  grid-column:auto!important;
+  display:grid!important;
+  grid-template-columns:148px minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:20px!important;
+  width:100%!important;
+  min-height:184px!important;
+  height:auto!important;
+  aspect-ratio:auto!important;
+  padding:18px!important;
+  overflow:visible!important;
+  border:1px solid rgba(228,179,67,.16)!important;
+  border-radius:22px!important;
+  background:linear-gradient(145deg,rgba(19,19,27,.98),rgba(8,9,14,.99))!important;
+  box-shadow:0 16px 38px rgba(0,0,0,.22)!important;
+  isolation:isolate!important;
+}
+.passport-character:hover{
+  transform:translateY(-3px)!important;
+  border-color:rgba(228,179,67,.34)!important;
+  box-shadow:0 22px 48px rgba(0,0,0,.3)!important;
+}
+.passport-character-image{
+  position:relative!important;
+  inset:auto!important;
+  width:148px!important;
+  height:148px!important;
+  min-width:148px!important;
+  overflow:hidden!important;
+  border:4px solid rgba(231,184,77,.92)!important;
+  border-radius:50%!important;
+  background:#0a0b10!important;
+  box-shadow:0 0 0 6px rgba(231,184,77,.075),0 16px 34px rgba(0,0,0,.35)!important;
+}
+.passport-character-image:before{
+  content:counter(cc-cosplay,decimal-leading-zero)!important;
+  z-index:4!important;
+  top:8px!important;
+  left:8px!important;
+  min-width:28px!important;
+  height:28px!important;
+  padding:0 7px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  border-radius:999px!important;
+  background:rgba(5,6,9,.72)!important;
+  color:#fff!important;
+  font-size:8px!important;
+  font-weight:900!important;
+  letter-spacing:.06em!important;
+  backdrop-filter:blur(8px)!important;
+}
+.passport-character-image:after{
+  display:none!important;
+}
+.passport-character-image img{
+  width:100%!important;
+  height:100%!important;
+  display:block!important;
+  object-fit:cover!important;
+  transform:none!important;
+  filter:none!important;
+  transition:transform .28s ease,filter .28s ease!important;
+}
+.passport-character:hover .passport-character-image img{
+  transform:scale(1.045)!important;
+  filter:saturate(1.05)!important;
+}
+.passport-character-placeholder{
+  width:100%!important;
+  height:100%!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:50%!important;
+  font-size:46px!important;
+}
+.passport-character-copy{
+  position:static!important;
+  z-index:2!important;
+  min-width:0!important;
+  padding:0!important;
+}
+.passport-character-copy:before{
+  content:'COSPLAY DA JORNADA'!important;
+  display:block!important;
+  margin:0 0 8px!important;
+  color:#e3b84f!important;
+  font-size:7px!important;
+  font-weight:900!important;
+  letter-spacing:.15em!important;
+}
+.passport-character-copy b{
+  display:block!important;
+  margin:0!important;
+  color:#f5f2f6!important;
+  font-size:clamp(20px,1.45vw,27px)!important;
+  line-height:1.06!important;
+  letter-spacing:-.025em!important;
+}
+.passport-character-copy span{
+  display:block!important;
+  margin-top:9px!important;
+  color:#d5cdd9!important;
+  font-size:10px!important;
+  font-weight:700!important;
+}
+.passport-character-copy small{
+  display:block!important;
+  margin-top:7px!important;
+  color:#817987!important;
+  font-size:8px!important;
+  line-height:1.45!important;
+}
+
+@media(max-width:820px){
+  .passport-characters-card>.passport-body{padding:12px!important}
+  .passport-characters{
+    display:flex!important;
+    gap:10px!important;
+    overflow-x:auto!important;
+    scroll-snap-type:x mandatory!important;
+    padding:2px 2px 6px!important;
+    scrollbar-width:none!important;
+  }
+  .passport-character,
+  .passport-character:first-child:nth-last-child(1),
+  .passport-character:first-child:nth-last-child(2),
+  .passport-character:first-child:nth-last-child(2)~.passport-character,
+  .passport-character:first-child:nth-last-child(n+4),
+  .passport-character:first-child:nth-last-child(n+4)~.passport-character{
+    flex:0 0 min(88vw,420px)!important;
+    grid-template-columns:112px minmax(0,1fr)!important;
+    gap:16px!important;
+    min-height:150px!important;
+    padding:16px!important;
+    scroll-snap-align:start!important;
+  }
+  .passport-character-image{
+    width:112px!important;
+    height:112px!important;
+    min-width:112px!important;
+  }
+  .passport-character-copy b{font-size:21px!important}
+}
+
+@media(max-width:520px){
+  .passport-character,
+  .passport-character:first-child:nth-last-child(1),
+  .passport-character:first-child:nth-last-child(2),
+  .passport-character:first-child:nth-last-child(2)~.passport-character,
+  .passport-character:first-child:nth-last-child(n+4),
+  .passport-character:first-child:nth-last-child(n+4)~.passport-character{
+    flex-basis:92vw!important;
+    grid-template-columns:88px minmax(0,1fr)!important;
+    gap:13px!important;
+    min-height:128px!important;
+    padding:13px!important;
+    border-radius:18px!important;
+  }
+  .passport-character-image{
+    width:88px!important;
+    height:88px!important;
+    min-width:88px!important;
+    border-width:3px!important;
+    box-shadow:0 0 0 4px rgba(231,184,77,.065),0 12px 28px rgba(0,0,0,.32)!important;
+  }
+  .passport-character-image:before{top:5px!important;left:5px!important;min-width:23px!important;height:23px!important;font-size:7px!important}
+  .passport-character-copy:before{font-size:6.2px!important;margin-bottom:6px!important}
+  .passport-character-copy b{font-size:18px!important}
+  .passport-character-copy span{font-size:8.5px!important;margin-top:6px!important}
+  .passport-character-copy small{font-size:7px!important;margin-top:5px!important}
+}
