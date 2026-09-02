@@ -3,6 +3,14 @@
   if (window.__CC_COMMUNITY_OWNER_ACTIONS_V17__) return;
   window.__CC_COMMUNITY_OWNER_ACTIONS_V17__ = true;
 
+  if (!document.getElementById('ccCommunityOwnerGuardV18Js')) {
+    const guard = document.createElement('script');
+    guard.id = 'ccCommunityOwnerGuardV18Js';
+    guard.src = './community-group-owner-guard-v18.js?v=20260902-1';
+    guard.defer = true;
+    document.body.appendChild(guard);
+  }
+
   const db = window.getCosplayChessParticipantDb ? window.getCosplayChessParticipantDb() : window.COSPLAYCHESS_PARTICIPANT_DB;
   const $ = id => document.getElementById(id);
 
@@ -39,7 +47,7 @@
       .select('id,name,slug,owner_profile_id,moderation_status')
       .eq('slug', slug)
       .maybeSingle();
-    if (!group) return null;
+    if (!group || group.moderation_status !== 'active') return null;
 
     const profile = profiles.find(item => item.id === group.owner_profile_id);
     if (!profile) return null;
