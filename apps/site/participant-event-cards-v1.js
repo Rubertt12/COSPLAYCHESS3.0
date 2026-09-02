@@ -62,6 +62,25 @@
     }
   };
 
+  const makeCharacterPhoto = (row, compact = false) => {
+    const box = document.createElement('div');
+    box.className = compact ? 'participant-calendar-photo' : 'participant-event-photo';
+    const url = String(row?.character_photo_url || '').trim();
+    if (url) {
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = `Cosplay de ${row?.character_name || 'personagem'}`;
+      img.loading = 'lazy';
+      img.draggable = false;
+      box.appendChild(img);
+    } else {
+      const fallback = document.createElement('span');
+      fallback.textContent = String(row?.character_name || '♟').trim().charAt(0).toUpperCase() || '♟';
+      box.appendChild(fallback);
+    }
+    return box;
+  };
+
   const renderNext = (row) => {
     const root = $('participantNextEvent');
     if (!root) return;
@@ -80,6 +99,8 @@
     const month = document.createElement('span'); month.textContent = fmtMonth(row.event_start_at);
     date.append(day,month);
 
+    const photo = makeCharacterPhoto(row, false);
+
     const copy = document.createElement('div');
     copy.className = 'participant-event-copy';
     const kicker = document.createElement('span'); kicker.textContent = 'PRÓXIMA PARTICIPAÇÃO';
@@ -97,7 +118,7 @@
     status.className = 'participant-event-confirmed';
     status.textContent = '✓ Inscrição confirmada';
 
-    root.append(date,copy,status);
+    root.append(date,photo,copy,status);
   };
 
   const renderCalendar = (rows) => {
@@ -123,7 +144,10 @@
       const month = document.createElement('span'); month.textContent = fmtMonth(row.event_start_at);
       date.append(day,month);
 
+      const photo = makeCharacterPhoto(row, true);
+
       const body = document.createElement('div');
+      body.className = 'participant-calendar-body';
       const title = document.createElement('b'); title.textContent = row.event_title || 'Evento CosplayChess';
       const location = document.createElement('span');
       location.textContent = [row.event_venue,row.event_city].filter(Boolean).join(' · ') || 'Local a confirmar';
@@ -133,7 +157,7 @@
 
       const state = document.createElement('em');
       state.textContent = primary ? 'Perfil atual' : row.is_upcoming ? 'Próximo' : 'Participou';
-      item.append(date,body,state);
+      item.append(date,photo,body,state);
       root.appendChild(item);
     });
   };
