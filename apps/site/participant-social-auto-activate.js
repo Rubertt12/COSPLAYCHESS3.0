@@ -1,7 +1,27 @@
 (() => {
   if(window.__COSPLAY_PARTICIPANT_SOCIAL_AUTO_ACTIVATE__)return;
   window.__COSPLAY_PARTICIPANT_SOCIAL_AUTO_ACTIVATE__=true;
-  const db=window.getCosplayChessParticipantDb?window.getCosplayChessParticipantDb():window.COSPLAYCHESS_PARTICIPANT_DB;if(!db?.auth)return;
+  const db=window.getCosplayChessParticipantDb?window.getCosplayChessParticipantDb():window.COSPLAYCHESS_PARTICIPANT_DB;
+
+  const loadEventCards=()=>{
+    if(!document.getElementById('participantEventCardsCss')){
+      const link=document.createElement('link');
+      link.id='participantEventCardsCss';
+      link.rel='stylesheet';
+      link.href='./participant-event-cards-v1.css?v=20260902-1';
+      document.head.appendChild(link);
+    }
+    if(!document.getElementById('participantEventCardsJs')){
+      const script=document.createElement('script');
+      script.id='participantEventCardsJs';
+      script.src='./participant-event-cards-v1.js?v=20260902-1';
+      script.defer=true;
+      document.body.appendChild(script);
+    }
+  };
+  loadEventCards();
+
+  if(!db?.auth)return;
   let running=false;
   const activate=async()=>{
     if(running)return;running=true;
