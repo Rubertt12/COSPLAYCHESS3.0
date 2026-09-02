@@ -36,6 +36,7 @@
   loadCss('./social-notifications-v22.css?v=20260901-2','ccNotificationsV22Css');
   loadCss('./social-notifications-v23.css?v=20260902-1','ccNotificationsV23Css');
   loadScript('./social-notifications-v23.js?v=20260902-1','ccNotificationsV23Js');
+  loadScript('./social-community-access-v26.js?v=20260902-1','ccSocialCommunityAccessV26Js');
   if (currentView === 'messages') {
     loadCss('./social-chat-presence-v21.css?v=20260902-1','ccChatPresenceV21Css');
     loadScript('./social-chat-presence-v21.js?v=20260902-1','ccChatPresenceV21Js');
