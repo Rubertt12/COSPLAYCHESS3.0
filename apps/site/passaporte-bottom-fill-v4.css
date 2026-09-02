@@ -1,0 +1,58 @@
+/* Preenche o rodape do Passaporte: proximo passo e acoes sob a timeline */
+@media (min-width:1181px){
+  .passport-shell{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) 360px!important;
+  }
+  .passport-hero,
+  .passport-strip,
+  .passport-characters-card{
+    grid-column:1/-1!important;
+  }
+  .passport-timeline-card{
+    grid-column:1/3!important;
+    grid-row:4!important;
+  }
+  .passport-side-column{
+    display:contents!important;
+  }
+  .passport-achievement-card{
+    grid-column:3!important;
+    grid-row:4!important;
+    align-self:start!important;
+  }
+  .passport-next-card{
+    grid-column:1!important;
+    grid-row:5!important;
+    align-self:stretch!important;
+    min-height:170px!important;
+  }
+  .passport-action-card{
+    grid-column:2!important;
+    grid-row:5!important;
+    position:static!important;
+    align-self:stretch!important;
+    min-height:170px!important;
+  }
+  .passport-next-card .passport-body,
+  .passport-action-card .passport-body{
+    min-height:112px!important;
+  }
+  .passport-next-card .passport-body{
+    display:flex!important;
+    align-items:center!important;
+  }
+  .passport-next-card p{
+    max-width:720px!important;
+    font-size:10px!important;
+    line-height:1.75!important;
+  }
+  .passport-action-card .passport-actions{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:10px!important;
+    align-content:center!important;
+  }
+  .passport-action-card .passport-actions .btn:last-child:nth-child(3){
+    grid-column:1/-1!important;
+  }
+}
