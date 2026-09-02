@@ -33,7 +33,7 @@
       .select('public_slug,profile_visible')
       .eq('user_id', userId)
       .neq('registration_status','cancelled')
-      .order('created_at',{ascending:false})
+      .order('created_at',{ascending:true})
       .limit(1)
       .maybeSingle();
     const link = $('communityMyProfileLink');
