@@ -1,0 +1,149 @@
+/* CosplayChess — mobile polish v3
+   Última camada visual: toque, safe-area, consistência e chat imersivo. */
+:root{--cc-touch:44px;--cc-mobile-page-gutter:10px;--cc-mobile-card-gap:9px}
+
+@media(max-width:1024px){
+  html,body{overscroll-behavior-x:none}
+  :where(button,.btn,[role="button"],input,select,textarea){font-family:inherit}
+  :where(button,.btn,[role="button"]){-webkit-tap-highlight-color:transparent}
+  :where(button,.btn,[role="button"]):focus-visible{outline:2px solid color-mix(in srgb,var(--gold,#e1ad3d) 72%,#fff);outline-offset:2px}
+  :where(.shell,.page-shell,.participant-shell,.passport-shell,.community-main,.community-view){container-type:inline-size}
+}
+
+@media(max-width:768px){
+  :root{--cc-mobile-page-gutter:10px;--cc-mobile-card-gap:9px}
+  body{scroll-padding-top:64px}
+  :where(.btn,button:not(.cc9-action):not(.cc20-del):not(.cc20-emoji-grid button)){min-height:var(--cc-touch)}
+  :where(input:not([type="checkbox"]):not([type="radio"]),select,textarea){min-height:44px;border-radius:10px}
+  :where(.card,.panel,.premium-card,.participant-card,.passport-card,.side-card,.cc-card,.cc9-panel){overflow:clip}
+
+  /* Topbars: largura e toque previsíveis */
+  .topbar,.sitebar,.passport-topbar{padding-top:max(8px,var(--cc-safe-top,0px))!important}
+  .topbar .brand,.sitebar .brand,.passport-topbar .brand{max-width:min(56vw,240px)!important}
+  .topbar .brand span,.sitebar .brand span,.passport-topbar .brand span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .passport-topbar{position:sticky!important;top:0!important;z-index:1200!important;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+
+  /* Landing */
+  .hero-copy .kicker,.section .kicker{letter-spacing:.11em!important;line-height:1.45!important}
+  .hero-copy h1{max-width:12ch!important}
+  .hero-copy p{max-width:56ch!important}
+  .hero-meta>div{border-radius:12px!important}
+  .events-grid>*,.gallery-grid>*,.team-grid>*,.feature-grid>*{width:100%!important;margin:0!important}
+  .section-head .text-link{min-height:40px;display:inline-flex;align-items:center}
+
+  /* Perfil público */
+  .sitebar{position:sticky!important;top:0!important;z-index:900!important;background:color-mix(in srgb,var(--bg,#07090e) 94%,transparent)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+  .profile-hero{overflow:hidden!important}
+  .profile-hero .cover img{width:100%!important;height:100%!important;object-fit:cover!important}
+  .profile-summary .stats b{font-size:18px!important}
+  .profile-summary .stats span{font-size:8px!important;line-height:1.25!important}
+  .profile-tabs{scroll-snap-type:x proximity!important}
+  .profile-tabs button{scroll-snap-align:start!important}
+  .post-card,.gallery-item,.achievement-card,.interest-card{max-width:100%!important}
+
+  /* Meu painel */
+  body.participant-page .participant-premium-content{padding-bottom:8px!important}
+  body.participant-page .cc-participant-organizer{position:sticky!important;top:max(6px,var(--cc-safe-top,0px))!important;z-index:800!important;border-radius:14px!important;background:color-mix(in srgb,var(--panel,#11131a) 94%,transparent)!important;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(0,0,0,.18)!important}
+  body.participant-page .cc-participant-organizer-actions{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important}
+  body.participant-page .cc-organizer-btn{min-height:42px!important;padding:0 6px!important;font-size:10px!important;line-height:1.1!important}
+  body.participant-page .cc-participant-collapse-toggle{min-height:50px!important;padding:10px 12px!important}
+  body.participant-page .cc-participant-collapse-toggle strong{font-size:13px!important}
+  body.participant-page .premium-card-head{min-height:52px!important;padding:12px!important}
+  body.participant-page .premium-card-body{padding:12px!important}
+  body.participant-page .premium-profile-form{border-radius:0 0 13px 13px!important}
+  body.participant-page .premium-photo-box img,body.participant-page .premium-photo-drop img{max-height:58dvh!important;object-fit:contain!important}
+  body.participant-page .premium-progress>*{min-width:0!important}
+  body.participant-page .premium-public-hint{font-size:10px!important;line-height:1.45!important}
+
+  /* Passaporte */
+  body.passport-page .passport-shell{padding-bottom:max(24px,var(--cc-safe-bottom,0px))!important}
+  body.passport-page .passport-hero{overflow:hidden!important}
+  body.passport-page .passport-stat b{font-size:21px!important}
+  body.passport-page .passport-stat span{font-size:8px!important}
+  body.passport-page .passport-strip>div{min-height:58px!important;padding:10px 12px!important;border-radius:12px!important}
+  body.passport-page .passport-timeline{gap:9px!important}
+  body.passport-page .passport-timeline>*{max-width:100%!important}
+  body.passport-page .passport-character{box-shadow:0 10px 28px rgba(0,0,0,.16)!important}
+  body.passport-page .passport-character-image{align-self:center!important;justify-self:center!important}
+  body.passport-page .passport-character-image img{width:100%!important;height:100%!important;object-fit:cover!important}
+  body.passport-page .passport-actions .btn{width:100%!important;min-height:46px!important;justify-content:center!important}
+
+  /* Rede social */
+  body.community-page.cc-v4{--cc-mobile-nav-h:66px}
+  .cc-v4 .community-main{padding:8px 8px calc(var(--cc-mobile-nav-h,66px) + var(--cc-safe-bottom,0px) + 10px)!important}
+  .cc-v4 .cc-center-head{padding-top:max(9px,var(--cc-safe-top,0px))!important}
+  .cc-mobile-bottom-nav{height:calc(var(--cc-mobile-nav-h,66px) + var(--cc-safe-bottom,0px))!important;padding-bottom:var(--cc-safe-bottom,0px)!important}
+  .cc-mobile-bottom-nav button{min-height:54px!important;border-radius:12px!important;font-size:10px!important}
+  .cc-mobile-bottom-nav button i{font-size:20px!important}
+  .cc-mobile-menu-button{top:max(11px,var(--cc-safe-top,0px))!important;width:42px!important;height:42px!important}
+  .cc-v4 .community-composer-controls{gap:6px!important}
+  .cc-v4 .community-file-btn,.cc-v4 .community-composer-controls>button{min-height:44px!important}
+  .cc-v4 .cc9-post-actions{gap:4px!important;padding-top:5px!important}
+  .cc-v4 .cc9-action{min-height:42px!important;border-radius:9px!important}
+  .cc-v4 .community-group-card,.cc-v4 .cc9-person,.cc-v4 .cc9-notification{padding:11px!important}
+
+  /* Chat realmente imersivo: sem barra inferior disputando o composer */
+  body.community-page.cc-v4[data-cc-view="messages-v20"]{height:var(--cc-visual-height,100dvh)!important;min-height:0!important;overflow:hidden!important;padding:0!important}
+  body.community-page.cc-v4[data-cc-view="messages-v20"] .cc-mobile-bottom-nav{display:none!important}
+  body.community-page.cc-v4[data-cc-view="messages-v20"] .community-main{padding:0!important}
+  body.community-page.cc-v4[data-cc-view="messages-v20"] [data-community-panel="messages"]{height:var(--cc-visual-height,100dvh)!important;overflow:hidden!important}
+  body.community-page.cc-v4[data-cc-view="messages-v20"] .cc20{position:fixed!important;inset:0!important;z-index:3000!important;width:100vw!important;height:var(--cc-visual-height,100dvh)!important;padding-top:var(--cc-safe-top,0px)!important;background:var(--bg,#07090e)!important}
+  body.community-page.cc-v4[data-cc-view="messages-v20"] .cc20-top{padding-left:58px!important;min-height:calc(56px + var(--cc-safe-top,0px))!important}
+  .cc20-list,.cc20-conversation{overscroll-behavior:contain!important}
+  .cc20-presence-strip{padding-bottom:5px!important}
+  .cc20-thread{min-height:70px!important;border-radius:12px!important}
+  .cc20-head{padding-left:7px!important}
+  .cc20-head-back{min-width:42px!important;width:42px!important;height:42px!important;min-height:42px!important}
+  .cc20-stream{padding-bottom:14px!important;scrollbar-width:thin}
+  .cc20-bubble{font-size:13px!important;line-height:1.46!important}
+  .cc20-bottom{padding:7px max(7px,var(--cc-safe-right,0px)) max(8px,var(--cc-safe-bottom,0px)) max(7px,var(--cc-safe-left,0px))!important}
+  .cc20-compose{grid-template-columns:42px 42px minmax(0,1fr) 68px!important;gap:5px!important}
+  .cc20-tool{width:42px!important;height:44px!important;min-height:44px!important}
+  .cc20-compose textarea{min-height:44px!important;max-height:112px!important;border-radius:14px!important}
+  .cc20-send{height:44px!important;min-height:44px!important;min-width:68px!important;border-radius:12px!important}
+  .cc20-emoji{bottom:60px!important;max-height:min(44dvh,360px)!important;overflow-y:auto!important}
+
+  body.cc-keyboard-open.community-page.cc-v4[data-cc-view="messages-v20"] .cc20-top{display:none!important}
+  body.cc-keyboard-open.community-page.cc-v4[data-cc-view="messages-v20"] .cc20-head{height:52px!important;min-height:52px!important}
+  body.cc-keyboard-open.community-page.cc-v4[data-cc-view="messages-v20"] .cc20-bottom{padding-bottom:5px!important}
+}
+
+@media(max-width:430px){
+  :root{--cc-mobile-page-gutter:8px;--cc-mobile-card-gap:8px}
+  .passport-topbar .top-actions{grid-template-columns:1fr!important;width:100%!important}
+  .passport-topbar .top-actions .btn{width:100%!important}
+  body.participant-page .cc-participant-organizer-actions{grid-template-columns:1fr 1fr!important}
+  body.participant-page .cc-organizer-btn:last-child{grid-column:1/-1!important}
+  body.passport-page .passport-hero{grid-template-columns:64px minmax(0,1fr)!important;padding:12px!important}
+  body.passport-page .passport-avatar{width:64px!important;height:64px!important}
+  body.passport-page .passport-character{grid-template-columns:76px minmax(0,1fr)!important;min-height:100px!important}
+  body.passport-page .passport-character-image{width:70px!important;height:70px!important}
+  .cc-v4 .cc9-post-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .cc20-compose{grid-template-columns:40px 40px minmax(0,1fr) 60px!important}
+  .cc20-tool{width:40px!important}.cc20-send{min-width:60px!important}
+}
+
+@media(max-width:360px){
+  body.participant-page .cc-participant-organizer-actions{grid-template-columns:1fr!important}
+  body.participant-page .cc-organizer-btn:last-child{grid-column:auto!important}
+  .cc-mobile-bottom-nav button span{font-size:9px!important}
+  .cc20-compose{grid-template-columns:38px minmax(0,1fr) 58px!important}
+  .cc20-compose .cc20-tool:first-child{display:none!important}
+  .cc20-tool{width:38px!important}.cc20-send{min-width:58px!important}
+}
+
+@media(hover:none) and (pointer:coarse){
+  :where(a,button,.btn,.card,.community-post,.cc9-post){transition-duration:.08s!important}
+  :where(.btn,.card,.community-post,.cc9-post):hover{transform:none!important}
+  :where(button,.btn,[role="button"]):active{transform:scale(.985)}
+}
+
+@media(display-mode:standalone){
+  body{padding-top:var(--cc-safe-top,0px)}
+  .passport-topbar,.sitebar{padding-top:max(8px,var(--cc-safe-top,0px))!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
