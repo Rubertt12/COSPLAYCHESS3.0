@@ -55,7 +55,7 @@
 
   const deletePhoto = async (photo, button) => {
     if (!photo?.id || button.disabled) return;
-    if (!confirm('Excluir esta foto definitivamente do álbum? Se ela estiver em uma publicação, a publicação também perderá esta imagem.')) return;
+    if (!confirm('Excluir esta foto definitivamente do álbum? Se ela estiver em uma publicação, essa publicação também será apagada.')) return;
     button.disabled = true;
     const { data:path, error } = await db.rpc('cosplay_delete_album_photo', { p_photo:photo.id });
     if (error) {
@@ -64,14 +64,14 @@
       return;
     }
     await cleanupStorage([path || photo.image_path]);
-    toast('Foto excluída do álbum.');
+    toast('Foto e publicação vinculada excluídas.');
     setTimeout(() => location.reload(), 220);
   };
 
   const deleteAlbum = async (album, button) => {
     if (!album?.id || button.disabled) return;
     const suffix = album.system_key ? ' Este álbum reúne fotos preservadas de publicações do feed.' : '';
-    if (!confirm(`Excluir o álbum “${album.name}” e todas as fotos dele?${suffix} As publicações associadas perderão essas imagens.`)) return;
+    if (!confirm(`Excluir o álbum “${album.name}” e todas as fotos dele?${suffix} As publicações vinculadas a essas fotos também serão apagadas.`)) return;
     button.disabled = true;
     const { data:paths, error } = await db.rpc('cosplay_delete_album', { p_album:album.id });
     if (error) {
@@ -80,7 +80,7 @@
       return;
     }
     await cleanupStorage(Array.isArray(paths) ? paths : []);
-    toast('Álbum excluído.');
+    toast('Álbum, fotos e publicações vinculadas excluídos.');
     setTimeout(() => location.reload(), 220);
   };
 
