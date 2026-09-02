@@ -41,25 +41,28 @@
     const backdrop=$('participantHeroBackdrop');
     if(backdrop)backdrop.style.backgroundPosition=`${draftX}% ${draftY}%`;
     const readout=$('participantCoverPositionReadout');
-    if(readout)readout.textContent=`X ${draftX}% · Y ${draftY}%`;
+    if(readout)readout.textContent=`Horizontal ${draftX}% · Vertical ${draftY}%`;
     const save=$('participantCoverSavePosition');
     if(save)save.disabled=!profile?.cover_photo_url||!positionDirty;
   };
 
   const updatePositionControls = () => {
-    const hasCover=Boolean(profile?.cover_photo_url || $('participantCoverPreview')?.querySelector('img'));
+    const preview=$('participantCoverPreview');
+    const hasCover=Boolean(profile?.cover_photo_url || preview?.querySelector('img'));
     const controls=$('participantCoverPositionControls');
-    if(controls)controls.hidden=!hasCover;
+    if(controls){
+      controls.hidden=!hasCover;
+      controls.style.display=hasCover?'flex':'none';
+    }
     const adjust=$('participantCoverAdjust');
     const center=$('participantCoverCenter');
     const save=$('participantCoverSavePosition');
-    if(adjust){adjust.disabled=!hasCover;adjust.textContent=adjusting?'✓ Finalizar ajuste':'✥ Ajustar posição';}
+    if(adjust){adjust.disabled=!hasCover;adjust.textContent=adjusting?'✓ Finalizar ajuste':'✥ Reposicionar capa';}
     if(center)center.disabled=!hasCover;
     if(save)save.disabled=!hasCover||!positionDirty;
-    const preview=$('participantCoverPreview');
     preview?.classList.toggle('is-adjusting',adjusting&&hasCover);
     const hint=$('participantCoverPositionHint');
-    if(hint)hint.textContent=adjusting?'Arraste a imagem para escolher o enquadramento.':'Você pode reposicionar a capa antes de salvar.';
+    if(hint)hint.textContent=adjusting?'Arraste a imagem dentro do banner para escolher o enquadramento.':'Clique em Reposicionar capa para ajustar o enquadramento.';
     applyPosition();
   };
 
@@ -89,6 +92,7 @@
     if (cover) {
       backdrop.style.backgroundImage=`url("${cover.replace(/"/g,'%22')}")`;
       backdrop.style.backgroundPosition=`${draftX}% ${draftY}%`;
+      backdrop.style.backgroundSize='cover';
     }
   };
 
@@ -99,7 +103,7 @@
     const box=document.createElement('div');
     box.id='participantCoverEditor';
     box.className='participant-cover-editor';
-    box.innerHTML=`<span>Foto de capa</span><div class="participant-cover-preview" id="participantCoverPreview"><span>Sem foto de capa</span></div><div class="participant-cover-position-controls" id="participantCoverPositionControls" hidden><div class="participant-cover-position-copy"><b id="participantCoverPositionHint">Você pode reposicionar a capa antes de salvar.</b><small id="participantCoverPositionReadout">X 50% · Y 50%</small></div><div class="participant-cover-position-buttons"><button class="btn dark" id="participantCoverAdjust" type="button">✥ Ajustar posição</button><button class="btn dark" id="participantCoverCenter" type="button">Centralizar</button><button class="btn gold" id="participantCoverSavePosition" type="button" disabled>Salvar posição</button></div></div><div class="participant-cover-actions"><label class="btn dark participant-cover-upload">▧ Escolher capa<input id="participantCoverFile" type="file" accept="image/jpeg,image/png,image/webp"></label><button class="btn dark" id="participantCoverRemove" type="button">Remover capa</button><span class="participant-cover-status" id="participantCoverStatus"></span></div><div class="participant-cover-help">A capa aparece no topo do seu perfil público. JPG, PNG ou WebP · até 5 MB. <b>Use somente imagens apropriadas para todas as idades.</b></div>`;
+    box.innerHTML=`<span>Foto de capa</span><div class="participant-cover-preview" id="participantCoverPreview"><span>Sem foto de capa</span></div><div class="participant-cover-position-controls" id="participantCoverPositionControls" hidden><div class="participant-cover-position-copy"><b id="participantCoverPositionHint">Clique em Reposicionar capa para ajustar o enquadramento.</b><small id="participantCoverPositionReadout">Horizontal 50% · Vertical 50%</small></div><div class="participant-cover-position-buttons"><button class="btn dark" id="participantCoverAdjust" type="button">✥ Reposicionar capa</button><button class="btn dark" id="participantCoverCenter" type="button">Centralizar</button><button class="btn gold" id="participantCoverSavePosition" type="button" disabled>Salvar posição</button></div></div><div class="participant-cover-actions"><label class="btn dark participant-cover-upload">▧ Escolher capa<input id="participantCoverFile" type="file" accept="image/jpeg,image/png,image/webp"></label><button class="btn dark" id="participantCoverRemove" type="button">Remover capa</button><span class="participant-cover-status" id="participantCoverStatus"></span></div><div class="participant-cover-help">A capa aparece no topo do seu perfil público e na rede social. Depois de escolher a imagem, você pode arrastá-la para definir qual região ficará visível no banner.</div>`;
     photoBox.insertAdjacentElement('afterend',box);
     $('participantCoverFile')?.addEventListener('change',onFile);
     $('participantCoverRemove')?.addEventListener('click',removeCover);
@@ -121,14 +125,15 @@
     if (selected) query=query.eq('id',selected);
     const {data,error}=selected
       ? await query.limit(1).maybeSingle()
-      : await query.order('created_at',{ascending:false}).limit(1).maybeSingle();
+      : await query.order('created_at',{ascending:true}).limit(1).maybeSingle();
     if (error || !data) return false;
     profile=data;
-    adjusting=false;
     setDraftFromProfile();
+    adjusting=Boolean(profile.cover_photo_url);
     paint(profile.cover_photo_url);
     applyBackdrop();
     updatePositionControls();
+    if(profile.cover_photo_url)status('Você pode arrastar a capa para reposicionar.');
     return true;
   };
 
@@ -137,7 +142,7 @@
     adjusting=!adjusting;
     updatePositionControls();
     if(adjusting)status('Arraste a capa para reposicionar.');
-    else status(positionDirty?'Posição ajustada. Salve para aplicar.':'');
+    else status(positionDirty?'Posição ajustada. Clique em Salvar posição.':'');
   }
 
   function centerPosition() {
@@ -211,9 +216,8 @@
     const oldPath=objectPath(oldUrl);
     if (oldPath?.startsWith(`${user.id}/profile-covers/`)) db.storage.from(BUCKET).remove([oldPath]).catch(()=>{});
     profile.cover_photo_url=publicUrl;profile.cover_position_x=50;profile.cover_position_y=50;
-    setDraftFromProfile();paint(publicUrl);applyBackdrop();updatePositionControls();
-    status('Capa atualizada. Agora você pode ajustar a posição.','success');
-    setTimeout(()=>status(''),2600);
+    setDraftFromProfile();adjusting=true;paint(publicUrl);applyBackdrop();updatePositionControls();
+    status('Capa atualizada. Arraste agora para escolher o enquadramento.','success');
   }
 
   async function removeCover() {
