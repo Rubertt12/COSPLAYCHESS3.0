@@ -1,17 +1,133 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b0710">
-  <meta name="description" content="Passaporte CosplayChess — trajetória, eventos e conquistas do participante.">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#07080d">
+  <meta name="description" content="Passaporte CosplayChess — trajetória, eventos, personagens e conquistas do participante.">
   <title>Passaporte Cosplay — CosplayChess</title>
-  <link rel="icon" type="image/png" href="./img/logofergoverse.png"><link rel="stylesheet" href="./landing.css"><link rel="stylesheet" href="./passaporte.css?v=20260829-1"><link rel="stylesheet" href="./passaporte-share.css?v=20260829-1"><link rel="stylesheet" href="./site-white-mode.css?v=20260901-1">
+  <link rel="icon" type="image/png" href="./img/logofergoverse.png">
+  <link rel="stylesheet" href="./landing.css">
+  <link rel="stylesheet" href="./passaporte.css?v=20260902-2">
+  <link rel="stylesheet" href="./passaporte-share.css?v=20260902-2">
+  <link rel="stylesheet" href="./site-white-mode.css?v=20260901-1">
 </head>
-<body class="passport-page"><div class="grain"></div>
-<header class="topbar"><a class="brand" href="./index.html"><img src="./img/logofergoverse.png" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a><div class="top-actions"><a class="btn dark" href="./comunidade.html">✦ Comunidade</a><a class="btn ghost" href="./participante.html">Meu painel</a></div></header>
-<main class="passport-shell" id="passportContent" hidden>
-  <section class="passport-hero"><div class="passport-avatar" id="passportAvatar">♜</div><div class="passport-copy"><span class="kicker">PASSAPORTE COSPLAY</span><h1 id="passportName">Minha <i>jornada.</i></h1><p id="passportSubtitle">Sua história dentro do CosplayChess.</p></div><div class="passport-stats"><div class="passport-stat"><b id="passportEvents">0</b><span>eventos</span></div><div class="passport-stat"><b id="passportAchievements">0</b><span>conquistas</span></div><div class="passport-stat"><b id="passportFriends">0</b><span>amigos</span></div><div class="passport-stat"><b id="passportPosts">0</b><span>scraps</span></div></div></section>
-  <div class="passport-grid"><section class="passport-card"><div class="passport-card-head"><h2>Linha do tempo</h2><span>eventos, personagens e marcos</span></div><div class="passport-body"><div class="passport-timeline" id="passportTimeline"><div class="passport-empty">Carregando trajetória...</div></div></div></section><aside><section class="passport-card"><div class="passport-card-head"><h2>Conquistas</h2><span id="passportBadgeCount">0</span></div><div class="passport-body"><div class="passport-badges" id="passportBadges"><div class="passport-empty">Carregando conquistas...</div></div></div></section><section class="passport-card" style="margin-top:14px"><div class="passport-card-head"><h2>Ações</h2><span>seu passaporte</span></div><div class="passport-body passport-actions"><a class="btn gold" id="passportProfileLink" href="./participante.html">Abrir meu perfil</a><button class="btn dark" id="passportShare" type="button">Compartilhar passaporte</button></div></section></aside></div>
-</main>
-<div class="passport-auth" id="passportAuth"><div><span style="font-size:40px;color:#bac9ff">♜</span><h1>Passaporte Cosplay</h1><p>Entre com sua conta de participante para montar sua trajetória.</p><a class="btn gold" href="./participante.html">Entrar</a></div></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script><script src="./site-theme-sync.js?v=20260901-1"></script><script src="./config.js"></script><script src="./passaporte.js?v=20260829-1"></script><script src="./passaporte-share.js?v=20260829-1"></script>
-</body></html>
+<body class="passport-page">
+  <div class="grain"></div>
+
+  <header class="topbar passport-topbar">
+    <a class="brand" href="./index.html">
+      <img src="./img/logofergoverse.png" alt="CosplayChess">
+      <span><b>COSPLAY</b><em>CHESS</em></span>
+    </a>
+    <div class="top-actions">
+      <a class="btn dark" href="./comunidade.html">✦ Comunidade</a>
+      <a class="btn ghost" href="./participante.html">Meu painel</a>
+    </div>
+  </header>
+
+  <main class="passport-shell" id="passportContent" hidden>
+    <section class="passport-hero" id="passportHero">
+      <div class="passport-hero-shade"></div>
+      <div class="passport-avatar" id="passportAvatar">♜</div>
+
+      <div class="passport-copy">
+        <div class="passport-eyebrow"><span>PASSAPORTE COSPLAY</span><b id="passportCharacterPill">Perfil principal</b></div>
+        <h1 id="passportName">Minha <i>jornada.</i></h1>
+        <p id="passportSubtitle">Sua história dentro do CosplayChess.</p>
+        <div class="passport-meta" id="passportHeroMeta"></div>
+      </div>
+
+      <div class="passport-progress-card">
+        <div class="passport-progress-head"><span>PROGRESSO DE CONQUISTAS</span><b id="passportAchievementProgressText">0 / 0</b></div>
+        <div class="passport-progress-track"><i id="passportAchievementProgress"></i></div>
+        <small id="passportProgressHint">Participe dos eventos e desbloqueie novos marcos.</small>
+      </div>
+
+      <div class="passport-stats">
+        <div class="passport-stat"><b id="passportEvents">0</b><span>Eventos</span></div>
+        <div class="passport-stat"><b id="passportAchievements">0</b><span>Conquistas</span></div>
+        <div class="passport-stat"><b id="passportFriends">0</b><span>Amigos</span></div>
+        <div class="passport-stat"><b id="passportPosts">0</b><span>Publicações</span></div>
+      </div>
+    </section>
+
+    <section class="passport-strip" aria-label="Resumo da jornada">
+      <div><span>♜</span><p><b id="passportSince">Sua jornada começou</b><small>primeira participação registrada</small></p></div>
+      <div><span>🎭</span><p><b id="passportCharacterCount">0 cosplays</b><small>personagens na sua trajetória</small></p></div>
+      <div><span>✓</span><p><b id="passportCheckinCount">0 check-ins</b><small>presenças registradas</small></p></div>
+    </section>
+
+    <div class="passport-grid">
+      <div class="passport-main-column">
+        <section class="passport-card passport-timeline-card">
+          <div class="passport-card-head passport-card-head-stack">
+            <div><span class="passport-section-kicker">TRAJETÓRIA</span><h2>Linha do tempo</h2><p>Eventos, personagens, check-ins e conquistas em uma única história.</p></div>
+            <div class="passport-filters" id="passportTimelineFilters">
+              <button class="active" type="button" data-filter="all">Tudo</button>
+              <button type="button" data-filter="event">Eventos</button>
+              <button type="button" data-filter="checkin">Check-ins</button>
+              <button type="button" data-filter="achievement">Conquistas</button>
+            </div>
+          </div>
+          <div class="passport-body">
+            <div class="passport-timeline" id="passportTimeline"><div class="passport-empty">Carregando trajetória...</div></div>
+          </div>
+        </section>
+
+        <section class="passport-card passport-characters-card">
+          <div class="passport-card-head">
+            <div><span class="passport-section-kicker">SEUS PERSONAGENS</span><h2>Cosplays da jornada</h2></div>
+            <span id="passportCharacterBadge">0 registrados</span>
+          </div>
+          <div class="passport-body">
+            <div class="passport-characters" id="passportCharacters"><div class="passport-empty">Carregando personagens...</div></div>
+          </div>
+        </section>
+      </div>
+
+      <aside class="passport-side-column">
+        <section class="passport-card passport-achievement-card">
+          <div class="passport-card-head">
+            <div><span class="passport-section-kicker">COLEÇÃO</span><h2>Conquistas</h2></div>
+            <span id="passportBadgeCount">0 / 0</span>
+          </div>
+          <div class="passport-body">
+            <div class="passport-badges" id="passportBadges"><div class="passport-empty">Carregando conquistas...</div></div>
+          </div>
+        </section>
+
+        <section class="passport-card passport-next-card">
+          <div class="passport-card-head"><div><span class="passport-section-kicker">PRÓXIMO PASSO</span><h2>Continue sua história</h2></div></div>
+          <div class="passport-body"><p id="passportNextStep">Sua jornada cresce a cada participação no CosplayChess.</p></div>
+        </section>
+
+        <section class="passport-card passport-action-card">
+          <div class="passport-card-head"><div><span class="passport-section-kicker">SEU PASSAPORTE</span><h2>Ações</h2></div></div>
+          <div class="passport-body passport-actions">
+            <a class="btn gold" id="passportProfileLink" href="./participante.html">Abrir meu perfil</a>
+            <button class="btn dark" id="passportShare" type="button">Compartilhar passaporte</button>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <div class="passport-auth" id="passportAuth">
+    <div>
+      <span class="passport-auth-icon">♜</span>
+      <span class="passport-section-kicker">COSPLAYCHESS</span>
+      <h1>Seu Passaporte Cosplay</h1>
+      <p>Entre com sua conta de participante para acompanhar eventos, personagens e conquistas.</p>
+      <a class="btn gold" href="./participante.html">Entrar na minha conta</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="./site-theme-sync.js?v=20260901-1"></script>
+  <script src="./config.js"></script>
+  <script src="./passaporte.js?v=20260902-2"></script>
+  <script src="./passaporte-share.js?v=20260902-2"></script>
+</body>
+</html>
