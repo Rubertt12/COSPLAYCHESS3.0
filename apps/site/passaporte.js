@@ -1,5 +1,6 @@
 (() => {
   'use strict';
+  window.__CC_PASSPORT_V2__ = true;
   const db = window.getCosplayChessParticipantDb ? window.getCosplayChessParticipantDb() : window.COSPLAYCHESS_PARTICIPANT_DB;
   const $ = (id) => document.getElementById(id);
   const state = {
