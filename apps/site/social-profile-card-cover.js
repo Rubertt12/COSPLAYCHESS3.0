@@ -42,7 +42,7 @@
       .select('id,user_id,public_slug,profile_visible,cover_photo_url,cover_position_x,cover_position_y')
       .eq('user_id',state.user.id)
       .neq('registration_status','cancelled')
-      .order('created_at',{ascending:false})
+      .order('created_at',{ascending:true})
       .limit(1)
       .maybeSingle();
     if (error || !data) return null;
@@ -76,7 +76,7 @@
     button.id = 'ccCoverEdit';
     button.className = 'cc-cover-edit';
     button.type = 'button';
-    button.innerHTML = '✥ <span>Ajustar capa</span>';
+    button.innerHTML = '✥ <span>Reposicionar capa</span>';
     button.addEventListener('click', () => openEditor().catch(() => {}));
     cover.appendChild(button);
   };
@@ -86,6 +86,11 @@
     if (!el) return;
     el.textContent = message;
     el.dataset.kind = kind;
+  };
+
+  const updateReadout = () => {
+    const el = $('ccCoverPositionReadout');
+    if (el) el.textContent = `Horizontal ${state.draftX}% · Vertical ${state.draftY}%`;
   };
 
   const ensureModal = () => {
@@ -99,20 +104,20 @@
       <div class="cc-cover-backdrop" data-cc-cover-close></div>
       <section class="cc-cover-dialog" role="dialog" aria-modal="true" aria-labelledby="ccCoverTitle">
         <div class="cc-cover-head">
-          <div><b id="ccCoverTitle">Capa do perfil cosplay</b><small>A mesma capa aparece na rede e no seu perfil público.</small></div>
+          <div><b id="ccCoverTitle">Posicionar capa do perfil</b><small>Arraste a imagem para escolher exatamente qual parte aparece no banner.</small></div>
           <button class="cc-cover-close" type="button" data-cc-cover-close aria-label="Fechar">×</button>
         </div>
         <div class="cc-cover-body">
           <div class="cc-cover-preview" id="ccCoverPreview"><span>Sem foto de capa</span></div>
           <div class="cc-cover-controls">
-            <label class="btn dark cc-cover-upload">▧ Escolher capa<input id="ccCoverFile" type="file" accept="image/jpeg,image/png,image/webp"></label>
-            <button class="btn dark" id="ccCoverAdjust" type="button">✥ Ajustar posição</button>
+            <label class="btn dark cc-cover-upload">▧ Trocar capa<input id="ccCoverFile" type="file" accept="image/jpeg,image/png,image/webp"></label>
+            <button class="btn dark" id="ccCoverAdjust" type="button">✓ Finalizar ajuste</button>
             <button class="btn dark" id="ccCoverCenter" type="button">Centralizar</button>
             <button class="btn gold" id="ccCoverSavePosition" type="button">Salvar posição</button>
             <button class="btn dark" id="ccCoverRemove" type="button">Remover</button>
             <span class="cc-cover-status" id="ccCoverStatus"></span>
           </div>
-          <div class="cc-cover-help">JPG, PNG ou WebP · até 5 MB. Depois de enviar, clique em “Ajustar posição” e arraste a imagem até o enquadramento ficar correto.</div>
+          <div class="cc-cover-help"><b id="ccCoverPositionReadout">Horizontal 50% · Vertical 50%</b><br>Arraste diretamente a imagem para cima, para baixo ou para os lados. O sistema salva somente o enquadramento; a imagem original não é recortada.</div>
         </div>
       </section>`;
     document.body.appendChild(modal);
@@ -150,6 +155,7 @@
   const updatePreviewPosition = () => {
     const img = q('#ccCoverPreview img');
     if (img) img.style.objectPosition = `${state.draftX}% ${state.draftY}%`;
+    updateReadout();
   };
 
   const updateControls = () => {
@@ -163,6 +169,7 @@
     if (save) save.disabled = !hasCover;
     if (remove) remove.disabled = !state.profile?.cover_photo_url;
     $('ccCoverPreview')?.classList.toggle('is-adjusting', state.adjusting && hasCover);
+    updateReadout();
   };
 
   const openEditor = async () => {
@@ -170,11 +177,11 @@
     if (!profile) return;
     state.draftX = clamp(profile.cover_position_x ?? 50);
     state.draftY = clamp(profile.cover_position_y ?? 50);
-    state.adjusting = false;
+    state.adjusting = Boolean(profile.cover_photo_url);
     const modal = ensureModal();
     paintPreview(profile.cover_photo_url);
     updateControls();
-    status('');
+    status(profile.cover_photo_url ? 'Arraste a capa para reposicionar.' : 'Escolha uma capa para começar.');
     modal.hidden = false;
   };
 
@@ -224,7 +231,7 @@
     state.adjusting = false;
     updateControls();
     await applyCardCover();
-    status('Posição salva.','success');
+    status('Posição da capa salva.','success');
   }
 
   async function uploadCover(event) {
@@ -279,10 +286,11 @@
     state.profile.cover_position_y = 50;
     state.draftX = 50;
     state.draftY = 50;
+    state.adjusting = true;
     paintPreview(publicUrl);
     updateControls();
     await applyCardCover();
-    status('Capa atualizada. Você pode ajustar o enquadramento agora.','success');
+    status('Capa atualizada. Arraste agora para escolher o enquadramento.','success');
   }
 
   async function removeCover() {
