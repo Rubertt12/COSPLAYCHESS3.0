@@ -1,0 +1,26 @@
+{
+  "name": "CosplayChess",
+  "short_name": "CosplayChess",
+  "description": "Comunidade, eventos, perfis e jornada CosplayChess.",
+  "start_url": "./index.html?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#05070b",
+  "theme_color": "#05070b",
+  "categories": ["social", "entertainment", "games"],
+  "icons": [
+    {
+      "src": "./img/cosplaychess-app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./img/cosplaychess-app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
