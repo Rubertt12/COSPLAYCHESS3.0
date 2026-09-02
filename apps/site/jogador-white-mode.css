@@ -19,11 +19,13 @@ body[data-cc-theme="white-mode"] .stats span{color:#748094}
 body[data-cc-theme="white-mode"] .profile-tabs{background:#fff;border-color:rgba(25,35,55,.11);box-shadow:0 6px 22px rgba(38,53,77,.04)}
 body[data-cc-theme="white-mode"] .profile-tabs button{color:#667387}
 body[data-cc-theme="white-mode"] .profile-tabs button.active{background:rgba(139,69,220,.08);color:#7b35c9;box-shadow:inset 0 -2px 0 #8b45dc}
+body[data-cc-theme="white-mode"] .profile-tabs button[data-count]::after{background:#f1f4f8;border-color:rgba(25,35,55,.09);color:#677489}
+body[data-cc-theme="white-mode"] .profile-tabs button.active[data-count]::after{background:rgba(139,69,220,.09);border-color:rgba(139,69,220,.16);color:#7832c6}
 body[data-cc-theme="white-mode"] .post-card,body[data-cc-theme="white-mode"] .achievement-card,body[data-cc-theme="white-mode"] .interest,body[data-cc-theme="white-mode"] .mini-achievement{background:#fff;border-color:rgba(25,35,55,.11)}
 body[data-cc-theme="white-mode"] .post-copy p{color:#263449}
 body[data-cc-theme="white-mode"] .post-copy time,body[data-cc-theme="white-mode"] .achievement-card p,body[data-cc-theme="white-mode"] .mini-achievement span{color:#748094}
 body[data-cc-theme="white-mode"] .empty{border-color:rgba(25,35,55,.14);color:#788497;background:#fafbfd}
-body[data-cc-theme="white-mode"] .gallery-item,body[data-cc-theme="white-mode"] .gallery-highlights a{background:#eef2f7;border-color:rgba(25,35,55,.1)}
+body[data-cc-theme="white-mode"] .gallery-item,body[data-cc-theme="white-mode"] .gallery-highlight-button{background:#eef2f7;border-color:rgba(25,35,55,.1)}
 body[data-cc-theme="white-mode"] .side-card dl div{border-top-color:rgba(25,35,55,.08)}
 body[data-cc-theme="white-mode"] .side-card dt{color:#7b8798}
 body[data-cc-theme="white-mode"] .side-card dd{color:#28364a}
@@ -32,3 +34,18 @@ body[data-cc-theme="white-mode"] .mobile-nav{background:rgba(255,255,255,.96);bo
 body[data-cc-theme="white-mode"] .mobile-nav a{color:#5b687b}
 body[data-cc-theme="white-mode"] .player-about-editorial,body[data-cc-theme="white-mode"] .player-info-strip,body[data-cc-theme="white-mode"] .player-about-bio{background:#fff!important;border-color:rgba(25,35,55,.11)!important;color:#27364b!important}
 body[data-cc-theme="white-mode"] .player-info-strip span,body[data-cc-theme="white-mode"] .player-about-editorial p{color:#5e6b7e!important}
+body[data-cc-theme="white-mode"] .about-story,body[data-cc-theme="white-mode"] .about-facts,body[data-cc-theme="white-mode"] .profile-extra-strip div{background:#fff;border-color:rgba(25,35,55,.1)}
+body[data-cc-theme="white-mode"] .about-story p,body[data-cc-theme="white-mode"] .profile-extra-strip b,body[data-cc-theme="white-mode"] .about-fact b{color:#2f3d51}
+body[data-cc-theme="white-mode"] .about-fact{border-top-color:rgba(25,35,55,.08)}
+body[data-cc-theme="white-mode"] .about-fact span,body[data-cc-theme="white-mode"] .profile-extra-strip span{color:#748094}
+body[data-cc-theme="white-mode"] .about-socials a{background:#f7f9fc;border-color:rgba(25,35,55,.11);color:#536075}
+body[data-cc-theme="white-mode"] .posts-more{background:rgba(139,69,220,.06);border-color:rgba(139,69,220,.2);color:#7430c0}
+body[data-cc-theme="white-mode"] .posts-more:hover{background:rgba(139,69,220,.1);border-color:rgba(139,69,220,.3)}
+body[data-cc-theme="white-mode"] .profile-skeleton{background:#f3f6fa;border-color:rgba(25,35,55,.07)}
+body[data-cc-theme="white-mode"] .profile-skeleton::after{background:linear-gradient(90deg,transparent,rgba(255,255,255,.85),transparent)}
+body[data-cc-theme="white-mode"] .profile-lightbox{background:#fff;color:#1e293b;border-color:rgba(25,35,55,.14);box-shadow:0 30px 90px rgba(35,48,70,.3)}
+body[data-cc-theme="white-mode"] .lightbox-stage{background:#edf1f6}
+body[data-cc-theme="white-mode"] .lightbox-footer{border-top-color:rgba(25,35,55,.1)}
+body[data-cc-theme="white-mode"] .lightbox-footer p{color:#5c687b}
+body[data-cc-theme="white-mode"] .lightbox-footer a{background:rgba(139,69,220,.09);color:#7131bb}
+body[data-cc-theme="white-mode"] .lightbox-close{background:rgba(255,255,255,.9);border-color:rgba(25,35,55,.14);color:#263449}
