@@ -8,20 +8,20 @@
       const link=document.createElement('link');
       link.id='participantEventCardsCss';
       link.rel='stylesheet';
-      link.href='./participant-event-cards-v1.css?v=20260902-1';
+      link.href='./participant-event-cards-v1.css?v=20260902-3';
       document.head.appendChild(link);
     }
     if(!document.getElementById('participantEventCosplayEditCss')){
       const link=document.createElement('link');
       link.id='participantEventCosplayEditCss';
       link.rel='stylesheet';
-      link.href='./participant-event-cosplay-edit-v1.css?v=20260902-1';
+      link.href='./participant-event-cosplay-edit-v1.css?v=20260902-2';
       document.head.appendChild(link);
     }
     if(!document.getElementById('participantEventCardsJs')){
       const script=document.createElement('script');
       script.id='participantEventCardsJs';
-      script.src='./participant-event-cards-v1.js?v=20260902-2';
+      script.src='./participant-event-cards-v1.js?v=20260902-3';
       script.defer=true;
       document.body.appendChild(script);
     }
