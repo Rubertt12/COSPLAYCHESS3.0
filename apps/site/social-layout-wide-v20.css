@@ -1,0 +1,177 @@
+/* CosplayChess Social Layout v20 — menos centralizado, mais rede social */
+
+/* REDE SOCIAL — desktop amplo */
+@media (min-width:1181px){
+  body.community-page.cc-v4 .cc-app-shell{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    grid-template-columns:248px minmax(0,1fr) 352px!important;
+  }
+  body.community-page.cc-v4 .cc-center{
+    width:100%!important;
+    min-width:0!important;
+    padding:0!important;
+  }
+  body.community-page.cc-v4 .cc-center-head{
+    padding-left:24px!important;
+    padding-right:24px!important;
+  }
+  body.community-page.cc-v4 .cc-global-search{
+    width:min(880px,78%)!important;
+    max-width:none!important;
+    margin:0!important;
+  }
+  body.community-page.cc-v4 .community-main{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:20px 24px 56px!important;
+  }
+  body.community-page.cc-v4 [data-community-panel="feed"]{
+    width:min(980px,100%)!important;
+    max-width:none!important;
+    margin:0!important;
+  }
+  body.community-page.cc-v4 [data-community-panel]:not([data-community-panel="feed"]){
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+  }
+  body.community-page.cc-v4 .community-subsection,
+  body.community-page.cc-v4 .cc9-panel,
+  body.community-page.cc-v4 .cc9-card,
+  body.community-page.cc-v4 .cc9-messages,
+  body.community-page.cc-v4 .cc12-panel,
+  body.community-page.cc-v4 .cc12-chat{
+    width:100%!important;
+    max-width:none!important;
+  }
+  body.community-page.cc-v4 .community-people-grid,
+  body.community-page.cc-v4 .cc9-explore-grid{
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr))!important;
+    justify-content:stretch!important;
+  }
+  body.community-page.cc-v4 .community-group-grid{
+    grid-template-columns:repeat(auto-fit,minmax(290px,1fr))!important;
+    justify-content:stretch!important;
+  }
+}
+
+/* Telas médias: mantém menu, mas libera o conteúdo */
+@media (min-width:981px) and (max-width:1180px){
+  body.community-page.cc-v4 .cc-app-shell{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    grid-template-columns:238px minmax(0,1fr)!important;
+  }
+  body.community-page.cc-v4 .cc-center-head{
+    padding-left:20px!important;
+    padding-right:20px!important;
+  }
+  body.community-page.cc-v4 .cc-global-search{
+    width:min(820px,92%)!important;
+    margin:0!important;
+  }
+  body.community-page.cc-v4 .community-main{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:18px 20px 48px!important;
+  }
+  body.community-page.cc-v4 [data-community-panel="feed"]{
+    width:min(940px,100%)!important;
+    margin:0!important;
+  }
+  body.community-page.cc-v4 [data-community-panel]:not([data-community-panel="feed"]){
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+  }
+}
+
+/* Monitores grandes: usa melhor o espaço sem esticar demais o feed */
+@media (min-width:1600px){
+  body.community-page.cc-v4 .cc-app-shell{
+    grid-template-columns:258px minmax(0,1fr) 370px!important;
+  }
+  body.community-page.cc-v4 .community-main{
+    padding-left:30px!important;
+    padding-right:30px!important;
+  }
+  body.community-page.cc-v4 [data-community-panel="feed"]{
+    width:min(1040px,100%)!important;
+  }
+  body.community-page.cc-v4 .cc-global-search{
+    width:min(940px,72%)!important;
+  }
+}
+
+/* Mantém alinhamento natural dos cabeçalhos e ferramentas */
+@media (min-width:981px){
+  body.community-page.cc-v4 .community-subhead,
+  body.community-page.cc-v4 .cc9-panel-head{
+    width:100%!important;
+    text-align:left!important;
+  }
+  body.community-page.cc-v4 .cc9-panel-head>div,
+  body.community-page.cc-v4 .community-subhead>div{
+    text-align:left!important;
+  }
+  body.community-page.cc-v4 .community-search{
+    width:min(760px,100%)!important;
+    margin-left:0!important;
+    margin-right:auto!important;
+  }
+}
+
+/* PÁGINA DE COMUNIDADE — ocupa a tela como fórum/rede social */
+@media (min-width:1181px){
+  body.community-group-page .community-group-shell{
+    width:calc(100% - 32px)!important;
+    max-width:none!important;
+    margin:18px 16px 40px!important;
+    padding:0!important;
+    grid-template-columns:310px minmax(0,1fr) 300px!important;
+    gap:18px!important;
+  }
+  body.community-group-page .group-main{
+    min-width:0!important;
+    width:100%!important;
+  }
+  body.community-group-page .group-main-card{
+    width:100%!important;
+    max-width:none!important;
+  }
+  body.community-group-page .group-panel-head{
+    text-align:left!important;
+  }
+  body.community-group-page .group-form,
+  body.community-group-page .topic-list,
+  body.community-group-page .poll-list{
+    width:100%!important;
+    max-width:none!important;
+  }
+}
+
+@media (min-width:981px) and (max-width:1180px){
+  body.community-group-page .community-group-shell{
+    width:calc(100% - 24px)!important;
+    max-width:none!important;
+    margin:12px!important;
+    padding:0!important;
+    grid-template-columns:250px minmax(0,1fr)!important;
+    gap:14px!important;
+  }
+  body.community-group-page .group-right{
+    grid-column:1/-1!important;
+  }
+}
+
+@media (min-width:1500px){
+  body.community-group-page .community-group-shell{
+    grid-template-columns:330px minmax(0,1fr) 320px!important;
+    gap:20px!important;
+  }
+}
