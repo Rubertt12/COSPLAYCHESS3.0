@@ -1,0 +1,178 @@
+/* CosplayChess — perfil público mobile v3 */
+@media (max-width:600px){
+  body{padding-bottom:calc(66px + env(safe-area-inset-bottom))!important;background:#080b12!important}
+
+  .sitebar{height:56px!important;padding:0 14px!important}
+  .brand{gap:9px!important}
+  .brand img{width:30px!important;height:30px!important}
+  .brand b,.brand em{font-size:10px!important;letter-spacing:1.15px!important}
+
+  .page-shell{width:100%!important;max-width:100%!important;padding:0 0 14px!important}
+
+  /* Hero compacto, com cara de perfil social. */
+  .profile-hero{
+    min-height:300px!important;
+    height:300px!important;
+    border-radius:0!important;
+    border-left:0!important;
+    border-right:0!important;
+    box-shadow:none!important;
+    overflow:hidden!important;
+  }
+  .profile-hero .cover{
+    top:0!important;
+    right:0!important;
+    bottom:auto!important;
+    left:0!important;
+    height:178px!important;
+  }
+  .profile-hero .cover img,
+  .profile-hero .cover-fallback{width:100%!important;height:100%!important;object-fit:cover!important}
+  .profile-hero .hero-overlay{
+    background:linear-gradient(180deg,rgba(5,7,12,.04) 0%,rgba(5,7,12,.18) 42%,rgba(7,10,16,.84) 66%,#090d15 100%)!important;
+  }
+  .profile-hero .hero-content{
+    left:14px!important;
+    right:14px!important;
+    bottom:12px!important;
+    display:grid!important;
+    grid-template-columns:78px minmax(0,1fr)!important;
+    grid-template-rows:auto auto!important;
+    align-items:center!important;
+    gap:9px 12px!important;
+  }
+  .profile-hero .avatar{
+    width:78px!important;
+    height:78px!important;
+    border-width:4px!important;
+    box-shadow:0 0 0 3px var(--purple),0 8px 24px rgba(0,0,0,.42)!important;
+  }
+  .profile-hero .identity{min-width:0!important;padding:0!important}
+  .profile-hero .eyebrow{display:none!important}
+  .profile-hero .name-row{gap:6px!important;flex-wrap:nowrap!important;min-width:0!important}
+  .profile-hero .name-row h1{
+    min-width:0!important;
+    max-width:100%!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+    font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;
+    font-size:27px!important;
+    line-height:1.08!important;
+    font-weight:850!important;
+    letter-spacing:-.45px!important;
+  }
+  .profile-hero .verified{flex:0 0 auto!important;font-size:7px!important;padding:4px 6px!important}
+  .profile-hero .character{margin-top:4px!important;font-size:12px!important;line-height:1.2!important}
+  .profile-hero .nick{margin-top:3px!important;font-size:10.5px!important;line-height:1.2!important;color:#bac3d0!important}
+  .profile-hero .hero-actions{
+    grid-column:1/-1!important;
+    width:100%!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    gap:8px!important;
+    padding:0!important;
+    margin:2px 0 0!important;
+  }
+  .profile-hero .hero-actions .btn{
+    width:100%!important;
+    min-width:0!important;
+    min-height:40px!important;
+    height:40px!important;
+    padding:0 10px!important;
+    border-radius:12px!important;
+    font-size:11px!important;
+    white-space:nowrap!important;
+  }
+
+  /* Resumo mais enxuto e sem chips vazios. */
+  .profile-summary{
+    display:block!important;
+    padding:14px 14px 12px!important;
+    border-left:0!important;
+    border-right:0!important;
+    border-radius:0!important;
+  }
+  .profile-summary .bio{font-size:12.5px!important;line-height:1.52!important;color:#d5dae3!important}
+  .meta-row{margin-top:10px!important;gap:6px!important;min-width:0!important}
+  .meta-row>span:empty,
+  .meta-row>span[hidden]{display:none!important}
+  .social-links{
+    width:100%!important;
+    max-width:100%!important;
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    gap:6px!important;
+    overflow-x:auto!important;
+    overscroll-behavior-x:contain!important;
+    scrollbar-width:none!important;
+    padding-bottom:2px!important;
+  }
+  .social-links::-webkit-scrollbar{display:none!important}
+  .social-links a{
+    flex:0 0 auto!important;
+    min-height:32px!important;
+    padding:0 10px!important;
+    border-radius:999px!important;
+    font-size:9.5px!important;
+  }
+
+  .profile-extra-strip{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;margin-top:11px!important}
+  .profile-extra-strip div{min-height:58px!important;padding:9px 10px!important;border-radius:12px!important}
+  .profile-extra-strip span{font-size:7px!important;margin-bottom:4px!important}
+  .profile-extra-strip b{font-size:10px!important;line-height:1.3!important}
+
+  /* Métricas deixam de ocupar metade da tela. */
+  .stats{
+    width:100%!important;
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:5px!important;
+    margin-top:11px!important;
+  }
+  .stats div{
+    min-width:0!important;
+    min-height:58px!important;
+    display:grid!important;
+    place-content:center!important;
+    padding:7px 2px!important;
+    border-radius:12px!important;
+  }
+  .stats b{font-size:18px!important;line-height:1!important}
+  .stats span{margin-top:5px!important;font-size:6.5px!important;letter-spacing:.35px!important}
+
+  .profile-tabs{
+    top:56px!important;
+    margin:8px 8px!important;
+    max-width:calc(100% - 16px)!important;
+    padding:4px!important;
+    border-radius:12px!important;
+  }
+  .profile-tabs button{min-width:92px!important;height:36px!important;font-size:10px!important}
+
+  .content-grid{padding:0 8px!important}
+  .tab-panel{padding:13px 11px!important}
+  .section-heading h2{font-size:21px!important;margin:4px 0 14px!important}
+
+  .profile-participation-card{margin:8px 8px 10px!important;padding:12px!important;border-radius:14px!important}
+  .profile-participation-body{gap:8px!important}
+  .profile-participation-event h3{font-size:15px!important}
+  .profile-participation-event p{font-size:10.5px!important}
+  .profile-participation-character{padding:9px 10px!important}
+
+  .mobile-nav{
+    height:calc(60px + env(safe-area-inset-bottom))!important;
+    background:rgba(7,10,15,.985)!important;
+    box-shadow:0 -10px 30px rgba(0,0,0,.22)!important;
+  }
+  .mobile-nav a{gap:3px!important;font-size:15px!important}
+  .mobile-nav span{font-size:8px!important}
+}
+
+@media (max-width:380px){
+  .profile-hero .name-row h1{font-size:24px!important}
+  .profile-hero .hero-content{grid-template-columns:72px minmax(0,1fr)!important;gap:8px 10px!important}
+  .profile-hero .avatar{width:72px!important;height:72px!important}
+  .profile-hero .hero-actions .btn{font-size:10px!important}
+  .stats span{font-size:6px!important}
+}
