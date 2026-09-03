@@ -3,6 +3,14 @@
   if (window.__CC_COMMUNITY_OWNER_ACTIONS_V17__) return;
   window.__CC_COMMUNITY_OWNER_ACTIONS_V17__ = true;
 
+  if (!document.getElementById('ccSocialLayoutWideV20Css')) {
+    const layout = document.createElement('link');
+    layout.id = 'ccSocialLayoutWideV20Css';
+    layout.rel = 'stylesheet';
+    layout.href = './social-layout-wide-v20.css?v=20260903-1';
+    document.head.appendChild(layout);
+  }
+
   if (!document.getElementById('ccCommunityOwnerGuardV18Js')) {
     const guard = document.createElement('script');
     guard.id = 'ccCommunityOwnerGuardV18Js';
