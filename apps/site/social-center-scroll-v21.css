@@ -1,4 +1,4 @@
-/* CosplayChess Social Layout v21 — somente a coluna central rola no desktop */
+/* CosplayChess Social Layout v21 — centro rola; laterais permanecem fixas */
 @media (min-width:821px){
   html,
   body.community-page.cc-v4{
@@ -25,6 +25,11 @@
     height:100dvh!important;
     min-height:0!important;
     max-height:100dvh!important;
+    box-sizing:border-box!important;
+  }
+
+  /* A esquerda continua totalmente fixa, sem scroll próprio. */
+  body.community-page.cc-v4 .cc-left{
     overflow:hidden!important;
     overscroll-behavior:none!important;
   }
@@ -39,6 +44,7 @@
     display:none!important;
   }
 
+  /* O feed é o scroll principal da interface. */
   body.community-page.cc-v4 .cc-center{
     height:100dvh!important;
     min-height:0!important;
@@ -48,6 +54,35 @@
     overscroll-behavior-y:contain!important;
     scrollbar-gutter:stable;
     -webkit-overflow-scrolling:touch;
+  }
+
+  /* A direita não acompanha o feed, mas pode rolar por dentro se seus cards
+     ultrapassarem a altura do monitor. Assim nenhum bloco fica cortado. */
+  body.community-page.cc-v4 .cc-right{
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior-y:contain!important;
+    scrollbar-gutter:stable;
+    scrollbar-width:thin;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:max(18px,env(safe-area-inset-bottom))!important;
+  }
+
+  body.community-page.cc-v4 .cc-right::-webkit-scrollbar{
+    width:7px;
+  }
+
+  body.community-page.cc-v4 .cc-right::-webkit-scrollbar-track{
+    background:transparent;
+  }
+
+  body.community-page.cc-v4 .cc-right::-webkit-scrollbar-thumb{
+    background:rgba(145,82,210,.36);
+    border-radius:999px;
+  }
+
+  body.community-page.cc-v4 .cc-right::-webkit-scrollbar-thumb:hover{
+    background:rgba(177,106,255,.58);
   }
 
   body.community-page.cc-v4 .community-main{
