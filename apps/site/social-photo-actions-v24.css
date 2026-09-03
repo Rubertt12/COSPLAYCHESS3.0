@@ -1,0 +1,82 @@
+/* CosplayChess Photo Actions v24 — somente a faixa Curtir / Comentar / Compartilhar */
+.photo-lightbox-side .cc-photo-actionbar{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  align-items:stretch!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:58px!important;
+  margin:0!important;
+  padding:0!important;
+  gap:0!important;
+  border-top:1px solid rgba(245,185,66,.16)!important;
+  border-bottom:1px solid rgba(245,185,66,.16)!important;
+  background:rgba(245,185,66,.045)!important;
+}
+.photo-lightbox-side .cc-photo-actionbar>.cc-photo-actioncell{
+  min-width:0!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  display:flex!important;
+  align-items:stretch!important;
+  justify-content:stretch!important;
+}
+.photo-lightbox-side .cc-photo-actionbar>.cc-photo-actioncell+.cc-photo-actioncell{
+  border-left:1px solid rgba(245,185,66,.13)!important;
+}
+.photo-lightbox-side .cc-photo-actionbar .cc-photo-action{
+  min-width:0!important;
+  width:100%!important;
+  min-height:58px!important;
+  margin:0!important;
+  padding:0 7px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  display:flex!important;
+  flex-flow:row nowrap!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  color:#cfc5ad!important;
+  font:inherit!important;
+  font-size:10px!important;
+  font-weight:700!important;
+  line-height:1!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  word-break:keep-all!important;
+  overflow-wrap:normal!important;
+  cursor:pointer!important;
+}
+.photo-lightbox-side .cc-photo-actionbar .cc-photo-action:hover{
+  background:rgba(124,58,237,.12)!important;
+  color:#fff!important;
+}
+.photo-lightbox-side .cc-photo-actionbar .cc-photo-action:focus-visible{
+  position:relative!important;
+  z-index:2!important;
+  outline:2px solid rgba(155,92,246,.78)!important;
+  outline-offset:-2px!important;
+}
+.photo-lightbox-side .cc-photo-actionbar .cc-photo-action *,
+.photo-lightbox-side .cc-photo-actionbar .cc-photo-actioncell *{
+  min-width:0;
+  white-space:nowrap!important;
+  word-break:keep-all!important;
+  overflow-wrap:normal!important;
+}
+.photo-lightbox-side .cc-photo-actionbar .cc-photo-action>span,
+.photo-lightbox-side .cc-photo-actionbar .cc-photo-action>b,
+.photo-lightbox-side .cc-photo-actionbar .cc-photo-action>i{
+  width:auto!important;
+  max-width:none!important;
+  flex:0 0 auto!important;
+  margin:0!important;
+}
+@media(max-width:520px){
+  .photo-lightbox-side .cc-photo-actionbar,
+  .photo-lightbox-side .cc-photo-actionbar .cc-photo-action{min-height:52px!important}
+  .photo-lightbox-side .cc-photo-actionbar .cc-photo-action{gap:5px!important;padding:0 5px!important;font-size:9px!important}
+}
