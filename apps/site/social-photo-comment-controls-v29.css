@@ -1,0 +1,133 @@
+/* CosplayChess — controles de editar/excluir comentários no lightbox */
+.photo-lightbox .photo-lightbox-comment{position:relative!important}
+
+.photo-lightbox .cc-photo-comment-controls{
+  position:absolute;
+  top:6px;
+  right:6px;
+  z-index:6;
+}
+
+.photo-lightbox .cc-photo-comment-menu-toggle{
+  display:grid;
+  place-items:center;
+  width:28px;
+  height:28px;
+  padding:0;
+  border:0;
+  border-radius:999px;
+  background:transparent;
+  color:#8f97a3;
+  font:800 14px/1 Inter,system-ui,sans-serif;
+  letter-spacing:1px;
+  cursor:pointer;
+  opacity:.52;
+  transition:background .16s ease,color .16s ease,opacity .16s ease;
+}
+
+.photo-lightbox .photo-lightbox-comment:hover .cc-photo-comment-menu-toggle,
+.photo-lightbox .cc-photo-comment-controls:focus-within .cc-photo-comment-menu-toggle{
+  opacity:1;
+  color:#f4f5f7;
+  background:rgba(255,255,255,.07);
+}
+
+.photo-lightbox .cc-photo-comment-menu-pop{
+  position:absolute;
+  top:32px;
+  right:0;
+  z-index:10;
+  min-width:132px;
+  padding:5px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:10px;
+  background:#171a21;
+  box-shadow:0 14px 38px rgba(0,0,0,.42);
+}
+
+.photo-lightbox .cc-photo-comment-menu-pop[hidden]{display:none!important}
+
+.photo-lightbox .cc-photo-comment-menu-pop button{
+  display:flex;
+  align-items:center;
+  width:100%;
+  min-height:34px;
+  padding:0 10px;
+  border:0;
+  border-radius:7px;
+  background:transparent;
+  color:#e7e9ed;
+  font:750 10px/1 Inter,system-ui,sans-serif;
+  text-align:left;
+  cursor:pointer;
+}
+
+.photo-lightbox .cc-photo-comment-menu-pop button:hover{background:rgba(124,58,237,.12)}
+.photo-lightbox .cc-photo-comment-menu-pop button.danger{color:#ff7c91}
+.photo-lightbox .cc-photo-comment-menu-pop button.danger:hover{background:rgba(244,63,94,.11)}
+
+.photo-lightbox .cc-photo-comment-editor{
+  margin-top:7px;
+  padding:8px;
+  border:1px solid rgba(155,92,246,.24);
+  border-radius:10px;
+  background:#151820;
+}
+
+.photo-lightbox .cc-photo-comment-editor textarea{
+  display:block;
+  width:100%;
+  min-height:66px;
+  max-height:150px;
+  padding:8px 9px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:8px;
+  outline:0;
+  resize:vertical;
+  background:#0e1117;
+  color:#eef0f4;
+  font:500 11px/1.45 Inter,system-ui,sans-serif;
+}
+
+.photo-lightbox .cc-photo-comment-editor textarea:focus{
+  border-color:rgba(155,92,246,.55);
+  box-shadow:0 0 0 3px rgba(124,58,237,.08);
+}
+
+.photo-lightbox .cc-photo-comment-editor-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:6px;
+  margin-top:7px;
+}
+
+.photo-lightbox .cc-photo-comment-editor-status{
+  margin-right:auto;
+  color:#929aa6;
+  font:600 8px/1.25 Inter,system-ui,sans-serif;
+}
+
+.photo-lightbox .cc-photo-comment-editor-actions button{
+  min-height:30px;
+  padding:0 10px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:7px;
+  background:#11151c;
+  color:#b8bec8;
+  font:750 9px/1 Inter,system-ui,sans-serif;
+  cursor:pointer;
+}
+
+.photo-lightbox .cc-photo-comment-editor-actions button:hover{color:#fff;background:#1a1f29}
+.photo-lightbox .cc-photo-comment-editor-actions button.save{
+  border-color:rgba(155,92,246,.36);
+  background:rgba(124,58,237,.18);
+  color:#c99cff;
+}
+.photo-lightbox .cc-photo-comment-editor-actions button:disabled{opacity:.5;cursor:wait}
+
+@media (max-width:900px){
+  .photo-lightbox .cc-photo-comment-menu-toggle{opacity:.9}
+  .photo-lightbox .cc-photo-comment-menu-pop{min-width:145px}
+}
