@@ -30,6 +30,7 @@
     const script=document.createElement('script'); script.id=id; script.src=src; script.defer=true; document.body.appendChild(script);
   };
 
+  loadCss('./social-layout-wide-v20.css?v=20260903-1','ccSocialLayoutWideV20Css');
   loadScript('./same-tab-navigation-v1.js?v=20260902-1','ccSameTabNavigationV1Js');
   loadScript('./social-shell-state-v2.js?v=20260902-1','ccSocialShellStateV2Js');
   loadScript('./social-profile-avatar-position-v1.js?v=20260902-1','ccSocialAvatarPositionV1Js');
