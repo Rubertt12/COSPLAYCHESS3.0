@@ -3,6 +3,26 @@
   if (window.__CC_SOCIAL_PAGE_SHELL_V1__) return;
   window.__CC_SOCIAL_PAGE_SHELL_V1__ = true;
 
+  const ensureCss = (href, id) => {
+    if (document.getElementById(id)) return;
+    const link = document.createElement('link');
+    link.id = id;
+    link.rel = 'stylesheet';
+    link.href = href;
+    document.head.appendChild(link);
+  };
+  const ensureScript = (src, id) => {
+    if (document.getElementById(id)) return;
+    const script = document.createElement('script');
+    script.id = id;
+    script.src = src;
+    script.defer = true;
+    document.body.appendChild(script);
+  };
+
+  ensureCss('./social-cosplay-network-v19.css?v=20260903-2','ccSocialCosplayNetworkV19Css');
+  ensureScript('./social-cosplay-cover-guard-v19.js?v=20260903-2','ccSocialCosplayCoverGuardV19Js');
+
   const installPrimaryProfileGuard = () => {
     const client = window.getCosplayChessParticipantDb ? window.getCosplayChessParticipantDb() : window.COSPLAYCHESS_PARTICIPANT_DB;
     if (!client || client.__ccSocialPrimaryProfileGuard) return;
@@ -74,7 +94,7 @@
   ];
 
   const panelMarkup = {
-    discover:`<section class="community-view active" data-community-panel="discover"><label class="community-search"><span>⌕</span><input id="communityPeopleSearch" type="search" placeholder="Buscar por nome, nick ou personagem..."></label><div id="communityPeople" class="community-people-grid"><div class="community-empty">Carregando participantes...</div></div></section>`,
+    discover:`<section class="community-view active" data-community-panel="discover"><label class="community-search"><span>⌕</span><input id="communityPeopleSearch" type="search" placeholder="Buscar cosplayer, nick, personagem ou fandom..."></label><div id="communityPeople" class="community-people-grid"><div class="community-empty">Carregando participantes...</div></div></section>`,
     friends:`<section class="community-view active" data-community-panel="friends"><section class="community-subsection" id="communityRequestsSection" hidden><div class="community-subhead"><h3>Solicitações</h3><span id="communityRequestsCount">0</span></div><div id="communityRequests" class="community-people-grid"></div></section><section class="community-subsection"><div class="community-subhead"><h3>Amigos</h3><span id="communityFriendsCount">0</span></div><div id="communityFriends" class="community-people-grid"><div class="community-empty">Carregando...</div></div></section></section>`,
     communities:`<section class="community-view active" data-community-panel="communities"><div class="community-subhead"><h3>Comunidades</h3><button class="btn gold" id="communityCreateGroupToggle" type="button">＋ Criar comunidade</button></div><div id="communityGroups" class="community-group-grid"><div class="community-empty">Carregando comunidades...</div></div></section>`,
     messages:`<section class="community-view active" data-community-panel="messages"><div class="cc9-empty">Carregando mensagens...</div></section>`,
@@ -101,10 +121,10 @@
           <button class="cc-nav-link${view==='social-settings'&&settingsTab!=='appearance'?' active':''}" type="button" data-community-view="social-settings" data-settings-open="privacy"><span>⚙</span>Configurações</button>
           <section class="community-me-card cc-left-user"><div class="cc-left-user-top"><div class="community-me-avatar" id="communityMyAvatar"><span>♜</span></div><div class="community-me-copy"><span class="kicker">MINHA REDE</span><h1 id="communityMyName">Participante</h1><p id="communityMyCharacter">CosplayChess</p></div></div><div class="cc-level-row"><span>Nível social</span><b class="cc-level-pill" id="ccSocialLevel">1</b></div><div class="cc-xp"><i id="ccSocialXpBar" style="width:0%"></i></div><div class="cc-xp-copy" id="ccSocialXpCopy">0 pontos sociais</div><div class="cc-member-since">♜ Participante CosplayChess</div><div class="community-me-cover"></div><div class="community-me-stats"></div></section>
         </aside>
-        <section class="cc-center"><div class="cc-center-head"><label class="cc-global-search"><span>⌕</span><input id="ccGlobalSearch" type="search" autocomplete="off" placeholder="Buscar pessoas, comunidades, eventos, hashtags..."><kbd>Ctrl /</kbd></label></div><section class="community-main">${panelMarkup[view] || panelMarkup.notifications}</section></section>
+        <section class="cc-center"><div class="cc-center-head"><label class="cc-global-search"><span>⌕</span><input id="ccGlobalSearch" type="search" autocomplete="off" placeholder="Buscar cosplayers, personagens, comunidades, eventos..."><kbd>Ctrl /</kbd></label></div><section class="community-main">${panelMarkup[view] || panelMarkup.notifications}</section></section>
         <aside class="cc-right community-orkut-rail">
           <div class="cc-right-head"><a class="cc-icon-btn" id="ccCreatePost" href="./comunidade.html#communityPostBody" aria-label="Criar publicação">＋</a><button class="cc-icon-btn subtle" type="button" data-community-view="notifications" aria-label="Notificações">♧<b id="ccNotificationBadge" hidden>0</b></button><a class="cc-account" href="./participante.html"><span class="cc-mirror-avatar"><span>♜</span></span><b data-cc-profile-name>Participante</b><span>⌄</span></a></div>
-          <section class="cc-card cc-profile-card"><div class="cc-profile-cover"></div><div class="cc-profile-body"><div class="cc-profile-row"><div class="cc-profile-identity"><div class="cc-mirror-avatar"><span>♜</span></div><div class="cc-profile-name"><b data-cc-profile-name>Participante</b><span>Cosplay: <span data-cc-profile-character>CosplayChess</span></span></div></div><button class="cc-profile-gear" type="button" data-community-view="social-settings" data-settings-open="privacy" aria-label="Configurações">⚙</button></div><p class="cc-profile-tagline">Xadrez • Cosplay • Performance</p><div class="cc-profile-stats"><div><b id="communityPostCount" data-cc-count="posts">0</b><span>Publicações</span></div><div><b id="communityFriendCount" data-cc-count="friends">0</b><span>Seguidores</span></div><div><b id="communityPhotoCount" data-cc-count="photos">0</b><span>Seguindo</span></div></div><a class="community-profile-link" id="communityMyProfileLink" href="#">Ver perfil cosplay</a></div></section>
+          <section class="cc-card cc-profile-card"><div class="cc-profile-cover"></div><div class="cc-profile-body"><div class="cc-profile-row"><div class="cc-profile-identity"><div class="cc-mirror-avatar"><span>♜</span></div><div class="cc-profile-name"><b data-cc-profile-name>Participante</b><span>Cosplay: <span data-cc-profile-character>CosplayChess</span></span></div></div><button class="cc-profile-gear" type="button" data-community-view="social-settings" data-settings-open="privacy" aria-label="Configurações">⚙</button></div><p class="cc-profile-tagline">Cosplay • Fandoms • Performance</p><div class="cc-profile-stats"><div><b id="communityPostCount" data-cc-count="posts">0</b><span>Publicações</span></div><div><b id="communityFriendCount" data-cc-count="friends">0</b><span>Seguidores</span></div><div><b id="communityPhotoCount" data-cc-count="photos">0</b><span>Seguindo</span></div></div><a class="community-profile-link" id="communityMyProfileLink" href="#">Ver perfil cosplay</a></div></section>
           <section class="cc-card"><div class="cc-card-head"><b>STORIES</b><button type="button" id="ccStoriesAll">Ver todos</button></div><div class="cc-stories" id="ccStories"><div class="cc-story"><div class="cc-story-avatar cc-mirror-avatar"><span>♜</span></div><span>Você</span></div></div></section>
           <section class="cc-card"><div class="cc-card-head"><b>COMUNIDADES EM DESTAQUE</b><button type="button" data-community-view="communities">Ver todas</button></div><div class="cc-highlight-list" id="ccHighlightedGroups"><div class="community-empty">Carregando comunidades...</div></div></section>
           <section class="cc-card" id="ccAchievementsCard"><div class="cc-card-head"><b>CONQUISTAS SOCIAIS</b><a href="./passaporte.html">Ver todas</a></div><div class="cc-achievements"><div class="community-empty">Carregando conquistas...</div></div></section>
@@ -113,8 +133,6 @@
       <div class="community-auth-block" id="communityAuthBlock" hidden><div><span>♜</span><h1>Entre na Área do Participante</h1><p>A rede social é exclusiva para participantes com acesso liberado.</p><a class="btn gold" href="./participante.html">Entrar</a></div></div>`);
   }
 
-  // A identidade social principal precisa existir em TODAS as páginas multipágina.
-  // Carregamos o restaurador diretamente aqui, em vez de depender de módulos secundários.
   if (!document.getElementById('ccSocialShellStateV2Js')) {
     const identityScript = document.createElement('script');
     identityScript.id = 'ccSocialShellStateV2Js';
