@@ -31,8 +31,6 @@
   };
 
   loadCss('./social-layout-wide-v20.css?v=20260903-1','ccSocialLayoutWideV20Css');
-  loadCss('./social-photo-comment-controls-v29.css?v=20260903-1','ccSocialPhotoCommentControlsV29Css');
-  loadScript('./social-photo-comment-controls-v29.js?v=20260903-1','ccSocialPhotoCommentControlsV29Js');
   loadScript('./same-tab-navigation-v1.js?v=20260902-1','ccSameTabNavigationV1Js');
   loadScript('./social-shell-state-v2.js?v=20260902-1','ccSocialShellStateV2Js');
   loadScript('./social-profile-avatar-position-v1.js?v=20260902-1','ccSocialAvatarPositionV1Js');
