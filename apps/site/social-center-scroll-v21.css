@@ -1,0 +1,56 @@
+/* CosplayChess Social Layout v21 — somente a coluna central rola no desktop */
+@media (min-width:821px){
+  html,
+  body.community-page.cc-v4{
+    height:100%!important;
+    min-height:100%!important;
+    overflow:hidden!important;
+    overscroll-behavior:none!important;
+  }
+
+  body.community-page.cc-v4{
+    height:100dvh!important;
+    max-height:100dvh!important;
+  }
+
+  body.community-page.cc-v4 .cc-app-shell{
+    height:100dvh!important;
+    min-height:100dvh!important;
+    max-height:100dvh!important;
+    overflow:hidden!important;
+  }
+
+  body.community-page.cc-v4 .cc-left,
+  body.community-page.cc-v4 .cc-right{
+    height:100dvh!important;
+    min-height:0!important;
+    max-height:100dvh!important;
+    overflow:hidden!important;
+    overscroll-behavior:none!important;
+  }
+
+  body.community-page.cc-v4 .community-nav{
+    overflow:visible!important;
+    overscroll-behavior:auto!important;
+    scrollbar-width:none!important;
+  }
+
+  body.community-page.cc-v4 .community-nav::-webkit-scrollbar{
+    display:none!important;
+  }
+
+  body.community-page.cc-v4 .cc-center{
+    height:100dvh!important;
+    min-height:0!important;
+    max-height:100dvh!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior-y:contain!important;
+    scrollbar-gutter:stable;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  body.community-page.cc-v4 .community-main{
+    min-height:calc(100dvh - 76px)!important;
+  }
+}
