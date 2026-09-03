@@ -25,7 +25,6 @@ body.participant-page .premium-card{min-width:0!important}
 .cc-participant-collapsible.cc-is-collapsed>.cc-participant-collapse-body{display:none!important}
 .cc-participant-collapsible.cc-is-collapsed>.cc-participant-section-head{border-bottom:0!important}
 .cc-participant-collapsible.cc-is-collapsed>.premium-section-title{color:#d7d1da}
-.cc-participant-collapsible.cc-is-collapsed:after{content:'Recolhido';position:absolute;right:48px;top:16px;color:#5f5965;font-size:6.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;pointer-events:none}
 
 /* Cabeçalho sintético para módulos que não tinham barra própria */
 .cc-participant-synthetic-head{padding:12px 46px 12px 15px;border-bottom:1px solid rgba(255,255,255,.055);background:linear-gradient(90deg,rgba(132,54,218,.045),transparent);color:#e8e2eb;font-size:9px;font-weight:900;letter-spacing:.02em}
@@ -56,7 +55,7 @@ body.participant-page .premium-bottom-actions{margin-top:0!important}
   body.participant-page{--cc-participant-gap:9px}
   body.participant-page .participant-shell{width:calc(100% - 12px)!important}
   .cc-participant-organizer{padding:10px;border-radius:12px}.cc-participant-organizer-copy small{display:none}.cc-participant-organizer-actions{width:100%;display:grid;grid-template-columns:repeat(3,1fr)}.cc-participant-organizer .cc-organizer-btn{padding:0 5px;font-size:6.8px}
-  .cc-participant-section-head{min-height:40px!important}.cc-participant-collapse-toggle{right:8px;width:25px;height:25px}.cc-participant-collapsible.cc-is-collapsed:after{display:none}
+  .cc-participant-section-head{min-height:40px!important}.cc-participant-collapse-toggle{right:8px;width:25px;height:25px}
   .cc-participant-section-head.premium-section-title{padding-right:40px!important}
 }
 
