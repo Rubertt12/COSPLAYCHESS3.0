@@ -73,6 +73,7 @@
 
   const displayName = (profile) => profile?.display_name || profile?.nick || 'Participante';
   const profileHref = (profile) => profile?.public_slug ? `./jogador.html?slug=${encodeURIComponent(profile.public_slug)}` : '#';
+  const commentTable = (context) => context?.kind === 'album-photo' ? 'cosplay_social_photo_comments' : 'cosplay_social_comments';
 
   const ensureStyle = () => {
     if (document.getElementById('cc-photo-modal-v30-css')) return;
@@ -86,45 +87,6 @@
   const avatarHtml = (profile, small = false) => {
     const src = safeUrl(profile?.character_photo_url);
     return `<span class="cc30-avatar${small ? ' small' : ''}">${src ? `<img src="${esc(src)}" alt="">` : '♜'}</span>`;
-  };
-
-  const ensure = () => {
-    if (root) return root;
-    ensureStyle();
-    root = document.createElement('div');
-    root.className = 'cc30-photo-modal';
-    root.setAttribute('role', 'dialog');
-    root.setAttribute('aria-modal', 'true');
-    root.setAttribute('aria-label', 'Visualização de foto');
-    root.setAttribute('aria-hidden', 'true');
-    root.innerHTML = `
-      <div class="cc30-photo-shell">
-        <section class="cc30-photo-stage">
-          <button class="cc30-photo-close" type="button" aria-label="Fechar">×</button>
-          <button class="cc30-photo-nav cc30-photo-prev" type="button" aria-label="Foto anterior">‹</button>
-          <img class="cc30-photo-image" alt="">
-          <button class="cc30-photo-nav cc30-photo-next" type="button" aria-label="Próxima foto">›</button>
-        </section>
-        <aside class="cc30-photo-side" aria-live="polite"></aside>
-      </div>`;
-    document.body.appendChild(root);
-    image = root.querySelector('.cc30-photo-image');
-    side = root.querySelector('.cc30-photo-side');
-
-    root.querySelector('.cc30-photo-close').addEventListener('click', close);
-    root.querySelector('.cc30-photo-prev').addEventListener('click', (event) => {
-      event.stopPropagation();
-      move(-1);
-    });
-    root.querySelector('.cc30-photo-next').addEventListener('click', (event) => {
-      event.stopPropagation();
-      move(1);
-    });
-    root.addEventListener('click', (event) => {
-      if (event.target === root) close();
-    });
-
-    return root;
   };
 
   const visible = (el) => {
@@ -243,8 +205,7 @@
 
   const loadComments = async (context) => {
     if (!db || !context?.id || !['album-photo','post-photo'].includes(context.kind)) return [];
-    const table = context.kind === 'album-photo' ? 'cosplay_social_photo_comments' : 'cosplay_social_comments';
-    let query = db.from(table)
+    let query = db.from(commentTable(context))
       .select('id,author_profile_id,body,created_at')
       .order('created_at', { ascending:true })
       .limit(150);
@@ -324,29 +285,9 @@
       if (menu !== except) menu.hidden = true;
     });
     root?.querySelectorAll('.cc30-comment-menu-toggle').forEach((button) => {
-      const ownMenu = button.parentElement?.querySelector('.cc30-comment-menu');
-      button.setAttribute('aria-expanded', ownMenu && !ownMenu.hidden ? 'true' : 'false');
+      const menu = button.parentElement?.querySelector('.cc30-comment-menu');
+      button.setAttribute('aria-expanded', menu && !menu.hidden ? 'true' : 'false');
     });
-  };
-
-  const shareContext = async (context) => {
-    const url = context.kind === 'post-photo' && context.id
-      ? `${location.origin}${location.pathname}?post=${encodeURIComponent(context.id)}`
-      : location.href;
-    const data = {
-      title:'CosplayChess',
-      text:context.caption || 'Confira esta foto no CosplayChess',
-      url
-    };
-    try {
-      if (navigator.share) {
-        await navigator.share(data);
-      } else if (navigator.clipboard) {
-        await navigator.clipboard.writeText(url);
-        setStatus('Link copiado.');
-        setTimeout(() => setStatus(''), 1800);
-      }
-    } catch {}
   };
 
   const renderGeneric = (context) => {
@@ -364,10 +305,7 @@
   const renderSide = async (context, renderToken, options = {}) => {
     if (!side || renderToken !== token) return;
     side.innerHTML = `
-      <header class="cc30-photo-author">
-        ${avatarHtml(null)}
-        <div class="cc30-author-copy"><a href="#">Carregando...</a><span>CosplayChess</span></div>
-      </header>
+      <header class="cc30-photo-author">${avatarHtml(null)}<div class="cc30-author-copy"><a href="#">Carregando...</a><span>CosplayChess</span></div></header>
       <div class="cc30-photo-thread"><div class="cc30-empty-comments"><span>Carregando publicação...</span></div></div>`;
 
     if (!['album-photo','post-photo'].includes(context.kind)) {
@@ -384,7 +322,6 @@
     const authorUrl = profileHref(author);
     const caption = context.caption || 'Foto do CosplayChess';
     const canLike = context.kind === 'post-photo' && !!me;
-    const actionClass = canLike ? '' : ' two';
 
     side.innerHTML = `
       <header class="cc30-photo-author">
@@ -399,7 +336,7 @@
         <article class="cc30-caption">
           <a href="${esc(authorUrl)}" aria-label="Perfil de ${esc(displayName(author))}">${avatarHtml(author, true)}</a>
           <div class="cc30-caption-copy">
-            <p><a href="${esc(authorUrl)}">${esc(displayName(author))}</a>${esc(caption)}</p>
+            <p><a href="${esc(authorUrl)}">${esc(displayName(author))}</a> ${esc(caption)}</p>
             ${context.created_at ? `<time title="${esc(fmt(context.created_at))}">${esc(relative(context.created_at))}</time>` : ''}
           </div>
         </article>
@@ -416,7 +353,7 @@
           <span>${context.kind === 'post-photo' ? `<b data-cc30-like-count>${engagement.likes}</b> curtida${engagement.likes === 1 ? '' : 's'}` : '<b>Foto de álbum</b>'}</span>
           <span><b data-cc30-footer-comment-count>${comments.length}</b> comentário${comments.length === 1 ? '' : 's'}${engagement.shares ? ` · ${engagement.shares} compartilhamento${engagement.shares === 1 ? '' : 's'}` : ''}</span>
         </div>
-        <div class="cc30-photo-actions${actionClass}">
+        <div class="cc30-photo-actions${canLike ? '' : ' two'}">
           ${canLike ? `<button class="cc30-photo-action${engagement.liked ? ' is-active' : ''}" type="button" data-cc30-like><span class="cc30-action-icon">${engagement.liked ? '♥' : '♡'}</span><span>${engagement.liked ? 'Curtido' : 'Curtir'}</span></button>` : ''}
           <button class="cc30-photo-action" type="button" data-cc30-comment-focus><span class="cc30-action-icon">◯</span><span>Comentar</span></button>
           <button class="cc30-photo-action" type="button" data-cc30-share><span class="cc30-action-icon">↗</span><span>Compartilhar</span></button>
@@ -427,8 +364,6 @@
           <button class="cc30-comment-submit" type="submit">Publicar</button>
         </form><div class="cc30-comment-status"></div>` : ''}
       </footer>`;
-
-    bindSideEvents(context, me, renderToken);
 
     if (options.scrollToEnd) {
       requestAnimationFrame(() => {
@@ -466,8 +401,9 @@
     if (bodyNode) bodyNode.hidden = false;
   };
 
-  const saveEdit = async (article, context, me, button) => {
-    if (!article || !me || article.dataset.authorId !== me.id) return;
+  const saveEdit = async (article, button) => {
+    const me = await getCurrentProfile();
+    if (!article || !me || !currentContext || article.dataset.authorId !== me.id) return;
     const editor = article.querySelector('.cc30-comment-editor');
     const textarea = editor?.querySelector('textarea');
     const status = editor?.querySelector('.cc30-editor-status');
@@ -480,8 +416,7 @@
 
     button.disabled = true;
     if (status) status.textContent = 'Salvando...';
-    const table = context.kind === 'album-photo' ? 'cosplay_social_photo_comments' : 'cosplay_social_comments';
-    const { error } = await db.from(table)
+    const { error } = await db.from(commentTable(currentContext))
       .update({ body })
       .eq('id', article.dataset.commentId)
       .eq('author_profile_id', me.id);
@@ -501,19 +436,18 @@
     editor?.remove();
   };
 
-  const deleteComment = async (article, context, me, button) => {
-    if (!article || !me) return;
+  const deleteComment = async (article, button) => {
+    const me = await getCurrentProfile();
+    if (!article || !me || !currentContext) return;
     const own = article.dataset.authorId === me.id;
-    const canDelete = own || context.ownerProfileId === me.id;
-    if (!canDelete) return;
-    if (!window.confirm('Excluir este comentário?')) return;
+    const canDelete = own || currentContext.ownerProfileId === me.id;
+    if (!canDelete || !window.confirm('Excluir este comentário?')) return;
 
     button.disabled = true;
-    const table = context.kind === 'album-photo' ? 'cosplay_social_photo_comments' : 'cosplay_social_comments';
-    let query = db.from(table).delete().eq('id', article.dataset.commentId);
-    query = context.kind === 'album-photo'
-      ? query.eq('photo_id', context.id)
-      : query.eq('post_id', context.id);
+    let query = db.from(commentTable(currentContext)).delete().eq('id', article.dataset.commentId);
+    query = currentContext.kind === 'album-photo'
+      ? query.eq('photo_id', currentContext.id)
+      : query.eq('post_id', currentContext.id);
     const { error } = await query;
     button.disabled = false;
 
@@ -533,128 +467,216 @@
     }
   };
 
-  const bindSideEvents = (context, me, renderToken) => {
-    if (!side || renderToken !== token) return;
-    const form = side.querySelector('.cc30-comment-form');
-    const textarea = form?.querySelector('textarea');
+  const toggleLike = async (button) => {
+    const me = await getCurrentProfile();
+    if (!me || currentContext?.kind !== 'post-photo') return;
+    const active = button.classList.contains('is-active');
+    button.disabled = true;
+    const result = active
+      ? await db.from('cosplay_social_post_likes').delete().eq('post_id', currentContext.id).eq('profile_id', me.id)
+      : await db.from('cosplay_social_post_likes').insert({ post_id:currentContext.id, profile_id:me.id });
+    button.disabled = false;
+    if (result.error) return;
 
-    const resizeComposer = () => {
-      if (!textarea) return;
-      textarea.style.height = 'auto';
-      textarea.style.height = `${Math.min(108, Math.max(38, textarea.scrollHeight))}px`;
+    const next = !active;
+    button.classList.toggle('is-active', next);
+    button.querySelector('.cc30-action-icon').textContent = next ? '♥' : '♡';
+    button.querySelector('span:last-child').textContent = next ? 'Curtido' : 'Curtir';
+    const count = side.querySelector('[data-cc30-like-count]');
+    if (count) count.textContent = String(Math.max(0, Number(count.textContent || 0) + (next ? 1 : -1)));
+  };
+
+  const shareCurrent = async () => {
+    if (!currentContext) return;
+    const url = currentContext.kind === 'post-photo' && currentContext.id
+      ? `${location.origin}${location.pathname}?post=${encodeURIComponent(currentContext.id)}`
+      : location.href;
+    const data = {
+      title:'CosplayChess',
+      text:currentContext.caption || 'Confira esta foto no CosplayChess',
+      url
     };
-    textarea?.addEventListener('input', resizeComposer);
-    textarea?.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' && !event.shiftKey) {
-        event.preventDefault();
-        form?.requestSubmit();
+    try {
+      if (navigator.share) {
+        await navigator.share(data);
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(url);
+        setStatus('Link copiado.');
+        setTimeout(() => setStatus(''), 1800);
       }
-    });
+    } catch {}
+  };
 
-    side.querySelector('[data-cc30-comment-focus]')?.addEventListener('click', () => textarea?.focus());
-    side.querySelector('[data-cc30-share]')?.addEventListener('click', () => shareContext(context));
+  const submitComment = async (form) => {
+    const me = await getCurrentProfile();
+    const textarea = form.querySelector('textarea');
+    const submit = form.querySelector('.cc30-comment-submit');
+    const body = String(textarea?.value || '').trim();
+    if (!me || !currentContext || !body || !textarea || !submit) return;
 
-    side.querySelector('[data-cc30-like]')?.addEventListener('click', async (event) => {
-      if (!me || context.kind !== 'post-photo') return;
-      const button = event.currentTarget;
-      const active = button.classList.contains('is-active');
-      button.disabled = true;
-      const result = active
-        ? await db.from('cosplay_social_post_likes').delete().eq('post_id', context.id).eq('profile_id', me.id)
-        : await db.from('cosplay_social_post_likes').insert({ post_id:context.id, profile_id:me.id });
-      button.disabled = false;
-      if (result.error) return;
-      const next = !active;
-      button.classList.toggle('is-active', next);
-      button.querySelector('.cc30-action-icon').textContent = next ? '♥' : '♡';
-      button.querySelector('span:last-child').textContent = next ? 'Curtido' : 'Curtir';
-      const count = side.querySelector('[data-cc30-like-count]');
-      if (count) count.textContent = String(Math.max(0, Number(count.textContent || 0) + (next ? 1 : -1)));
-    });
+    submit.disabled = true;
+    setStatus('Publicando...');
+    const payload = currentContext.kind === 'album-photo'
+      ? { photo_id:currentContext.id, author_profile_id:me.id, body }
+      : { post_id:currentContext.id, author_profile_id:me.id, body, moderation_status:'active' };
+    const { error } = await db.from(commentTable(currentContext)).insert(payload);
+    submit.disabled = false;
 
-    form?.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      if (!me || !textarea) return;
-      const body = textarea.value.trim();
-      if (!body) return;
-      const submit = form.querySelector('.cc30-comment-submit');
-      submit.disabled = true;
-      setStatus('Publicando...');
-      const table = context.kind === 'album-photo' ? 'cosplay_social_photo_comments' : 'cosplay_social_comments';
-      const payload = context.kind === 'album-photo'
-        ? { photo_id:context.id, author_profile_id:me.id, body }
-        : { post_id:context.id, author_profile_id:me.id, body, moderation_status:'active' };
-      const { error } = await db.from(table).insert(payload);
-      submit.disabled = false;
-      if (error) {
-        setStatus('Não foi possível publicar o comentário.');
+    if (error) {
+      setStatus('Não foi possível publicar o comentário.');
+      return;
+    }
+
+    textarea.value = '';
+    textarea.style.height = '38px';
+    setStatus('');
+    await renderSide(currentContext, token, { scrollToEnd:true });
+  };
+
+  const move = (delta) => {
+    if (!items.length) return;
+    index = (index + delta + items.length) % items.length;
+    paint().catch(() => {});
+  };
+
+  const ensure = () => {
+    if (root) return root;
+    ensureStyle();
+    root = document.createElement('div');
+    root.className = 'cc30-photo-modal';
+    root.setAttribute('role', 'dialog');
+    root.setAttribute('aria-modal', 'true');
+    root.setAttribute('aria-label', 'Visualização de foto');
+    root.setAttribute('aria-hidden', 'true');
+    root.innerHTML = `
+      <div class="cc30-photo-shell">
+        <section class="cc30-photo-stage">
+          <button class="cc30-photo-close" type="button" aria-label="Fechar">×</button>
+          <button class="cc30-photo-nav cc30-photo-prev" type="button" aria-label="Foto anterior">‹</button>
+          <img class="cc30-photo-image" alt="">
+          <button class="cc30-photo-nav cc30-photo-next" type="button" aria-label="Próxima foto">›</button>
+        </section>
+        <aside class="cc30-photo-side" aria-live="polite"></aside>
+      </div>`;
+    document.body.appendChild(root);
+    image = root.querySelector('.cc30-photo-image');
+    side = root.querySelector('.cc30-photo-side');
+
+    root.addEventListener('click', async (event) => {
+      const closeButton = event.target.closest('.cc30-photo-close');
+      if (closeButton || event.target === root) {
+        close();
         return;
       }
-      textarea.value = '';
-      resizeComposer();
-      setStatus('');
-      await renderSide(context, renderToken, { scrollToEnd:true });
-    });
+      if (event.target.closest('.cc30-photo-prev')) {
+        move(-1);
+        return;
+      }
+      if (event.target.closest('.cc30-photo-next')) {
+        move(1);
+        return;
+      }
 
-    side.addEventListener('click', async (event) => {
-      const toggle = event.target.closest('.cc30-comment-menu-toggle');
-      if (toggle) {
+      const menuToggle = event.target.closest('.cc30-comment-menu-toggle');
+      if (menuToggle) {
         event.preventDefault();
         event.stopPropagation();
-        const menu = toggle.parentElement?.querySelector('.cc30-comment-menu');
+        const menu = menuToggle.parentElement?.querySelector('.cc30-comment-menu');
         if (!menu) return;
         const opening = menu.hidden;
         closeMenus(menu);
         menu.hidden = !opening;
-        toggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
+        menuToggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
         return;
       }
 
-      const edit = event.target.closest('[data-cc30-edit]');
-      if (edit) {
+      const editButton = event.target.closest('[data-cc30-edit]');
+      if (editButton) {
         event.preventDefault();
-        beginEdit(edit.closest('.cc30-comment'));
+        beginEdit(editButton.closest('.cc30-comment'));
         return;
       }
 
-      const cancel = event.target.closest('[data-cc30-cancel]');
-      if (cancel) {
+      const cancelButton = event.target.closest('[data-cc30-cancel]');
+      if (cancelButton) {
         event.preventDefault();
-        cancelEdit(cancel.closest('.cc30-comment'));
+        cancelEdit(cancelButton.closest('.cc30-comment'));
         return;
       }
 
-      const save = event.target.closest('[data-cc30-save]');
-      if (save) {
+      const saveButton = event.target.closest('[data-cc30-save]');
+      if (saveButton) {
         event.preventDefault();
-        await saveEdit(save.closest('.cc30-comment'), context, me, save);
+        await saveEdit(saveButton.closest('.cc30-comment'), saveButton);
         return;
       }
 
-      const remove = event.target.closest('[data-cc30-delete]');
-      if (remove) {
+      const deleteButton = event.target.closest('[data-cc30-delete]');
+      if (deleteButton) {
         event.preventDefault();
-        await deleteComment(remove.closest('.cc30-comment'), context, me, remove);
+        await deleteComment(deleteButton.closest('.cc30-comment'), deleteButton);
+        return;
+      }
+
+      const likeButton = event.target.closest('[data-cc30-like]');
+      if (likeButton) {
+        event.preventDefault();
+        await toggleLike(likeButton);
+        return;
+      }
+
+      if (event.target.closest('[data-cc30-comment-focus]')) {
+        side.querySelector('.cc30-comment-form textarea')?.focus();
+        return;
+      }
+
+      if (event.target.closest('[data-cc30-share]')) {
+        await shareCurrent();
         return;
       }
 
       if (!event.target.closest('.cc30-comment-controls')) closeMenus();
     });
 
-    side.addEventListener('keydown', (event) => {
+    root.addEventListener('submit', async (event) => {
+      const form = event.target.closest('.cc30-comment-form');
+      if (!form) return;
+      event.preventDefault();
+      await submitComment(form);
+    });
+
+    root.addEventListener('input', (event) => {
+      const textarea = event.target.closest('.cc30-comment-form textarea');
+      if (!textarea) return;
+      textarea.style.height = 'auto';
+      textarea.style.height = `${Math.min(108, Math.max(38, textarea.scrollHeight))}px`;
+    });
+
+    root.addEventListener('keydown', async (event) => {
       const editor = event.target.closest?.('.cc30-comment-editor');
-      if (!editor) return;
-      const article = editor.closest('.cc30-comment');
-      if (event.key === 'Escape') {
+      if (editor && event.key === 'Escape') {
         event.preventDefault();
-        cancelEdit(article);
+        event.stopPropagation();
+        cancelEdit(editor.closest('.cc30-comment'));
+        return;
       }
-      if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+      if (editor && (event.ctrlKey || event.metaKey) && event.key === 'Enter') {
         event.preventDefault();
+        event.stopPropagation();
         const save = editor.querySelector('[data-cc30-save]');
-        if (save) saveEdit(article, context, me, save);
+        if (save) await saveEdit(editor.closest('.cc30-comment'), save);
+        return;
+      }
+
+      const composer = event.target.closest?.('.cc30-comment-form textarea');
+      if (composer && event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        event.stopPropagation();
+        composer.closest('form')?.requestSubmit();
       }
     });
+
+    return root;
   };
 
   const paint = async () => {
@@ -684,12 +706,6 @@
     if (paintToken !== token) return;
     image.alt = currentContext.caption || fallback || 'Foto ampliada';
     await renderSide(currentContext, paintToken);
-  };
-
-  const move = (delta) => {
-    if (!items.length) return;
-    index = (index + delta + items.length) % items.length;
-    paint().catch(() => {});
   };
 
   function open(target) {
@@ -735,16 +751,15 @@
 
   document.addEventListener('keydown', (event) => {
     if (!root?.classList.contains('is-open')) return;
+    if (event.defaultPrevented) return;
+    const typing = event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLInputElement;
+
     if (event.key === 'Escape') {
       event.preventDefault();
-      const openEditor = root.querySelector('.cc30-comment-editor');
-      if (openEditor) {
-        cancelEdit(openEditor.closest('.cc30-comment'));
-        return;
-      }
       close();
       return;
     }
+    if (typing) return;
     if (event.key === 'ArrowLeft') {
       event.preventDefault();
       move(-1);
