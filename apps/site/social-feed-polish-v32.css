@@ -1,0 +1,72 @@
+/* CosplayChess Social v32 — acabamento do feed e scrollbars invisiveis */
+
+/* Mantem todas as acoes do post em uma linha estavel. */
+body.community-page.cc-v4 .cc9-post-actions{
+  min-width:0!important;
+  flex-wrap:nowrap!important;
+}
+
+body.community-page.cc-v4 .cc9-post-actions .cc9-action{
+  flex:0 0 auto!important;
+  min-width:max-content!important;
+  width:auto!important;
+  max-width:none!important;
+  white-space:nowrap!important;
+  word-break:keep-all!important;
+  overflow-wrap:normal!important;
+  writing-mode:horizontal-tb!important;
+  text-orientation:mixed!important;
+}
+
+body.community-page.cc-v4 .cc9-post-actions .cc9-action > span{
+  display:inline-block!important;
+  width:auto!important;
+  min-width:0!important;
+  max-width:none!important;
+  white-space:nowrap!important;
+  word-break:normal!important;
+  overflow-wrap:normal!important;
+  writing-mode:horizontal-tb!important;
+  text-orientation:mixed!important;
+  line-height:1.2!important;
+}
+
+body.community-page.cc-v4 .cc9-post-actions .cc9-action[data-save]{
+  flex:0 0 auto!important;
+  min-width:78px!important;
+  margin-left:auto!important;
+  padding-inline:12px!important;
+  justify-content:center!important;
+  align-self:center!important;
+}
+
+/* A rolagem continua funcionando, mas sem trilhos visiveis. */
+body.community-page.cc-v4,
+body.community-page.cc-v4 *{
+  scrollbar-width:none!important;
+  -ms-overflow-style:none!important;
+}
+
+body.community-page.cc-v4::-webkit-scrollbar,
+body.community-page.cc-v4 *::-webkit-scrollbar{
+  width:0!important;
+  height:0!important;
+  display:none!important;
+  background:transparent!important;
+}
+
+@media (max-width:620px){
+  body.community-page.cc-v4 .cc9-post-actions{
+    gap:2px!important;
+  }
+
+  body.community-page.cc-v4 .cc9-post-actions .cc9-action{
+    min-width:0!important;
+    padding-inline:7px!important;
+  }
+
+  body.community-page.cc-v4 .cc9-post-actions .cc9-action[data-save]{
+    min-width:auto!important;
+    padding-inline:8px!important;
+  }
+}
