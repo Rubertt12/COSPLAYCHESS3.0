@@ -10,6 +10,13 @@
     guard.defer = true;
     document.body.appendChild(guard);
   }
+  if (!document.getElementById('ccSocialCosplayCoverGuardV19Js')) {
+    const coverGuard = document.createElement('script');
+    coverGuard.id = 'ccSocialCosplayCoverGuardV19Js';
+    coverGuard.src = './social-cosplay-cover-guard-v19.js?v=20260903-2';
+    coverGuard.defer = true;
+    document.body.appendChild(coverGuard);
+  }
 
   const db = window.getCosplayChessParticipantDb ? window.getCosplayChessParticipantDb() : window.COSPLAYCHESS_PARTICIPANT_DB;
   const $ = id => document.getElementById(id);
