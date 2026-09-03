@@ -126,6 +126,44 @@
   }
 }
 
+/* SIDEBAR ESTÁVEL — menu rola, card de nível fica sempre no mesmo lugar */
+@media (min-width:821px){
+  body.community-page.cc-v4 .cc-left{
+    display:flex!important;
+    flex-direction:column!important;
+    height:100dvh!important;
+    max-height:100dvh!important;
+    overflow:hidden!important;
+    padding-bottom:12px!important;
+  }
+  body.community-page.cc-v4 .cc-left-head{
+    flex:0 0 auto!important;
+  }
+  body.community-page.cc-v4 .community-nav{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior:contain;
+    scrollbar-width:thin;
+    padding-right:3px!important;
+    padding-bottom:8px!important;
+  }
+  body.community-page.cc-v4 .cc-left-divider,
+  body.community-page.cc-v4 .cc-left>.cc-nav-link,
+  body.community-page.cc-v4 .cc-left>.community-me-card{
+    flex:0 0 auto!important;
+  }
+  body.community-page.cc-v4 .cc-left-user{
+    position:relative!important;
+    inset:auto!important;
+    width:auto!important;
+    margin:12px 0 0!important;
+    transform:none!important;
+    z-index:2!important;
+  }
+}
+
 /* PÁGINA DE COMUNIDADE — ocupa a tela como fórum/rede social */
 @media (min-width:1181px){
   body.community-group-page .community-group-shell{
