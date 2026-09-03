@@ -29,6 +29,7 @@
   let currentContext = null;
   let currentProfile = null;
   let paintToken = 0;
+  let lastActiveElement = null;
 
   const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const safeUrl = (value) => { try { const u = new URL(String(value || ''), location.href); return ['http:','https:'].includes(u.protocol) ? u.href : ''; } catch { return ''; } };
@@ -42,6 +43,7 @@
     root.setAttribute('role','dialog');
     root.setAttribute('aria-modal','true');
     root.setAttribute('aria-label','Visualização da foto');
+    root.setAttribute('aria-hidden','true');
     root.innerHTML = `
       <div class="photo-lightbox-shell">
         <section class="photo-lightbox-stage">
@@ -247,10 +249,18 @@
   };
 
   const paint = async () => {
-    if (!items.length) return;
+    if (!items.length || !image || !root) return;
     const token = ++paintToken;
     const target = items[index];
+    if (!(target instanceof HTMLImageElement) || !target.isConnected) {
+      close();
+      return;
+    }
     const src = target.currentSrc || target.src;
+    if (!src) {
+      close();
+      return;
+    }
     const fallback = target.dataset.lightboxCaption || target.alt || '';
     image.src = src;
     image.alt = fallback || 'Foto ampliada';
@@ -263,41 +273,68 @@
 
   const open = (target) => {
     ensure();
+    lastActiveElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     items = visibleItems(target);
     index = Math.max(0,items.indexOf(target));
     if (!items.length) items = [target];
     root.classList.add('open');
+    root.setAttribute('aria-hidden','false');
+    document.documentElement.classList.add('photo-lightbox-open');
     document.body.classList.add('photo-lightbox-open');
-    paint().catch(() => {});
+    paint().catch(() => close());
     root.querySelector('.photo-lightbox-close')?.focus({preventScroll:true});
   };
 
   function close() {
     if (!root?.classList.contains('open')) return;
     root.classList.remove('open');
+    root.setAttribute('aria-hidden','true');
+    document.documentElement.classList.remove('photo-lightbox-open');
     document.body.classList.remove('photo-lightbox-open');
     paintToken += 1;
     currentContext = null;
-    if (image) image.src = '';
+    items = [];
+    index = 0;
+    if (image) {
+      image.removeAttribute('src');
+      image.alt = '';
+    }
+    if (side) side.innerHTML = '<div class="photo-lightbox-side-loading">Carregando detalhes...</div>';
+    const focusTarget = lastActiveElement;
+    lastActiveElement = null;
+    if (focusTarget?.isConnected) requestAnimationFrame(() => focusTarget.focus({preventScroll:true}));
   }
 
   const move = (step) => {
     if (items.length <= 1) return;
     index = (index + step + items.length) % items.length;
-    paint().catch(() => {});
+    paint().catch(() => close());
   };
 
   document.addEventListener('click',(event) => {
-    const target = event.target.closest?.(selector);
-    if (!target || !(target instanceof HTMLImageElement)) return;
+    if (!(event.target instanceof Element)) return;
+    const target = event.target.closest(selector);
+    if (!target || !(target instanceof HTMLImageElement) || root?.contains(target)) return;
     event.preventDefault();
     open(target);
   });
 
   document.addEventListener('keydown',(event) => {
     if (!root?.classList.contains('open')) return;
-    if (event.key === 'Escape') close();
-    else if (event.key === 'ArrowLeft') move(-1);
-    else if (event.key === 'ArrowRight') move(1);
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      close();
+    } else if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      move(-1);
+    } else if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      move(1);
+    }
+  });
+
+  window.addEventListener('pagehide', () => {
+    document.documentElement.classList.remove('photo-lightbox-open');
+    document.body.classList.remove('photo-lightbox-open');
   });
 })();
