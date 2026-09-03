@@ -34,7 +34,31 @@
   const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const safeUrl = (value) => { try { const u = new URL(String(value || ''), location.href); return ['http:','https:'].includes(u.protocol) ? u.href : ''; } catch { return ''; } };
   const fmt = (value) => { try { return new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(value)); } catch { return ''; } };
+  const relative = (value) => {
+    try {
+      const ms = Date.now() - new Date(value).getTime();
+      const min = Math.max(0, Math.floor(ms / 60000));
+      if (min < 1) return 'agora';
+      if (min < 60) return `${min} min`;
+      const hour = Math.floor(min / 60);
+      if (hour < 24) return `${hour} h`;
+      const day = Math.floor(hour / 24);
+      if (day < 7) return `${day} d`;
+      return fmt(value);
+    } catch { return ''; }
+  };
   const displayName = (profile) => profile?.display_name || profile?.nick || 'Participante';
+  const profileHref = (profile) => profile?.public_slug ? `./jogador.html?slug=${encodeURIComponent(profile.public_slug)}` : '#';
+
+  const injectStyle = () => {
+    if (document.getElementById('cc-photo-lightbox-social-v26')) return;
+    const link = document.createElement('link');
+    link.id = 'cc-photo-lightbox-social-v26';
+    link.rel = 'stylesheet';
+    link.href = './social-photo-lightbox-social-v26.css?v=20260903-1';
+    document.head.appendChild(link);
+  };
+  injectStyle();
 
   const ensure = () => {
     if (root) return root;
@@ -192,46 +216,162 @@
     return data.map((row) => ({ ...row, author:map.get(row.author_profile_id) || null }));
   };
 
+  const loadEngagement = async (context, me, commentCount) => {
+    const base = { likes:0, shares:0, comments:commentCount, liked:false };
+    if (!db || context?.kind !== 'post-photo' || !context.id) return base;
+    const queries = [
+      db.from('cosplay_social_post_likes').select('post_id',{count:'exact',head:true}).eq('post_id',context.id),
+      db.from('cosplay_social_post_shares').select('post_id',{count:'exact',head:true}).eq('post_id',context.id)
+    ];
+    if (me?.id) queries.push(db.from('cosplay_social_post_likes').select('post_id').eq('post_id',context.id).eq('profile_id',me.id).maybeSingle());
+    const results = await Promise.all(queries);
+    return {
+      likes:results[0]?.count || 0,
+      shares:results[1]?.count || 0,
+      comments:commentCount,
+      liked:!!results[2]?.data
+    };
+  };
+
   const avatarHtml = (profile) => {
     const src = safeUrl(profile?.character_photo_url);
     return `<span class="photo-lightbox-avatar">${src ? `<img src="${esc(src)}" alt="">` : '♜'}</span>`;
   };
 
-  const renderSide = async (context, token) => {
+  const commentHtml = (comment) => {
+    const href = profileHref(comment.author);
+    return `<article class="photo-lightbox-comment">
+      <a class="photo-lightbox-comment-avatar" href="${esc(href)}" aria-label="Perfil de ${esc(displayName(comment.author))}">${avatarHtml(comment.author)}</a>
+      <div class="photo-lightbox-comment-content">
+        <div class="photo-lightbox-comment-bubble">
+          <a class="photo-lightbox-comment-name" href="${esc(href)}">${esc(displayName(comment.author))}</a>
+          <p>${esc(comment.body)}</p>
+        </div>
+        <div class="photo-lightbox-comment-meta"><time title="${esc(fmt(comment.created_at))}">${esc(relative(comment.created_at))}</time></div>
+      </div>
+    </article>`;
+  };
+
+  const shareContext = async (context) => {
+    const url = context.kind === 'post-photo' && context.id
+      ? `${location.origin}${location.pathname}?post=${encodeURIComponent(context.id)}`
+      : location.href;
+    const data = { title:'CosplayChess', text:context.caption || 'Confira esta foto no CosplayChess', url };
+    try {
+      if (navigator.share) await navigator.share(data);
+      else if (navigator.clipboard) await navigator.clipboard.writeText(url);
+    } catch {}
+  };
+
+  const renderSide = async (context, token, options = {}) => {
     if (!side || token !== paintToken) return;
     side.innerHTML = '<div class="photo-lightbox-side-loading">Carregando detalhes...</div>';
-    const comments = await loadComments(context);
-    const me = await getCurrentProfile();
+    const [comments, me] = await Promise.all([loadComments(context), getCurrentProfile()]);
+    const engagement = await loadEngagement(context, me, comments.length);
     if (token !== paintToken) return;
+
     const author = context.author;
-    const profileUrl = author?.public_slug ? `./jogador.html?slug=${encodeURIComponent(author.public_slug)}` : '#';
+    const authorUrl = profileHref(author);
+    const interactive = ['album-photo','post-photo'].includes(context.kind);
+    const canLike = context.kind === 'post-photo' && !!me;
+    const actionCount = canLike ? 3 : 2;
+    const caption = context.caption || 'Foto do CosplayChess';
+
     side.innerHTML = `
       <header class="photo-lightbox-author">
-        ${avatarHtml(author)}
-        <div><a href="${esc(profileUrl)}">${esc(displayName(author))}</a><span>${esc(author?.character_name ? `Cosplay: ${author.character_name}` : 'CosplayChess')}</span></div>
-      </header>
-      <section class="photo-lightbox-description">
-        <p>${esc(context.caption || 'Foto do CosplayChess')}</p>
-        ${context.created_at ? `<small>${esc(fmt(context.created_at))}</small>` : ''}
-      </section>
-      <section class="photo-lightbox-comments">
-        <div class="photo-lightbox-comments-head"><b>Comentários</b><span>${comments.length}</span></div>
-        <div class="photo-lightbox-comments-list">
-          ${comments.length ? comments.map((comment) => `<article>${avatarHtml(comment.author)}<div><b>${esc(displayName(comment.author))}</b><p>${esc(comment.body)}</p><small>${esc(fmt(comment.created_at))}</small></div></article>`).join('') : '<div class="photo-lightbox-no-comments">Nenhum comentário nesta foto ainda.</div>'}
+        <a class="photo-lightbox-author-avatar" href="${esc(authorUrl)}">${avatarHtml(author)}</a>
+        <div class="photo-lightbox-author-copy">
+          <a href="${esc(authorUrl)}">${esc(displayName(author))}</a>
+          <span>${esc(author?.character_name ? `Cosplay: ${author.character_name}` : 'CosplayChess')}</span>
         </div>
-        ${me && ['album-photo','post-photo'].includes(context.kind) ? `<form class="photo-lightbox-comment-form"><span class="photo-lightbox-avatar">${safeUrl(me.character_photo_url) ? `<img src="${esc(safeUrl(me.character_photo_url))}" alt="">` : '♜'}</span><div><textarea maxlength="1200" rows="2" placeholder="Comente nesta foto..." required></textarea><button type="submit">Comentar</button><small class="photo-lightbox-comment-status"></small></div></form>` : ''}
-      </section>`;
+      </header>
+
+      <section class="photo-lightbox-discussion">
+        <article class="photo-lightbox-caption-row">
+          <a class="photo-lightbox-comment-avatar" href="${esc(authorUrl)}">${avatarHtml(author)}</a>
+          <div class="photo-lightbox-caption-copy">
+            <p><a href="${esc(authorUrl)}">${esc(displayName(author))}</a> ${esc(caption)}</p>
+            ${context.created_at ? `<time title="${esc(fmt(context.created_at))}">${esc(relative(context.created_at))}</time>` : ''}
+          </div>
+        </article>
+
+        <div class="photo-lightbox-comments-head">
+          <b>Comentários</b>
+          <span>${comments.length}</span>
+        </div>
+        <div class="photo-lightbox-comments-list">
+          ${comments.length ? comments.map(commentHtml).join('') : '<div class="photo-lightbox-no-comments"><b>Seja o primeiro a comentar</b><span>Comece a conversa sobre este cosplay.</span></div>'}
+        </div>
+      </section>
+
+      ${interactive ? `<section class="photo-lightbox-engagement">
+        <div class="photo-lightbox-engagement-summary">
+          ${context.kind === 'post-photo' ? `<span><b data-photo-like-count>${engagement.likes}</b> curtida${engagement.likes === 1 ? '' : 's'}</span>` : '<span>Foto do álbum</span>'}
+          <span><b>${comments.length}</b> comentário${comments.length === 1 ? '' : 's'}${context.kind === 'post-photo' && engagement.shares ? ` · <b>${engagement.shares}</b> compartilhamento${engagement.shares === 1 ? '' : 's'}` : ''}</span>
+        </div>
+        <div class="photo-lightbox-actionbar" style="--photo-action-count:${actionCount}">
+          ${canLike ? `<button class="photo-lightbox-action${engagement.liked ? ' active' : ''}" type="button" data-photo-like><span class="photo-action-icon">${engagement.liked ? '♥' : '♡'}</span><span>${engagement.liked ? 'Curtido' : 'Curtir'}</span></button>` : ''}
+          <button class="photo-lightbox-action" type="button" data-photo-comment><span class="photo-action-icon">◯</span><span>Comentar</span></button>
+          <button class="photo-lightbox-action" type="button" data-photo-share><span class="photo-action-icon">↗</span><span>Compartilhar</span></button>
+        </div>
+      </section>` : ''}
+
+      ${me && interactive ? `<form class="photo-lightbox-comment-form">
+        <span class="photo-lightbox-comment-me">${avatarHtml(me)}</span>
+        <div class="photo-lightbox-comment-input-wrap">
+          <textarea maxlength="1200" rows="1" placeholder="Adicione um comentário..." aria-label="Adicionar comentário" required></textarea>
+          <div class="photo-lightbox-comment-compose-meta"><small class="photo-lightbox-comment-status"></small><small class="photo-lightbox-comment-count">0/1200</small></div>
+        </div>
+        <button type="submit">Publicar</button>
+      </form>` : ''}`;
 
     const form = side.querySelector('.photo-lightbox-comment-form');
+    const textarea = form?.querySelector('textarea');
+    const status = form?.querySelector('.photo-lightbox-comment-status');
+    const counter = form?.querySelector('.photo-lightbox-comment-count');
+
+    const updateComposer = () => {
+      if (!textarea) return;
+      if (counter) counter.textContent = `${textarea.value.length}/1200`;
+      textarea.style.height = 'auto';
+      textarea.style.height = `${Math.min(104, Math.max(38, textarea.scrollHeight))}px`;
+    };
+    textarea?.addEventListener('input', updateComposer);
+    textarea?.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        form?.requestSubmit();
+      }
+    });
+
+    side.querySelector('[data-photo-comment]')?.addEventListener('click', () => textarea?.focus({preventScroll:false}));
+    side.querySelector('[data-photo-share]')?.addEventListener('click', () => shareContext(context));
+
+    side.querySelector('[data-photo-like]')?.addEventListener('click', async (event) => {
+      if (!me || context.kind !== 'post-photo') return;
+      const button = event.currentTarget;
+      button.disabled = true;
+      const active = button.classList.contains('active');
+      const result = active
+        ? await db.from('cosplay_social_post_likes').delete().eq('post_id',context.id).eq('profile_id',me.id)
+        : await db.from('cosplay_social_post_likes').insert({post_id:context.id,profile_id:me.id});
+      button.disabled = false;
+      if (result.error) return;
+      const next = !active;
+      button.classList.toggle('active', next);
+      button.querySelector('.photo-action-icon').textContent = next ? '♥' : '♡';
+      button.querySelector('span:last-child').textContent = next ? 'Curtido' : 'Curtir';
+      const count = side.querySelector('[data-photo-like-count]');
+      if (count) count.textContent = String(Math.max(0, Number(count.textContent || 0) + (next ? 1 : -1)));
+    });
+
     form?.addEventListener('submit', async (event) => {
       event.preventDefault();
-      const textarea = form.querySelector('textarea');
       const button = form.querySelector('button');
-      const status = form.querySelector('.photo-lightbox-comment-status');
       const body = textarea.value.trim();
       if (!body || !me) return;
       button.disabled = true;
-      status.textContent = 'Enviando...';
+      status.textContent = 'Publicando...';
       const payload = context.kind === 'album-photo'
         ? { photo_id:context.id, author_profile_id:me.id, body }
         : { post_id:context.id, author_profile_id:me.id, body, moderation_status:'active' };
@@ -243,9 +383,17 @@
         return;
       }
       textarea.value = '';
+      updateComposer();
       status.textContent = '';
-      await renderSide(context, token);
+      await renderSide(context, token, { scrollToEnd:true });
     });
+
+    if (options.scrollToEnd) {
+      requestAnimationFrame(() => {
+        const discussion = side?.querySelector('.photo-lightbox-discussion');
+        if (discussion) discussion.scrollTop = discussion.scrollHeight;
+      });
+    }
   };
 
   const paint = async () => {
