@@ -89,3 +89,54 @@
     min-height:calc(100dvh - 76px)!important;
   }
 }
+
+/* Quando o menu esquerdo é recolhido, o espaço liberado passa de fato para
+   o centro. O layout amplo v20 usava !important na grade e mantinha um vão
+   de ~160px mesmo depois da sidebar virar uma faixa de 86px. */
+@media (min-width:821px){
+  body.community-page.cc-v4 .cc-app-shell{
+    transition:grid-template-columns .24s cubic-bezier(.2,.7,.2,1);
+  }
+
+  body.community-page.cc-v4.cc-left-collapsed .cc-app-shell{
+    grid-template-columns:86px minmax(0,1fr)!important;
+  }
+
+  body.community-page.cc-v4.cc-left-collapsed .cc-center{
+    min-width:0!important;
+  }
+}
+
+@media (min-width:1181px){
+  body.community-page.cc-v4.cc-left-collapsed .cc-app-shell{
+    grid-template-columns:86px minmax(0,1fr) 352px!important;
+  }
+
+  body.community-page.cc-v4.cc-left-collapsed [data-community-panel="feed"]{
+    width:min(1120px,100%)!important;
+  }
+
+  body.community-page.cc-v4.cc-left-collapsed .cc-global-search{
+    width:min(1020px,84%)!important;
+  }
+}
+
+@media (min-width:1600px){
+  body.community-page.cc-v4.cc-left-collapsed .cc-app-shell{
+    grid-template-columns:86px minmax(0,1fr) 370px!important;
+  }
+
+  body.community-page.cc-v4.cc-left-collapsed [data-community-panel="feed"]{
+    width:min(1180px,100%)!important;
+  }
+
+  body.community-page.cc-v4.cc-left-collapsed .cc-global-search{
+    width:min(1080px,78%)!important;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  body.community-page.cc-v4 .cc-app-shell{
+    transition:none!important;
+  }
+}
