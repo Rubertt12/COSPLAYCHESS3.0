@@ -4,6 +4,21 @@
 
   const TYPE_LABEL={P:'PEÃO',T:'TORRE',C:'CAVALO',B:'BISPO',Q:'RAINHA',K:'REI'};
   const FREE_TYPE_PRIORITY=['K','Q','T','B','C','P'];
+  const FORMATIONS={
+    20:{
+      backRank:[null,null,'C1','Q1','K1','C2',null,null],
+      pawns:[null,'P2','P3','P4','P5','P6','P7',null]
+    },
+    24:{
+      backRank:[null,'T1','C1','Q1','K1','C2','T2',null],
+      pawns:[null,'P2','P3','P4','P5','P6','P7',null]
+    },
+    32:{
+      backRank:['T1','C1','B1','Q1','K1','B2','C2','T2'],
+      pawns:['P1','P2','P3','P4','P5','P6','P7','P8']
+    }
+  };
+
   const norm=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase();
   const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -58,6 +73,7 @@
 
   function sideOf(pieceId){return String(pieceId||'').endsWith('_B')?'B':String(pieceId||'').endsWith('_P')?'P':'';}
   function typeOf(pieceId){return String(pieceId||'').charAt(0);}
+  function baseOf(pieceId){return String(pieceId||'').replace(/_[BP]$/,'');}
   function opposite(side){return side==='B'?'P':'B';}
 
   function allPieceIds(){
@@ -77,11 +93,32 @@
         ?? store?.g?.rosterEvent?.maxParticipants
         ?? store?.g?.rosterEvent?.max_participants
         ?? store?.g?.configuredPieceLimit
+        ?? store?.g?.layoutPieceCount
         ?? null;
     }catch{}
     const number=Math.floor(Number(raw));
     if(!Number.isFinite(number)||number<=0)return capacity;
     return Math.min(capacity,number);
+  }
+
+  function formationCount(limit){
+    const n=Math.floor(Number(limit));
+    if(n<=20)return 20;
+    if(n<=24)return 24;
+    return 32;
+  }
+
+  function buildFormationBoard(limit){
+    const count=formationCount(limit);
+    const spec=FORMATIONS[count];
+    const rowFor=(ids,side)=>ids.map(id=>id?`${id}_${side}`:null);
+    return[
+      ...rowFor(spec.backRank,'P'),
+      ...rowFor(spec.pawns,'P'),
+      ...Array(32).fill(null),
+      ...rowFor(spec.pawns,'B'),
+      ...rowFor(spec.backRank,'B')
+    ];
   }
 
   function balancedTargets(total,pieceIds){
@@ -136,30 +173,49 @@
     const character=String(person.character||person.name||TYPE_LABEL[typeOf(pieceId)]||pieceId).trim();
     target.name=character;
     target.participantRealName=person.name||'';
-    target.participantId=person.id;
+    target.participantId=person.id||person.registrationId||'';
     target.participant={...person};
     target.rosterManagedName=true;
     target.autoLineupReason=reason;
+
     if(person.photo){
       target.img=person.photo;
       target.rosterManagedImg=true;
-      target.photoCrop=typeof window.normalizePiecePhotoCrop==='function'?window.normalizePiecePhotoCrop(person.photoCrop):(person.photoCrop?{...person.photoCrop}:{x:50,y:50,zoom:1});
+      target.photoCrop=typeof window.normalizePiecePhotoCrop==='function'
+        ?window.normalizePiecePhotoCrop(person.photoCrop)
+        :(person.photoCrop?{...person.photoCrop}:{x:50,y:50,zoom:1});
       target.rosterManagedPhotoCrop=true;
     }else{
-      delete target.img;delete target.rosterManagedImg;
+      delete target.img;
+      delete target.rosterManagedImg;
       if(target.rosterManagedPhotoCrop)delete target.photoCrop;
       delete target.rosterManagedPhotoCrop;
     }
+
     const music=participantMusic(person);
     if(music.url){
-      target.sound=music.url;target.soundName=music.name||'Música da inscrição';target.soundSource='registration';target.rosterManagedSound=true;resetPieceAudio(pieceId);
+      target.sound=music.url;
+      target.soundName=music.name||'Música da inscrição';
+      target.soundSource='registration';
+      target.rosterManagedSound=true;
+      resetPieceAudio(pieceId);
     }else{
-      delete target.sound;delete target.soundName;delete target.soundSource;delete target.rosterManagedSound;resetPieceAudio(pieceId);
+      delete target.sound;
+      delete target.soundName;
+      delete target.soundSource;
+      delete target.rosterManagedSound;
+      resetPieceAudio(pieceId);
     }
     if(target.volume===undefined)target.volume=.8;
   }
 
-  function chooseTyped(person,available,type,counts,targets,typeCounts){
+  function mirrorBonus(id,assignments){
+    const side=sideOf(id);
+    const mirror=`${baseOf(id)}_${opposite(side)}`;
+    return assignments.some(item=>item.pieceId===mirror)?1:0;
+  }
+
+  function chooseTyped(person,available,type,counts,targets,typeCounts,assignments){
     const candidates=available.filter(id=>typeOf(id)===type&&counts[sideOf(id)]<targets[sideOf(id)]);
     if(!candidates.length)return'';
     const wanted=preferredSide(person.team);
@@ -168,13 +224,14 @@
     function scoreTyped(id){
       const side=sideOf(id),other=opposite(side);
       const sideDeficit=targets[side]-counts[side];
-      const mirrorDeficit=(typeCounts[other][type]||0)-(typeCounts[side][type]||0);
+      const mirrorTypeDeficit=(typeCounts[other][type]||0)-(typeCounts[side][type]||0);
+      const mirrored=mirrorBonus(id,assignments);
       const sideMatch=wanted===side?1:0;
-      return sideDeficit*100+mirrorDeficit*20+sideMatch*5;
+      return sideDeficit*1000+mirrored*180+mirrorTypeDeficit*30+sideMatch*5;
     }
   }
 
-  function chooseFree(person,available,counts,targets,typeCounts){
+  function chooseFree(person,available,counts,targets,typeCounts,assignments){
     const candidates=available.filter(id=>counts[sideOf(id)]<targets[sideOf(id)]);
     if(!candidates.length)return'';
     const wanted=preferredSide(person.team);
@@ -183,10 +240,11 @@
     function scoreFree(id){
       const side=sideOf(id),other=opposite(side),type=typeOf(id);
       const sideDeficit=targets[side]-counts[side];
-      const mirrorDeficit=(typeCounts[other][type]||0)-(typeCounts[side][type]||0);
+      const mirrorTypeDeficit=(typeCounts[other][type]||0)-(typeCounts[side][type]||0);
+      const mirrored=mirrorBonus(id,assignments);
       const sideMatch=wanted===side?1:0;
       const priority=Math.max(0,FREE_TYPE_PRIORITY.length-FREE_TYPE_PRIORITY.indexOf(type));
-      return sideDeficit*1000+mirrorDeficit*40+sideMatch*10+priority;
+      return sideDeficit*10000+mirrored*700+mirrorTypeDeficit*60+sideMatch*10+priority;
     }
   }
 
@@ -211,8 +269,10 @@
       const reason=item.reason==='first'?'1ª opção':item.reason==='second'?'2ª opção':item.reason==='king'?'rei obrigatório':'balanceamento';
       return `<div class="al-result-row"><span><strong>${esc(character)}</strong>${item.person.name&&item.person.name!==character?`<small>${esc(item.person.name)}</small>`:''}</span><span>${esc(TYPE_LABEL[typeOf(item.pieceId)]||item.pieceId)} · ${side}</span><em>${reason}</em></div>`;
     }).join('');
-    const overflow=summary.overflow.length?`<div class="al-result-warning"><strong>${summary.overflow.length} fora do tabuleiro</strong><span>O formato deste evento aceita até ${summary.configuredLimit} peças. ${summary.overflow.map(p=>esc(p.character||p.name)).join(', ')}</span></div>`:'<div class="al-result-ok">✓ Todos os inscritos couberam no formato configurado.</div>';
-    modal.innerHTML=`<div class="al-result-panel"><div class="al-result-head"><div><span>JSON BALANCEADO · FORMATO ${summary.configuredLimit}</span><h2>Elenco distribuído entre os dois lados</h2></div><button data-close>×</button></div><div class="al-kpis"><div><b>${summary.assigned}</b><span>ESCALADOS</span></div><div><b>${summary.white}</b><span>BRANCAS</span></div><div><b>${summary.black}</b><span>PRETAS</span></div><div><b>${Math.abs(summary.white-summary.black)}</b><span>DIFERENÇA</span></div></div>${overflow}<div class="al-result-list">${rows}</div><div class="al-result-actions"><button data-close class="al-secondary">REVISAR MANUALMENTE</button><button id="al-result-start" class="al-primary">INICIAR BATALHA</button></div></div>`;
+    const overflow=summary.overflow.length
+      ?`<div class="al-result-warning"><strong>${summary.overflow.length} fora do tabuleiro</strong><span>O formato deste evento aceita até ${summary.configuredLimit} peças. ${summary.overflow.map(p=>esc(p.character||p.name)).join(', ')}</span></div>`
+      :'<div class="al-result-ok">✓ Todos os inscritos couberam no formato configurado.</div>';
+    modal.innerHTML=`<div class="al-result-panel"><div class="al-result-head"><div><span>JSON BALANCEADO · FORMAÇÃO ${summary.formationCount}</span><h2>Elenco distribuído no layout oficial do tabuleiro</h2></div><button data-close>×</button></div><div class="al-kpis"><div><b>${summary.assigned}</b><span>ESCALADOS</span></div><div><b>${summary.white}</b><span>BRANCAS</span></div><div><b>${summary.black}</b><span>PRETAS</span></div><div><b>${Math.abs(summary.white-summary.black)}</b><span>DIFERENÇA</span></div></div>${overflow}<div class="al-result-list">${rows}</div><div class="al-result-actions"><button data-close class="al-secondary">REVISAR MANUALMENTE</button><button id="al-result-start" class="al-primary">INICIAR BATALHA</button></div></div>`;
     document.body.appendChild(modal);
     modal.querySelectorAll('[data-close]').forEach(btn=>btn.addEventListener('click',()=>modal.remove()));
     modal.addEventListener('click',event=>{if(event.target===modal)modal.remove();});
@@ -224,14 +284,17 @@
     if(!people.length){showNotice('Importe primeiro o JSON exportado pelo site.',true);return;}
     if(typeof store==='undefined'||!store){showNotice('O jogo ainda não terminou de carregar.',true);return;}
 
-    const pieceIds=allPieceIds();
-    const boardCapacity=pieceIds.length;
+    const everyPieceId=allPieceIds();
+    const boardCapacity=everyPieceId.length;
     const configuredLimit=configuredPieceLimit(boardCapacity);
-    const total=Math.min(people.length,configuredLimit);
+    const selectedFormation=formationCount(configuredLimit);
+    const formationBoard=buildFormationBoard(selectedFormation);
+    const pieceIds=formationBoard.filter(Boolean);
+    const total=Math.min(people.length,configuredLimit,pieceIds.length);
     const targets=balancedTargets(total,pieceIds);
 
-    try{if(typeof getInitialBoard==='function')store.board=getInitialBoard();}catch{}
-    pieceIds.forEach(clearManagedAssignment);
+    everyPieceId.forEach(clearManagedAssignment);
+    store.board=formationBoard.slice();
     if(Array.isArray(store.graveyard))store.graveyard=[];
     if(!store.g)store.g={};
     store.g.killsB=0;
@@ -240,6 +303,8 @@
     store.g.enPassant=null;
     store.g.hasMoved={B:{K:false,Rk:false,Rq:false},P:{K:false,Rk:false,Rq:false}};
     store.g.configuredPieceLimit=configuredLimit;
+    store.g.layoutPieceCount=selectedFormation;
+    store.g.appliedLayout=selectedFormation;
 
     let available=[...pieceIds];
     const assignments=[];
@@ -248,7 +313,7 @@
     const typeCounts={B:{P:0,T:0,C:0,B:0,Q:0,K:0},P:{P:0,T:0,C:0,B:0,Q:0,K:0}};
 
     function take(entry,pieceId,reason){
-      if(!pieceId)return false;
+      if(!pieceId||assignments.length>=total)return false;
       assignToPiece(pieceId,entry.person,reason);
       assignments.push({person:entry.person,pieceId,reason});
       available=available.filter(id=>id!==pieceId);
@@ -259,21 +324,27 @@
       return true;
     }
 
+    // 1ª preferência, mas somente entre as peças que existem na formação escolhida.
     pending.forEach(entry=>{
+      if(assignments.length>=total)return;
       const type=pieceType(entry.person.preferredPiece);
-      if(type)take(entry,chooseTyped(entry.person,available,type,counts,targets,typeCounts),'first');
-    });
-    pending.forEach(entry=>{
-      if(entry.assigned)return;
-      const type=pieceType(entry.person.secondPreferredPiece);
-      if(type)take(entry,chooseTyped(entry.person,available,type,counts,targets,typeCounts),'second');
-    });
-    pending.forEach(entry=>{
-      if(entry.assigned||assignments.length>=total)return;
-      take(entry,chooseFree(entry.person,available,counts,targets,typeCounts),'free');
+      if(type)take(entry,chooseTyped(entry.person,available,type,counts,targets,typeCounts,assignments),'first');
     });
 
-    // Uma formação válida precisa manter um Rei em cada lado que possua peças.
+    // 2ª preferência.
+    pending.forEach(entry=>{
+      if(entry.assigned||assignments.length>=total)return;
+      const type=pieceType(entry.person.secondPreferredPiece);
+      if(type)take(entry,chooseTyped(entry.person,available,type,counts,targets,typeCounts,assignments),'second');
+    });
+
+    // Completa a formação priorizando espelhamento e equilíbrio entre os lados.
+    pending.forEach(entry=>{
+      if(entry.assigned||assignments.length>=total)return;
+      take(entry,chooseFree(entry.person,available,counts,targets,typeCounts,assignments),'free');
+    });
+
+    // Mantém um Rei em cada lado ativo sem quebrar o layout centralizado.
     ['B','P'].forEach(side=>{
       if(targets[side]<=0)return;
       const kingId=pieceIds.find(id=>sideOf(id)===side&&typeOf(id)==='K');
@@ -295,11 +366,9 @@
       replacement.reason='king';
     });
 
-    // O JSON define as peças humanas ativas: remove do tabuleiro as casas não escaladas.
+    // Mantém as coordenadas da formação oficial e apenas esvazia slots sem participante.
     const activePieceIds=new Set(assignments.map(item=>item.pieceId));
-    if(Array.isArray(store.board)){
-      store.board=store.board.map(id=>id&&activePieceIds.has(id)?id:null);
-    }
+    store.board=formationBoard.map(id=>id&&activePieceIds.has(id)?id:null);
 
     const overflow=pending.filter(entry=>!entry.assigned).map(entry=>entry.person);
     const summary={
@@ -307,6 +376,7 @@
       capacity:configuredLimit,
       boardCapacity,
       configuredLimit,
+      formationCount:selectedFormation,
       assigned:assignments.length,
       first:assignments.filter(a=>a.reason==='first').length,
       second:assignments.filter(a=>a.reason==='second').length,
@@ -324,6 +394,7 @@
       capacity:summary.capacity,
       boardCapacity:summary.boardCapacity,
       configuredLimit:summary.configuredLimit,
+      formationCount:summary.formationCount,
       assigned:summary.assigned,
       first:summary.first,
       second:summary.second,
@@ -342,6 +413,7 @@
     showResult(summary,assignments);
   }
 
+  window.buildCosplayFormationBoard=count=>buildFormationBoard(count).slice();
   window.buildCosplayBalancedAutomaticLineup=buildBalancedLineup;
 
   document.addEventListener('click',event=>{
