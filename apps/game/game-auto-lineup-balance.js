@@ -70,6 +70,20 @@
     ];
   }
 
+  function configuredPieceLimit(capacity){
+    let raw=null;
+    try{
+      raw=store?.g?.rosterEvent?.pieceLimit
+        ?? store?.g?.rosterEvent?.maxParticipants
+        ?? store?.g?.rosterEvent?.max_participants
+        ?? store?.g?.configuredPieceLimit
+        ?? null;
+    }catch{}
+    const number=Math.floor(Number(raw));
+    if(!Number.isFinite(number)||number<=0)return capacity;
+    return Math.min(capacity,number);
+  }
+
   function balancedTargets(total,pieceIds){
     const capacity={B:pieceIds.filter(id=>sideOf(id)==='B').length,P:pieceIds.filter(id=>sideOf(id)==='P').length};
     let B=Math.ceil(total/2),P=Math.floor(total/2);
@@ -194,11 +208,11 @@
     const rows=assignments.map(item=>{
       const character=item.person.character||item.person.name;
       const side=sideOf(item.pieceId)==='B'?'Brancas':'Pretas';
-      const reason=item.reason==='first'?'1ª opção':item.reason==='second'?'2ª opção':'balanceamento';
+      const reason=item.reason==='first'?'1ª opção':item.reason==='second'?'2ª opção':item.reason==='king'?'rei obrigatório':'balanceamento';
       return `<div class="al-result-row"><span><strong>${esc(character)}</strong>${item.person.name&&item.person.name!==character?`<small>${esc(item.person.name)}</small>`:''}</span><span>${esc(TYPE_LABEL[typeOf(item.pieceId)]||item.pieceId)} · ${side}</span><em>${reason}</em></div>`;
     }).join('');
-    const overflow=summary.overflow.length?`<div class="al-result-warning"><strong>${summary.overflow.length} fora do tabuleiro</strong><span>${summary.overflow.map(p=>esc(p.character||p.name)).join(', ')}</span></div>`:'<div class="al-result-ok">✓ Todos os inscritos couberam no tabuleiro.</div>';
-    modal.innerHTML=`<div class="al-result-panel"><div class="al-result-head"><div><span>JSON BALANCEADO</span><h2>Elenco distribuído entre os dois lados</h2></div><button data-close>×</button></div><div class="al-kpis"><div><b>${summary.assigned}</b><span>ESCALADOS</span></div><div><b>${summary.white}</b><span>BRANCAS</span></div><div><b>${summary.black}</b><span>PRETAS</span></div><div><b>${Math.abs(summary.white-summary.black)}</b><span>DIFERENÇA</span></div></div>${overflow}<div class="al-result-list">${rows}</div><div class="al-result-actions"><button data-close class="al-secondary">REVISAR MANUALMENTE</button><button id="al-result-start" class="al-primary">INICIAR BATALHA</button></div></div>`;
+    const overflow=summary.overflow.length?`<div class="al-result-warning"><strong>${summary.overflow.length} fora do tabuleiro</strong><span>O formato deste evento aceita até ${summary.configuredLimit} peças. ${summary.overflow.map(p=>esc(p.character||p.name)).join(', ')}</span></div>`:'<div class="al-result-ok">✓ Todos os inscritos couberam no formato configurado.</div>';
+    modal.innerHTML=`<div class="al-result-panel"><div class="al-result-head"><div><span>JSON BALANCEADO · FORMATO ${summary.configuredLimit}</span><h2>Elenco distribuído entre os dois lados</h2></div><button data-close>×</button></div><div class="al-kpis"><div><b>${summary.assigned}</b><span>ESCALADOS</span></div><div><b>${summary.white}</b><span>BRANCAS</span></div><div><b>${summary.black}</b><span>PRETAS</span></div><div><b>${Math.abs(summary.white-summary.black)}</b><span>DIFERENÇA</span></div></div>${overflow}<div class="al-result-list">${rows}</div><div class="al-result-actions"><button data-close class="al-secondary">REVISAR MANUALMENTE</button><button id="al-result-start" class="al-primary">INICIAR BATALHA</button></div></div>`;
     document.body.appendChild(modal);
     modal.querySelectorAll('[data-close]').forEach(btn=>btn.addEventListener('click',()=>modal.remove()));
     modal.addEventListener('click',event=>{if(event.target===modal)modal.remove();});
@@ -211,15 +225,21 @@
     if(typeof store==='undefined'||!store){showNotice('O jogo ainda não terminou de carregar.',true);return;}
 
     const pieceIds=allPieceIds();
-    const capacity=pieceIds.length;
-    const total=Math.min(people.length,capacity);
+    const boardCapacity=pieceIds.length;
+    const configuredLimit=configuredPieceLimit(boardCapacity);
+    const total=Math.min(people.length,configuredLimit);
     const targets=balancedTargets(total,pieceIds);
 
     try{if(typeof getInitialBoard==='function')store.board=getInitialBoard();}catch{}
     pieceIds.forEach(clearManagedAssignment);
     if(Array.isArray(store.graveyard))store.graveyard=[];
     if(!store.g)store.g={};
-    store.g.killsB=0;store.g.killsP=0;store.g.lastMove={from:null,to:null};
+    store.g.killsB=0;
+    store.g.killsP=0;
+    store.g.lastMove={from:null,to:null};
+    store.g.enPassant=null;
+    store.g.hasMoved={B:{K:false,Rk:false,Rq:false},P:{K:false,Rk:false,Rq:false}};
+    store.g.configuredPieceLimit=configuredLimit;
 
     let available=[...pieceIds];
     const assignments=[];
@@ -234,7 +254,8 @@
       available=available.filter(id=>id!==pieceId);
       entry.assigned=true;
       const side=sideOf(pieceId),type=typeOf(pieceId);
-      counts[side]+=1;typeCounts[side][type]=(typeCounts[side][type]||0)+1;
+      counts[side]+=1;
+      typeCounts[side][type]=(typeCounts[side][type]||0)+1;
       return true;
     }
 
@@ -248,23 +269,69 @@
       if(type)take(entry,chooseTyped(entry.person,available,type,counts,targets,typeCounts),'second');
     });
     pending.forEach(entry=>{
-      if(entry.assigned||!available.length)return;
+      if(entry.assigned||assignments.length>=total)return;
       take(entry,chooseFree(entry.person,available,counts,targets,typeCounts),'free');
     });
 
+    // Uma formação válida precisa manter um Rei em cada lado que possua peças.
+    ['B','P'].forEach(side=>{
+      if(targets[side]<=0)return;
+      const kingId=pieceIds.find(id=>sideOf(id)===side&&typeOf(id)==='K');
+      if(!kingId||assignments.some(item=>item.pieceId===kingId))return;
+      const candidates=assignments
+        .filter(item=>sideOf(item.pieceId)===side&&typeOf(item.pieceId)!=='K')
+        .sort((a,b)=>({free:0,second:1,first:2,king:3}[a.reason]??4)-({free:0,second:1,first:2,king:3}[b.reason]??4));
+      const replacement=candidates[0];
+      if(!replacement)return;
+      const oldId=replacement.pieceId;
+      const oldType=typeOf(oldId);
+      clearManagedAssignment(oldId);
+      assignToPiece(kingId,replacement.person,'king');
+      available=available.filter(id=>id!==kingId);
+      if(!available.includes(oldId))available.push(oldId);
+      typeCounts[side][oldType]=Math.max(0,(typeCounts[side][oldType]||0)-1);
+      typeCounts[side].K=(typeCounts[side].K||0)+1;
+      replacement.pieceId=kingId;
+      replacement.reason='king';
+    });
+
+    // O JSON define as peças humanas ativas: remove do tabuleiro as casas não escaladas.
+    const activePieceIds=new Set(assignments.map(item=>item.pieceId));
+    if(Array.isArray(store.board)){
+      store.board=store.board.map(id=>id&&activePieceIds.has(id)?id:null);
+    }
+
     const overflow=pending.filter(entry=>!entry.assigned).map(entry=>entry.person);
     const summary={
-      total:people.length,capacity,assigned:assignments.length,
+      total:people.length,
+      capacity:configuredLimit,
+      boardCapacity,
+      configuredLimit,
+      assigned:assignments.length,
       first:assignments.filter(a=>a.reason==='first').length,
       second:assignments.filter(a=>a.reason==='second').length,
       free:assignments.filter(a=>a.reason==='free').length,
-      white:counts.B,black:counts.P,targets:{B:targets.B,P:targets.P},overflow
+      king:assignments.filter(a=>a.reason==='king').length,
+      white:counts.B,
+      black:counts.P,
+      targets:{B:targets.B,P:targets.P},
+      overflow
     };
 
     store.g.autoLineupLastRun=new Date().toISOString();
     store.g.autoLineupSummary={
-      total:summary.total,capacity:summary.capacity,assigned:summary.assigned,first:summary.first,second:summary.second,free:summary.free,
-      white:summary.white,black:summary.black,balanced:Math.abs(summary.white-summary.black)<=1,
+      total:summary.total,
+      capacity:summary.capacity,
+      boardCapacity:summary.boardCapacity,
+      configuredLimit:summary.configuredLimit,
+      assigned:summary.assigned,
+      first:summary.first,
+      second:summary.second,
+      free:summary.free,
+      king:summary.king,
+      white:summary.white,
+      black:summary.black,
+      balanced:Math.abs(summary.white-summary.black)<=1,
       overflow:overflow.map(p=>({id:p.id,name:p.name,character:p.character}))
     };
 
