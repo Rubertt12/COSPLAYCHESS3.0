@@ -7,14 +7,11 @@
 <body class="register-page">
   <header class="topbar"><a class="brand" href="./index.html"><img src="./img/logofergoverse.png" alt="Fergorverse"><span><b>COSPLAY</b><em>CHESS</em></span></a><div class="top-actions"><a class="btn ghost" href="./index.html">Voltar</a></div></header>
   <main class="register-shell shell">
-    <aside class="register-aside"><img src="./img/logofergoverse.png" alt="CosplayChess"><span class="kicker">FICHA DO EVENTO</span><h1>Seu nome entra na lista.<br><i>Sua função entra na partida.</i></h1><p>Inscreva-se como peça humana, Player 1 ou Player 2. Os dois Players também enviam nome e foto; esses dados entram automaticamente no jogo quando a organização importar o JSON do evento.</p><div class="steps"><span>01 EVENTO</span><span>02 FUNÇÃO</span><span>03 FOTO</span><span>04 CONTATO</span><span>05 CONFIRMAÇÃO</span></div></aside>
+    <aside class="register-aside"><img src="./img/logofergoverse.png" alt="CosplayChess"><span class="kicker">FICHA DO EVENTO</span><h1>Seu nome entra na lista.<br><i>Seu personagem entra na partida.</i></h1><p>Inscreva seu personagem/cosplay para participar como peça humana do tabuleiro. A definição de Player 1 e Player 2 é feita exclusivamente pela organização no painel administrativo.</p><div class="steps"><span>01 EVENTO</span><span>02 DADOS</span><span>03 PERSONAGEM</span><span>04 FOTO</span><span>05 CONFIRMAÇÃO</span></div></aside>
     <section class="form-card">
       <div class="section-head compact"><div><span class="kicker">INSCRIÇÃO</span><h2>Entrar no <i>tabuleiro</i></h2></div></div>
       <form id="signupForm" class="signup-form">
         <label class="wide"><span>Evento *</span><select name="eventId" id="eventSelect" required><option value="">Carregando eventos...</option></select></label>
-
-        <div class="divider">FUNÇÃO NA PARTIDA</div>
-        <label class="wide"><span>Como você participa? *</span><select name="gameRole" id="gameRole" required><option value="piece">Peça humana do tabuleiro</option><option value="player1">Player 1 — Brancas</option><option value="player2">Player 2 — Pretas</option></select><small id="gameRoleHelp">Peças humanas entram na escalação. Player 1 e Player 2 comandam os lados da partida.</small></label>
 
         <div class="divider">DADOS PESSOAIS</div>
         <div class="two"><label><span>Nome completo *</span><input name="fullName" required autocomplete="name"></label><label><span>Nick</span><input name="nick"></label></div>
@@ -23,7 +20,7 @@
         <label class="wide"><span>Nível no xadrez</span><select name="chessLevel"><option>Iniciante</option><option>Intermediário</option><option>Avançado</option><option>Competitivo</option></select></label>
 
         <div class="divider">FOTO</div>
-        <label class="photo-field wide"><span id="photoFieldLabel">Foto do personagem *</span><input id="characterPhoto" type="file" accept="image/jpeg,image/png,image/webp" required><small id="photoFieldHelp">Para peça humana, envie uma foto clara do personagem/cosplay. Para Player 1 ou Player 2, envie a foto do próprio Player.</small><div id="photoPreview" class="photo-preview">Prévia da foto</div></label>
+        <label class="photo-field wide"><span id="photoFieldLabel">Foto do personagem *</span><input id="characterPhoto" type="file" accept="image/jpeg,image/png,image/webp" required><small id="photoFieldHelp">Envie uma foto clara do personagem/cosplay. JPG, PNG ou WEBP.</small><div id="photoPreview" class="photo-preview">Prévia da foto</div></label>
 
         <div class="divider" data-piece-only>PERSONAGEM</div>
         <label class="wide" data-piece-only><span>Personagem / cosplay *</span><input name="characterName" id="characterName" required placeholder="Ex.: Ciel Phantomhive"></label>
@@ -43,6 +40,6 @@
       </form>
     </section>
   </main>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script src="./cadastro.js?v=20260824-wa2"></script><script src="./registration-whatsapp-success.js?v=20260824-wa2"></script><script src="./registration-role-visibility.js?v=20260819-1"></script><script src="./site-cms.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script src="./cadastro.js?v=20260904-piece-only1"></script><script src="./registration-whatsapp-success.js?v=20260824-wa2"></script><script src="./site-cms.js"></script>
 </body>
 </html>
