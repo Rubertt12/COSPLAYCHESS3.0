@@ -47,6 +47,12 @@
     };
   }
 
+  function eventPieceLimit(event) {
+    const raw = Number(event?.max_participants);
+    if (!Number.isFinite(raw) || raw <= 0) return 32;
+    return Math.min(32, Math.max(1, Math.floor(raw)));
+  }
+
   function ensureResultsNav() {
     const nav = document.querySelector('.v6-nav');
     if (!nav || nav.querySelector('[data-admin-results-link]')) return false;
@@ -138,16 +144,23 @@
           playerCandidates.push(await exportPerson(r));
         }
 
+        const pieceLimit = eventPieceLimit(event);
         const payload = {
           type: 'cosplaychess-participants',
-          version: 6,
+          version: 7,
           exportedAt: new Date().toISOString(),
           event: {
             id: event.id,
             name: event.title,
             startAt: event.start_at,
             venue: event.venue,
-            city: event.city
+            city: event.city,
+            maxParticipants: event.max_participants ?? null,
+            pieceLimit
+          },
+          gameConfig: {
+            pieceLimit,
+            playerSlotsExcluded: true
           },
           playerAssignment: {
             mode: player1 && player2 ? 'predefined-or-runtime' : 'runtime-allowed',
@@ -178,7 +191,7 @@
         const modeMessage = player1 && player2
           ? `Players pré-definidos:\nPlayer 1: ${player1.name}\nPlayer 2: ${player2.name}\n\nEles serão preenchidos no jogo, mas poderão ser trocados na hora.`
           : 'Players ainda não foram pré-definidos. O jogo permitirá escolher Player 1 e Player 2 na hora do evento.';
-        alert(`JSON oficial exportado.\n\n${modeMessage}\n\nPeças: ${participants.length}\nSincronização automática: ATIVA.`);
+        alert(`JSON oficial exportado.\n\n${modeMessage}\n\nPeças no JSON: ${participants.length}\nLimite do tabuleiro: ${pieceLimit}\nSincronização automática: ATIVA.`);
       } catch (error) {
         alert(error?.message || 'Não foi possível exportar o elenco com sincronização automática.');
       } finally {
