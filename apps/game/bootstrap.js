@@ -126,6 +126,7 @@ function installJsonSettingsUi(window) {
   const rosterGuardUrl = pathToFileURL(path.join(__dirname, 'roster-guard.js')).href;
   const playerJsonAutofillUrl = pathToFileURL(path.join(__dirname, 'game-player-json-autofill.js')).href;
   const siteRosterImportUrl = pathToFileURL(path.join(__dirname, 'site-roster-import.js')).href;
+  const autoLineupBalanceUrl = pathToFileURL(path.join(__dirname, 'game-auto-lineup-balance.js')).href;
 
   window.webContents.on('did-finish-load', () => {
     const code = `(() => {
@@ -158,7 +159,7 @@ function installJsonSettingsUi(window) {
           if (grid) dataCard.insertBefore(help, grid);
           else dataCard.appendChild(help);
         }
-        help.textContent = 'Importe o arquivo gerado por “Exportar para o app” no site. Player 1 e Player 2 serão aplicados automaticamente com nome e foto; depois use “Acionar JSON” para distribuir as peças.';
+        help.textContent = 'Importe o arquivo gerado por “Exportar para o app” no site. Player 1 e Player 2 serão aplicados automaticamente com nome e foto; depois use “Acionar JSON” para distribuir e balancear as peças entre Brancas e Pretas.';
         help.style.cssText = 'font-size:9px;color:#aaa;line-height:1.45;margin:8px 0 10px;';
 
         const backButton = Array.from(settings.querySelectorAll('button')).find(btn => /VOLTAR/i.test(btn.textContent || ''));
@@ -175,11 +176,24 @@ function installJsonSettingsUi(window) {
         editLabel.innerHTML = input + ' MODO EDIÇÃO (REVISAR ESCALAÇÃO)';
       }
 
+      const loadAutoLineupBalance = () => {
+        if (document.querySelector('script[data-auto-lineup-balance]')) return;
+        const balanceScript = document.createElement('script');
+        balanceScript.src = ${JSON.stringify(autoLineupBalanceUrl)};
+        balanceScript.dataset.autoLineupBalance = 'true';
+        document.body.appendChild(balanceScript);
+      };
+
       const loadSiteRosterOnly = () => {
-        if (document.querySelector('script[data-site-roster-import]')) return;
+        const existing = document.querySelector('script[data-site-roster-import]');
+        if (existing) {
+          loadAutoLineupBalance();
+          return;
+        }
         const siteScript = document.createElement('script');
         siteScript.src = ${JSON.stringify(siteRosterImportUrl)};
         siteScript.dataset.siteRosterImport = 'true';
+        siteScript.onload = loadAutoLineupBalance;
         document.body.appendChild(siteScript);
       };
 
