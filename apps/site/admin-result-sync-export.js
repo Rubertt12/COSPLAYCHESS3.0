@@ -2,6 +2,95 @@
   if (window.__cosplayAdminResultSyncExportLoaded) return;
   window.__cosplayAdminResultSyncExportLoaded = true;
 
+  function normalizeGameRole(value) {
+    const role = String(value || 'piece').trim().toLowerCase();
+    if (role === 'player1' || role === 'player_1' || role === 'p1') return 'player1';
+    if (role === 'player2' || role === 'player_2' || role === 'p2') return 'player2';
+    return 'piece';
+  }
+
+  function registrationRows() {
+    try {
+      return Array.isArray(registrations) ? registrations : [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function refreshRegistrationRoleBadges() {
+    const source = registrationRows();
+    if (!source.length) return false;
+
+    const byId = new Map(source.map(row => [String(row?.id || ''), row]));
+    const cards = document.querySelectorAll('[data-registration-id]');
+    if (!cards.length) return false;
+
+    cards.forEach(card => {
+      const id = String(card.dataset.registrationId || '');
+      if (!id) return;
+      const row = byId.get(id);
+      if (!row) return;
+
+      const role = normalizeGameRole(row.game_role ?? row.gameRole);
+      card.dataset.gameRole = role;
+
+      let badge = card.querySelector('[data-admin-player-role-badge]');
+      if (role !== 'player1' && role !== 'player2') {
+        if (badge) badge.remove();
+        return;
+      }
+
+      const number = role === 'player1' ? 1 : 2;
+      const sideName = number === 1 ? 'BRANCAS' : 'PRETAS';
+      const label = `PLAYER ${number} · ${sideName}`;
+      const host = card.querySelector('.registration-main, .registration-info, .registration-name, .registration-card__main') || card;
+
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.dataset.adminPlayerRoleBadge = '1';
+        badge.setAttribute('aria-label', label);
+        badge.style.cssText = 'display:inline-flex;align-items:center;gap:5px;width:max-content;max-width:100%;margin-top:5px;padding:4px 8px;border-radius:999px;border:1px solid currentColor;font-size:9px;font-weight:900;letter-spacing:.65px;line-height:1.1;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.14);';
+        host.appendChild(badge);
+      }
+
+      badge.textContent = `${number === 1 ? '♔' : '♚'} ${label}`;
+      badge.title = `Inscrito definido como Player ${number} no jogo`;
+      badge.style.color = number === 1 ? '#e9f7ff' : '#ff9ab1';
+      badge.style.background = number === 1 ? 'rgba(0,229,255,.10)' : 'rgba(255,70,115,.10)';
+    });
+    return true;
+  }
+
+  function installRegistrationRoleBadges() {
+    let scheduled = false;
+    const schedule = () => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(() => {
+        scheduled = false;
+        refreshRegistrationRoleBadges();
+      });
+    };
+
+    const root = document.getElementById('registrationsList') || document.body;
+    const observer = new MutationObserver(schedule);
+    observer.observe(root, { childList: true, subtree: true });
+    document.addEventListener('change', event => {
+      if (event.target?.closest?.('[data-registration-id], #editRegistrationModal, #registrationEditModal')) {
+        setTimeout(schedule, 80);
+      }
+    }, true);
+    window.addEventListener('focus', schedule);
+
+    schedule();
+    let attempts = 0;
+    const timer = setInterval(() => {
+      schedule();
+      attempts += 1;
+      if (attempts >= 40) clearInterval(timer);
+    }, 250);
+  }
+
   async function createResultSyncAccess(eventId) {
     const { data: { session } } = await db.auth.getSession();
     if (!session?.access_token) throw new Error('Sua sessão administrativa expirou. Entre novamente no painel.');
@@ -37,8 +126,10 @@
       name: row.full_name,
       nick: row.nick || '',
       character: row.character_name || '',
-      gameRole: row.game_role || 'piece',
+      gameRole: normalizeGameRole(row.game_role || 'piece'),
       player: number,
+      playerSlot: number,
+      navbarSlot: number === 1 ? 'player1' : number === 2 ? 'player2' : null,
       side,
       sideName: number === 1 ? 'Brancas' : number === 2 ? 'Pretas' : '',
       email: row.email || '',
@@ -71,6 +162,7 @@
 
   function install() {
     ensureResultsNav();
+    refreshRegistrationRoleBadges();
 
     const btn = document.getElementById('exportRosterBtn');
     if (!btn || btn.dataset.autoResultSync === '1') return false;
@@ -89,10 +181,10 @@
         return;
       }
 
-      const pieceRows = rows.filter(r => (r.game_role || 'piece') === 'piece');
-      const extraPlayerRows = rows.filter(r => (r.game_role || 'piece') !== 'piece');
-      const player1Row = rows.find(r => r.game_role === 'player1') || null;
-      const player2Row = rows.find(r => r.game_role === 'player2') || null;
+      const pieceRows = rows.filter(r => normalizeGameRole(r.game_role) === 'piece');
+      const extraPlayerRows = rows.filter(r => normalizeGameRole(r.game_role) !== 'piece');
+      const player1Row = rows.find(r => normalizeGameRole(r.game_role) === 'player1') || null;
+      const player2Row = rows.find(r => normalizeGameRole(r.game_role) === 'player2') || null;
 
       if (!pieceRows.length) {
         alert('O evento ainda não possui nenhuma peça humana confirmada para o tabuleiro.');
@@ -147,7 +239,7 @@
         const pieceLimit = eventPieceLimit(event);
         const payload = {
           type: 'cosplaychess-participants',
-          version: 7,
+          version: 8,
           exportedAt: new Date().toISOString(),
           event: {
             id: event.id,
@@ -164,7 +256,11 @@
           },
           playerAssignment: {
             mode: player1 && player2 ? 'predefined-or-runtime' : 'runtime-allowed',
-            canOverrideInGame: true
+            canOverrideInGame: true,
+            navbarMapping: {
+              player1: 'Brancas',
+              player2: 'Pretas'
+            }
           },
           gamePlayers: { player1, player2 },
           playerCandidates,
@@ -202,10 +298,12 @@
     return true;
   }
 
+  installRegistrationRoleBadges();
   ensureResultsNav();
   if (!install()) {
     const timer = setInterval(() => {
       ensureResultsNav();
+      refreshRegistrationRoleBadges();
       if (install()) clearInterval(timer);
     }, 250);
     setTimeout(() => clearInterval(timer), 10000);
