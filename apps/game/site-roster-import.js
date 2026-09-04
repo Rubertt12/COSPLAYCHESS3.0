@@ -136,6 +136,130 @@
     };
   }
 
+  function normalizeGamePlayer(raw, number = null) {
+    if (!raw || typeof raw !== 'object') return null;
+    const name = first(raw, ['name', 'nome', 'fullName', 'full_name']);
+    if (!name) return null;
+    const photoUrl = first(raw, ['photoUrl', 'photo_url', 'fotoUrl', 'foto_url', 'imageUrl', 'image_url']);
+    const photo = first(raw, [
+      'photoDataUrl', 'photo_data_url', 'photo', 'foto', 'avatar', 'image', 'img',
+      'profileImage', 'profile_image'
+    ]) || photoUrl;
+    const playerNumber = number === 1 || number === 2 ? number : null;
+    return {
+      registrationId: first(raw, ['registrationId', 'registration_id', 'id', 'uuid']),
+      name,
+      nick: first(raw, ['nick', 'apelido']),
+      character: first(raw, ['character', 'cosplay', 'personagem', 'character_name']),
+      photo,
+      photoUrl,
+      player: playerNumber,
+      playerSlot: playerNumber,
+      side: playerNumber === 1 ? 'B' : playerNumber === 2 ? 'P' : '',
+      sideName: playerNumber === 1 ? 'Brancas' : playerNumber === 2 ? 'Pretas' : '',
+      assignmentSource: 'predefined'
+    };
+  }
+
+  function gamePlayerCandidates(data) {
+    if (!isOfficialSiteExport(data)) return [];
+    const source = [
+      ...(Array.isArray(data.participants) ? data.participants : []),
+      ...(Array.isArray(data.playerCandidates) ? data.playerCandidates : []),
+      data.gamePlayers?.player1,
+      data.gamePlayers?.player2
+    ].filter(Boolean);
+    const seen = new Set();
+    const people = [];
+    source.forEach(raw => {
+      const person = normalizeGamePlayer(raw, null);
+      if (!person) return;
+      const key = person.registrationId || `${person.name.toLowerCase()}|${person.character.toLowerCase()}`;
+      if (seen.has(key)) return;
+      seen.add(key);
+      people.push(person);
+    });
+    return people.sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
+  }
+
+  function playerFromExport(data, number) {
+    if (!isOfficialSiteExport(data)) return null;
+    const raw = number === 1
+      ? (data.gamePlayers?.player1 || data.gamePlayers?.player_1 || data.gamePlayers?.p1)
+      : (data.gamePlayers?.player2 || data.gamePlayers?.player_2 || data.gamePlayers?.p2);
+    if (!raw) return null;
+
+    const direct = normalizeGamePlayer(raw, number);
+    if (!direct) return null;
+    if (direct.photo) return direct;
+
+    const candidates = [
+      ...(Array.isArray(data.playerCandidates) ? data.playerCandidates : []),
+      ...(Array.isArray(data.participants) ? data.participants : [])
+    ];
+    const fallback = candidates.find(candidate => {
+      const id = first(candidate, ['registrationId', 'registration_id', 'id', 'uuid']);
+      return direct.registrationId && id === direct.registrationId;
+    });
+    if (!fallback) return direct;
+
+    const fallbackPerson = normalizeGamePlayer(fallback, number);
+    return fallbackPerson ? { ...fallbackPerson, ...direct, photo: direct.photo || fallbackPerson.photo, photoUrl: direct.photoUrl || fallbackPerson.photoUrl } : direct;
+  }
+
+  function applyNavbarPlayer(person, number) {
+    const side = number === 1 ? 'B' : 'P';
+    const avatarKey = `avatar${side}`;
+    const registeredKey = number === 1 ? 'registeredPlayer1' : 'registeredPlayer2';
+    const nameKey = number === 1 ? 'player1Name' : 'player2Name';
+    const nameInput = document.getElementById(`name-${side}`);
+    const image = document.getElementById(`img-${side}`);
+
+    if (!person) {
+      delete store.g[registeredKey];
+      delete store.g[nameKey];
+      store.g[avatarKey] = '';
+      if (nameInput) nameInput.value = number === 1 ? 'Jogador 1' : 'Jogador 2';
+      if (image) image.style.backgroundImage = '';
+      return;
+    }
+
+    store.g[registeredKey] = { ...person };
+    store.g[nameKey] = person.name;
+    store.g[avatarKey] = person.photo || person.photoUrl || '';
+
+    if (nameInput) {
+      nameInput.value = person.name;
+      nameInput.dispatchEvent(new Event('input', { bubbles: true }));
+      nameInput.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    if (image) {
+      const avatar = store.g[avatarKey];
+      image.style.backgroundImage = avatar ? `url(${JSON.stringify(avatar)})` : '';
+      image.style.backgroundPosition = 'center';
+      image.style.backgroundSize = 'cover';
+      image.style.backgroundRepeat = 'no-repeat';
+    }
+  }
+
+  function applyOfficialPlayers(data) {
+    if (!isOfficialSiteExport(data)) return null;
+    const player1 = playerFromExport(data, 1);
+    const player2 = playerFromExport(data, 2);
+
+    store.g.playerCandidates = gamePlayerCandidates(data);
+    store.g.predefinedPlayers = { player1, player2 };
+    store.g.playerAssignmentMode = player1 || player2 ? 'predefined' : 'runtime';
+    store.g.registeredPlayersImportedAt = new Date().toISOString();
+
+    applyNavbarPlayer(player1, 1);
+    applyNavbarPlayer(player2, 2);
+
+    try { updateUI(); } catch (_) {}
+    try { window.refreshCosplayPlayerAssignment?.(); } catch (_) {}
+    return { player1, player2 };
+  }
+
   function notify(message, error = false) {
     const old = document.getElementById('site-roster-import-toast');
     if (old) old.remove();
@@ -167,17 +291,24 @@
     delete store.g.autoLineupLastRun;
     delete store.g.matchRuntime;
 
+    const players = applyOfficialPlayers(data);
+
     try { save(); } catch (_) {}
     try { renderBoard(); } catch (_) {}
     try { renderConfigLists(); } catch (_) {}
+    try { updateUI(); } catch (_) {}
     try { window.refreshCosplayAutoLineup?.(); } catch (_) {}
     try { window.refreshCosplayResultSync?.(); } catch (_) {}
+    try { window.refreshCosplayPlayerAssignment?.(); } catch (_) {}
 
     const eventName = store.g.rosterEvent?.name ? ` do evento ${store.g.rosterEvent.name}` : '';
+    const playerMessage = players?.player1 || players?.player2
+      ? ` Player 1: ${players?.player1?.name || 'não definido'} · Player 2: ${players?.player2?.name || 'não definido'}. Nome e foto foram aplicados na barra superior.`
+      : '';
     const syncMessage = store.g.resultSync
       ? ' A sincronização automática de resultados com o site está ATIVA.'
       : ' Este JSON não possui sincronização automática; a exportação manual do resultado ficará disponível como backup.';
-    notify(`${people.length} participante(s)${eventName} carregado(s) do JSON do site. Agora você pode clicar em “Acionar JSON” para montar o tabuleiro automaticamente.${syncMessage}`, !store.g.resultSync && isOfficialSiteExport(data));
+    notify(`${people.length} participante(s)${eventName} carregado(s) do JSON do site.${playerMessage} Agora você pode clicar em “Acionar JSON” para montar o tabuleiro automaticamente.${syncMessage}`, !store.g.resultSync && isOfficialSiteExport(data));
   }
 
   function importFile(input) {
