@@ -2,7 +2,7 @@
   "name": "cosplay-chess",
   "version": "1.1.0",
   "description": "A Proxima Geracao de Engines de Batalha para Palcos Geek",
-  "main": "bootstrap.js",
+  "main": "safe-bootstrap.js",
   "scripts": {
     "start": "electron .",
     "build": "echo 'Web Build Complete'",
