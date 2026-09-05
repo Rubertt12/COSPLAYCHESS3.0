@@ -80,6 +80,39 @@
     return out.sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
   }
 
+  function unlinkPlayerFromBoard(p){
+    if(!p||typeof store==='undefined'||!store?.p)return 0;
+    const wantedId=String(p.registrationId||p.id||'').trim();
+    const wantedName=String(p.name||'').trim().toLowerCase();
+    let cleared=0;
+    Object.entries(store.p).forEach(([pieceId,piece])=>{
+      if(!piece||typeof piece!=='object')return;
+      const linkedId=String(piece.participantId||piece.participant?.registrationId||piece.participant?.id||'').trim();
+      const linkedName=String(piece.participant?.name||piece.participantRealName||'').trim().toLowerCase();
+      const same=(wantedId&&linkedId&&wantedId===linkedId)||(!wantedId&&wantedName&&linkedName===wantedName);
+      if(!same)return;
+
+      const playerPhoto=p.photo||p.photoUrl||'';
+      if(piece.rosterManagedName||String(piece.name||'').trim()===String(p.character||p.name||'').trim())delete piece.name;
+      if(piece.rosterManagedImg||!playerPhoto||piece.img===playerPhoto)delete piece.img;
+      if(piece.rosterManagedPhotoCrop)delete piece.photoCrop;
+      if(piece.rosterManagedSound){
+        try{if(typeof stopPiecePlayback==='function')stopPiecePlayback(pieceId,false);}catch(_){}
+        delete piece.sound;delete piece.soundName;delete piece.soundSource;
+      }
+      delete piece.participantId;
+      delete piece.participant;
+      delete piece.participantRealName;
+      delete piece.rosterManagedName;
+      delete piece.rosterManagedImg;
+      delete piece.rosterManagedPhotoCrop;
+      delete piece.rosterManagedSound;
+      delete piece.autoLineupReason;
+      cleared+=1;
+    });
+    return cleared;
+  }
+
   function paint(number,p){
     if(typeof store==='undefined'||!store)return;
     if(!store.g)store.g={};
@@ -95,6 +128,7 @@
       if(img)img.style.backgroundImage='';
       return;
     }
+    unlinkPlayerFromBoard(p);
     const fixed={...p,player:number,playerSlot:number,navbarSlot:`player${number}`,side,sideName:number===1?'Brancas':'Pretas'};
     store.g[regKey]=fixed;store.g[nameKey]=fixed.name;store.g[avatarKey]=fixed.photo||fixed.photoUrl||'';
     if(input){input.value=fixed.name;input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));}
@@ -109,6 +143,7 @@
     store.g.playerAssignmentMode=source;
     store.g.registeredPlayersImportedAt=new Date().toISOString();
     if(persist){try{save();}catch(_){}}
+    try{renderBoard();}catch(_){}
     try{updateUI();}catch(_){}
     refreshCard();
     return true;
@@ -120,7 +155,7 @@
     return player1||player2?{player1,player2}:null;
   }
 
-  function esc(v=''){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function esc(v=''){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));}
   function options(selected,other){
     const list=Array.isArray(store?.g?.playerCandidates)?store.g.playerCandidates:[];
     return '<option value="">— selecionar participante —</option>'+list.map(p=>`<option value="${esc(p.registrationId)}"${selected===p.registrationId?' selected':''}${other===p.registrationId?' disabled':''}>${esc(p.name+(p.character?' · '+p.character:''))}</option>`).join('');
