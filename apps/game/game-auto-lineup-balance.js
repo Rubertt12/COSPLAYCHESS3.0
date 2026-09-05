@@ -4,6 +4,7 @@
 
   const TYPE_LABEL={P:'PEÃO',T:'TORRE',C:'CAVALO',B:'BISPO',Q:'RAINHA',K:'REI'};
   const FREE_TYPE_PRIORITY=['K','Q','T','B','C','P'];
+  const BACK_PRIORITY=['K1','Q1','C1','C2','T1','T2','B1','B2'];
   const FORMATIONS={
     20:{
       backRank:[null,null,'C1','Q1','K1','C2',null,null],
@@ -90,26 +91,26 @@
     let raw=null;
     try{
       raw=store?.g?.rosterEvent?.pieceLimit
-        ?? store?.g?.rosterEvent?.maxParticipants
-        ?? store?.g?.rosterEvent?.max_participants
-        ?? store?.g?.configuredPieceLimit
-        ?? store?.g?.layoutPieceCount
-        ?? null;
+        ??store?.g?.rosterEvent?.maxParticipants
+        ??store?.g?.rosterEvent?.max_participants
+        ??store?.g?.configuredPieceLimit
+        ??store?.g?.layoutPieceCount
+        ??null;
     }catch{}
     const number=Math.floor(Number(raw));
     if(!Number.isFinite(number)||number<=0)return capacity;
     return Math.min(capacity,number);
   }
 
-  function formationCount(limit){
-    const n=Math.floor(Number(limit));
+  function formationCount(amount){
+    const n=Math.max(1,Math.floor(Number(amount)||0));
     if(n<=20)return 20;
     if(n<=24)return 24;
     return 32;
   }
 
-  function buildFormationBoard(limit){
-    const count=formationCount(limit);
+  function buildFormationBoard(amount){
+    const count=formationCount(amount);
     const spec=FORMATIONS[count];
     const rowFor=(ids,side)=>ids.map(id=>id?`${id}_${side}`:null);
     return[
@@ -128,6 +129,41 @@
     if(P>capacity.P){const overflow=P-capacity.P;P=capacity.P;B+=overflow;}
     B=Math.min(B,capacity.B);P=Math.min(P,capacity.P);
     return{B,P,capacity};
+  }
+
+  function centeredRowBases(row,count){
+    const positions=row.map((id,index)=>id?{id,index}:null).filter(Boolean);
+    const wanted=Math.max(0,Math.min(positions.length,Math.floor(Number(count)||0)));
+    if(!wanted)return[];
+    if(wanted===positions.length)return positions.map(item=>item.id);
+    const start=Math.ceil((positions.length-wanted)/2);
+    return positions.slice(start,start+wanted).map(item=>item.id);
+  }
+
+  function activeBasesForSide(formation,sideCount){
+    const spec=FORMATIONS[formation];
+    const allBack=spec.backRank.filter(Boolean);
+    const wanted=Math.max(0,Math.min(allBack.length+spec.pawns.filter(Boolean).length,Math.floor(Number(sideCount)||0)));
+    const backCount=Math.min(allBack.length,wanted);
+    const pawnCount=Math.max(0,wanted-backCount);
+    const selectedBack=backCount===allBack.length
+      ?allBack
+      :BACK_PRIORITY.filter(id=>allBack.includes(id)).slice(0,backCount);
+    const selectedPawns=centeredRowBases(spec.pawns,pawnCount);
+    return new Set([...selectedBack,...selectedPawns]);
+  }
+
+  function buildActiveFormationBoard(formation,targets){
+    const full=buildFormationBoard(formation);
+    const allowed={
+      B:activeBasesForSide(formation,targets.B),
+      P:activeBasesForSide(formation,targets.P)
+    };
+    return full.map(id=>{
+      if(!id)return null;
+      const side=sideOf(id);
+      return allowed[side]?.has(baseOf(id))?id:null;
+    });
   }
 
   function participantMusic(person){
@@ -287,11 +323,19 @@
     const everyPieceId=allPieceIds();
     const boardCapacity=everyPieceId.length;
     const configuredLimit=configuredPieceLimit(boardCapacity);
-    const selectedFormation=formationCount(configuredLimit);
-    const formationBoard=buildFormationBoard(selectedFormation);
+    const total=Math.min(people.length,configuredLimit,boardCapacity);
+
+    // A formação agora acompanha a QUANTIDADE REAL de peças no tabuleiro.
+    // Até 20 usa o layout de 20; 21–24 usa o layout de 24; 25–32 usa o clássico de 32.
+    const selectedFormation=formationCount(total);
+    const fullFormationBoard=buildFormationBoard(selectedFormation);
+    const fullPieceIds=fullFormationBoard.filter(Boolean);
+    const targets=balancedTargets(total,fullPieceIds);
+
+    // Primeiro define as casas que realmente existirão. Só depois distribui as pessoas.
+    // Isso impede buracos aleatórios (A7/A2 etc.) causados por preferências individuais.
+    const formationBoard=buildActiveFormationBoard(selectedFormation,targets);
     const pieceIds=formationBoard.filter(Boolean);
-    const total=Math.min(people.length,configuredLimit,pieceIds.length);
-    const targets=balancedTargets(total,pieceIds);
 
     everyPieceId.forEach(clearManagedAssignment);
     store.board=formationBoard.slice();
@@ -305,6 +349,7 @@
     store.g.configuredPieceLimit=configuredLimit;
     store.g.layoutPieceCount=selectedFormation;
     store.g.appliedLayout=selectedFormation;
+    store.g.actualBoardPieces=total;
 
     let available=[...pieceIds];
     const assignments=[];
@@ -324,27 +369,23 @@
       return true;
     }
 
-    // 1ª preferência, mas somente entre as peças que existem na formação escolhida.
     pending.forEach(entry=>{
       if(assignments.length>=total)return;
       const type=pieceType(entry.person.preferredPiece);
       if(type)take(entry,chooseTyped(entry.person,available,type,counts,targets,typeCounts,assignments),'first');
     });
 
-    // 2ª preferência.
     pending.forEach(entry=>{
       if(entry.assigned||assignments.length>=total)return;
       const type=pieceType(entry.person.secondPreferredPiece);
       if(type)take(entry,chooseTyped(entry.person,available,type,counts,targets,typeCounts,assignments),'second');
     });
 
-    // Completa a formação priorizando espelhamento e equilíbrio entre os lados.
     pending.forEach(entry=>{
       if(entry.assigned||assignments.length>=total)return;
       take(entry,chooseFree(entry.person,available,counts,targets,typeCounts,assignments),'free');
     });
 
-    // Mantém um Rei em cada lado ativo sem quebrar o layout centralizado.
     ['B','P'].forEach(side=>{
       if(targets[side]<=0)return;
       const kingId=pieceIds.find(id=>sideOf(id)===side&&typeOf(id)==='K');
@@ -366,7 +407,7 @@
       replacement.reason='king';
     });
 
-    // Mantém as coordenadas da formação oficial e apenas esvazia slots sem participante.
+    // O desenho do tabuleiro já foi definido antes da escalação; nenhuma preferência pode mover a geometria.
     const activePieceIds=new Set(assignments.map(item=>item.pieceId));
     store.board=formationBoard.map(id=>id&&activePieceIds.has(id)?id:null);
 
