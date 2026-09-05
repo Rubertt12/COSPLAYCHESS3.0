@@ -14,9 +14,9 @@ const updaterAPI = {
 };
 
 const musicAPI = {
-  getFolder: () => ipcRenderer.invoke('music:get-folder'),
-  pickFolder: () => ipcRenderer.invoke('music:pick-folder'),
-  listAudio: () => ipcRenderer.invoke('music:list-audio')
+  getFolder: (kind = 'general') => ipcRenderer.invoke('music:get-folder', kind),
+  pickFolder: (kind = 'general') => ipcRenderer.invoke('music:pick-folder', kind),
+  listAudio: (kind = 'general') => ipcRenderer.invoke('music:list-audio', kind)
 };
 
 contextBridge.exposeInMainWorld('electronAPI', {
