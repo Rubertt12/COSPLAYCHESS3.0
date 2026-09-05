@@ -11,23 +11,46 @@ function musicConfigPath() {
   return path.join(app.getPath('userData'), 'cosplay-chess-music-folder.json');
 }
 
-function readMusicFolder() {
-  try {
-    const data = JSON.parse(fs.readFileSync(musicConfigPath(), 'utf8'));
-    if (data && typeof data.folderPath === 'string' && fs.existsSync(data.folderPath)) {
-      return data.folderPath;
-    }
-  } catch (_) {}
-  return '';
+function normalizeMusicKind(kind) {
+  return String(kind || '').toLowerCase() === 'random' ? 'random' : 'general';
 }
 
-function writeMusicFolder(folderPath) {
+function readMusicConfig() {
+  try {
+    const data = JSON.parse(fs.readFileSync(musicConfigPath(), 'utf8'));
+    return data && typeof data === 'object' ? data : {};
+  } catch (_) {
+    return {};
+  }
+}
+
+function writeMusicConfig(data) {
   try {
     fs.mkdirSync(path.dirname(musicConfigPath()), { recursive: true });
-    fs.writeFileSync(musicConfigPath(), JSON.stringify({ folderPath }, null, 2), 'utf8');
+    fs.writeFileSync(musicConfigPath(), JSON.stringify(data, null, 2), 'utf8');
   } catch (error) {
-    console.error('Falha ao salvar pasta de músicas:', error);
+    console.error('Falha ao salvar pastas de músicas:', error);
   }
+}
+
+function readMusicFolder(kind = 'general') {
+  const type = normalizeMusicKind(kind);
+  const data = readMusicConfig();
+  const folderPath = type === 'random'
+    ? data.randomFolderPath
+    : (data.generalFolderPath || data.folderPath);
+  return typeof folderPath === 'string' && folderPath && fs.existsSync(folderPath) ? folderPath : '';
+}
+
+function writeMusicFolder(kind, folderPath) {
+  const type = normalizeMusicKind(kind);
+  const data = readMusicConfig();
+  if (type === 'random') data.randomFolderPath = folderPath;
+  else {
+    data.generalFolderPath = folderPath;
+    data.folderPath = folderPath; // compatibilidade com versões antigas
+  }
+  writeMusicConfig(data);
 }
 
 function scanAudioFiles(folderPath) {
@@ -57,30 +80,38 @@ function scanAudioFiles(folderPath) {
       const ext = path.extname(entry.name).toLowerCase();
       if (!AUDIO_EXTENSIONS.has(ext)) continue;
 
+      const relativePath = path.relative(folderPath, fullPath);
       tracks.push({
         name: entry.name,
+        relativePath,
+        folder: path.dirname(relativePath) === '.' ? '' : path.dirname(relativePath),
         url: pathToFileURL(fullPath).href
       });
     }
   }
 
   walk(folderPath, 0);
-  return tracks;
+  return tracks.sort((a, b) => a.relativePath.localeCompare(b.relativePath, 'pt-BR', { numeric: true }));
 }
 
-ipcMain.handle('music:get-folder', () => {
-  const folderPath = readMusicFolder();
+ipcMain.handle('music:get-folder', (_event, kind = 'general') => {
+  const type = normalizeMusicKind(kind);
+  const folderPath = readMusicFolder(type);
   return {
     ok: !!folderPath,
+    kind: type,
     folderPath,
     folderName: folderPath ? path.basename(folderPath) : ''
   };
 });
 
-ipcMain.handle('music:pick-folder', async () => {
+ipcMain.handle('music:pick-folder', async (_event, kind = 'general') => {
+  const type = normalizeMusicKind(kind);
   const focusedWindow = BrowserWindow.getFocusedWindow();
   const options = {
-    title: 'Escolha a pasta de músicas do Setup Rápido',
+    title: type === 'random'
+      ? 'Escolha a pasta de músicas aleatórias do Setup Rápido'
+      : 'Escolha a pasta de músicas gerais',
     properties: ['openDirectory', 'createDirectory']
   };
 
@@ -89,31 +120,41 @@ ipcMain.handle('music:pick-folder', async () => {
     : await dialog.showOpenDialog(options);
 
   if (result.canceled || !result.filePaths?.[0]) {
-    return { ok: false, canceled: true };
+    return { ok: false, canceled: true, kind: type };
   }
 
   const folderPath = result.filePaths[0];
-  writeMusicFolder(folderPath);
+  writeMusicFolder(type, folderPath);
   return {
     ok: true,
+    kind: type,
     folderPath,
     folderName: path.basename(folderPath)
   };
 });
 
-ipcMain.handle('music:list-audio', () => {
-  const folderPath = readMusicFolder();
+ipcMain.handle('music:list-audio', (_event, kind = 'general') => {
+  const type = normalizeMusicKind(kind);
+  const folderPath = readMusicFolder(type);
   if (!folderPath) {
-    return { ok: false, error: 'Nenhuma pasta de músicas foi definida.', tracks: [] };
+    return {
+      ok: false,
+      kind: type,
+      error: type === 'random'
+        ? 'Nenhuma pasta de músicas aleatórias foi definida.'
+        : 'Nenhuma pasta de músicas gerais foi definida.',
+      tracks: []
+    };
   }
 
   if (!fs.existsSync(folderPath) || !fs.statSync(folderPath).isDirectory()) {
-    return { ok: false, error: 'A pasta de músicas configurada não está mais disponível.', tracks: [] };
+    return { ok: false, kind: type, error: 'A pasta de músicas configurada não está mais disponível.', tracks: [] };
   }
 
   const tracks = scanAudioFiles(folderPath);
   return {
     ok: true,
+    kind: type,
     folderPath,
     folderName: path.basename(folderPath),
     tracks
