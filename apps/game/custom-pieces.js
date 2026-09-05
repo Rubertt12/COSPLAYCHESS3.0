@@ -15,7 +15,7 @@
 
   const esc = value => String(value ?? '')
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+    .replace(/\"/g,'&quot;').replace(/'/g,'&#039;');
 
   function customIds(side=null){
     if(typeof store==='undefined'||!store?.p)return [];
@@ -80,16 +80,28 @@
     if(typeof pieceSoundAudios!=='undefined'&&pieceSoundAudios?.[id]){try{pieceSoundAudios[id].pause();}catch(_){} delete pieceSoundAudios[id];}
     delete store.p[id];if(pendingPlacementId===id)cancelPlacement();save();renderBoard();renderGraveyard();renderConfigLists();
   }
+  function applyBoardHoverNames(){
+    if(typeof store==='undefined'||!store?.p)return;
+    document.querySelectorAll('#board .piece[data-piece-id]').forEach(piece=>{
+      const id=piece.dataset.pieceId;
+      const name=store.p[id]?.name;
+      if(!name)return;
+      piece.title=name;
+      piece.setAttribute('aria-label',name);
+      const sq=piece.closest('.sq');
+      if(sq) sq.title=name;
+    });
+  }
   function openModal(id=null){
     document.getElementById('custom-piece-modal')?.remove();
     const editing=!!id,current=editing?(store.p[id]||{}):{},type=editing?id.charAt(0):'P',side=editing?(id.endsWith('_B')?'B':'P'):'B';
     const modal=document.createElement('div');modal.id='custom-piece-modal';
-    modal.innerHTML=`<div class="cp-card"><h2>${editing?'EDITAR PEÇA EXTRA':'ADICIONAR NOVA PEÇA'}</h2><div class="cp-sub">Escolha o tipo de movimento, o lado e dê o nome que você quiser à peça. Foto e música são opcionais.</div><div class="cp-grid">
+    modal.innerHTML=`<div class="cp-card"><h2>${editing?'EDITAR PEÇA EXTRA':'ADICIONAR NOVA PEÇA'}</h2><div class="cp-sub">Só o nome é obrigatório. Foto e música são opcionais. Sem foto, a peça usa o símbolo de xadrez e o nome aparece ao passar o mouse.</div><div class="cp-grid">
       <label>TIPO / MOVIMENTO<select id="cp-type" ${editing?'disabled':''}>${Object.entries(TYPES).map(([k,v])=>`<option value="${k}" ${k===type?'selected':''}>${v.icon} ${v.label}</option>`).join('')}</select></label>
       <label>LADO<select id="cp-side" ${editing?'disabled':''}><option value="B" ${side==='B'?'selected':''}>⚪ BRANCAS</option><option value="P" ${side==='P'?'selected':''}>⚫ PRETAS</option></select></label>
-      <label style="grid-column:1/-1">NOME DA PEÇA<input id="cp-name" maxlength="60" autocomplete="off" placeholder="Ex.: DRAGÃO DE FOGO, GUARDIÃO, SAMURAI..." value="${esc(current.name||'')}"><div class="cp-file-info" style="margin-top:6px;color:var(--accent)">Este será o nome oficial exibido no tabuleiro, menu, duelo e log.</div></label>
-      <label class="cp-file">FOTO DA PEÇA<input id="cp-photo" type="file" accept="image/*"><div class="cp-preview"><div id="cp-photo-preview" class="cp-photo" style="${current.img?`background-image:url('${String(current.img).replace(/'/g,'%27')}')`:''}"></div><div class="cp-file-info">${current.img?'Foto atual carregada. Escolha outra para substituir.':'Opcional. A foto aparecerá no tabuleiro e na tela de duelo.'}</div></div></label>
-      <label class="cp-file">MÚSICA / SOM DA PEÇA<input id="cp-sound" type="file" accept="audio/*,.mp3,.wav,.ogg,.m4a,.aac"><div class="cp-preview"><div style="font-size:26px">🎵</div><div id="cp-sound-info" class="cp-file-info">${current.sound?'Áudio atual carregado. Escolha outro arquivo para substituir.':'Opcional. Será o som individual desta peça nos duelos.'}</div></div></label>
+      <label style="grid-column:1/-1">NOME DA PEÇA<input id="cp-name" maxlength="60" autocomplete="off" placeholder="Ex.: DRAGÃO DE FOGO, GUARDIÃO, SAMURAI..." value="${esc(current.name||'')}"><div class="cp-file-info" style="margin-top:6px;color:var(--accent)">Obrigatório. Este nome será usado no jogo e aparecerá ao passar o mouse sobre a peça.</div></label>
+      <label class="cp-file">FOTO DA PEÇA — OPCIONAL<input id="cp-photo" type="file" accept="image/*"><div class="cp-preview"><div id="cp-photo-preview" class="cp-photo" style="${current.img?`background-image:url('${String(current.img).replace(/'/g,'%27')}')`:''}"></div><div class="cp-file-info">${current.img?'Foto atual carregada. Escolha outra apenas se quiser substituir.':'Pode deixar vazio. Sem foto, a peça continuará funcionando normalmente com o símbolo de xadrez.'}</div></div></label>
+      <label class="cp-file">MÚSICA / SOM DA PEÇA — OPCIONAL<input id="cp-sound" type="file" accept="audio/*,.mp3,.wav,.ogg,.m4a,.aac"><div class="cp-preview"><div style="font-size:26px">🎵</div><div id="cp-sound-info" class="cp-file-info">${current.sound?'Áudio atual carregado. Escolha outro arquivo para substituir.':'Pode deixar vazio. A peça funciona normalmente sem música própria.'}</div></div></label>
       </div><div class="cp-actions"><button class="btn" id="cp-cancel">CANCELAR</button><button class="btn btn-yes" id="cp-save">${editing?'SALVAR ALTERAÇÕES':'CRIAR E COLOCAR'}</button>${editing?'<button class="btn cp-danger" id="cp-delete">EXCLUIR ESTA PEÇA EXTRA</button>':''}</div></div>`;
     document.body.appendChild(modal);
     const photo=modal.querySelector('#cp-photo'),sound=modal.querySelector('#cp-sound'),preview=modal.querySelector('#cp-photo-preview'),soundInfo=modal.querySelector('#cp-sound-info');
@@ -98,14 +110,14 @@
     const close=()=>modal.remove();modal.querySelector('#cp-cancel').onclick=close;modal.onclick=e=>{if(e.target===modal)close();};
     modal.querySelector('#cp-save').onclick=async()=>{
       const btn=modal.querySelector('#cp-save'),name=modal.querySelector('#cp-name').value.trim();
-      if(!name){alert('Digite o nome da nova peça.');modal.querySelector('#cp-name').focus();return;}
+      if(!name){alert('Digite o nome da nova peça. A foto não é obrigatória.');modal.querySelector('#cp-name').focus();return;}
       btn.disabled=true;btn.textContent='SALVANDO...';
       try{
         const t=modal.querySelector('#cp-type').value,s=modal.querySelector('#cp-side').value,target=editing?id:makeId(t,s),data=editing?store.p[target]:{};
         data.customPiece=true;data.archetype=t;data.name=name.toUpperCase();if(data.volume===undefined)data.volume=.8;
         if(photo.files?.[0])data.img=await fileAsDataUrl(photo.files[0]);
         if(sound.files?.[0]){data.sound=await fileAsDataUrl(sound.files[0]);if(typeof pieceSoundAudios!=='undefined'&&pieceSoundAudios?.[target]){try{pieceSoundAudios[target].pause();}catch(_){} delete pieceSoundAudios[target];}}
-        store.p[target]=data;save();renderBoard();renderConfigLists();close();if(!editing)beginPlacement(target);
+        store.p[target]=data;save();renderBoard();applyBoardHoverNames();renderConfigLists();close();if(!editing)beginPlacement(target);
       }catch(error){alert(`Não foi possível salvar a peça.\n\n${error.message||error}`);btn.disabled=false;btn.textContent=editing?'SALVAR ALTERAÇÕES':'CRIAR E COLOCAR';}
     };
     const del=modal.querySelector('#cp-delete');if(del)del.onclick=()=>{if(confirm(`Excluir definitivamente a peça extra "${current.name||id}"?`)){close();removeEverywhere(id);}};
@@ -115,24 +127,30 @@
     [['B','list-white'],['P','list-black']].forEach(([side,listId])=>{
       const list=document.getElementById(listId);if(!list)return;list.querySelectorAll('[data-custom-extra-root]').forEach(n=>n.remove());
       const ids=customIds(side);if(!ids.length)return;const root=document.createElement('div');root.dataset.customExtraRoot='1';root.innerHTML=`<div class="custom-extra-heading">➕ PEÇAS EXTRAS (${ids.length})</div>`;
-      ids.forEach(id=>{const d=store.p[id]||{},onBoard=store.board.includes(id),card=document.createElement('div');card.className='custom-extra-piece';card.innerHTML=`<div class="cp-thumb" style="${d.img?`background-image:url('${String(d.img).replace(/'/g,'%27')}')`:''}">${d.img?'':(TYPES[id.charAt(0)]?.icon||'♟')}</div><div style="min-width:0"><strong>${esc(d.name||id)}</strong><small>${esc(TYPES[id.charAt(0)]?.label||'PEÇA')} • ${onBoard?'NO TABULEIRO':'FORA DO TABULEIRO'}${d.sound?' • 🎵':''}</small><div class="cp-mini-actions"><button class="btn-play-sm" data-place>COLOCAR</button><button class="btn-play-sm" data-edit>EDITAR</button><button class="btn-play-sm" data-remove>EXCLUIR</button></div></div>`;
+      ids.forEach(id=>{const d=store.p[id]||{},onBoard=store.board.includes(id),card=document.createElement('div');card.className='custom-extra-piece';card.innerHTML=`<div class="cp-thumb" style="${d.img?`background-image:url('${String(d.img).replace(/'/g,'%27')}')`:''}">${d.img?'':(TYPES[id.charAt(0)]?.icon||'♟')}</div><div style="min-width:0"><strong>${esc(d.name||id)}</strong><small>${esc(TYPES[id.charAt(0)]?.label||'PEÇA')} • ${onBoard?'NO TABULEIRO':'FORA DO TABULEIRO'}${d.sound?' • 🎵':''}${d.img?'':' • SEM FOTO'}</small><div class="cp-mini-actions"><button class="btn-play-sm" data-place>COLOCAR</button><button class="btn-play-sm" data-edit>EDITAR</button><button class="btn-play-sm" data-remove>EXCLUIR</button></div></div>`;
         card.querySelector('[data-place]').onclick=()=>beginPlacement(id);card.querySelector('[data-edit]').onclick=()=>openModal(id);card.querySelector('[data-remove]').onclick=()=>{if(confirm(`Excluir definitivamente a peça extra "${d.name||id}"?`))removeEverywhere(id);};root.appendChild(card);});list.appendChild(root);
     });
   }
   function injectCard(){
     const list=document.getElementById('list-sys');if(!list||document.getElementById('custom-piece-card'))return false;
-    const card=document.createElement('div');card.id='custom-piece-card';card.className='unit-card';card.innerHTML='<div class="custom-piece-title">➕ CRIADOR DE PEÇAS EXTRAS</div><p>Crie uma peça além da formação normal. Você escolhe o nome, movimento, lado, foto e música própria.</p><button type="button" class="btn btn-yes" id="custom-piece-add">+ ADICIONAR NOVA PEÇA</button>';
+    const card=document.createElement('div');card.id='custom-piece-card';card.className='unit-card';card.innerHTML='<div class="custom-piece-title">➕ CRIADOR DE PEÇAS EXTRAS</div><p>Crie uma peça usando apenas nome, tipo e lado. Foto e música são opcionais; sem foto aparece o símbolo da peça e o nome no mouse.</p><button type="button" class="btn btn-yes" id="custom-piece-add">+ ADICIONAR NOVA PEÇA</button>';
     const dataCard=[...list.querySelectorAll('.unit-card')].find(n=>(n.textContent||'').includes('GESTÃO DE DADOS'));if(dataCard)dataCard.insertAdjacentElement('beforebegin',card);else list.insertBefore(card,list.firstChild);card.querySelector('#custom-piece-add').onclick=()=>openModal();return true;
   }
   function hookRender(){
-    if(window.__cosplayCustomPieceRenderHook||typeof renderConfigLists!=='function')return;window.__cosplayCustomPieceRenderHook=true;const original=renderConfigLists;renderConfigLists=function(...args){const r=original.apply(this,args);renderCards();return r;};
+    if(window.__cosplayCustomPieceRenderHook||typeof renderConfigLists!=='function')return;window.__cosplayCustomPieceRenderHook=true;const original=renderConfigLists;renderConfigLists=function(...args){const r=original.apply(this,args);renderCards();applyBoardHoverNames();return r;};
+  }
+  function hookBoardRender(){
+    if(window.__cosplayCustomPieceBoardRenderHook||typeof renderBoard!=='function')return;
+    window.__cosplayCustomPieceBoardRenderHook=true;
+    const original=renderBoard;
+    renderBoard=function(...args){const r=original.apply(this,args);applyBoardHoverNames();return r;};
   }
   function bindBoard(){
     const board=document.getElementById('board');if(!board||board.dataset.customPlacementBound==='1')return false;board.dataset.customPlacementBound='1';
-    board.addEventListener('click',e=>{if(!pendingPlacementId)return;const sq=e.target.closest('.sq');if(!sq||!board.contains(sq))return;e.preventDefault();e.stopImmediatePropagation();const index=[...board.children].indexOf(sq);if(index<0)return;if(store.board[index]){notice('Essa casa já está ocupada. Escolha uma casa vazia. ESC cancela.');return;}store.board[index]=pendingPlacementId;const name=store.p[pendingPlacementId]?.name||pendingPlacementId;cancelPlacement();save();renderBoard();renderConfigLists();notice(`${name} adicionada ao tabuleiro.`);setTimeout(()=>notice(''),1600);},true);
+    board.addEventListener('click',e=>{if(!pendingPlacementId)return;const sq=e.target.closest('.sq');if(!sq||!board.contains(sq))return;e.preventDefault();e.stopImmediatePropagation();const index=[...board.children].indexOf(sq);if(index<0)return;if(store.board[index]){notice('Essa casa já está ocupada. Escolha uma casa vazia. ESC cancela.');return;}store.board[index]=pendingPlacementId;const name=store.p[pendingPlacementId]?.name||pendingPlacementId;cancelPlacement();save();renderBoard();applyBoardHoverNames();renderConfigLists();notice(`${name} adicionada ao tabuleiro.`);setTimeout(()=>notice(''),1600);},true);
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&pendingPlacementId)cancelPlacement();});return true;
   }
-  function init(){if(typeof store==='undefined'||!store?.p||!Array.isArray(store.board))return false;ensureStyles();injectCard();hookRender();bindBoard();renderCards();return true;}
+  function init(){if(typeof store==='undefined'||!store?.p||!Array.isArray(store.board))return false;ensureStyles();injectCard();hookRender();hookBoardRender();bindBoard();renderCards();applyBoardHoverNames();return true;}
   const boot=()=>{let tries=0;const timer=setInterval(()=>{tries++;if(init()||tries>40)clearInterval(timer);},250);};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
