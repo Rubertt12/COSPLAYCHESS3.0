@@ -2,8 +2,6 @@
   document.body.classList.add('capacitor-mobile');
 
   const isAndroid = /Android/i.test(navigator.userAgent);
-
-  // O APK agora é portrait-first. Não força mais landscape.
   if (isAndroid && screen.orientation && screen.orientation.unlock) {
     try { screen.orientation.unlock(); } catch (_) {}
   }
@@ -21,38 +19,48 @@
 
   const addMobileActionBar = () => {
     if (document.querySelector('.mobile-action-bar')) return;
-
     const bar = document.createElement('nav');
     bar.className = 'mobile-action-bar';
     bar.setAttribute('aria-label', 'Ações rápidas do jogo');
-
     bar.append(
       makeButton('DESFAZER', '↶', 'primary', () => window.undoMove && window.undoMove()),
       makeButton('PAUSAR', 'Ⅱ', '', () => window.pauseGame && window.pauseGame()),
       makeButton('REINICIAR', '↻', '', () => window.resetGame && window.resetGame()),
       makeButton('MENU', '☰', 'danger', () => window.toggleMenu && window.toggleMenu())
     );
-
     document.body.appendChild(bar);
   };
 
-  const enhanceLabels = () => {
-    const pause = [...document.querySelectorAll('.dash-btn')].find(btn => btn.textContent.includes('PAUSA'));
-    if (pause) pause.innerHTML = 'Ⅱ <span style="font-size:9px">PAUSAR</span>';
+  const setupGraveyard = () => {
+    const box = document.querySelector('.graveyard-container');
+    if (!box) return;
+    box.classList.add('mobile-collapsed');
+    const title = box.querySelector('h4');
+    if (!title) return;
+    title.style.cursor = 'pointer';
+    title.setAttribute('role', 'button');
+    title.setAttribute('tabindex', '0');
+    title.setAttribute('aria-label', 'Mostrar ou ocultar peças eliminadas');
+    title.addEventListener('click', () => box.classList.toggle('mobile-collapsed'));
+    title.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        box.classList.toggle('mobile-collapsed');
+      }
+    });
+  };
 
-    const playButtons = [...document.querySelectorAll('.dash-btn')];
-    playButtons.forEach((btn) => {
-      const title = (btn.getAttribute('title') || '').toLowerCase();
-      if (title.includes('subir')) btn.setAttribute('aria-label', 'Escolher áudio');
-      if (title === 'play') btn.setAttribute('aria-label', 'Tocar áudio ambiente');
-      if (title === 'pause') btn.setAttribute('aria-label', 'Pausar áudio ambiente');
+  const cleanupDesktopHints = () => {
+    document.querySelectorAll('.dashboard-controls-left input[type="range"]').forEach((el) => {
+      el.setAttribute('tabindex', '-1');
     });
   };
 
   window.addEventListener('load', () => {
     addMobileActionBar();
-    enhanceLabels();
-    window.scrollTo(0, 0);
+    setupGraveyard();
+    cleanupDesktopHints();
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, { once: true });
 
   let lastTouchEnd = 0;
