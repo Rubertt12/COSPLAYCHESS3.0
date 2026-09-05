@@ -124,6 +124,14 @@ function renderUpdateState(state) {
   }
 }
 
+function injectCinematicStartMenu() {
+  if (document.querySelector('script[data-cinematic-start-menu]')) return;
+  const script = document.createElement('script');
+  script.src = 'start-menu-cinematic.js?v=20260905-fullscreen-menu1';
+  script.dataset.cinematicStartMenu = 'true';
+  document.body.appendChild(script);
+}
+
 function injectEnhancementsScripts() {
   if (document.querySelector('script[data-cosplay-enhancements]')) return;
 
@@ -298,6 +306,7 @@ function injectPieceHoverLegend() {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
+  injectCinematicStartMenu();
   createUpdateCard();
   injectEnhancementsScripts();
   injectPieceHoverLegend();
