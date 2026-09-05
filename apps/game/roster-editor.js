@@ -51,8 +51,9 @@
     if (!name) return null;
 
     const photo = firstValue(raw, [
-      'foto', 'photo', 'imagem', 'image', 'avatar', 'fotoUrl', 'foto_url',
-      'photoUrl', 'photo_url', 'imageUrl', 'image_url', 'profileImage', 'profile_image'
+      'photoDataUrl', 'photo_data_url', 'foto', 'photo', 'imagem', 'image', 'avatar',
+      'fotoUrl', 'foto_url', 'photoUrl', 'photo_url', 'imageUrl', 'image_url',
+      'profileImage', 'profile_image'
     ]);
     const rawPhotoCrop = raw.photoCrop || raw.photo_crop || raw.extra_fields?.photo_crop;
     const photoCrop = rawPhotoCrop && typeof rawPhotoCrop === 'object'
@@ -118,17 +119,36 @@
     try { renderConfigLists(); } catch (_) {}
   }
 
-  function clearRosterAssignment(pieceId) {
+  function removePieceFromBoard(pieceId) {
+    if (!pieceId || !Array.isArray(store?.board)) return;
+    store.board = store.board.map(id => id === pieceId ? null : id);
+  }
+
+  function clearPieceAssignmentData(pieceId) {
+    if (!pieceId) return;
     if (!store.p[pieceId]) store.p[pieceId] = {};
     const piece = store.p[pieceId];
     if (piece.rosterManagedName) delete piece.name;
     if (piece.rosterManagedImg) delete piece.img;
     if (piece.rosterManagedPhotoCrop) delete piece.photoCrop;
+    if (piece.rosterManagedSound) {
+      delete piece.sound;
+      delete piece.soundName;
+      delete piece.soundSource;
+    }
     delete piece.participantId;
     delete piece.participant;
+    delete piece.participantRealName;
     delete piece.rosterManagedName;
     delete piece.rosterManagedImg;
     delete piece.rosterManagedPhotoCrop;
+    delete piece.rosterManagedSound;
+    delete piece.autoLineupReason;
+  }
+
+  function clearRosterAssignment(pieceId) {
+    clearPieceAssignmentData(pieceId);
+    removePieceFromBoard(pieceId);
     persistAndRefresh();
   }
 
@@ -139,30 +159,23 @@
     }) || '';
   }
 
-  function assignParticipant(pieceId, participant) {
+  function writeParticipantAssignment(pieceId, participant) {
     if (!participant || !pieceId) return;
     if (!store.p[pieceId]) store.p[pieceId] = {};
-
-    const previousPiece = assignedPieceFor(participant.id, pieceId);
-    if (previousPiece) {
-      const old = store.p[previousPiece] || {};
-      if (old.rosterManagedName) delete old.name;
-      if (old.rosterManagedImg) delete old.img;
-      if (old.rosterManagedPhotoCrop) delete old.photoCrop;
-      delete old.participantId;
-      delete old.participant;
-      delete old.rosterManagedName;
-      delete old.rosterManagedImg;
-      delete old.rosterManagedPhotoCrop;
-    }
-
     const target = store.p[pieceId];
+
+    if (target.rosterManagedName) delete target.name;
     if (target.rosterManagedImg) delete target.img;
     if (target.rosterManagedPhotoCrop) delete target.photoCrop;
-    delete target.rosterManagedPhotoCrop;
+    if (target.rosterManagedSound) {
+      delete target.sound;
+      delete target.soundName;
+      delete target.soundSource;
+    }
 
-    target.name = participant.name;
-    target.participantId = participant.id;
+    target.name = participant.character || participant.name;
+    target.participantRealName = participant.name || '';
+    target.participantId = participant.id || participant.registrationId || '';
     target.participant = { ...participant };
     target.rosterManagedName = true;
 
@@ -174,11 +187,51 @@
         : (participant.photoCrop ? { ...participant.photoCrop } : { x: 50, y: 50, zoom: 1 });
       target.rosterManagedPhotoCrop = true;
     } else {
+      delete target.img;
       delete target.rosterManagedImg;
-      if (target.rosterManagedPhotoCrop) delete target.photoCrop;
+      delete target.photoCrop;
       delete target.rosterManagedPhotoCrop;
     }
 
+    const music = participant.music && typeof participant.music === 'object' ? participant.music : {};
+    const musicUrl = participant.musicFileUrl || music.fileUrl || participant.musicUrl || music.url || '';
+    const musicName = participant.musicName || music.name || '';
+    if (musicUrl) {
+      target.sound = musicUrl;
+      target.soundName = musicName || 'Música da inscrição';
+      target.soundSource = 'registration';
+      target.rosterManagedSound = true;
+    } else {
+      delete target.sound;
+      delete target.soundName;
+      delete target.soundSource;
+      delete target.rosterManagedSound;
+    }
+    if (target.volume === undefined) target.volume = 0.8;
+  }
+
+  function assignParticipant(pieceId, participant) {
+    if (!participant || !pieceId) return;
+    if (!store.p[pieceId]) store.p[pieceId] = {};
+
+    const previousPiece = assignedPieceFor(participant.id, pieceId);
+    const targetPreviousParticipant = store.p[pieceId]?.participant
+      ? { ...store.p[pieceId].participant }
+      : null;
+
+    // Se a pessoa já estava em outra peça, nunca deixamos aquela peça como boneco genérico.
+    // Quando o destino já tem alguém, fazemos uma troca. Quando está vazio, removemos a peça antiga do tabuleiro.
+    if (previousPiece) {
+      clearPieceAssignmentData(previousPiece);
+
+      if (targetPreviousParticipant && String(targetPreviousParticipant.id || targetPreviousParticipant.registrationId || '') !== String(participant.id)) {
+        writeParticipantAssignment(previousPiece, targetPreviousParticipant);
+      } else {
+        removePieceFromBoard(previousPiece);
+      }
+    }
+
+    writeParticipantAssignment(pieceId, participant);
     persistAndRefresh();
   }
 
@@ -377,7 +430,7 @@
         if (input) input.value = '';
 
         if (importedRoster.length) {
-          showToast(`${importedRoster.length} participante(s) carregado(s). Ative Edição e clique em uma peça para escalar.`);
+          showToast(`${importedRoster.length} participante(s) carregado(s). Ative Edição e clique numa peça para escalar.`);
           alert(`${importedRoster.length} participante(s) importado(s)!\n\nAgora ative o MODO EDIÇÃO e clique em uma peça para escolher quem ficará nela.`);
         } else {
           showToast('Configuração antiga do Cosplay Chess importada com sucesso.');
