@@ -51,7 +51,27 @@ jobs:
         shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run dist:win -- --publish always
+        run: |
+          $maxAttempts = 3
+          for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
+            Write-Host "Tentativa $attempt de $maxAttempts para compilar/publicar o desktop..."
+            npm run dist:win -- --publish always
+            $exitCode = $LASTEXITCODE
+
+            if ($exitCode -eq 0) {
+              Write-Host "Build/publicação concluídos com sucesso na tentativa $attempt."
+              exit 0
+            }
+
+            if ($attempt -lt $maxAttempts) {
+              $wait = 15 * $attempt
+              Write-Warning "Build falhou (código $exitCode). Nova tentativa em $wait segundos."
+              Start-Sleep -Seconds $wait
+            } else {
+              Write-Error "Build falhou após $maxAttempts tentativas."
+              exit $exitCode
+            }
+          }
 
       - name: Resumo
         shell: pwsh
