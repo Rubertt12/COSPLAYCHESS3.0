@@ -1,0 +1,12 @@
+{
+  "appId": "com.rubra.cosplaychess",
+  "appName": "Cosplay Chess",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": true,
+    "backgroundColor": "#05050a"
+  }
+}

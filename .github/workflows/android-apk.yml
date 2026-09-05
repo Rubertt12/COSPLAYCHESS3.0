@@ -1,0 +1,70 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'COSPLAYCHESS-main/mobile/**'
+      - 'COSPLAYCHESS-main/index.html'
+      - 'COSPLAYCHESS-main/style.css'
+      - 'COSPLAYCHESS-main/**/*.js'
+      - 'COSPLAYCHESS-main/assets/**'
+      - 'COSPLAYCHESS-main/img/**'
+      - '.github/workflows/android-apk.yml'
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: COSPLAYCHESS-main/mobile
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install mobile dependencies
+        run: npm install
+
+      - name: Prepare game bundle
+        run: npm run prepare:web
+
+      - name: Create Android project
+        run: npx cap add android
+
+      - name: Sync Android project
+        run: npx cap sync android
+
+      - name: Build debug APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Rename APK
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk ../../CosplayChess-Android.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CosplayChess-Android-APK
+          path: COSPLAYCHESS-main/CosplayChess-Android.apk
+          if-no-files-found: error
+          retention-days: 30
