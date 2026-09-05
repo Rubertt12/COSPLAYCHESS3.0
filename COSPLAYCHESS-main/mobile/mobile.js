@@ -17,12 +17,18 @@
     return button;
   };
 
+  const isSidebarOpen = (sidebar) => {
+    if (!sidebar) return false;
+    const style = getComputedStyle(sidebar);
+    const rect = sidebar.getBoundingClientRect();
+    return rect.right > 0 && style.visibility !== 'hidden' && style.display !== 'none';
+  };
+
   const openSystemSettings = () => {
     try { if (window.showTab) window.showTab('sys'); } catch (_) {}
     const sidebar = document.getElementById('sidebar');
     if (!sidebar) return;
-    const looksOpen = sidebar.classList.contains('open') || sidebar.classList.contains('active');
-    if (!looksOpen && window.toggleMenu) window.toggleMenu();
+    if (!isSidebarOpen(sidebar) && window.toggleMenu) window.toggleMenu();
     requestAnimationFrame(() => {
       const sys = document.getElementById('list-sys');
       if (sys) sys.scrollTop = 0;
@@ -114,7 +120,7 @@
     block.innerHTML = `
       <div class="mobile-settings-title">DADOS / JSON</div>
       <div class="mobile-settings-card">
-        <p>Salve ou carregue elenco, peças, nomes, imagens e dados configurados.</p>
+        <p>Importe ou exporte o elenco completo, peças, nomes, imagens e demais dados da partida.</p>
         <div class="mobile-settings-grid two">
           <button type="button" id="mobile-export-json" class="mobile-settings-btn primary">⬇ EXPORTAR JSON</button>
           <button type="button" id="mobile-import-json" class="mobile-settings-btn">⬆ IMPORTAR JSON</button>
@@ -126,6 +132,7 @@
       <div class="mobile-settings-card mobile-toggle-list">
         <label><input type="checkbox" id="mobile-edit-mode"> <span><b>Modo edição</b><small>Upload, troca e remoção de peças</small></span></label>
         <label><input type="checkbox" id="mobile-free-move"> <span><b>Movimentação livre</b><small>Ignora restrições de movimento</small></span></label>
+        <label><input type="checkbox" id="mobile-pin-menu"> <span><b>Fixar menu lateral</b><small>Mantém o painel aberto durante a partida</small></span></label>
       </div>
 
       <div class="mobile-settings-title">ÁUDIO E TABULEIRO</div>
@@ -138,10 +145,11 @@
       <div class="mobile-settings-card">
         <div class="mobile-settings-grid two">
           <button type="button" id="mobile-roll" class="mobile-settings-btn">🎲 SORTEAR INÍCIO</button>
-          <button type="button" id="mobile-open-system" class="mobile-settings-btn">⚙ SISTEMA COMPLETO</button>
+          <button type="button" id="mobile-undo" class="mobile-settings-btn">↶ DESFAZER JOGADA</button>
           <button type="button" id="mobile-clear-board" class="mobile-settings-btn">🧹 LIMPAR TABULEIRO</button>
           <button type="button" id="mobile-reset" class="mobile-settings-btn danger">⚠ RESET TOTAL</button>
         </div>
+        <button type="button" id="mobile-open-system" class="mobile-settings-btn primary" style="width:100%; margin-top:8px;">⚙ ABRIR SISTEMA COMPLETO / ÁUDIO</button>
       </div>`;
 
     if (back) settings.insertBefore(block, back);
@@ -156,32 +164,46 @@
     importButton?.addEventListener('click', () => importFile?.click());
     importFile?.addEventListener('change', () => {
       if (window.importSquadData && importFile.files?.length) window.importSquadData(importFile);
+      importFile.value = '';
     });
 
     syncCheck('edit-mode', 'mobile-edit-mode');
     syncCheck('free-move', 'mobile-free-move');
+    syncCheck('pin-menu', 'mobile-pin-menu');
 
     const master = document.getElementById('mobile-master-volume');
     const originalMaster = document.getElementById('v-master');
     if (master && originalMaster) master.value = originalMaster.value || '1';
     master?.addEventListener('input', () => {
-      if (originalMaster) originalMaster.value = master.value;
+      if (originalMaster) {
+        originalMaster.value = master.value;
+        originalMaster.dispatchEvent(new Event('input', { bubbles: true }));
+      }
       const dash = document.getElementById('v-master-dash');
       if (dash) dash.value = master.value;
-      if (window.syncVolumes) window.syncVolumes('master', master.value);
-      else if (window.updateMasterVolume) window.updateMasterVolume();
     });
 
     const zoom = document.getElementById('mobile-board-zoom');
     const originalZoom = document.getElementById('board-zoom');
     if (zoom && originalZoom) zoom.value = originalZoom.value || '1';
     zoom?.addEventListener('input', () => {
-      if (originalZoom) originalZoom.value = zoom.value;
-      if (window.updateBoardZoom) window.updateBoardZoom(zoom.value);
+      if (originalZoom) {
+        originalZoom.value = zoom.value;
+        originalZoom.dispatchEvent(new Event('input', { bubbles: true }));
+      }
     });
 
     document.getElementById('mobile-roll')?.addEventListener('click', () => window.rollInitiative && window.rollInitiative());
-    document.getElementById('mobile-open-system')?.addEventListener('click', openSystemSettings);
+    document.getElementById('mobile-undo')?.addEventListener('click', () => window.undoMove && window.undoMove());
+    document.getElementById('mobile-open-system')?.addEventListener('click', () => {
+      if (window.closeStartMenuSettings) window.closeStartMenuSettings();
+      const startMenu = document.getElementById('start-menu');
+      if (startMenu) {
+        startMenu.classList.remove('show');
+        startMenu.style.display = 'none';
+      }
+      openSystemSettings();
+    });
     document.getElementById('mobile-clear-board')?.addEventListener('click', () => window.clearBoardPieces && window.clearBoardPieces());
     document.getElementById('mobile-reset')?.addEventListener('click', () => window.resetGame && window.resetGame());
   };
@@ -195,6 +217,22 @@
     addAdvancedSettings();
   };
 
+  const ensureBattleEntry = () => {
+    const startMenu = document.getElementById('start-menu');
+    const startButton = startMenu?.querySelector('button[onclick*="startBattle"]');
+    if (!startMenu || !startButton) return;
+
+    startButton.addEventListener('click', () => {
+      window.setTimeout(() => {
+        const stillVisible = startMenu.classList.contains('show') || getComputedStyle(startMenu).display !== 'none';
+        if (stillVisible) {
+          startMenu.classList.remove('show');
+          startMenu.style.display = 'none';
+        }
+      }, 180);
+    });
+  };
+
   const cleanupDesktopHints = () => {
     document.querySelectorAll('.dashboard-controls-left input[type="range"]').forEach((el) => {
       el.setAttribute('tabindex', '-1');
@@ -206,16 +244,10 @@
     setupGraveyard();
     setupMobileSidebar();
     improveStartSettings();
+    ensureBattleEntry();
     cleanupDesktopHints();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, { once: true });
-
-  let lastTouchEnd = 0;
-  document.addEventListener('touchend', (event) => {
-    const now = Date.now();
-    if (now - lastTouchEnd <= 280) event.preventDefault();
-    lastTouchEnd = now;
-  }, { passive: false });
 
   document.addEventListener('contextmenu', (event) => {
     if (event.target.closest('button, .piece, .sq, img')) event.preventDefault();
