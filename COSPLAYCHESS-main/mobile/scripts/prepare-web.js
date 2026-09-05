@@ -55,6 +55,9 @@ if (!html.includes('mobile/mobile-settings.css')) {
 if (!html.includes('mobile/mobile.js')) {
   html = html.replace('</body>', '    <script src="mobile/mobile.js"></script>\n</body>');
 }
+if (!html.includes('mobile/mobile-import-fix.js')) {
+  html = html.replace('</body>', '    <script src="mobile/mobile-import-fix.js"></script>\n</body>');
+}
 
 fs.writeFileSync(indexPath, html, 'utf8');
 
@@ -63,5 +66,6 @@ fs.copyFileSync(path.join(mobileRoot, 'mobile.css'), path.join(outDir, 'mobile',
 fs.copyFileSync(path.join(mobileRoot, 'mobile-menu-fix.css'), path.join(outDir, 'mobile', 'mobile-menu-fix.css'));
 fs.copyFileSync(path.join(mobileRoot, 'mobile-settings.css'), path.join(outDir, 'mobile', 'mobile-settings.css'));
 fs.copyFileSync(path.join(mobileRoot, 'mobile.js'), path.join(outDir, 'mobile', 'mobile.js'));
+fs.copyFileSync(path.join(mobileRoot, 'mobile-import-fix.js'), path.join(outDir, 'mobile', 'mobile-import-fix.js'));
 
 console.log('Android web bundle prepared at mobile/www');
