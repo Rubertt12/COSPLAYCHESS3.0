@@ -50,6 +50,46 @@
     });
   };
 
+  const setupMobileSidebar = () => {
+    const sidebar = document.getElementById('sidebar');
+    if (!sidebar) return;
+
+    if (!sidebar.querySelector('.mobile-menu-head')) {
+      const head = document.createElement('div');
+      head.className = 'mobile-menu-head';
+      head.innerHTML = '<div><strong>MENU DO JOGO</strong><span>Peças, histórico e configurações</span></div>';
+      const close = document.createElement('button');
+      close.type = 'button';
+      close.className = 'mobile-menu-close';
+      close.setAttribute('aria-label', 'Fechar menu');
+      close.textContent = '×';
+      close.addEventListener('click', () => window.toggleMenu && window.toggleMenu());
+      head.appendChild(close);
+      sidebar.prepend(head);
+    }
+
+    const tabs = sidebar.querySelector('.tabs');
+    if (tabs) {
+      tabs.querySelectorAll('button').forEach((button) => {
+        button.addEventListener('click', () => {
+          requestAnimationFrame(() => {
+            const visible = sidebar.querySelector('.scroll-area:not([style*="display:none"]):not([style*="display: none"])');
+            if (visible) visible.scrollTop = 0;
+          });
+        });
+      });
+    }
+  };
+
+  const improveStartSettings = () => {
+    const settings = document.getElementById('start-menu-settings-content');
+    if (!settings) return;
+    settings.setAttribute('aria-label', 'Configurações do jogo');
+
+    const back = settings.querySelector('.btn-back');
+    if (back) back.classList.add('mobile-settings-back');
+  };
+
   const cleanupDesktopHints = () => {
     document.querySelectorAll('.dashboard-controls-left input[type="range"]').forEach((el) => {
       el.setAttribute('tabindex', '-1');
@@ -59,6 +99,8 @@
   window.addEventListener('load', () => {
     addMobileActionBar();
     setupGraveyard();
+    setupMobileSidebar();
+    improveStartSettings();
     cleanupDesktopHints();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, { once: true });
