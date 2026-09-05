@@ -48,7 +48,7 @@ function writeMusicFolder(kind, folderPath) {
   if (type === 'random') data.randomFolderPath = folderPath;
   else {
     data.generalFolderPath = folderPath;
-    data.folderPath = folderPath; // compatibilidade com versões antigas
+    data.folderPath = folderPath;
   }
   writeMusicConfig(data);
 }
@@ -168,9 +168,19 @@ function installJsonSettingsUi(window) {
   const playerJsonAutofillUrl = pathToFileURL(path.join(__dirname, 'game-player-json-autofill.js')).href;
   const siteRosterImportUrl = pathToFileURL(path.join(__dirname, 'site-roster-import.js')).href;
   const autoLineupBalanceUrl = pathToFileURL(path.join(__dirname, 'game-auto-lineup-balance.js')).href;
+  const startupUpdateGateUrl = pathToFileURL(path.join(__dirname, 'startup-update-gate.js')).href;
 
   window.webContents.on('did-finish-load', () => {
     const code = `(() => {
+      const loadStartupUpdateGate = () => {
+        if (document.querySelector('script[data-startup-update-gate]')) return;
+        const updateScript = document.createElement('script');
+        updateScript.src = ${JSON.stringify(startupUpdateGateUrl)};
+        updateScript.dataset.startupUpdateGate = 'true';
+        document.head.appendChild(updateScript);
+      };
+      loadStartupUpdateGate();
+
       const settings = document.getElementById('start-menu-settings-content');
       if (!settings) return;
 
