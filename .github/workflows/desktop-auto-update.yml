@@ -39,6 +39,15 @@ jobs:
       - name: Instalar dependências
         run: npm install --no-audit --no-fund
 
+      - name: Incluir recursos adicionais do Windows
+        shell: pwsh
+        run: |
+          if (Test-Path "custom-pieces.js") {
+            Add-Content -Path "roster-integration.js" -Value "`r`n"
+            Get-Content -Raw "custom-pieces.js" | Add-Content -Path "roster-integration.js"
+            Write-Host "Criador de peças extras incluído no bundle do Windows."
+          }
+
       - name: Gerar versão automática
         shell: pwsh
         run: |
