@@ -1,0 +1,94 @@
+html, body {
+  width: 100%;
+  min-height: 100%;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.capacitor-mobile {
+  min-height: 100dvh;
+  padding-top: env(safe-area-inset-top);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  overflow: hidden;
+}
+
+body.capacitor-mobile button,
+body.capacitor-mobile select,
+body.capacitor-mobile input,
+body.capacitor-mobile .piece,
+body.capacitor-mobile .square {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+@media (max-width: 900px), (max-height: 600px) {
+  body.capacitor-mobile #start-menu .start-content {
+    width: min(96vw, 920px) !important;
+    max-height: 94dvh;
+    overflow: auto;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    padding: 16px !important;
+  }
+
+  body.capacitor-mobile .start-info-col {
+    display: none !important;
+  }
+
+  body.capacitor-mobile .start-config-col,
+  body.capacitor-mobile .menu-panel {
+    width: 100% !important;
+  }
+
+  body.capacitor-mobile .theme-grid,
+  body.capacitor-mobile .wall-preset-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  body.capacitor-mobile #sidebar {
+    width: min(88vw, 360px) !important;
+    max-width: 360px;
+  }
+
+  body.capacitor-mobile .btn {
+    min-height: 48px;
+    font-size: 12px !important;
+  }
+
+  body.capacitor-mobile .board,
+  body.capacitor-mobile #board {
+    max-width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 12px) !important;
+    max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 12px) !important;
+  }
+}
+
+@media (orientation: portrait) and (max-width: 900px) {
+  body.capacitor-mobile::after {
+    content: "Gire o celular para jogar melhor";
+    position: fixed;
+    left: 50%;
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    z-index: 99999;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(0,0,0,.82);
+    color: #fff;
+    font: 600 12px/1.2 system-ui, sans-serif;
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.capacitor-mobile *,
+  body.capacitor-mobile *::before,
+  body.capacitor-mobile *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
