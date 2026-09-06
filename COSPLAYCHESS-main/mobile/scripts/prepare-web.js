@@ -2,16 +2,22 @@ const fs = require('fs');
 const path = require('path');
 
 const mobileRoot = path.resolve(__dirname, '..');
-const projectRoot = path.resolve(mobileRoot, '..');
+const legacyRoot = path.resolve(mobileRoot, '..');
+const repoRoot = path.resolve(legacyRoot, '..');
+const gameRoot = path.join(repoRoot, 'apps', 'game');
 const outDir = path.join(mobileRoot, 'www');
 
+if (!fs.existsSync(gameRoot)) {
+  throw new Error(`Jogo principal do Windows não encontrado: ${gameRoot}`);
+}
+
 const excludedDirs = new Set([
-  'mobile', 'node_modules', 'dist', 'dist-installer', 'build', '.git', '.github'
+  'node_modules', 'dist', 'dist-installer', 'build', '.git', '.github'
 ]);
 
 const excludedFiles = new Set([
   'package.json', 'package-lock.json', 'bootstrap.js', 'main.js', 'preload.js',
-  'installer.iss', 'installer.json'
+  'installer.iss', 'installer.json', 'latest.yml'
 ]);
 
 function copyRecursive(src, dest) {
@@ -35,37 +41,64 @@ function copyRecursive(src, dest) {
 fs.rmSync(outDir, { recursive: true, force: true });
 fs.mkdirSync(outDir, { recursive: true });
 
-for (const entry of fs.readdirSync(projectRoot)) {
+// O APK passa a usar exatamente a base web atual do EXE. Assim temas, ícones,
+// imagens, Central da partida, roster e demais recursos visuais ficam sincronizados.
+for (const entry of fs.readdirSync(gameRoot)) {
   if (excludedDirs.has(entry) || excludedFiles.has(entry)) continue;
-  copyRecursive(path.join(projectRoot, entry), path.join(outDir, entry));
+  copyRecursive(path.join(gameRoot, entry), path.join(outDir, entry));
 }
 
 const indexPath = path.join(outDir, 'index.html');
+if (!fs.existsSync(indexPath)) throw new Error('index.html do jogo principal não foi copiado para o APK.');
 let html = fs.readFileSync(indexPath, 'utf8');
 
-if (!html.includes('mobile/mobile.css')) {
-  html = html.replace('</head>', '    <link rel="stylesheet" href="mobile/mobile.css">\n</head>');
+function injectHead(marker, markup) {
+  if (!html.includes(marker)) html = html.replace('</head>', `    ${markup}\n</head>`);
 }
-if (!html.includes('mobile/mobile-menu-fix.css')) {
-  html = html.replace('</head>', '    <link rel="stylesheet" href="mobile/mobile-menu-fix.css">\n</head>');
+function injectBody(marker, markup) {
+  if (!html.includes(marker)) html = html.replace('</body>', `    ${markup}\n</body>`);
 }
-if (!html.includes('mobile/mobile-settings.css')) {
-  html = html.replace('</head>', '    <link rel="stylesheet" href="mobile/mobile-settings.css">\n</head>');
-}
-if (!html.includes('mobile/mobile.js')) {
-  html = html.replace('</body>', '    <script src="mobile/mobile.js"></script>\n</body>');
-}
-if (!html.includes('mobile/mobile-import-fix.js')) {
-  html = html.replace('</body>', '    <script src="mobile/mobile-import-fix.js"></script>\n</body>');
-}
+
+injectHead('mobile/mobile.css', '<link rel="stylesheet" href="mobile/mobile.css">');
+injectHead('mobile/mobile-menu-fix.css', '<link rel="stylesheet" href="mobile/mobile-menu-fix.css">');
+injectHead('mobile/mobile-settings.css', '<link rel="stylesheet" href="mobile/mobile-settings.css">');
+
+// Recursos que no Windows são anexados durante a build precisam ser carregados
+// explicitamente no WebView Android.
+injectBody('custom-pieces.js', '<script src="custom-pieces.js"></script>');
+injectBody('piece-name-editor-fix.js', '<script src="piece-name-editor-fix.js"></script>');
+injectBody('piece-board-placement.js', '<script src="piece-board-placement.js"></script>');
+
+// Ajustes exclusivos de toque/layout Android ficam por último.
+injectBody('mobile/mobile.js', '<script src="mobile/mobile.js"></script>');
+injectBody('mobile/mobile-import-fix.js', '<script src="mobile/mobile-import-fix.js"></script>');
 
 fs.writeFileSync(indexPath, html, 'utf8');
 
 fs.mkdirSync(path.join(outDir, 'mobile'), { recursive: true });
-fs.copyFileSync(path.join(mobileRoot, 'mobile.css'), path.join(outDir, 'mobile', 'mobile.css'));
-fs.copyFileSync(path.join(mobileRoot, 'mobile-menu-fix.css'), path.join(outDir, 'mobile', 'mobile-menu-fix.css'));
-fs.copyFileSync(path.join(mobileRoot, 'mobile-settings.css'), path.join(outDir, 'mobile', 'mobile-settings.css'));
-fs.copyFileSync(path.join(mobileRoot, 'mobile.js'), path.join(outDir, 'mobile', 'mobile.js'));
-fs.copyFileSync(path.join(mobileRoot, 'mobile-import-fix.js'), path.join(outDir, 'mobile', 'mobile-import-fix.js'));
+for (const file of [
+  'mobile.css',
+  'mobile-menu-fix.css',
+  'mobile-settings.css',
+  'mobile.js',
+  'mobile-import-fix.js'
+]) {
+  fs.copyFileSync(path.join(mobileRoot, file), path.join(outDir, 'mobile', file));
+}
 
-console.log('Android web bundle prepared at mobile/www');
+const required = [
+  'style.css',
+  'script.js',
+  'participant-experience.js',
+  'custom-pieces.js',
+  'piece-name-editor-fix.js',
+  'piece-board-placement.js',
+  path.join('img', 'favicon', 'cosplaychess-app.png')
+];
+for (const file of required) {
+  if (!fs.existsSync(path.join(outDir, file))) {
+    throw new Error(`Recurso obrigatório ausente no APK: ${file}`);
+  }
+}
+
+console.log('Android bundle sincronizado com apps/game (mesma base visual e funcional do EXE).');
