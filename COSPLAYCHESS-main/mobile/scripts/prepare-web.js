@@ -41,8 +41,6 @@ function copyRecursive(src, dest) {
 fs.rmSync(outDir, { recursive: true, force: true });
 fs.mkdirSync(outDir, { recursive: true });
 
-// O APK passa a usar exatamente a base web atual do EXE. Assim temas, ícones,
-// imagens, Central da partida, roster e demais recursos visuais ficam sincronizados.
 for (const entry of fs.readdirSync(gameRoot)) {
   if (excludedDirs.has(entry) || excludedFiles.has(entry)) continue;
   copyRecursive(path.join(gameRoot, entry), path.join(outDir, entry));
@@ -62,16 +60,14 @@ function injectBody(marker, markup) {
 injectHead('mobile/mobile.css', '<link rel="stylesheet" href="mobile/mobile.css">');
 injectHead('mobile/mobile-menu-fix.css', '<link rel="stylesheet" href="mobile/mobile-menu-fix.css">');
 injectHead('mobile/mobile-settings.css', '<link rel="stylesheet" href="mobile/mobile-settings.css">');
+injectHead('mobile/mobile-ui-enhancements.css', '<link rel="stylesheet" href="mobile/mobile-ui-enhancements.css">');
 
-// Recursos que no Windows são anexados durante a build precisam ser carregados
-// explicitamente no WebView Android.
 injectBody('custom-pieces.js', '<script src="custom-pieces.js"></script>');
 injectBody('piece-name-editor-fix.js', '<script src="piece-name-editor-fix.js"></script>');
 injectBody('piece-board-placement.js', '<script src="piece-board-placement.js"></script>');
-
-// Ajustes exclusivos de toque/layout Android ficam por último.
 injectBody('mobile/mobile.js', '<script src="mobile/mobile.js"></script>');
 injectBody('mobile/mobile-import-fix.js', '<script src="mobile/mobile-import-fix.js"></script>');
+injectBody('mobile/mobile-ui-enhancements.js', '<script src="mobile/mobile-ui-enhancements.js"></script>');
 
 fs.writeFileSync(indexPath, html, 'utf8');
 
@@ -80,8 +76,10 @@ for (const file of [
   'mobile.css',
   'mobile-menu-fix.css',
   'mobile-settings.css',
+  'mobile-ui-enhancements.css',
   'mobile.js',
-  'mobile-import-fix.js'
+  'mobile-import-fix.js',
+  'mobile-ui-enhancements.js'
 ]) {
   fs.copyFileSync(path.join(mobileRoot, file), path.join(outDir, 'mobile', file));
 }
@@ -93,6 +91,8 @@ const required = [
   'custom-pieces.js',
   'piece-name-editor-fix.js',
   'piece-board-placement.js',
+  path.join('mobile', 'mobile-ui-enhancements.css'),
+  path.join('mobile', 'mobile-ui-enhancements.js'),
   path.join('img', 'favicon', 'cosplaychess-app.png')
 ];
 for (const file of required) {
@@ -101,4 +101,4 @@ for (const file of required) {
   }
 }
 
-console.log('Android bundle sincronizado com apps/game (mesma base visual e funcional do EXE).');
+console.log('Android bundle sincronizado com apps/game e com menu/configurações móveis aprimorados.');
