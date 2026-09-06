@@ -6,13 +6,13 @@ on:
     branches:
       - main
     paths:
+      - 'apps/game/**'
       - 'COSPLAYCHESS-main/mobile/**'
-      - 'COSPLAYCHESS-main/index.html'
-      - 'COSPLAYCHESS-main/style.css'
-      - 'COSPLAYCHESS-main/**/*.js'
-      - 'COSPLAYCHESS-main/assets/**'
-      - 'COSPLAYCHESS-main/img/**'
       - '.github/workflows/android-apk.yml'
+
+concurrency:
+  group: cosplay-chess-android-apk
+  cancel-in-progress: true
 
 jobs:
   build-apk:
@@ -41,10 +41,25 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Install mobile dependencies
-        run: npm install
+        run: npm install --no-audit --no-fund
 
-      - name: Prepare game bundle
+      - name: Prepare game bundle from Windows app
         run: npm run prepare:web
+
+      - name: Validate synced EXE resources
+        run: |
+          test -f www/index.html
+          test -f www/style.css
+          test -f www/script.js
+          test -f www/participant-experience.js
+          test -f www/custom-pieces.js
+          test -f www/piece-name-editor-fix.js
+          test -f www/piece-board-placement.js
+          test -f www/img/favicon/cosplaychess-app.png
+          grep -q 'custom-pieces.js' www/index.html
+          grep -q 'piece-name-editor-fix.js' www/index.html
+          grep -q 'piece-board-placement.js' www/index.html
+          echo 'APK sincronizado com a base atual do EXE.'
 
       - name: Create Android project
         run: npx cap add android
@@ -52,11 +67,11 @@ jobs:
       - name: Sync Android project
         run: npx cap sync android
 
-      - name: Apply Cosplay Chess launcher icon
+      - name: Apply same Cosplay Chess app icon used by desktop
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq imagemagick
-          ICON_SRC="../img/favicon/favicon-96x96.png"
+          ICON_SRC="../../apps/game/img/favicon/cosplaychess-app.png"
           test -f "$ICON_SRC"
           rm -f android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
           rm -f android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
