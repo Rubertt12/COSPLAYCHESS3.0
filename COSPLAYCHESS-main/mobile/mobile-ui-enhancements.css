@@ -1,0 +1,42 @@
+/* Android UI polish: menu, settings and icons */
+body.capacitor-mobile .mobile-start-brand{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:10px;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:linear-gradient(135deg,rgba(18,221,255,.08),rgba(255,41,109,.05));}
+body.capacitor-mobile .mobile-start-brand img{width:54px;height:54px;object-fit:contain;border-radius:14px;filter:drop-shadow(0 0 16px rgba(18,221,255,.22));}
+body.capacitor-mobile .mobile-start-brand b{display:block;color:#fff;font:900 18px/1 system-ui,sans-serif;letter-spacing:1.8px;}
+body.capacitor-mobile .mobile-start-brand span{display:block;margin-top:6px;color:#74dff3;font:800 9px/1 system-ui,sans-serif;letter-spacing:1.2px;}
+body.capacitor-mobile #main-start-options::before,body.capacitor-mobile #main-start-options::after{display:none!important;}
+body.capacitor-mobile #main-start-options .btn{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:12px!important;text-align:left!important;padding:14px 16px!important;}
+body.capacitor-mobile .mobile-btn-icon{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:19px;}
+body.capacitor-mobile .mobile-btn-label{font-weight:900;letter-spacing:1px;}
+
+body.capacitor-mobile #sidebar .mobile-menu-head{justify-content:flex-start!important;}
+body.capacitor-mobile .mobile-menu-brand-icon{width:42px;height:42px;object-fit:contain;border-radius:12px;flex:0 0 42px;filter:drop-shadow(0 0 12px rgba(18,221,255,.25));}
+body.capacitor-mobile #sidebar .mobile-menu-head>div{flex:1;min-width:0;}
+body.capacitor-mobile .mobile-menu-quick-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:8px 10px;background:#06111d;border-bottom:1px solid rgba(255,255,255,.07);}
+body.capacitor-mobile .mobile-menu-quick-actions button{min-height:52px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.025);color:#dfeef7;display:flex;align-items:center;justify-content:center;gap:7px;flex-direction:column;}
+body.capacitor-mobile .mobile-menu-quick-actions button span{font-size:18px;line-height:1;}
+body.capacitor-mobile .mobile-menu-quick-actions button small{font:800 8px/1 system-ui,sans-serif;letter-spacing:.7px;color:#88a0b2;}
+body.capacitor-mobile #sidebar .tabs button{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:4px!important;}
+body.capacitor-mobile #sidebar .tabs .mobile-btn-icon{width:auto;height:auto;flex:none;border:0;background:transparent;font-size:16px;}
+body.capacitor-mobile #sidebar .tabs .mobile-btn-label{font-size:8px;}
+body.capacitor-mobile .mobile-setting-icon{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:9px;background:rgba(18,221,255,.06);border:1px solid rgba(18,221,255,.13);color:#9af5ff;font-size:15px;}
+
+body.capacitor-mobile .mobile-settings-hero{display:flex;align-items:center;gap:12px;padding:14px;margin:2px 0 12px;border-radius:16px;border:1px solid rgba(18,221,255,.16);background:linear-gradient(135deg,rgba(18,221,255,.07),rgba(255,41,109,.035));}
+body.capacitor-mobile .mobile-settings-hero>span{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;border-radius:12px;background:rgba(18,221,255,.08);border:1px solid rgba(18,221,255,.18);font-size:20px;}
+body.capacitor-mobile .mobile-settings-hero b{display:block;color:#fff;font:900 15px/1 system-ui,sans-serif;letter-spacing:1.4px;}
+body.capacitor-mobile .mobile-settings-hero small{display:block;margin-top:5px;color:#7790a2;font:600 9px/1.3 system-ui,sans-serif;}
+body.capacitor-mobile #start-menu-settings-content .menu-section-title,body.capacitor-mobile .mobile-settings-title{display:flex!important;align-items:center;gap:8px!important;letter-spacing:1.2px!important;}
+body.capacitor-mobile .mobile-section-icon{display:grid;place-items:center;width:28px;height:28px;flex:0 0 28px;border-radius:9px;background:rgba(18,221,255,.07);border:1px solid rgba(18,221,255,.14);color:#8df1ff;font-size:13px;}
+body.capacitor-mobile #start-menu-settings-content .start-config-row,body.capacitor-mobile .mobile-settings-card{box-shadow:inset 0 1px 0 rgba(255,255,255,.02);}
+body.capacitor-mobile #start-menu-settings-content .theme-card{padding:10px!important;text-align:left!important;min-height:84px!important;}
+body.capacitor-mobile #start-menu-settings-content .theme-card.selected{box-shadow:inset 0 0 0 1px rgba(18,221,255,.45),0 0 18px rgba(18,221,255,.08)!important;}
+body.capacitor-mobile #start-menu-settings-content select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#7cefff 50%),linear-gradient(135deg,#7cefff 50%,transparent 50%);background-position:calc(100% - 18px) 20px,calc(100% - 13px) 20px;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:36px!important;}
+body.capacitor-mobile #start-menu-settings-content input[type="file"]{border:1px dashed rgba(18,221,255,.22)!important;}
+body.capacitor-mobile .mobile-settings-back{display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;}
+body.capacitor-mobile .mobile-settings-back .mobile-btn-icon{width:30px;height:30px;flex:0 0 30px;font-size:15px;}
+
+@media (max-width:380px){
+  body.capacitor-mobile .mobile-start-brand img{width:46px;height:46px;}
+  body.capacitor-mobile .mobile-start-brand b{font-size:16px;}
+  body.capacitor-mobile .mobile-menu-quick-actions{gap:5px;padding:7px;}
+  body.capacitor-mobile .mobile-menu-quick-actions button{min-height:48px;}
+}
