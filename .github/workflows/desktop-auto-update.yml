@@ -42,15 +42,20 @@ jobs:
       - name: Incluir recursos adicionais do Windows
         shell: pwsh
         run: |
-          if (Test-Path "custom-pieces.js") {
-            Add-Content -Path "roster-integration.js" -Value "`r`n"
-            Get-Content -Raw "custom-pieces.js" | Add-Content -Path "roster-integration.js"
-            Write-Host "Criador de peças extras incluído no bundle do Windows."
-          }
-          if (Test-Path "piece-board-placement.js") {
-            Add-Content -Path "roster-integration.js" -Value "`r`n"
-            Get-Content -Raw "piece-board-placement.js" | Add-Content -Path "roster-integration.js"
-            Write-Host "Posicionamento manual de peças incluído no bundle do Windows."
+          $extras = @(
+            @{ File = "custom-pieces.js"; Label = "Criador de peças extras" },
+            @{ File = "piece-name-editor-fix.js"; Label = "Editor de nome" },
+            @{ File = "piece-board-placement.js"; Label = "Posicionamento manual de peças" }
+          )
+
+          foreach ($extra in $extras) {
+            if (Test-Path $extra.File) {
+              Add-Content -Path "roster-integration.js" -Value "`r`n"
+              Get-Content -Raw $extra.File | Add-Content -Path "roster-integration.js"
+              Write-Host "$($extra.Label) incluído no bundle do Windows."
+            } else {
+              throw "Arquivo obrigatório ausente: $($extra.File)"
+            }
           }
 
       - name: Gerar versão automática
@@ -71,4 +76,5 @@ jobs:
         shell: pwsh
         run: |
           "### Cosplay Chess $env:APP_VERSION" >> $env:GITHUB_STEP_SUMMARY
+          "Criador de peças, editor de nome e posicionamento manual incluídos nesta build." >> $env:GITHUB_STEP_SUMMARY
           "Instalador NSIS, versão portátil e metadados de atualização publicados no GitHub Releases." >> $env:GITHUB_STEP_SUMMARY
