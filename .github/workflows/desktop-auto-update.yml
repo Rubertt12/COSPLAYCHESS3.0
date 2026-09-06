@@ -63,18 +63,47 @@ jobs:
             }
           }
 
+          # Garante que o botão de posicionar NO TABULEIRO apareça diretamente
+          # no mesmo conjunto de controles já visível nos cards da Central.
+          $built = Get-Content -Raw $target
+          $oldControls = @'
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px;">
+            <button type="button" onclick="pickParticipantPhoto('${id}')" style="border:1px solid #2b2b34;background:#141419;color:#bbb;border-radius:7px;padding:7px;font-size:8px;cursor:pointer;">🖼 TROCAR FOTO</button>
+            <button type="button" onclick="openPiecePhotoPositionEditor('${id}')" ${piece.img ? '' : 'disabled'} style="border:1px solid #2b2b34;background:#141419;color:#bbb;border-radius:7px;padding:7px;font-size:8px;cursor:${piece.img ? 'pointer' : 'not-allowed'};opacity:${piece.img ? '1' : '.4'};">✥ POSICIONAR</button>
+            <button type="button" onclick="editParticipantDisplayName('${id}')" style="border:1px solid #2b2b34;background:#141419;color:#bbb;border-radius:7px;padding:7px;font-size:8px;cursor:pointer;">✎ NOME NO JOGO</button>
+          </div>`;
+'@
+          $newControls = @'
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;">
+            <button type="button" onclick="pickParticipantPhoto('${id}')" style="border:1px solid #2b2b34;background:#141419;color:#bbb;border-radius:7px;padding:8px;font-size:8px;cursor:pointer;">🖼 TROCAR FOTO</button>
+            <button type="button" onclick="openPiecePhotoPositionEditor('${id}')" ${piece.img ? '' : 'disabled'} style="border:1px solid #2b2b34;background:#141419;color:#bbb;border-radius:7px;padding:8px;font-size:8px;cursor:${piece.img ? 'pointer' : 'not-allowed'};opacity:${piece.img ? '1' : '.4'};">✥ POSICIONAR FOTO</button>
+            <button type="button" onclick="editParticipantDisplayName('${id}')" style="border:1px solid rgba(217,171,85,.42);background:rgba(217,171,85,.07);color:#f2d28f;border-radius:7px;padding:8px;font-size:8px;font-weight:900;cursor:pointer;">✎ EDITAR NOME</button>
+            <button type="button" onclick="window.positionPieceOnBoard && window.positionPieceOnBoard('${id}')" style="border:1px solid rgba(0,229,255,.38);background:rgba(0,229,255,.08);color:#aefaff;border-radius:7px;padding:8px;font-size:8px;font-weight:900;cursor:pointer;">♟ POSICIONAR NO TABULEIRO</button>
+          </div>`;
+'@
+
+          if ($built.Contains($oldControls)) {
+            $built = $built.Replace($oldControls, $newControls)
+            Set-Content -Path $target -Value $built -Encoding utf8
+            Write-Host "Controles visíveis da Central atualizados: FOTO, EDITAR NOME e POSICIONAR NO TABULEIRO."
+          } else {
+            throw "Não foi possível localizar o bloco de controles dos cards da Central da partida."
+          }
+
           $built = Get-Content -Raw $target
           $requiredMarkers = @(
             "__cosplayCustomPiecesLoaded",
             "__cosplayPieceNameEditorFixLoaded",
-            "__cosplayPieceBoardPlacementInstalled"
+            "__cosplayPieceBoardPlacementInstalled",
+            "♟ POSICIONAR NO TABULEIRO",
+            "✎ EDITAR NOME"
           )
           foreach ($marker in $requiredMarkers) {
             if (-not $built.Contains($marker)) {
               throw "Validação do bundle falhou. Marcador ausente: $marker"
             }
           }
-          Write-Host "Validação OK: todos os recursos estão no script executado pela Central da partida."
+          Write-Host "Validação OK: criador de peças, editor de nome e posicionamento no tabuleiro estão no script executado pela Central."
 
       - name: Gerar versão automática
         shell: pwsh
@@ -94,5 +123,6 @@ jobs:
         shell: pwsh
         run: |
           "### Cosplay Chess $env:APP_VERSION" >> $env:GITHUB_STEP_SUMMARY
-          "Criador de peças, editor de nome e posicionamento manual foram anexados diretamente ao participant-experience.js e validados antes da compilação." >> $env:GITHUB_STEP_SUMMARY
+          "A Central agora exibe explicitamente EDITAR NOME e POSICIONAR NO TABULEIRO nos cards das peças." >> $env:GITHUB_STEP_SUMMARY
+          "Criador de peças extras, tooltip de nome e posicionamento manual foram validados antes da compilação." >> $env:GITHUB_STEP_SUMMARY
           "Instalador NSIS, versão portátil e metadados de atualização publicados no GitHub Releases." >> $env:GITHUB_STEP_SUMMARY
