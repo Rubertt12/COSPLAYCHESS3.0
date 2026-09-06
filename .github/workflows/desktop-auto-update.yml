@@ -47,10 +47,10 @@ jobs:
             Get-Content -Raw "custom-pieces.js" | Add-Content -Path "roster-integration.js"
             Write-Host "Criador de peças extras incluído no bundle do Windows."
           }
-          if (Test-Path "piece-name-editor-fix.js") {
+          if (Test-Path "piece-board-placement.js") {
             Add-Content -Path "roster-integration.js" -Value "`r`n"
-            Get-Content -Raw "piece-name-editor-fix.js" | Add-Content -Path "roster-integration.js"
-            Write-Host "Correção do editor de nome incluída no bundle do Windows."
+            Get-Content -Raw "piece-board-placement.js" | Add-Content -Path "roster-integration.js"
+            Write-Host "Posicionamento manual de peças incluído no bundle do Windows."
           }
 
       - name: Gerar versão automática
