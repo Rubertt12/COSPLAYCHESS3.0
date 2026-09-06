@@ -42,6 +42,11 @@ jobs:
       - name: Incluir recursos adicionais do Windows
         shell: pwsh
         run: |
+          $target = "participant-experience.js"
+          if (-not (Test-Path $target)) {
+            throw "Script principal da Central da partida ausente: $target"
+          }
+
           $extras = @(
             @{ File = "custom-pieces.js"; Label = "Criador de peças extras" },
             @{ File = "piece-name-editor-fix.js"; Label = "Editor de nome" },
@@ -50,13 +55,26 @@ jobs:
 
           foreach ($extra in $extras) {
             if (Test-Path $extra.File) {
-              Add-Content -Path "roster-integration.js" -Value "`r`n"
-              Get-Content -Raw $extra.File | Add-Content -Path "roster-integration.js"
-              Write-Host "$($extra.Label) incluído no bundle do Windows."
+              Add-Content -Path $target -Value "`r`n"
+              Get-Content -Raw $extra.File | Add-Content -Path $target
+              Write-Host "$($extra.Label) anexado diretamente a $target."
             } else {
               throw "Arquivo obrigatório ausente: $($extra.File)"
             }
           }
+
+          $built = Get-Content -Raw $target
+          $requiredMarkers = @(
+            "__cosplayCustomPiecesLoaded",
+            "__cosplayPieceNameEditorFixLoaded",
+            "__cosplayPieceBoardPlacementInstalled"
+          )
+          foreach ($marker in $requiredMarkers) {
+            if (-not $built.Contains($marker)) {
+              throw "Validação do bundle falhou. Marcador ausente: $marker"
+            }
+          }
+          Write-Host "Validação OK: todos os recursos estão no script executado pela Central da partida."
 
       - name: Gerar versão automática
         shell: pwsh
@@ -76,5 +94,5 @@ jobs:
         shell: pwsh
         run: |
           "### Cosplay Chess $env:APP_VERSION" >> $env:GITHUB_STEP_SUMMARY
-          "Criador de peças, editor de nome e posicionamento manual incluídos nesta build." >> $env:GITHUB_STEP_SUMMARY
+          "Criador de peças, editor de nome e posicionamento manual foram anexados diretamente ao participant-experience.js e validados antes da compilação." >> $env:GITHUB_STEP_SUMMARY
           "Instalador NSIS, versão portátil e metadados de atualização publicados no GitHub Releases." >> $env:GITHUB_STEP_SUMMARY
