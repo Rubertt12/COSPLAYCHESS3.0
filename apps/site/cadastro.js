@@ -18,9 +18,10 @@ let availableEvents = [];
 function status(message,type=''){statusBox.className=`form-status ${type}`;statusBox.textContent=message;}
 
 async function loadEvents(){
-  const {data,error}=await db.from('cosplay_events').select('id,title,start_at,venue,city,registration_open').eq('published',true).order('start_at');
+  const now=new Date().toISOString();
+  const {data,error}=await db.from('cosplay_events').select('id,title,start_at,venue,city,registration_open').eq('published',true).gte('start_at',now).order('start_at');
   if(error){eventSelect.innerHTML='<option value="">Erro ao carregar eventos</option>';return;}
-  availableEvents=(data||[]).filter(e=>e.registration_open);
+  availableEvents=(data||[]).filter(e=>e.registration_open&&new Date(e.start_at)>=new Date());
   eventSelect.innerHTML='<option value="">Selecione um evento</option>'+availableEvents.map(e=>`<option value="${e.id}">${e.title} — ${new Date(e.start_at).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'})}</option>`).join('');
   const selected=new URLSearchParams(location.search).get('event');
   if(selected&&availableEvents.some(e=>e.id===selected))eventSelect.value=selected;
