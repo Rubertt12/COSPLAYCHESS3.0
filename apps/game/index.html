@@ -175,7 +175,7 @@
     <div style="padding: 20px; border-bottom: 1px solid #222;">
         <h2 style="color:var(--accent); letter-spacing: 1px;">Cosplay Chess</h2>
         <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px">
-            <label style="font-size: 12px; cursor: pointer;"><input type="checkbox" id="edit-mode" onchange="renderBoard()"> MODO EDIÇÃO (UPLOAD/REMOVER)</label>
+            <label style="font-size: 12px; cursor: pointer;"><input type="checkbox" id="edit-mode" onchange="renderBoard(); updateEditModeButton()"> MODO EDIÇÃO (UPLOAD/REMOVER)</label>
             <label style="font-size: 12px; color: var(--accent); font-weight:bold; cursor: pointer;"><input type="checkbox" id="free-move"> MOVIMENTAÇÃO LIVRE</label>
             <label style="font-size: 12px; cursor: pointer;"><input type="checkbox" id="pin-menu" onchange="togglePinMenu(this.checked)"> FIXAR MENU LATERAL</label>
         </div>
@@ -238,6 +238,10 @@
                 </svg>
             </div>
             <div class="brand-title">COSPLAY CHESS</div>
+            <div class="dashboard-quick-actions" aria-label="Controles rápidos">
+                <button id="quick-edit-mode" class="quick-action-btn" type="button" onclick="toggleEditMode()" aria-pressed="false" title="Ativar modo edição">EDITAR</button>
+                <button id="quick-rotate-board" class="quick-action-btn" type="button" onclick="toggleBoardRotation()" title="Girar tabuleiro 90° para a direita" aria-label="Girar tabuleiro 90° para a direita">90°</button>
+            </div>
         </div>
 
         <!-- LADO ESQUERDO: CONTROLES DE SOM -->
