@@ -192,6 +192,19 @@
     <div class="scroll-area" id="list-log" style="display:none"></div>
 
     <div class="scroll-area" id="list-sys" style="display:none">
+        <div class="unit-card performance-settings-card">
+            <b style="color: var(--accent); font-size: 11px;">DESEMPENHO</b>
+            <div style="display:flex; align-items:center; gap:8px; margin-top:10px;">
+                <select id="performance-mode" onchange="setPerformanceMode(this.value)" style="flex:1; padding:7px; border-radius:5px; background:#0b0b0d; color:white; border:1px solid #222;">
+                    <option value="auto">Automático</option>
+                    <option value="on">Modo leve</option>
+                    <option value="off">Normal</option>
+                </select>
+                <strong id="performance-mode-status" style="font-size:8px; color:var(--accent);">NORMAL</strong>
+            </div>
+            <small style="display:block; margin-top:7px; color:#777; font-size:8px; line-height:1.4;">Reduz efeitos, filtros, animações e processamento visual sem alterar as regras do jogo.</small>
+        </div>
+
         <div class="unit-card">
             <b style="font-size: 11px;">VOLUME MESTRE</b>
             <input type="range" id="v-master" min="0" max="1" step="0.1" value="1" style="width:100%" oninput="updateMasterVolume()">

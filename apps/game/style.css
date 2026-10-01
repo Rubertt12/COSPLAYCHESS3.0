@@ -1373,3 +1373,82 @@ input[type=range]::-webkit-slider-thumb { appearance: none; -webkit-appearance: 
     background: #11131a;
     color: #fff;
 }
+
+
+/* --- MODO DE DESEMPENHO PARA COMPUTADORES ANTIGOS --- */
+body.performance-mode,
+body.performance-mode * {
+    scroll-behavior: auto !important;
+}
+
+body.performance-mode .ui-vfx-overlay,
+body.performance-mode .cyber-grid {
+    display: none !important;
+}
+
+body.performance-mode #dashboard,
+body.performance-mode aside,
+body.performance-mode .graveyard-container,
+body.performance-mode .start-content,
+body.performance-mode .overlay-content,
+body.performance-mode .unit-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+body.performance-mode #dashboard,
+body.performance-mode .graveyard-container,
+body.performance-mode #board {
+    box-shadow: none !important;
+}
+
+body.performance-mode .board-wrapper,
+body.performance-mode .piece,
+body.performance-mode .sq,
+body.performance-mode .player-card,
+body.performance-mode .dash-btn,
+body.performance-mode .btn,
+body.performance-mode aside {
+    transition: none !important;
+}
+
+body.performance-mode .piece:hover,
+body.performance-mode .gy-piece:hover,
+body.performance-mode .btn-play-sm:hover {
+    transform: none !important;
+}
+
+body.performance-mode .legal-dot,
+body.performance-mode .sq.in-check,
+body.performance-mode .highlight-mate,
+body.performance-mode .shake,
+body.performance-mode .winner-flash,
+body.performance-mode .pointer-hit,
+body.performance-mode [class*="duel-"] {
+    animation: none !important;
+}
+
+body.performance-mode .legal-dot {
+    box-shadow: none !important;
+}
+
+body.performance-mode .sq.selected {
+    box-shadow: inset 0 0 6px var(--accent) !important;
+}
+
+body.performance-mode .sq.in-check {
+    background: rgba(255, 0, 85, 0.22) !important;
+}
+
+body.performance-mode .sq.last-move {
+    box-shadow: inset 0 0 4px rgba(255,255,255,.12) !important;
+}
+
+body.performance-mode #custom-wallpaper-video {
+    display: none !important;
+}
+
+body.performance-mode #start-menu.cc-start-screen::before,
+body.performance-mode #start-menu .start-content.cc-start-shell:not(.settings-expanded)::after {
+    display: none !important;
+}
