@@ -120,7 +120,8 @@ function loadData() {
             document.getElementById('fullscreen-setting').checked = !!store.g.fullscreen;
         }
         applyFullscreen(store.g.fullscreen);
-        boardRotation = Number(store.g.boardRotation) === 90 ? 90 : 0;
+        const savedRotation = Number(store.g.boardRotation);
+        boardRotation = [0, 90, 180, 270, 360].includes(savedRotation) ? savedRotation : 0;
         applyBoardRotation(boardRotation);
         applyWallpaper(store.g.wallpaper);
         populateWallpaperThumbnails();
@@ -637,10 +638,15 @@ function renderBoard() {
     const edit = document.getElementById('edit-mode').checked;
     const visualSlots = new Array(64);
     const toVisualIndex = (index) => {
-        if (boardRotation !== 90) return index;
+        const rotation = getVisualRotation();
         const row = Math.floor(index / 8);
         const col = index % 8;
-        return col * 8 + (7 - row);
+        switch (rotation) {
+            case 90:  return col * 8 + (7 - row);
+            case 180: return (7 - row) * 8 + (7 - col);
+            case 270: return (7 - col) * 8 + row;
+            default:  return index;
+        }
     };
     
     const bCheck = isKingInCheck('B');
@@ -1671,22 +1677,43 @@ function updateEditModeButton() {
     btn.title = enabled ? 'Desativar modo edição' : 'Ativar modo edição';
 }
 
+function normalizeBoardRotation(rotation) {
+    const value = Number(rotation);
+    return [0, 90, 180, 270, 360].includes(value) ? value : 0;
+}
+
+function getVisualRotation() {
+    return ((Number(boardRotation) % 360) + 360) % 360;
+}
+
 function applyBoardRotation(rotation) {
-    boardRotation = Number(rotation) === 90 ? 90 : 0;
+    boardRotation = normalizeBoardRotation(rotation);
     store.g.boardRotation = boardRotation;
+    const visualRotation = getVisualRotation();
     const wrapper = document.querySelector('.board-wrapper');
-    if (wrapper) wrapper.classList.toggle('board-rotated-90', boardRotation === 90);
-    updateBoardCoordinates();
-    const btn = document.getElementById('quick-rotate-board');
-    if (btn) {
-        btn.classList.toggle('active', boardRotation === 90);
-        btn.title = boardRotation === 90 ? 'Voltar tabuleiro para a visão normal' : 'Girar tabuleiro 90° para a direita';
-        btn.setAttribute('aria-label', btn.title);
+    if (wrapper) {
+        wrapper.classList.toggle('board-rotated-90', visualRotation === 90);
+        wrapper.dataset.rotation = String(boardRotation);
     }
+    const selector = document.getElementById('quick-rotate-board');
+    if (selector) {
+        selector.value = String(boardRotation);
+        selector.title = 'Orientação do tabuleiro: ' + boardRotation + '°';
+        selector.setAttribute('aria-label', selector.title);
+    }
+    updateBoardCoordinates();
+}
+
+function setBoardRotation(rotation) {
+    applyBoardRotation(rotation);
+    save();
+    renderBoard();
 }
 
 function toggleBoardRotation() {
-    applyBoardRotation(boardRotation === 90 ? 0 : 90);
+    const rotations = [0, 90, 180, 270, 360];
+    const current = rotations.indexOf(normalizeBoardRotation(boardRotation));
+    applyBoardRotation(rotations[(current + 1) % rotations.length]);
     save();
     renderBoard();
 }
@@ -1695,10 +1722,17 @@ function updateBoardCoordinates() {
     const horizontal = document.querySelector('.coord-h');
     const vertical = document.querySelector('.coord-v');
     if (!horizontal || !vertical) return;
-    const hLabels = boardRotation === 90 ? ['1','2','3','4','5','6','7','8'] : ['A','B','C','D','E','F','G','H'];
-    const vLabels = boardRotation === 90 ? ['A','B','C','D','E','F','G','H'] : ['8','7','6','5','4','3','2','1'];
-    horizontal.innerHTML = hLabels.map(v => '<div>' + v + '</div>').join('');
-    vertical.innerHTML = vLabels.map(v => '<div>' + v + '</div>').join('');
+
+    const rotations = {
+        0:   { h: ['A','B','C','D','E','F','G','H'], v: ['8','7','6','5','4','3','2','1'] },
+        90:  { h: ['1','2','3','4','5','6','7','8'], v: ['A','B','C','D','E','F','G','H'] },
+        180: { h: ['H','G','F','E','D','C','B','A'], v: ['1','2','3','4','5','6','7','8'] },
+        270: { h: ['8','7','6','5','4','3','2','1'], v: ['H','G','F','E','D','C','B','A'] },
+        360: { h: ['A','B','C','D','E','F','G','H'], v: ['8','7','6','5','4','3','2','1'] }
+    };
+    const labels = rotations[normalizeBoardRotation(boardRotation)] || rotations[0];
+    horizontal.innerHTML = labels.h.map(v => '<div>' + v + '</div>').join('');
+    vertical.innerHTML = labels.v.map(v => '<div>' + v + '</div>').join('');
 }
 
 function closePieceContextMenu() {
