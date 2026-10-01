@@ -1358,3 +1358,18 @@ input[type=range]::-webkit-slider-thumb { appearance: none; -webkit-appearance: 
         display: none;
     }
 }
+
+
+/* --- SELETOR DE ROTAÇÃO DO TABULEIRO --- */
+.quick-action-select {
+    min-width: 52px;
+    appearance: none;
+    -webkit-appearance: none;
+    text-align: center;
+    text-align-last: center;
+    outline: none;
+}
+.quick-action-select option {
+    background: #11131a;
+    color: #fff;
+}
