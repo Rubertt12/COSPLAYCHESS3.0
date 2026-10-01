@@ -34,7 +34,8 @@ const DEFAULT_STORE = {
         lastMove: { from: null, to: null },
         pinnedMenu: false,
         fullscreen: false,
-        boardRotation: 0
+        boardRotation: 0,
+        performanceMode: 'auto'
     },
     board: getInitialBoard(), 
     graveyard: [],
@@ -73,6 +74,7 @@ let audioContext = null;
 let isLive = false, turn = 'B', sel = null, pending = null, gySel = null;
 let aiTimer = null;
 let boardRotation = 0;
+let performanceMode = false;
 const themeOptions = ['default','forest','fire','ice','purple','pink','cyber','eclipse'];
 let lastCapturePos = null;
 
@@ -103,6 +105,42 @@ const req = indexedDB.open("WarEngine_v33_2", 1);
 req.onupgradeneeded = e => e.target.result.createObjectStore("assets");
 req.onsuccess = e => { db = e.target.result; loadData(); };
 
+function detectPerformanceMode() {
+    try {
+        const cores = Number(navigator.hardwareConcurrency || 0);
+        const memory = Number(navigator.deviceMemory || 0);
+        const reducedMotion = !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+        return reducedMotion || (cores > 0 && cores <= 4) || (memory > 0 && memory <= 4);
+    } catch (_) {
+        return false;
+    }
+}
+
+function isPerformanceMode() {
+    return performanceMode;
+}
+
+function applyPerformanceMode(mode = store.g?.performanceMode || 'auto') {
+    const normalized = ['auto', 'on', 'off'].includes(mode) ? mode : 'auto';
+    if (!store.g) store.g = {};
+    store.g.performanceMode = normalized;
+    performanceMode = normalized === 'on' || (normalized === 'auto' && detectPerformanceMode());
+    document.body.classList.toggle('performance-mode', performanceMode);
+    document.body.dataset.performanceMode = performanceMode ? 'on' : 'off';
+
+    const select = document.getElementById('performance-mode');
+    if (select) select.value = normalized;
+
+    const label = document.getElementById('performance-mode-status');
+    if (label) label.textContent = performanceMode ? 'ATIVO' : 'NORMAL';
+}
+
+function setPerformanceMode(mode) {
+    applyPerformanceMode(mode);
+    save();
+    renderBoard();
+}
+
 function loadData() {
     db.transaction("assets").objectStore("assets").get("all").onsuccess = e => {
         if(e.target.result) {
@@ -116,6 +154,7 @@ function loadData() {
         }
 
         applyTheme(store.g.theme);
+        applyPerformanceMode(store.g.performanceMode || 'auto');
         if (document.getElementById('fullscreen-setting')) {
             document.getElementById('fullscreen-setting').checked = !!store.g.fullscreen;
         }
@@ -636,6 +675,7 @@ function renderBoard() {
     const b = document.getElementById('board');
     const fragment = document.createDocumentFragment();
     const edit = document.getElementById('edit-mode').checked;
+    const lightweight = isPerformanceMode();
     const visualSlots = new Array(64);
     const toVisualIndex = (index) => {
         const rotation = getVisualRotation();
@@ -714,7 +754,7 @@ function renderBoard() {
                 e.preventDefault(); e.stopPropagation();
                 if (edit) showPieceContextMenu(id, i, e.clientX, e.clientY);
             };
-            if (typeof window.applyPiecePhotoCrop === 'function') window.applyPiecePhotoCrop(p, id, { board: true });
+            if (!lightweight && typeof window.applyPiecePhotoCrop === 'function') window.applyPiecePhotoCrop(p, id, { board: true });
 
             c.appendChild(p);
             if(edit) {
@@ -1597,6 +1637,7 @@ function togglePinMenu(val) {
 }
 
 function playUISound(type = 'click') {
+    if (isPerformanceMode() && type === 'hover') return;
     const ctx = ensureAudioContext();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
@@ -1847,6 +1888,17 @@ function rollInitiative() {
     
     if (!modal || !wheel || !resultTxt) return;
 
+    if (isPerformanceMode()) {
+        const winnerSide = Math.random() < 0.5 ? 'B' : 'P';
+        turn = winnerSide;
+        modal.style.display = 'none';
+        resultTxt.innerText = `VAI COMEÇAR: ${winnerSide === 'B' ? 'BRANCAS' : 'PRETAS'}`;
+        updateUI();
+        save();
+        if (isLive && store.g.mode === 'AI' && turn === store.g.aiSide) aiMakeMove();
+        return;
+    }
+
     // Sorteio
     const winnerSide = Math.random() < 0.5 ? 'B' : 'P';
     
@@ -1891,7 +1943,7 @@ function rollInitiative() {
                 pointer.classList.add('pointer-hit');
                 setTimeout(() => pointer.classList.remove('pointer-hit'), 50);
             }
-            requestAnimationFrame(checkTick);
+            if (!isPerformanceMode()) requestAnimationFrame(checkTick);
         }
         requestAnimationFrame(checkTick);
     }, 100);
