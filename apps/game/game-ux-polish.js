@@ -1391,7 +1391,7 @@
     layer.classList.add('active');
     try { playUISound('click'); } catch (_) {}
     playDuelSfx('charge');
-    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches || document.body.classList.contains('performance-mode');
     if (!reducedMotion) {
       setTimeout(() => {
         arena.classList.add('duel-striking');
