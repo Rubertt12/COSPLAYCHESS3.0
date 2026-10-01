@@ -33,7 +33,8 @@ const DEFAULT_STORE = {
         wallpaper: null,
         lastMove: { from: null, to: null },
         pinnedMenu: false,
-        fullscreen: false
+        fullscreen: false,
+        boardRotation: 0
     },
     board: getInitialBoard(), 
     graveyard: [],
@@ -70,6 +71,8 @@ let arenaAudios = { left: null, right: null };
 let arenaPlayback = { left: null, right: null };
 let audioContext = null;
 let isLive = false, turn = 'B', sel = null, pending = null, gySel = null;
+let aiTimer = null;
+let boardRotation = 0;
 const themeOptions = ['default','forest','fire','ice','purple','pink','cyber','eclipse'];
 let lastCapturePos = null;
 
@@ -117,6 +120,8 @@ function loadData() {
             document.getElementById('fullscreen-setting').checked = !!store.g.fullscreen;
         }
         applyFullscreen(store.g.fullscreen);
+        boardRotation = Number(store.g.boardRotation) === 90 ? 90 : 0;
+        applyBoardRotation(boardRotation);
         applyWallpaper(store.g.wallpaper);
         populateWallpaperThumbnails();
         renderBoard(); renderGraveyard(); updateUI(); renderConfigLists(); setupAmbientUI(); updateBoardZoom(store.g.zoomBoard); updateWallpaperSelectionUI(); renderLog();
@@ -200,7 +205,6 @@ function executeMove(from, to, opts = {}) {
     store.g.hasMoved = clonedHasMoved;
     save();
     renderBoard(); renderGraveyard();
-    setTimeout(() => playDefeatSound(), 120);
     const winner = checkForVictory();
     if (!winner) nextTurn();
 }
@@ -631,6 +635,13 @@ function renderBoard() {
     const b = document.getElementById('board');
     const fragment = document.createDocumentFragment();
     const edit = document.getElementById('edit-mode').checked;
+    const visualSlots = new Array(64);
+    const toVisualIndex = (index) => {
+        if (boardRotation !== 90) return index;
+        const row = Math.floor(index / 8);
+        const col = index % 8;
+        return col * 8 + (7 - row);
+    };
     
     const bCheck = isKingInCheck('B');
     const pCheck = isKingInCheck('P');
@@ -639,6 +650,10 @@ function renderBoard() {
         const sq = document.createElement('div'); 
         sq.className = `sq ${(Math.floor(i/8) + i%8) % 2 == 0 ? 'l' : 'd'}`;
         sq.onclick = () => handleSq(i);
+        sq.oncontextmenu = (e) => {
+            e.preventDefault();
+            if (id && edit) showPieceContextMenu(id, i, e.clientX, e.clientY);
+        };
 
         // Destaque de Xeque no Rei
         if (id && id.charAt(0) === 'K') {
@@ -689,6 +704,10 @@ function renderBoard() {
             }
 
             p.onclick = (e) => { if(edit) { e.stopPropagation(); triggerQuickUpload(id); } };
+            p.oncontextmenu = (e) => {
+                e.preventDefault(); e.stopPropagation();
+                if (edit) showPieceContextMenu(id, i, e.clientX, e.clientY);
+            };
             if (typeof window.applyPiecePhotoCrop === 'function') window.applyPiecePhotoCrop(p, id, { board: true });
 
             c.appendChild(p);
@@ -699,10 +718,12 @@ function renderBoard() {
             }
             sq.appendChild(c);
         }
-        fragment.appendChild(sq);
+        visualSlots[toVisualIndex(i)] = sq;
     });
+    visualSlots.forEach(sq => fragment.appendChild(sq));
     b.innerHTML = '';
     b.appendChild(fragment);
+    updateBoardCoordinates();
 }
 
 function handleSq(i) {
@@ -856,12 +877,6 @@ function openArena() {
 }
 
 function finishDuel(v) {
-    const arenaContent = document.querySelector('.arena-content');
-    if (arenaContent) {
-        arenaContent.classList.add('shake');
-        setTimeout(() => arenaContent.classList.remove('shake'), 500);
-    }
-
     const idA = store.board[pending.f], idD = store.board[pending.t];
     const nameA = store.p[idA]?.name || pieceNames[idA.charAt(0)];
     const nameD = store.p[idD]?.name || pieceNames[idD.charAt(0)];
@@ -882,7 +897,6 @@ function finishDuel(v) {
         store.board[pending.f] = null;
         store.g['kills' + v]++;
     }
-    setTimeout(() => playDefeatSound(), 120);
     document.getElementById('arena').style.display='none';
     renderGraveyard();
     // Verifica vitória após a captura
@@ -1323,6 +1337,7 @@ function renderLog() {
 function save() { if(db) db.transaction("assets","readwrite").objectStore("assets").put(store,"all"); }
 
 function nextTurn() { 
+    if (aiTimer) { clearTimeout(aiTimer); aiTimer = null; }
     turn = turn==='B'?'P':'B'; 
     sel = null; 
     renderBoard(); 
@@ -1330,7 +1345,7 @@ function nextTurn() {
     save(); 
     // Se modo AI e é vez da IA, executar jogada automática
     if (store.g.mode === 'AI' && turn === store.g.aiSide) {
-        setTimeout(() => aiMakeMove(), 600);
+        aiTimer = setTimeout(() => { aiTimer = null; aiMakeMove(); }, 120);
     }
 }
 
@@ -1371,8 +1386,6 @@ function renderGraveyard() {
         p.onclick = () => { gySel = (gySel === idx) ? null : idx; renderGraveyard(); };
         gy.appendChild(p);
     });
-    // Checa vitória sempre que o cemitério é atualizado
-    checkForVictory();
 }
 
 function showVictoryModal(winner) {
@@ -1401,6 +1414,9 @@ function showVictoryModal(winner) {
         }
     } catch (err) {}
     if (winModal) winModal.style.display = 'flex';
+    if (aiTimer) { clearTimeout(aiTimer); aiTimer = null; }
+    stopArenaPlayback('left');
+    stopArenaPlayback('right');
 }
 
 function clearMateHighlight() {
@@ -1414,6 +1430,8 @@ function clearMateHighlight() {
 
 function newGame() {
     // Reinicia o estado do jogo sem recarregar
+    if (aiTimer) { clearTimeout(aiTimer); aiTimer = null; }
+    turn = 'B';
     store.board = getInitialBoard();
     store.graveyard = [];
     store.g.killsB = 0;
@@ -1636,8 +1654,119 @@ async function exitCosplayChess() {
     else location.href = '../admin.html';
 }
 
+function toggleEditMode(forceValue = null) {
+    const checkbox = document.getElementById('edit-mode');
+    if (!checkbox) return;
+    checkbox.checked = forceValue === null ? !checkbox.checked : !!forceValue;
+    renderBoard();
+    updateEditModeButton();
+}
+
+function updateEditModeButton() {
+    const btn = document.getElementById('quick-edit-mode');
+    const enabled = !!document.getElementById('edit-mode')?.checked;
+    if (!btn) return;
+    btn.classList.toggle('active', enabled);
+    btn.setAttribute('aria-pressed', String(enabled));
+    btn.title = enabled ? 'Desativar modo edição' : 'Ativar modo edição';
+}
+
+function applyBoardRotation(rotation) {
+    boardRotation = Number(rotation) === 90 ? 90 : 0;
+    store.g.boardRotation = boardRotation;
+    const wrapper = document.querySelector('.board-wrapper');
+    if (wrapper) wrapper.classList.toggle('board-rotated-90', boardRotation === 90);
+    updateBoardCoordinates();
+    const btn = document.getElementById('quick-rotate-board');
+    if (btn) {
+        btn.classList.toggle('active', boardRotation === 90);
+        btn.title = boardRotation === 90 ? 'Voltar tabuleiro para a visão normal' : 'Girar tabuleiro 90° para a direita';
+        btn.setAttribute('aria-label', btn.title);
+    }
+}
+
+function toggleBoardRotation() {
+    applyBoardRotation(boardRotation === 90 ? 0 : 90);
+    save();
+    renderBoard();
+}
+
+function updateBoardCoordinates() {
+    const horizontal = document.querySelector('.coord-h');
+    const vertical = document.querySelector('.coord-v');
+    if (!horizontal || !vertical) return;
+    const hLabels = boardRotation === 90 ? ['1','2','3','4','5','6','7','8'] : ['A','B','C','D','E','F','G','H'];
+    const vLabels = boardRotation === 90 ? ['A','B','C','D','E','F','G','H'] : ['8','7','6','5','4','3','2','1'];
+    horizontal.innerHTML = hLabels.map(v => '<div>' + v + '</div>').join('');
+    vertical.innerHTML = vLabels.map(v => '<div>' + v + '</div>').join('');
+}
+
+function closePieceContextMenu() {
+    document.getElementById('piece-context-menu')?.remove();
+}
+
+function showPieceContextMenu(id, boardIndex, x, y) {
+    closePieceContextMenu();
+    const menu = document.createElement('div');
+    menu.id = 'piece-context-menu';
+    menu.className = 'piece-context-menu';
+    const currentName = store.p[id]?.name || pieceNames[id.charAt(0)] || id;
+    const options = [...nobres, ...peoes]
+        .map(base => base + (id.endsWith('_B') ? '_B' : '_P'))
+        .filter(target => target !== id);
+    menu.innerHTML =
+        '<div class="piece-context-title">' + currentName + '</div>' +
+        '<button data-action="rename">Renomear</button>' +
+        '<button data-action="swap">Trocar peça</button>' +
+        '<button data-action="delete" class="danger">Excluir peça</button>';
+    document.body.appendChild(menu);
+    const rect = menu.getBoundingClientRect();
+    menu.style.left = Math.min(x, window.innerWidth - rect.width - 8) + 'px';
+    menu.style.top = Math.min(y, window.innerHeight - rect.height - 8) + 'px';
+
+    menu.addEventListener('click', (event) => {
+        const action = event.target.closest('button')?.dataset.action;
+        if (!action) return;
+        if (action === 'rename') {
+            const name = window.prompt('Novo nome da peça:', currentName);
+            if (name && name.trim()) updatePieceName(id, name.trim());
+        } else if (action === 'swap') {
+            const target = window.prompt('ID da peça para trocar (ex.: P1_B, Q1_B):', options[0] || '');
+            if (target && options.includes(target)) swapBoardPiece(id, boardIndex, target);
+            else if (target) window.alert('ID inválido para esta equipe.');
+        } else if (action === 'delete') {
+            if (window.confirm('Excluir ' + currentName + ' desta casa?')) {
+                pushHistory();
+                store.graveyard.push(id);
+                store.board[boardIndex] = null;
+                sel = null;
+                save();
+                renderBoard();
+                renderGraveyard();
+            }
+        }
+        closePieceContextMenu();
+    });
+}
+
+function swapBoardPiece(currentId, boardIndex, targetId) {
+    pushHistory();
+    const targetIndex = store.board.findIndex(value => value === targetId);
+    if (targetIndex >= 0 && targetIndex !== boardIndex) store.board[targetIndex] = currentId;
+    store.board[boardIndex] = targetId;
+    sel = null;
+    save();
+    renderBoard();
+    renderGraveyard();
+}
+
+document.addEventListener('click', (event) => {
+    if (!event.target.closest('#piece-context-menu')) closePieceContextMenu();
+});
+
 function startBattle() {
     playUISound('click');
+    if (aiTimer) { clearTimeout(aiTimer); aiTimer = null; }
     if (!store.g.theme) store.g.theme = 'default';
     applyTheme(store.g.theme);
     // read UI selections
