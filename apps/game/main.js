@@ -16,6 +16,7 @@ let promptedAvailableVersion = null;
 let promptedDownloadedVersion = null;
 
 const UPDATE_CHECK_INTERVAL_MS = 10 * 60 * 1000;
+const GITHUB_UPDATE_FEED_URL = 'https://github.com/Rubertt12/COSPLAYCHESS3.0/releases/latest/download/';
 const BRAND_LOGO_CHUNKS = Array.from({ length: 3 }, (_, i) =>
   path.join(__dirname, 'assets', 'fergorverse-logo', `part-${String(i + 1).padStart(2, '0')}.txt`)
 );
@@ -72,8 +73,11 @@ function publishUpdateState(patch = {}) {
 
 function friendlyUpdateError(error) {
   const raw = error && error.message ? error.message : String(error || 'Erro desconhecido');
-  if (/latest\.yml|404/i.test(raw)) {
-    return 'Ainda não existe uma versão publicada para atualização.';
+  if (/Unexpected close tag|XMLParserError|Line \d+ Column \d+ Char/i.test(raw)) {
+    return 'Falha ao ler o feed de atualização do GitHub. O app usará o feed direto da versão mais recente.';
+  }
+  if (/latest\.yml.*404|404.*latest\.yml/i.test(raw)) {
+    return 'Feed de atualização não encontrado no GitHub Releases.';
   }
   return raw;
 }
@@ -350,6 +354,17 @@ function configureAutoUpdater() {
   autoUpdater.autoDownload = false;
   autoUpdater.autoInstallOnAppQuit = true;
   autoUpdater.allowPrerelease = false;
+  autoUpdater.disableDifferentialDownload = true;
+
+  // O provider GitHub nativo pode consultar o Atom/XML para descobrir releases.
+  // O feed estável abaixo aponta diretamente para latest.yml da última release,
+  // evitando a etapa XML e mantendo o canal de atualização público.
+  if (isAutoUpdateSupported()) {
+    autoUpdater.setFeedURL({
+      provider: 'generic',
+      url: GITHUB_UPDATE_FEED_URL
+    });
+  }
 
   autoUpdater.on('checking-for-update', () => {
     publishUpdateState({ status: 'checking', message: 'Verificando atualizações...' });
